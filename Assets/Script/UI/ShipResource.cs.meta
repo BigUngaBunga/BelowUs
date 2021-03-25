@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 6d62a2e18d9894240ab63acdd9839419
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - CurrentHP: {fileID: 11400000, guid: 46af5b1adf71c944dab18f9f78e793bb, type: 2}
+  - MaximumHP: {fileID: 11400000, guid: 8a5aa9e0599cafd4eb30941f03fa9c98, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
