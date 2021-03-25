@@ -2,23 +2,23 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthDisplay : NetworkBehaviour
+public class ResourceBarDisplay : NetworkBehaviour
 {
-    [SerializeField] private ShipResource health = null;
+    [SerializeField] private ShipResource resource = null;
 
     [Tooltip("Image to set the fill amount on.")]
-    [SerializeField] private Image healthBarImage = null;
+    [SerializeField] private Image resourceBarImage = null;
 
     [SerializeField] private GameObject testButton = null;
 
     private void OnEnable()
     {
-        health.EventResourceChanged += HandleHealthChanged;
+        resource.EventResourceChanged += HandleHealthChanged;
     }
 
     private void OnDisable()
     {
-        health.EventResourceChanged -= HandleHealthChanged;
+        resource.EventResourceChanged -= HandleHealthChanged;
     }
 
     private void Start()
@@ -30,7 +30,7 @@ public class HealthDisplay : NetworkBehaviour
     {
         if (isServer || isClientOnly)
         {
-            if (isServer)
+            if (isServer && testButton != null)
                 testButton.SetActive(true);
             CancelInvoke(nameof(EnableTestButtonIfServer));
         }
@@ -39,6 +39,6 @@ public class HealthDisplay : NetworkBehaviour
     [ClientRpc]
     private void HandleHealthChanged(float currentHealth, float maxHealth)
     {
-        healthBarImage.fillAmount = currentHealth / maxHealth;
+        resourceBarImage.fillAmount = currentHealth / maxHealth;
     }
 }
