@@ -9,8 +9,8 @@ public class ShipResource : NetworkBehaviour
     public string ResourceName = "";
     #endif
 
-    public FloatVariable CurrentValue;
-    public FloatReference MaximumValue;
+    [SerializeField] private FloatVariable CurrentValue;
+    [SerializeField] private FloatReference MaximumValue;
 
     [SerializeField] private bool ResetValue;
     [SerializeField] private FloatReference StartingValue;
@@ -30,16 +30,19 @@ public class ShipResource : NetworkBehaviour
         EventResourceChanged?.Invoke(CurrentValue.Value, MaximumValue.Value);
     }
 
+    [Server]
     private void ApplyChange(float value)
     {
         CurrentValue.ApplyChange(value);
         EventResourceChanged?.Invoke(CurrentValue.Value, MaximumValue.Value);
     }
 
+    [Server]
     public override void OnStartServer()
     {
+        base.OnStartServer();
         if(ResetValue)
-            SetValue(StartingValue.Value);
+            CurrentValue.SetValue(StartingValue.Value);
     }
 
     [Command]
@@ -50,7 +53,12 @@ public class ShipResource : NetworkBehaviour
 
     #region Client
 
-
+    [Client]
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        EventResourceChanged?.Invoke(CurrentValue.Value, MaximumValue.Value);
+    }
 
     #endregion
 }

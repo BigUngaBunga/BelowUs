@@ -13,12 +13,12 @@ public class ResourceBarDisplay : NetworkBehaviour
 
     private void OnEnable()
     {
-        resource.EventResourceChanged += HandleHealthChanged;
+        resource.EventResourceChanged += HandleResourceChanged;
     }
 
     private void OnDisable()
     {
-        resource.EventResourceChanged -= HandleHealthChanged;
+        resource.EventResourceChanged -= HandleResourceChanged;
     }
 
     private void Start()
@@ -37,7 +37,7 @@ public class ResourceBarDisplay : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void HandleHealthChanged(float currentHealth, float maxHealth)
+    private void HandleResourceChanged(float currentHealth, float maxHealth)
     {
         resourceBarImage.fillAmount = currentHealth / maxHealth;
     }
