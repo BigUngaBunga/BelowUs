@@ -1,7 +1,5 @@
 ﻿using Mirror;
-using RoboRyanTron.Unite2017.Variables;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ShipResource : NetworkBehaviour
 {
@@ -9,32 +7,20 @@ public class ShipResource : NetworkBehaviour
     public string ResourceName = "";
     #endif
 
-    [SerializeField] private FloatVariable CurrentValue;
-    [SerializeField] private FloatReference MaximumValue;
-
+    [SyncVar] public float CurrentValue = 100;
     [SerializeField] private bool ResetValue;
     [SerializeField] private FloatReference StartingValue;
-    [SerializeField] private UnityEvent DamageEvent;
+    public FloatReference MaximumValue;
 
     public delegate void ResourceChangedDelegate(float currentHealth, float maxHealth);
     public event ResourceChangedDelegate EventResourceChanged;
 
-    //TODO remove this hardcoding and calculate damage based on projectile, collision etc.
-    public int DamageTakenPerHit = 5;
-
     #region Server
-    [Server]
-    private void SetValue(float value)
-    {
-        CurrentValue.SetValue(value);
-        EventResourceChanged?.Invoke(CurrentValue.Value, MaximumValue.Value);
-    }
-
     [Server]
     private void ApplyChange(float value)
     {
-        CurrentValue.ApplyChange(value);
-        EventResourceChanged?.Invoke(CurrentValue.Value, MaximumValue.Value);
+        CurrentValue += value;
+        EventResourceChanged?.Invoke(CurrentValue, MaximumValue.Value);
     }
 
     [Server]
@@ -42,8 +28,9 @@ public class ShipResource : NetworkBehaviour
     {
         base.OnStartServer();
         if(ResetValue)
-            CurrentValue.SetValue(StartingValue.Value);
+            CurrentValue = MaximumValue.Value;
     }
+
 
     [Command]
     public void CmdDecreaseBy5() => ApplyChange(-5);
@@ -56,8 +43,7 @@ public class ShipResource : NetworkBehaviour
     [Client]
     public override void OnStartClient()
     {
-        base.OnStartClient();
-        EventResourceChanged?.Invoke(CurrentValue.Value, MaximumValue.Value);
+        
     }
 
     #endregion

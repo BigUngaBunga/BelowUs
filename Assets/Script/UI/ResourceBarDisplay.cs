@@ -4,21 +4,22 @@ using UnityEngine.UI;
 
 public class ResourceBarDisplay : NetworkBehaviour
 {
-    [SerializeField] private ShipResource resource = null;
-
+    [Header("References")]
+    [SerializeField] private ShipResource Resource = null;
     [Tooltip("Image to set the fill amount on.")]
     [SerializeField] private Image resourceBarImage = null;
-
     [SerializeField] private GameObject testButton = null;
+    [SerializeField] private FloatReference StartUpdateDelay;
 
     private void OnEnable()
     {
-        resource.EventResourceChanged += HandleResourceChanged;
+        Resource.EventResourceChanged += HandleResourceChanged;
+        Invoke(nameof(UpdateBarFill), StartUpdateDelay.Value);
     }
 
     private void OnDisable()
     {
-        resource.EventResourceChanged -= HandleResourceChanged;
+        Resource.EventResourceChanged -= HandleResourceChanged;
     }
 
     private void Start()
@@ -34,6 +35,11 @@ public class ResourceBarDisplay : NetworkBehaviour
                 testButton.SetActive(true);
             CancelInvoke(nameof(EnableTestButtonIfServer));
         }
+    }
+
+    private void UpdateBarFill()
+    {
+        resourceBarImage.fillAmount = Resource.CurrentValue / Resource.MaximumValue.Value;
     }
 
     [ClientRpc]

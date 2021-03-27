@@ -910,20 +910,16 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   ResourceName: Depth
-  CurrentValue: {fileID: 11400000, guid: 2b4d4a0422cfe7144acd223a6167e9f3, type: 2}
-  MaximumValue:
-    UseConstant: 1
-    ConstantValue: 0
-    Variable: {fileID: 0}
+  CurrentValue: 0
   ResetValue: 0
   StartingValue:
     UseConstant: 1
     ConstantValue: 0
     Variable: {fileID: 0}
-  DamageEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  DamageTakenPerHit: 5
+  MaximumValue:
+    UseConstant: 1
+    ConstantValue: 0
+    Variable: {fileID: 0}
 --- !u!114 &552280642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1443,7 +1439,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Variable: {fileID: 552280641}
+  Resource: {fileID: 552280641}
   EnableMaximum: 0
   Separator: 
   TextObject: {fileID: 3507648813807804898}
@@ -1610,20 +1606,16 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   ResourceName: Oxygen
-  CurrentValue: {fileID: 11400000, guid: b06340f2f26947c43becc9f7e3532492, type: 2}
-  MaximumValue:
-    UseConstant: 1
-    ConstantValue: 0
-    Variable: {fileID: 0}
+  CurrentValue: 0
   ResetValue: 1
   StartingValue:
     UseConstant: 1
     ConstantValue: 100
     Variable: {fileID: 0}
-  DamageEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  DamageTakenPerHit: 1
+  MaximumValue:
+    UseConstant: 1
+    ConstantValue: 100
+    Variable: {fileID: 0}
 --- !u!114 &820417562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1711,7 +1703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Variable: {fileID: 820417561}
+  Resource: {fileID: 820417561}
   EnableMaximum: 1
   Separator: /
   TextObject: {fileID: 309990491}
@@ -1729,7 +1721,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  resource: {fileID: 820417561}
+  Resource: {fileID: 820417561}
   resourceBarImage: {fileID: 1087252109}
   testButton: {fileID: 0}
 --- !u!224 &950417263 stripped
@@ -1937,20 +1929,16 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   ResourceName: Hull Health
-  CurrentValue: {fileID: 11400000, guid: 46af5b1adf71c944dab18f9f78e793bb, type: 2}
+  CurrentValue: 0
+  ResetValue: 1
+  StartingValue:
+    UseConstant: 1
+    ConstantValue: 50
+    Variable: {fileID: 11400000, guid: 8a5aa9e0599cafd4eb30941f03fa9c98, type: 2}
   MaximumValue:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 8a5aa9e0599cafd4eb30941f03fa9c98, type: 2}
-  ResetValue: 1
-  StartingValue:
-    UseConstant: 0
-    ConstantValue: 0
-    Variable: {fileID: 11400000, guid: 8a5aa9e0599cafd4eb30941f03fa9c98, type: 2}
-  DamageEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  DamageTakenPerHit: 5
 --- !u!114 &1273155453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2274,7 +2262,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 532.8, y: 119.1}
+  m_AnchoredPosition: {x: 532.8, y: 70}
   m_SizeDelta: {x: 100, y: 144}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1391520775
@@ -2972,7 +2960,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 419, y: 146}
+  m_AnchoredPosition: {x: 419, y: 90}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1768959566
@@ -3890,7 +3878,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!223 &1494947718148442001
 Canvas:
   m_ObjectHideFlags: 0
@@ -3959,11 +3947,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 12
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 12
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -4468,7 +4456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Variable: {fileID: 1273155452}
+  Resource: {fileID: 1273155452}
   EnableMaximum: 1
   Separator: /
   TextObject: {fileID: 2746689006891339819}
@@ -4808,7 +4796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  resource: {fileID: 1273155452}
+  Resource: {fileID: 1273155452}
   resourceBarImage: {fileID: 1356323037786598807}
   testButton: {fileID: 1387406877185871817}
 --- !u!114 &8426986740559295584

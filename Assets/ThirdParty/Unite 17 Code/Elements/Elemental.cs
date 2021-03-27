@@ -27,11 +27,8 @@ namespace RoboRyanTron.Unite2017.Elements
         private void OnTriggerEnter(Collider other)
         {
             Elemental e = other.gameObject.GetComponent<Elemental>();
-            if (e != null)
-            {
-                if (e.Element.DefeatedElements.Contains(Element))
-                    Destroy(gameObject);
-            }
+            if (e != null && e.Element.DefeatedElements.Contains(Element))
+                Destroy(gameObject);
         }
     }
 }
