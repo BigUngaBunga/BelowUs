@@ -41,9 +41,9 @@ namespace Mirror
 
         void OnGUI()
         {
-#pragma warning disable 618
+            #pragma warning disable 618
             if (!showGUI) return;
-#pragma warning restore 618
+            #pragma warning restore 618
 
             GUILayout.BeginArea(new Rect(10 + offsetX, 40 + offsetY, 215, 9999));
             if (!NetworkClient.isConnected && !NetworkServer.active)

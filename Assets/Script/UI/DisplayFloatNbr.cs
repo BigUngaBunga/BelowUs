@@ -35,7 +35,7 @@ public class DisplayFloatNbr : NetworkBehaviour
     private void UpdateBarFill()
     {
         if (EnableMaximum)
-            Text.text = Resource.CurrentValue + Separator + Resource.MaximumValue.Value;
+            Text.text = Resource.CurrentValue + Separator + Resource.maximumValue.Value;
         else
             Text.text = Resource.CurrentValue.ToString();
     }

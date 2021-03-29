@@ -39,7 +39,7 @@ public class ResourceBarDisplay : NetworkBehaviour
 
     private void UpdateBarFill()
     {
-        resourceBarImage.fillAmount = Resource.CurrentValue / Resource.MaximumValue.Value;
+        resourceBarImage.fillAmount = Resource.CurrentValue / Resource.maximumValue.Value;
     }
 
     [ClientRpc]
