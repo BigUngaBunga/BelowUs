@@ -26,8 +26,8 @@ public class NetworkManagerHUDCustom : MonoBehaviour
     public void Connect()
     {
         string txt = ipText.text.Substring(0, ipText.text.Length - 1);
-        manager.networkAddress = txt;
         manager.StartClient();
+        manager.networkAddress = txt;
         statusText.text = "Connecting to " + txt + "...";
         ChangeVisibleButtons(true);
         InvokeRepeating(nameof(CheckConnecting), 10, 0.5f);
