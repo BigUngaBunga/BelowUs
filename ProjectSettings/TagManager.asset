@@ -8,15 +8,15 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Background
+  - 
   - Water
   - UI
-  - Foreground
-  - PauseMenu
+  - Wall
+  - Ground
+  - Ceiling
   - 
   - 
-  - 
-  - 
+  - Ladder
   - 
   - 
   - 
