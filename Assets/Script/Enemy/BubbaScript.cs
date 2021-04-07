@@ -6,7 +6,8 @@ public class BubbaScript : EnemyBase
 {
     public Transform TargetLocation;
     private Rigidbody2D rb;
-    private Vector3 direction;
+    private float maxSpeed = 0.1f;
+    public float movementSpeed = 5f;
 
     protected override void Start()
     {
@@ -42,42 +43,79 @@ public class BubbaScript : EnemyBase
 
     #region chasing
 
-    protected void UpdateRotationChasing()
-    {
-        direction = targetGameObject.transform.position - transform.position;
-        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-        rb.rotation = -angle;
-        direction.Normalize();
-    }
+    //gammal Rotation
+    //protected void UpdateRotationChasing()
+    //{
+    //    Vector3 direction = currentPatrolTarget - transform.position;
+    //    direction = targetGameObject.transform.position - transform.position;
+    //    float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+    //    rb.rotation = -angle;
+    //    direction.Normalize();
+    //}
+
     protected void UpdateMovementChasing()
     {
-        rb.MovePosition((Vector3)transform.position + (direction * moveSpeedChasing * Time.deltaTime));
+        Vector2 direction = TargetLocation.position - transform.position;
+        rb.MovePosition((Vector2)transform.position + (direction * moveSpeedChasing * Time.deltaTime));
+    }
+
+
+    //Add force movement 
+    //protected void UpdateMovementChasing()
+    //{
+    //    Vector2 direction = (TargetLocation.position - transform.position).normalized;
+    //    float DistanceMultiplier = 20 - Vector2.Distance(TargetLocation.position, transform.position);
+    //    Vector2 movement = direction * movementSpeed * Time.deltaTime * DistanceMultiplier;
+
+
+    //    rb.AddForce(movement);
+
+    //    if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
+    //    {
+    //        base.GetNextPatrolPosition();
+    //    }
+    //}
+
+    protected void UpdateRotationChasing()
+    {
+        Vector2 direction = TargetLocation.position - transform.position;
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
+
     }
     #endregion chasing
 
     #region patrolling
+
+
     protected void UpdateRotationPatrolling()
     {
-        //direction = currentPatrolTarget - transform.position;
-        //float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-        ////rb.rotation = ;
-
-        //Vector3 eulerAngleVelocity = new Vector3(0, 0, angle);
-        //Quaternion deltaRotation = Quaternion.Euler(eulerAngleVelocity * 2f);
-        //rb.MoveRotation(rb.rotation * deltaRotation);
-
-        //var rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(direction), 20f * Time.deltaTime);
-        //rb.MoveRotation(rb.rotation * rotation);
-
-
-        
+        Vector2 direction = currentPatrolTarget - transform.position;
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(-angle,Vector3.forward);
+        transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));              
     }
 
+    //Ny movement
+    //protected void UpdateMovementPatrolling()
+    //{
+    //    Vector2 direction = (currentPatrolTarget - transform.position).normalized;
+    //    Vector2 movement = direction * movementSpeed * Time.deltaTime;
+
+    //     rb.AddForce(movement);
+
+    //    if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
+    //    {
+    //        base.GetNextPatrolPosition();
+    //    }
+    //}
     protected void UpdateMovementPatrolling()
     {
+        Vector3 direction = (currentPatrolTarget - transform.position);
         rb.MovePosition((Vector3)transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
 
-        if(Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
+        if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
         {
             base.GetNextPatrolPosition();
         }
