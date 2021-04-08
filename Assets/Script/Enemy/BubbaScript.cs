@@ -7,7 +7,7 @@ public class BubbaScript : EnemyBase
     public Transform TargetLocation;
     private Rigidbody2D rb;
     private float maxSpeed = 0.1f;
-    public float movementSpeed = 5f;
+    public float movementSpeed = 5f;   
 
     protected override void Start()
     {
@@ -28,6 +28,8 @@ public class BubbaScript : EnemyBase
             case enemyState.Patrolling:
                 UpdateRotationPatrolling();
                 UpdateMovementPatrolling();
+                CheckForFlip();
+
                 if (Vector3.Distance(targetGameObject.transform.position, transform.position) < 50f)
                 {
                     currentState = enemyState.Chasing;
@@ -52,14 +54,6 @@ public class BubbaScript : EnemyBase
     //    rb.rotation = -angle;
     //    direction.Normalize();
     //}
-
-    protected void UpdateMovementChasing()
-    {
-        Vector2 direction = TargetLocation.position - transform.position;
-        rb.MovePosition((Vector2)transform.position + (direction * moveSpeedChasing * Time.deltaTime));
-    }
-
-
     //Add force movement 
     //protected void UpdateMovementChasing()
     //{
@@ -75,28 +69,6 @@ public class BubbaScript : EnemyBase
     //        base.GetNextPatrolPosition();
     //    }
     //}
-
-    protected void UpdateRotationChasing()
-    {
-        Vector2 direction = TargetLocation.position - transform.position;
-        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
-        transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
-
-    }
-    #endregion chasing
-
-    #region patrolling
-
-
-    protected void UpdateRotationPatrolling()
-    {
-        Vector2 direction = currentPatrolTarget - transform.position;
-        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.AngleAxis(-angle,Vector3.forward);
-        transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));              
-    }
-
     //Ny movement
     //protected void UpdateMovementPatrolling()
     //{
@@ -110,6 +82,38 @@ public class BubbaScript : EnemyBase
     //        base.GetNextPatrolPosition();
     //    }
     //}
+
+    protected void UpdateMovementChasing()
+    {
+        Vector2 direction = TargetLocation.position - transform.position;
+        rb.MovePosition((Vector2)transform.position + (direction * moveSpeedChasing * Time.deltaTime));
+    }
+
+    protected void UpdateRotationChasing()
+    {
+        Vector2 direction = TargetLocation.position - transform.position;
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
+
+    }
+    #endregion chasing
+
+    #region patrolling
+
+    protected void UpdateRotationPatrolling()
+    {
+        //Vector till target
+        Vector2 direction = currentPatrolTarget - transform.position;
+        //vinkel till target
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        //rotationen som krävs till target som en quaternion runt z axlen
+        Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        //Mindre del av rotationen till target (slerp)
+        transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
+    }
+
+
     protected void UpdateMovementPatrolling()
     {
         Vector3 direction = (currentPatrolTarget - transform.position);
@@ -118,8 +122,28 @@ public class BubbaScript : EnemyBase
         if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
         {
             base.GetNextPatrolPosition();
+        }       
+    }
+
+    void CheckForFlip()
+    {
+        //Checks which direction the objeckt is facing and wether it has flipped the right way thru localscale
+        if (transform.rotation.z > 0 && transform.localScale.x < 0)
+        {
+            flip();
+        }
+        else if (transform.rotation.z < 0 && transform.localScale.x > 0)
+        {
+            flip();
         }
     }
+    void flip()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
+
 
     #endregion patrolling
 }
