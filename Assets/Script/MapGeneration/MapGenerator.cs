@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
+using System.Linq;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -12,14 +14,17 @@ public class MapGenerator : MonoBehaviour
     private int wallTile = 1;
 
 
-    [Range(0, 100)]
+    [Range(40, 70)]
     public int openWaterPercentage;
 
-    [Range (0 , 10)]
+    [Range (1 , 10)]
     public int timesToSmoothMap;
 
     [Range (0, 100)]
     public int enclaveRemovalSize;
+
+    [Range (0, 5)]
+    public int passagewayRadius;
 
     int[,] noiseMap;
 
@@ -35,12 +40,13 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    class Room
+    class Room : IComparable<Room>
     {
         public List<Coordinate> tiles;
         public List<Coordinate> edgeTiles;
-        public List<Room> adjacentRooms;
+        public List<Room> connectedRooms;
         public int tilesInRoom;
+        public bool isMainRoom, isAccesibleFromMainRoom;
 
         public Room()
         {
@@ -51,7 +57,7 @@ public class MapGenerator : MonoBehaviour
         {
             this.tiles = tiles;
             tilesInRoom = tiles.Count;
-            adjacentRooms = new List<Room>();
+            connectedRooms = new List<Room>();
             edgeTiles = new List<Coordinate>();
 
             foreach (Coordinate tile in tiles)
@@ -75,8 +81,33 @@ public class MapGenerator : MonoBehaviour
 
         public static void ConnectRooms(Room roomA, Room roomB)
         {
-            roomA.adjacentRooms.Add(roomB);
-            roomB.adjacentRooms.Add(roomA);
+            if (roomA.isAccesibleFromMainRoom)
+                roomB.SetAccesibleFromMainRoom();
+            else if (roomB.isAccesibleFromMainRoom)
+                roomA.SetAccesibleFromMainRoom();
+
+            roomA.connectedRooms.Add(roomB);
+            roomB.connectedRooms.Add(roomA);
+        }
+
+        public bool IsConnected(Room otherRoom)
+        {
+            return connectedRooms.Contains(otherRoom);
+        }
+
+        public int CompareTo(Room otherRoom)
+        {
+            return otherRoom.tilesInRoom.CompareTo(tilesInRoom);
+        }
+
+        public void SetAccesibleFromMainRoom()
+        {
+            if (!isAccesibleFromMainRoom)
+            {
+                isAccesibleFromMainRoom = true;
+                foreach (Room connectedRoom in connectedRooms)
+                    connectedRoom.SetAccesibleFromMainRoom();
+            }
         }
     }
 
@@ -102,6 +133,7 @@ public class MapGenerator : MonoBehaviour
         FillMapWithNoise();
         SmoothNoiseMap(timesToSmoothMap);
         RemoveTileEnclaves();
+        ClearPathways();
 
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
         meshGenerator.GenerateMesh(noiseMap, 1);
@@ -153,7 +185,7 @@ public class MapGenerator : MonoBehaviour
 
     private void RemoveTileEnclaves()
     {
-        List<Room> roomsLeft = new List<Room>();
+        //List<Room> roomsLeft = new List<Room>();
 
         void ReplaceSmallTileRegion(int removeType, int replaceType)
         {
@@ -163,18 +195,36 @@ public class MapGenerator : MonoBehaviour
                 if (tileRegion.Count < enclaveRemovalSize)
                     foreach (Coordinate tile in tileRegion)
                         noiseMap[tile.tileX, tile.tileY] = replaceType;
-                //else
+                //else if (replaceType == waterTile)
                 //    roomsLeft.Add(new Room(tileRegion, noiseMap, waterTile, wallTile));
             }
+        }
+        ReplaceSmallTileRegion(waterTile, wallTile);
+        ReplaceSmallTileRegion(wallTile, waterTile);
 
-            Debug.Log("Boop");
+        //roomsLeft.Sort();
+        //roomsLeft[0].isMainRoom = true;
+        //roomsLeft[0].isAccesibleFromMainRoom = true;
+
+        //ConnectAllRooms(roomsLeft);
+    }
+    private void ClearPathways()
+    {
+        List<List<Coordinate>> tileRegions = GetRegion(wallTile);
+        List<Room> rooms = new List<Room>();
+
+        foreach (List<Coordinate> region in tileRegions)
+        {
+            rooms.Add(new Room(region, noiseMap, waterTile, wallTile));
         }
 
-        ReplaceSmallTileRegion(waterTile, wallTile);
-        ReplaceSmallTileRegion(waterTile, wallTile);
-        //ConnectClosestRooms(roomsLeft);
+        rooms.Sort();
+        rooms[0].isMainRoom = true;
+        rooms[0].isAccesibleFromMainRoom = true;
+
+        ConnectAllRooms(rooms);
     }
-    
+
     private List<List<Coordinate>> GetRegion(int tileType)
     {
         List<List<Coordinate>> regions = new List<List<Coordinate>>();
@@ -224,61 +274,174 @@ public class MapGenerator : MonoBehaviour
         return tiles;
     }
 
-    private void ConnectClosestRooms(List<Room> rooms)
+    private void ConnectAllRooms(List<Room> rooms, bool forceAccessibilityFromMainRoom = false)
+    {
+        List<Room> unconnectedRooms = new List<Room>();
+        List<Room> connectedRooms = new List<Room>();
+
+        if (forceAccessibilityFromMainRoom)
+        {
+            foreach (Room room in rooms)
+            {
+                if (room.isAccesibleFromMainRoom)
+                    connectedRooms.Add(room);
+                else
+                    unconnectedRooms.Add(room);
+            }
+            ConnectRooms(unconnectedRooms, connectedRooms);
+        }
+        else
+            ConnectRooms(rooms, rooms);
+
+        if (!forceAccessibilityFromMainRoom)
+        {
+            ConnectAllRooms(rooms, true);
+        }
+    }
+
+    private void ConnectRooms(List<Room> roomsA, List<Room> roomsB)
     {
         int closestDistance = 0;
         Coordinate bestTileA = new Coordinate();
         Coordinate bestTileB = new Coordinate();
         Room bestRoomA = new Room();
         Room bestRoomB = new Room();
-        bool connectionEstablished = false;
+        bool possibleConnectionEstablished = false;
+        bool isForcingStartAccesibility = !roomsA.Equals(roomsB);
 
-        foreach (Room roomA in rooms)
+        foreach (Room roomA in roomsA)
         {
-            connectionEstablished = false;
-            foreach (Room roomB in rooms)
+            if (!isForcingStartAccesibility)
             {
-                if (roomA == roomB)
+                possibleConnectionEstablished = false;
+                if (roomA.connectedRooms.Count > 0)
                     continue;
-                if (roomA.adjacentRooms.Contains(roomB))
-                {
-                    connectionEstablished = false;
-                    break;
-                }
-                    
-
-                for (int tileIndexA = 0; tileIndexA < roomA.edgeTiles.Count; tileIndexA++)
-                    for (int tileIndexB = 0; tileIndexB < roomB.edgeTiles.Count; tileIndexB++)
-                    {
-                        Coordinate tileA = roomA.edgeTiles[tileIndexA];
-                        Coordinate tileB = roomB.edgeTiles[tileIndexB];
-                        int distanceBetweenRooms = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
-
-                        if (distanceBetweenRooms < closestDistance || !connectionEstablished)
-                        {
-                            closestDistance = distanceBetweenRooms;
-                            connectionEstablished = true;
-                            bestTileA = tileA;
-                            bestTileB = tileB;
-                            bestRoomA = roomA;
-                            bestRoomB = roomB;
-
-                        }
-                    }
             }
-            Debug.Log("Another room");
+
+            foreach (Room roomB in roomsB)
+            {
+                if (roomA == roomB || roomA.IsConnected(roomB))
+                    continue;
+
+                FindClosestTile(ref bestRoomA, ref bestRoomB, ref bestTileA, ref bestTileB, ref possibleConnectionEstablished, ref closestDistance, roomA, roomB);
+            }
+            if (possibleConnectionEstablished && !isForcingStartAccesibility)
+                CreatePassage(bestRoomA, bestRoomB, bestTileA, bestTileB);
         }
 
-        if (connectionEstablished)
-        {
+        if (possibleConnectionEstablished && isForcingStartAccesibility)
+        { 
             CreatePassage(bestRoomA, bestRoomB, bestTileA, bestTileB);
+            List<Room> rooms = roomsA.Union(roomsB).ToList();
+            ConnectAllRooms(rooms, true);
         }
     }
 
-    void CreatePassage(Room roomA, Room roomB, Coordinate tileA, Coordinate tileB)
+    private void FindClosestTile(ref Room bestRoomA, ref Room bestRoomB, ref Coordinate bestTileA, ref Coordinate bestTileB, ref bool connection, ref int closestDistance, Room roomA, Room roomB)
+    {
+        for (int tileIndexA = 0; tileIndexA < roomA.edgeTiles.Count; tileIndexA++)
+            for (int tileIndexB = 0; tileIndexB < roomB.edgeTiles.Count; tileIndexB++)
+            {
+                Coordinate tileA = roomA.edgeTiles[tileIndexA];
+                Coordinate tileB = roomB.edgeTiles[tileIndexB];
+                int distanceBetweenRooms = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
+
+                if (distanceBetweenRooms < closestDistance || !connection)
+                {
+                    closestDistance = distanceBetweenRooms;
+                    connection = true;
+                    bestTileA = tileA;
+                    bestTileB = tileB;
+                    bestRoomA = roomA;
+                    bestRoomB = roomB;
+                }
+            }
+    }
+
+    private void CreatePassage(Room roomA, Room roomB, Coordinate tileA, Coordinate tileB)
     {
         Room.ConnectRooms(roomA, roomB);
-        Debug.DrawLine(CoordinateToWorldPoint(tileA), CoordinateToWorldPoint(tileB), Color.red, 100);
+        
+        //DEBUG Ritar linje där vägar skapas
+        //Debug.DrawLine(CoordinateToWorldPoint(tileA), CoordinateToWorldPoint(tileB), Color.red, 10);
+
+        List<Coordinate> line = GetLine(tileA, tileB);
+        foreach (Coordinate point in line)
+        {
+            DrawCircle(point, passagewayRadius);
+        }
+    }
+    
+    private void DrawCircle(Coordinate centre, int radius)
+    {
+        for (int x = -radius; x < radius; x++)
+        {
+            for (int y = -radius; y < radius; y++)
+            {
+                if (x*x + y*y <= radius * radius)
+                {
+                    int drawX = centre.tileX + x;
+                    int drawY = centre.tileY + y;
+
+                    if (IsInMapRange(drawX, drawY))
+                        noiseMap[drawX, drawY] = wallTile;
+                }
+            }
+        }
+    }
+
+    private List<Coordinate> GetLine(Coordinate from, Coordinate to)
+    {
+        List<Coordinate> line = new List<Coordinate>();
+        int x = from.tileX;
+        int y = from.tileY;
+
+        int deltaX = to.tileX - from.tileX;
+        int deltaY = to.tileY - from.tileY;
+
+        int step = Math.Sign(deltaX);
+        int gradientStep = Math.Sign(deltaY);
+
+        bool inverted = false;
+        int longest = Mathf.Abs(deltaX);
+        int shortest = Mathf.Abs(deltaY);
+
+        if (longest < shortest)
+        {
+            inverted = true;
+            longest = Mathf.Abs(deltaY);
+            shortest = Mathf.Abs(deltaX);
+            step = Math.Sign(deltaY);
+            gradientStep = Math.Sign(deltaX);
+        }
+
+        int gradientAccumulation = longest / 2;
+        for (int i = 0; i < longest; i++)
+        {
+            line.Add(new Coordinate(x, y));
+
+            if (inverted)
+            {
+                y += step;
+            }
+            else
+            {
+                x += step;
+            }
+
+            gradientAccumulation += shortest;
+            if (gradientAccumulation >= longest)
+            {
+                if (inverted)
+                    x += gradientStep;
+                else
+                    y += gradientStep;
+
+                gradientAccumulation -= longest;
+            }
+        }
+
+        return line;
     }
 
     Vector3 CoordinateToWorldPoint(Coordinate tile)

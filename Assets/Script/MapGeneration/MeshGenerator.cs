@@ -5,6 +5,7 @@ using UnityEngine;
 public class MeshGenerator : MonoBehaviour
 {
     public SquareGrid squareGrid;
+    public MeshFilter meshFilter;
     List<Vector3> vertices;
     List<int> triangles;
 
@@ -19,11 +20,13 @@ public class MeshGenerator : MonoBehaviour
                 TriangulateSquare(squareGrid.squares[x, y]);
 
         Mesh mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        meshFilter.mesh = mesh;
 
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
+
+        Generate2DCollider();
     }
 
     private void TriangulateSquare(Square square)
@@ -116,6 +119,11 @@ public class MeshGenerator : MonoBehaviour
         triangles.Add(a.vertexIndex);
         triangles.Add(b.vertexIndex);
         triangles.Add(c.vertexIndex);
+    }
+
+    private void Generate2DCollider()
+    {
+        
     }
 
 
