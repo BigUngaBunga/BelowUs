@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class CameraController : NetworkBehaviour
 {
-    [SerializeField] private Transform player;
-    [SerializeField] private Transform submarine;
+    private Transform player;
+    private Transform submarine;
     [SerializeField] private Vector3 offsetPlayer;
     [SerializeField] private Vector3 offsetSubmarine;
     [SerializeField] private bool followPlayer;
@@ -12,14 +12,19 @@ public class CameraController : NetworkBehaviour
     [Range(2, 16)]
     [SerializeField] private float smoothFactor;
 
+
+    [TagSelector][SerializeField] private string playerTag;
+    [TagSelector][SerializeField] private string submarineTag;
+
     private void Start()
     {
         InvokeRepeating(nameof(FindPlayer), 0, 0.01f);
+        submarine = GameObject.FindGameObjectWithTag(submarineTag).transform;
     }
 
     private void FindPlayer()
     {
-        GameObject[] playerGameObjects = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] playerGameObjects = GameObject.FindGameObjectsWithTag(playerTag);
         GameObject playerGameObject = null;
 
         for (int i = 0; i < playerGameObjects.Length; i++) //Iterates through all players and checks if any of them are the local player
