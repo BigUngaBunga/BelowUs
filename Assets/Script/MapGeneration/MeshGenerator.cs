@@ -6,14 +6,26 @@ public class MeshGenerator : MonoBehaviour
 {
     public SquareGrid squareGrid;
     public MeshFilter meshFilter;
+    
+    [Range (1, 20)]
+    public int tileAmount;
+
     List<Vector3> vertices;
     List<int> triangles;
+    List<List<int>> outlines;
+    HashSet<int> checkedVertices;
+
+    Dictionary<int, List<Triangle>> triangleDictionary;
+
 
     public void GenerateMesh(int[,] map, float squareSize)
     {
         squareGrid = new SquareGrid(map, squareSize);
         vertices = new List<Vector3>();
         triangles = new List<int>();
+        checkedVertices = new HashSet<int>();
+        triangleDictionary = new Dictionary<int, List<Triangle>>();
+        outlines = new List<List<int>>();
 
         for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
             for (int y = 0; y < squareGrid.squares.GetLength(1); y++)
@@ -21,11 +33,11 @@ public class MeshGenerator : MonoBehaviour
 
         Mesh mesh = new Mesh();
         meshFilter.mesh = mesh;
-
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
 
+        mesh.uv = CreateUV(map, squareSize);
         Generate2DCollider();
     }
 
@@ -35,13 +47,13 @@ public class MeshGenerator : MonoBehaviour
         {
             //One point active
             case 1:
-                MeshFromPoints(square.centreBottom, square.bottomLeft, square.centreLeft);
+                MeshFromPoints(square.centreLeft, square.centreBottom, square.bottomLeft);
                 break;
             case 2:
-                MeshFromPoints(square.centreRight, square.bottomRight, square.centreBottom);
+                MeshFromPoints(square.bottomRight, square.centreBottom, square.centreRight);
                 break;
             case 4:
-                MeshFromPoints(square.centreTop, square.topRight, square.centreRight);
+                MeshFromPoints(square.topRight, square.centreRight, square.centreTop);
                 break;
             case 8:
                 MeshFromPoints(square.topLeft, square.centreTop, square.centreLeft);
@@ -81,6 +93,10 @@ public class MeshGenerator : MonoBehaviour
             //All points active
             case 15:
                 MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.bottomLeft);
+                checkedVertices.Add(square.topLeft.vertexIndex);
+                checkedVertices.Add(square.topRight.vertexIndex);
+                checkedVertices.Add(square.bottomRight.vertexIndex);
+                checkedVertices.Add(square.bottomLeft.vertexIndex);
                 break;
 
             default:
@@ -119,13 +135,126 @@ public class MeshGenerator : MonoBehaviour
         triangles.Add(a.vertexIndex);
         triangles.Add(b.vertexIndex);
         triangles.Add(c.vertexIndex);
+
+        Triangle triangle = new Triangle(a.vertexIndex, b.vertexIndex,c.vertexIndex);
+        AddTriangleToDictionary(triangle.vertexIndexA, triangle);
+        AddTriangleToDictionary(triangle.vertexIndexB, triangle);
+        AddTriangleToDictionary(triangle.vertexIndexC, triangle);
+    }
+
+    private void AddTriangleToDictionary(int vertexIndexKey, Triangle triangle)
+    {
+        if (triangleDictionary.ContainsKey(vertexIndexKey))
+            triangleDictionary[vertexIndexKey].Add(triangle);
+        else
+        {
+            List<Triangle> triangles = new List<Triangle>();
+            triangles.Add(triangle);
+            triangleDictionary.Add(vertexIndexKey, triangles);
+        }
+    }
+
+    private Vector2[] CreateUV(int[,] map, float squareSize)
+    {
+        Vector2[] uvs = new Vector2[vertices.Count];
+        for (int i = 0; i < vertices.Count; i++)
+        {
+            float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x);
+            float percentY = Mathf.InverseLerp(-map.GetLength(1) / 2 * squareSize, map.GetLength(1) / 2 * squareSize, vertices[i].y);
+            uvs[i] = new Vector2(percentX, percentY) * tileAmount;
+        }
+
+        return uvs;
+    }
+
+    private void CalculateMeshOutlines()
+    {
+        for (int vertexIndex = 0; vertexIndex < vertices.Count; vertexIndex++)
+        {
+            if (!checkedVertices.Contains(vertexIndex))
+            {
+                int newOutlineVertex = GetConnectedOutlineVertex(vertexIndex);
+                if (newOutlineVertex != -1)
+                {
+                    checkedVertices.Add(vertexIndex);
+
+                    List<int> newOutline = new List<int>();
+                    newOutline.Add(vertexIndex);
+                    outlines.Add(newOutline);
+
+                    FollowOutline(newOutlineVertex, outlines.Count - 1);
+                    outlines[outlines.Count - 1].Add(vertexIndex);
+                }
+            }
+        }
+    }
+
+    private void FollowOutline(int vertexIndex, int outlineIndex)
+    {
+        outlines[outlineIndex].Add(vertexIndex);
+        checkedVertices.Add(vertexIndex);
+        int nextVertexIndex = GetConnectedOutlineVertex(vertexIndex);
+
+        if (nextVertexIndex != -1)
+        {
+            FollowOutline(nextVertexIndex, outlineIndex);
+        }
+    }
+
+    private int GetConnectedOutlineVertex(int vertexIndex)
+    {
+        List<Triangle> trianglesContainingVertex = triangleDictionary[vertexIndex];
+
+        for (int i = 0; i < trianglesContainingVertex.Count; i++)
+        {
+            Triangle triangle = trianglesContainingVertex[i];
+
+            for (int j = 0; j < 3; j++)
+            {
+                int vertexB = triangle[j];
+
+                if (vertexB != vertexIndex && !checkedVertices.Contains(vertexB))
+                    if (IsOutlineEdge(vertexIndex, vertexB))
+                        return vertexB;
+            }
+        }
+        return -1;
+    }
+
+    private bool IsOutlineEdge(int vertexA, int vertexB)
+    {
+        List<Triangle> trianglesContainingVertexA = triangleDictionary[vertexA];
+        int sharedTriangleCount = 0;
+
+        for (int i = 0;  i < trianglesContainingVertexA.Count;  i++)
+            if (trianglesContainingVertexA[i].ContainsVertexIndex(vertexB))
+            {
+                sharedTriangleCount++;
+                if (sharedTriangleCount > 1)
+                    break;
+            }
+        return sharedTriangleCount == 1;
     }
 
     private void Generate2DCollider()
     {
+        EdgeCollider2D[] currentColliders = gameObject.GetComponents<EdgeCollider2D>();
+        for (int i = 0; i < currentColliders.Length; i++)
+            Destroy(currentColliders[i]);
         
-    }
+        CalculateMeshOutlines();
 
+        foreach (List<int> outline in outlines)
+        {
+            EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
+            Vector2[] edgePoints = new Vector2[outline.Count];
+
+            for (int i = 0; i < outline.Count; i++)
+                edgePoints[i] = vertices[outline[i]];
+
+            edgeCollider.points = edgePoints;
+        }
+    }
 
     //DEBUG REMOVE LATER
     private void OnDrawGizmos()
@@ -156,6 +285,37 @@ public class MeshGenerator : MonoBehaviour
         //        }
         //    }
         //}
+    }
+
+
+    public struct Triangle
+    {
+        public int vertexIndexA;
+        public int vertexIndexB;
+        public int vertexIndexC;
+        int[] vertices;
+
+        public Triangle(int vertexIndexA, int vertexIndexB, int vertexIndexC)
+        {
+            this.vertexIndexA = vertexIndexA;
+            this.vertexIndexB = vertexIndexB;
+            this.vertexIndexC = vertexIndexC;
+
+            vertices = new int[] { vertexIndexA, vertexIndexB, vertexIndexC };
+        }
+
+        public int this[int i]
+        {
+            get
+            {
+                return vertices[i];
+            }
+        }
+
+        public bool ContainsVertexIndex(int vertexIndex)
+        {
+            return vertexIndex == vertexIndexA || vertexIndex == vertexIndexB || vertexIndex == vertexIndexC;
+        }
     }
 
 

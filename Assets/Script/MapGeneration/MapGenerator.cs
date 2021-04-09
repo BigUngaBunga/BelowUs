@@ -17,13 +17,13 @@ public class MapGenerator : MonoBehaviour
     [Range(40, 70)]
     public int openWaterPercentage;
 
-    [Range (1 , 10)]
+    [Range(1, 10)]
     public int timesToSmoothMap;
 
-    [Range (0, 100)]
+    [Range(0, 100)]
     public int enclaveRemovalSize;
 
-    [Range (0, 5)]
+    [Range(0, 5)]
     public int passagewayRadius;
 
     int[,] noiseMap;
@@ -73,8 +73,6 @@ public class MapGenerator : MonoBehaviour
                                     edgeTiles.Add(tile);
                                 }
                             }
-
-                                
                     }
             }
         }
@@ -135,8 +133,9 @@ public class MapGenerator : MonoBehaviour
         RemoveTileEnclaves();
         ClearPathways();
 
+        int[,] borderedMap = CreateBorderedMap(5);
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-        meshGenerator.GenerateMesh(noiseMap, 1);
+        meshGenerator.GenerateMesh(borderedMap, 1);
     }
 
     void FillMapWithNoise()
@@ -174,19 +173,18 @@ public class MapGenerator : MonoBehaviour
     int GetSurrondingPixels(int gridX, int gridY)
     {
         int wallCount = 0;
-        for (int neighbouringX = gridX -1; neighbouringX <= gridX + 1; neighbouringX++)
+        for (int neighbouringX = gridX - 1; neighbouringX <= gridX + 1; neighbouringX++)
             for (int neighbouringY = gridY - 1; neighbouringY <= gridY + 1; neighbouringY++)
                 if (IsInMapRange(neighbouringX, neighbouringY))
                     if (neighbouringX != gridX || neighbouringY != gridY)
-                        wallCount += noiseMap[neighbouringX, neighbouringY];
+                        if (noiseMap[neighbouringX, neighbouringY] == wallTile)
+                            wallCount++;
         return wallCount;
     }
 
 
     private void RemoveTileEnclaves()
     {
-        //List<Room> roomsLeft = new List<Room>();
-
         void ReplaceSmallTileRegion(int removeType, int replaceType)
         {
             List<List<Coordinate>> tileRegions = GetRegion(removeType);
@@ -195,18 +193,10 @@ public class MapGenerator : MonoBehaviour
                 if (tileRegion.Count < enclaveRemovalSize)
                     foreach (Coordinate tile in tileRegion)
                         noiseMap[tile.tileX, tile.tileY] = replaceType;
-                //else if (replaceType == waterTile)
-                //    roomsLeft.Add(new Room(tileRegion, noiseMap, waterTile, wallTile));
             }
         }
         ReplaceSmallTileRegion(waterTile, wallTile);
         ReplaceSmallTileRegion(wallTile, waterTile);
-
-        //roomsLeft.Sort();
-        //roomsLeft[0].isMainRoom = true;
-        //roomsLeft[0].isAccesibleFromMainRoom = true;
-
-        //ConnectAllRooms(roomsLeft);
     }
     private void ClearPathways()
     {
@@ -223,6 +213,27 @@ public class MapGenerator : MonoBehaviour
         rooms[0].isAccesibleFromMainRoom = true;
 
         ConnectAllRooms(rooms);
+    }
+
+    private int[,] CreateBorderedMap(int borderSize)
+    {
+        int[,] borderedMap = new int[width + borderSize * 2, height + borderSize * 2];
+        for (int x = 0; x < borderedMap.GetLength(0); x++)
+        {
+            for (int y = 0; y < borderedMap.GetLength(1); y++)
+            {
+                if (x >= borderSize && x < width + borderSize && y >= borderSize && y < height + borderSize)
+                {
+                    borderedMap[x, y] = noiseMap[x - borderSize, y - borderSize];
+                }
+                else
+                {
+                    borderedMap[x, y] = waterTile;
+                }
+            }
+        }
+
+        return borderedMap;
     }
 
     private List<List<Coordinate>> GetRegion(int tileType)
@@ -361,9 +372,14 @@ public class MapGenerator : MonoBehaviour
     private void CreatePassage(Room roomA, Room roomB, Coordinate tileA, Coordinate tileB)
     {
         Room.ConnectRooms(roomA, roomB);
-        
+
         //DEBUG Ritar linje där vägar skapas
+        //Vector3 CoordinateToWorldPoint(Coordinate tile)
+        //{
+        //    return new Vector3(-width / 2 + 0.5f + tile.tileX, -height / 2 + 0.5f + tile.tileY, -1);
+        //}
         //Debug.DrawLine(CoordinateToWorldPoint(tileA), CoordinateToWorldPoint(tileB), Color.red, 10);
+
 
         List<Coordinate> line = GetLine(tileA, tileB);
         foreach (Coordinate point in line)
@@ -442,11 +458,6 @@ public class MapGenerator : MonoBehaviour
         }
 
         return line;
-    }
-
-    Vector3 CoordinateToWorldPoint(Coordinate tile)
-    {
-        return new Vector3(-width / 2 + 0.5f + tile.tileX, -height / 2 + 0.5f + tile.tileY, -1);
     }
 }
 
