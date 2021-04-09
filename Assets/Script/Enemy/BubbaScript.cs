@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BubbaScript : EnemyBase
 {
-    public Transform TargetLocation;
+    
     private Rigidbody2D rb;
     private float maxSpeed = 0.1f;
     public float movementSpeed = 5f;   
@@ -14,7 +14,7 @@ public class BubbaScript : EnemyBase
         rb = this.GetComponent<Rigidbody2D>();
         moveSpeedPatrolling = 5f;
         moveSpeedChasing = 7f;
-        targetName = "GameObject";
+        targetName = "Gameobject";
         currentState = enemyState.Patrolling;
         CreatePatrolArea();
         SetTarget();
@@ -85,13 +85,13 @@ public class BubbaScript : EnemyBase
 
     protected void UpdateMovementChasing()
     {
-        Vector2 direction = TargetLocation.position - transform.position;
+        Vector2 direction = targetGameObject.transform.position - transform.position;
         rb.MovePosition((Vector2)transform.position + (direction * moveSpeedChasing * Time.deltaTime));
     }
 
     protected void UpdateRotationChasing()
     {
-        Vector2 direction = TargetLocation.position - transform.position;
+        Vector2 direction = targetGameObject.transform.position - transform.position;
         float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
         transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
