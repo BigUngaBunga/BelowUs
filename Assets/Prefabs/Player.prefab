@@ -136,15 +136,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  MovementSpeed:
+  movementSpeed:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 56e5dfaee12367e4dadb2303188afbe1, type: 2}
-  JumpForce:
+  jumpForce:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: b3380c7ad83fa3b408d6fb0ff0b41dcf, type: 2}
-  ClimbingSpeed:
+  climbingSpeed:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 5770db1114ffc984591c4427a5a05d9c, type: 2}

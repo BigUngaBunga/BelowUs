@@ -4,9 +4,9 @@ using UnityEngine;
 public class PlayerCharacterController : NetworkBehaviour
 {
     [Header("References")]
-    [SerializeField] private FloatReference MovementSpeed;
-    [SerializeField] private FloatReference JumpForce;
-    [SerializeField] private FloatReference ClimbingSpeed;
+    [SerializeField] private FloatReference movementSpeed;
+    [SerializeField] private FloatReference jumpForce;
+    [SerializeField] private FloatReference climbingSpeed;
     [SerializeField] private LayerMask ladderMask;
 
     [SerializeField] private bool isClimbing;
@@ -50,7 +50,7 @@ public class PlayerCharacterController : NetworkBehaviour
 
     private void HorizontalMovement()
     {
-        float horizontalMovement = horizontalInput * MovementSpeed.Value * Time.deltaTime;
+        float horizontalMovement = horizontalInput * movementSpeed.Value * Time.deltaTime;
         rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
         //rb.MovePosition((Vector2)transform.position + new Vector2(horizontalMovement, rb.velocity.y * Time.deltaTime));
 
@@ -70,7 +70,7 @@ public class PlayerCharacterController : NetworkBehaviour
     {
         if (isClimbing)
         {
-            var verticalMovement = Input.GetAxis("Vertical") * Time.deltaTime * ClimbingSpeed.Value;
+            var verticalMovement = Input.GetAxis("Vertical") * Time.deltaTime * climbingSpeed.Value;
             rb.velocity = new Vector2(rb.velocity.x, verticalMovement);
 
             if (rb.gravityScale != 0)
@@ -88,7 +88,7 @@ public class PlayerCharacterController : NetworkBehaviour
         // Handles jumping
         if (jumpRequest)
         {
-            rb.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             jumpRequest = false;
             grounded = false;
         }
