@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SImplePlayerController : MonoBehaviour
 {
-    Rigidbody2D rigidbody;
+    Rigidbody2D rb;
     Vector2 velocity;
     int speed;
 
@@ -12,7 +12,7 @@ public class SImplePlayerController : MonoBehaviour
     void Start()
     {
         speed = 7;
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -23,6 +23,6 @@ public class SImplePlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbody.MovePosition(rigidbody.position + velocity * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
     }
 }

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class MeshGenerator : MonoBehaviour
 {
-    public SquareGrid squareGrid;
-    public MeshFilter meshFilter;
+    [SerializeField] private SquareGrid squareGrid;
+    [SerializeField] private MeshFilter meshFilter;
     
     [Range (1, 20)]
-    public int tileAmount;
+    [SerializeField] private int tileAmount;
 
-    List<Vector3> vertices;
-    List<int> triangles;
-    List<List<int>> outlines;
-    HashSet<int> checkedVertices;
+    private List<Vector3> vertices;
+    private List<int> triangles;
+    private List<List<int>> outlines;
+    private HashSet<int> checkedVertices;
 
-    Dictionary<int, List<Triangle>> triangleDictionary;
+    private Dictionary<int, List<Triangle>> triangleDictionary;
 
 
     public void GenerateMesh(int[,] map, float squareSize)
@@ -45,6 +45,7 @@ public class MeshGenerator : MonoBehaviour
     {
         switch (square.configuration)
         {
+            //TODO Simplify this
             //One point active
             case 1:
                 MeshFromPoints(square.centreLeft, square.centreBottom, square.bottomLeft);
@@ -98,7 +99,6 @@ public class MeshGenerator : MonoBehaviour
                 checkedVertices.Add(square.bottomRight.vertexIndex);
                 checkedVertices.Add(square.bottomLeft.vertexIndex);
                 break;
-
             default:
                 break;
         }
@@ -148,9 +148,11 @@ public class MeshGenerator : MonoBehaviour
             triangleDictionary[vertexIndexKey].Add(triangle);
         else
         {
-            List<Triangle> triangles = new List<Triangle>();
-            triangles.Add(triangle);
-            triangleDictionary.Add(vertexIndexKey, triangles);
+            List<Triangle> listOfTriangles = new List<Triangle>
+            {
+                triangle
+            };
+            triangleDictionary.Add(vertexIndexKey, listOfTriangles);
         }
     }
 
@@ -213,9 +215,8 @@ public class MeshGenerator : MonoBehaviour
             {
                 int vertexB = triangle[j];
 
-                if (vertexB != vertexIndex && !checkedVertices.Contains(vertexB))
-                    if (IsOutlineEdge(vertexIndex, vertexB))
-                        return vertexB;
+                if (vertexB != vertexIndex && !checkedVertices.Contains(vertexB) && IsOutlineEdge(vertexIndex, vertexB))
+                    return vertexB;
             }
         }
         return -1;
@@ -293,7 +294,7 @@ public class MeshGenerator : MonoBehaviour
         public int vertexIndexA;
         public int vertexIndexB;
         public int vertexIndexC;
-        int[] vertices;
+        readonly int[] vertices;
 
         public Triangle(int vertexIndexA, int vertexIndexB, int vertexIndexC)
         {
