@@ -4,25 +4,40 @@ using UnityEngine;
 
 public class DisplayFloatNbr : NetworkBehaviour
 {
-    [SerializeField] private ShipResource Variable;
+    [Header("References")]
+    [SerializeField] private ShipResource Resource;
+    [SerializeField] private GameObject TextObject;
+    [SerializeField] private FloatReference StartUpdateDelay;
+
+    [Header("Options")]
     [SerializeField] private bool EnableMaximum;
     [SerializeField] private string Separator = "/";
-    [SerializeField] private GameObject TextObject;
+
+
     private TextMeshProUGUI Text;
 
     private void OnEnable()
     {
-        Variable.EventResourceChanged += HandleResourceChanged;
+        Resource.EventResourceChanged += HandleResourceChanged;
+        Invoke(nameof(UpdateBarFill), StartUpdateDelay.Value);
     }
 
     private void OnDisable()
     {
-        Variable.EventResourceChanged -= HandleResourceChanged;
+        Resource.EventResourceChanged -= HandleResourceChanged;
     }
 
     private void Awake()
     {
         Text = (TextMeshProUGUI)TextObject.GetComponent(typeof(TextMeshProUGUI));
+    }
+
+    private void UpdateBarFill()
+    {
+        if (EnableMaximum)
+            Text.text = Resource.CurrentValue + Separator + Resource.maximumValue.Value;
+        else
+            Text.text = Resource.CurrentValue.ToString();
     }
 
     [ClientRpc]

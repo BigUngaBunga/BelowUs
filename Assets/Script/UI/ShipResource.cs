@@ -1,56 +1,41 @@
 ﻿using Mirror;
-using RoboRyanTron.Unite2017.Variables;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ShipResource : NetworkBehaviour
 {
     #if UNITY_EDITOR
     public string ResourceName = "";
-    #endif
+#endif
 
-    public FloatVariable CurrentValue;
-    public FloatReference MaximumValue;
+    [SyncVar] private float currentValue;
+    public float CurrentValue { get { return currentValue; } }
 
-    [SerializeField] private bool ResetValue;
-    [SerializeField] private FloatReference StartingValue;
-    [SerializeField] private UnityEvent DamageEvent;
+    [SerializeField] private bool resetValue;
+    [SerializeField] private FloatReference startingValue;
+    public FloatReference maximumValue;
 
     public delegate void ResourceChangedDelegate(float currentHealth, float maxHealth);
     public event ResourceChangedDelegate EventResourceChanged;
 
-    //TODO remove this hardcoding and calculate damage based on projectile, collision etc.
-    public int DamageTakenPerHit = 5;
-
     #region Server
     [Server]
-    private void SetValue(float value)
+    private void ApplyChange(float Value)
     {
-        CurrentValue.SetValue(value);
-        EventResourceChanged?.Invoke(CurrentValue.Value, MaximumValue.Value);
+        currentValue += Value;
+        EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
     }
 
-    private void ApplyChange(float value)
-    {
-        CurrentValue.ApplyChange(value);
-        EventResourceChanged?.Invoke(CurrentValue.Value, MaximumValue.Value);
-    }
-
+    [Server]
     public override void OnStartServer()
     {
-        if(ResetValue)
-            SetValue(StartingValue.Value);
+        base.OnStartServer();
+        if(resetValue)
+            currentValue = maximumValue.Value;
     }
+
 
     [Command]
     public void CmdDecreaseBy5() => ApplyChange(-5);
-
-    #endregion
-
-
-    #region Client
-
-
 
     #endregion
 }
