@@ -20,7 +20,9 @@ public class EnemyBase : MonoBehaviour
     protected Vector3 currentPatrolTarget;
     private float patrolRange = 5;
     protected enemyState currentState;
-    
+
+    [TagSelector][SerializeField] private string submarineTag;
+
     protected virtual void Start()
     {
 
@@ -34,7 +36,7 @@ public class EnemyBase : MonoBehaviour
 
     protected void SetTarget()
     {
-        targetGameObject = GameObject.Find(targetName);
+        targetGameObject = GameObject.FindGameObjectWithTag(submarineTag);
     }
 
     private float GetRandomPatrolNumber()
