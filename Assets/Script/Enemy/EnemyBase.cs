@@ -15,7 +15,7 @@ public class EnemyBase : MonoBehaviour
     public float moveSpeedPatrolling;
     public float moveSpeedChasing;
     protected float currentMoveSpeed = 0;
-    protected GameObject targetGameObject;
+    [SerializeField]protected GameObject targetGameObject;
     protected List<Vector3> patrolPositions = new List<Vector3>();
     protected Vector3 currentPatrolTarget;
     private float patrolRange = 5;
