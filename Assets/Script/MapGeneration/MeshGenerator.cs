@@ -161,8 +161,10 @@ public class MeshGenerator : MonoBehaviour
         Vector2[] uvs = new Vector2[vertices.Count];
         for (int i = 0; i < vertices.Count; i++)
         {
-            float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x);
-            float percentY = Mathf.InverseLerp(-map.GetLength(1) / 2 * squareSize, map.GetLength(1) / 2 * squareSize, vertices[i].y);
+            //float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x);
+            //float percentY = Mathf.InverseLerp(-map.GetLength(1) / 2 * squareSize, map.GetLength(1) / 2 * squareSize, vertices[i].y);
+            float percentX = Mathf.InverseLerp(0, map.GetLength(0) * squareSize, vertices[i].x);
+            float percentY = Mathf.InverseLerp(0, map.GetLength(1) * squareSize, vertices[i].y);
             uvs[i] = new Vector2(percentX, percentY) * tileAmount;
         }
 
@@ -336,8 +338,9 @@ public class MeshGenerator : MonoBehaviour
             {
                 for (int y = 0; y < nodeCountY; y++)
                 {
-                    Vector3 position = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, -mapHeight / 2 + y * squareSize + squareSize / 2, 0);
-                    controlNodes[x, y] = new ControlNode(position, map[x, y] == 0, squareSize);
+                    //Vector3 position = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, -mapHeight / 2 + y * squareSize + squareSize / 2, 0);
+                    Vector3 position = new Vector3(x * squareSize, y * squareSize , 0);
+                    controlNodes[x, y] = new ControlNode(position, map[x, y] == MapGenerator.WallTile, squareSize);
                 }
             }
 

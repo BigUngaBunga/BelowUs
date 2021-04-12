@@ -10,8 +10,8 @@ public class MapGenerator : MonoBehaviour
     public int height, width;
     public string seed;
     public bool useRandomSeed;
-    private int waterTile = 0;
-    private int wallTile = 1;
+    private int WaterTile { get { return 1; } }
+    public static int WallTile { get { return 0; }}
 
 
     [Range(40, 70)]
@@ -53,7 +53,7 @@ public class MapGenerator : MonoBehaviour
 
         }
 
-        public Room(List<Coordinate> tiles, int[,] map, int waterTile, int wallTile)
+        public Room(List<Coordinate> tiles, int[,] map, int WaterTile, int WallTile)
         {
             this.tiles = tiles;
             tilesInRoom = tiles.Count;
@@ -68,7 +68,7 @@ public class MapGenerator : MonoBehaviour
                         if (x == tile.tileX || y == tile.tileY)
                             if (x >= 0 && y >= 0)
                             {
-                                if (map[x, y] == waterTile)
+                                if (map[x, y] == WaterTile)
                                 {
                                     edgeTiles.Add(tile);
                                 }
@@ -128,14 +128,17 @@ public class MapGenerator : MonoBehaviour
     private void GenerateMap()
     {
         noiseMap = new int[width, height];
+        int borderThickness = 2;
         FillMapWithNoise();
         SmoothNoiseMap(timesToSmoothMap);
+        //AddBorderToNoiseMap(borderThickness);
         RemoveTileEnclaves();
+        CreateStartAndEndRooms();
         ClearPathways();
 
-        int[,] borderedMap = CreateBorderedMap(5);
+        noiseMap = CreateBorderedMap(borderThickness);
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-        meshGenerator.GenerateMesh(borderedMap, 1);
+        meshGenerator.GenerateMesh(noiseMap, 1);
     }
 
     void FillMapWithNoise()
@@ -147,7 +150,7 @@ public class MapGenerator : MonoBehaviour
 
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
-                noiseMap[x, y] = (random.Next(0, 100) >= openWaterPercentage) ? waterTile : wallTile;
+                noiseMap[x, y] = (random.Next(0, 100) >= openWaterPercentage) ? WallTile : WaterTile;
     }
 
     //Meant to consolidate the noisemap to larger chunks
@@ -159,34 +162,34 @@ public class MapGenerator : MonoBehaviour
             {
                 for (int y = 0; y < height; y++)
                 {
-                    int neighbourWallTiles = GetSurrondingPixels(x, y);
+                    int neighbourWallTiles = GetSurrondingWallTiles(x, y);
 
                     if (neighbourWallTiles > 4)
-                        noiseMap[x, y] = wallTile;
+                        noiseMap[x, y] = WallTile;
                     else if (neighbourWallTiles < 4)
-                        noiseMap[x, y] = waterTile;
+                        noiseMap[x, y] = WaterTile;
                 }
             }
         }
     }
-
-    int GetSurrondingPixels(int gridX, int gridY)
+    
+    int GetSurrondingWallTiles(int gridX, int gridY)
     {
         int wallCount = 0;
         for (int neighbouringX = gridX - 1; neighbouringX <= gridX + 1; neighbouringX++)
             for (int neighbouringY = gridY - 1; neighbouringY <= gridY + 1; neighbouringY++)
                 if (IsInMapRange(neighbouringX, neighbouringY))
                     if (neighbouringX != gridX || neighbouringY != gridY)
-                        if (noiseMap[neighbouringX, neighbouringY] == wallTile)
+                        if (noiseMap[neighbouringX, neighbouringY] == WallTile)
                             wallCount++;
         return wallCount;
     }
-
-
+    
     private void RemoveTileEnclaves()
     {
-        void ReplaceSmallTileRegion(int removeType, int replaceType)
+        void ReplaceSmallTileRegion(int removeType)
         {
+            int replaceType = removeType != WaterTile ? WaterTile : WallTile;
             List<List<Coordinate>> tileRegions = GetRegion(removeType);
             foreach (List<Coordinate> tileRegion in tileRegions)
             {
@@ -195,24 +198,35 @@ public class MapGenerator : MonoBehaviour
                         noiseMap[tile.tileX, tile.tileY] = replaceType;
             }
         }
-        ReplaceSmallTileRegion(waterTile, wallTile);
-        ReplaceSmallTileRegion(wallTile, waterTile);
+        ReplaceSmallTileRegion(WaterTile);
+        ReplaceSmallTileRegion(WallTile);
     }
-    private void ClearPathways()
+    
+    private void CreateStartAndEndRooms()
     {
-        List<List<Coordinate>> tileRegions = GetRegion(wallTile);
-        List<Room> rooms = new List<Room>();
+        System.Random random = new System.Random(seed.GetHashCode());
+        Coordinate startingRoomCoordinate, endRoomCoordinate;
 
-        foreach (List<Coordinate> region in tileRegions)
+        startingRoomCoordinate = new Coordinate(noiseMap.GetLength(0) / 2, 0);
+        endRoomCoordinate.tileX = random.Next(1, noiseMap.GetLength(0) - passagewayRadius - 1);
+        endRoomCoordinate.tileY = noiseMap.GetLength(1) - 1;
+
+        DrawCircle(startingRoomCoordinate, 1);
+        DrawCircle(endRoomCoordinate, 1);
+    }
+
+    private void AddBorderToNoiseMap(int BorderSize)
+    {
+        for (int x = 0; x < noiseMap.GetLength(0); x++)
         {
-            rooms.Add(new Room(region, noiseMap, waterTile, wallTile));
+            for (int y = 0; y < noiseMap.GetLength(1); y++)
+            {
+                if (x <= BorderSize || y <= BorderSize || x >= noiseMap.GetLength(0) - BorderSize || y >= noiseMap.GetLength(1) - BorderSize)
+                {
+                    noiseMap[x, y] = WallTile;
+                }
+            }
         }
-
-        rooms.Sort();
-        rooms[0].isMainRoom = true;
-        rooms[0].isAccesibleFromMainRoom = true;
-
-        ConnectAllRooms(rooms);
     }
 
     private int[,] CreateBorderedMap(int borderSize)
@@ -227,13 +241,29 @@ public class MapGenerator : MonoBehaviour
                     borderedMap[x, y] = noiseMap[x - borderSize, y - borderSize];
                 }
                 else
-                {
-                    borderedMap[x, y] = waterTile;
-                }
+                    borderedMap[x, y] = WallTile;
             }
         }
 
         return borderedMap;
+    }
+
+
+    private void ClearPathways()
+    {
+        List<List<Coordinate>> tileRegions = GetRegion(WaterTile);
+        List<Room> rooms = new List<Room>();
+
+        foreach (List<Coordinate> region in tileRegions)
+        {
+            rooms.Add(new Room(region, noiseMap, WaterTile, WallTile));
+        }
+
+        rooms.Sort();
+        rooms[0].isMainRoom = true;
+        rooms[0].isAccesibleFromMainRoom = true;
+
+        ConnectAllRooms(rooms);
     }
 
     private List<List<Coordinate>> GetRegion(int tileType)
@@ -372,20 +402,9 @@ public class MapGenerator : MonoBehaviour
     private void CreatePassage(Room roomA, Room roomB, Coordinate tileA, Coordinate tileB)
     {
         Room.ConnectRooms(roomA, roomB);
-
-        //DEBUG Ritar linje där vägar skapas
-        //Vector3 CoordinateToWorldPoint(Coordinate tile)
-        //{
-        //    return new Vector3(-width / 2 + 0.5f + tile.tileX, -height / 2 + 0.5f + tile.tileY, -1);
-        //}
-        //Debug.DrawLine(CoordinateToWorldPoint(tileA), CoordinateToWorldPoint(tileB), Color.red, 10);
-
-
         List<Coordinate> line = GetLine(tileA, tileB);
         foreach (Coordinate point in line)
-        {
             DrawCircle(point, passagewayRadius);
-        }
     }
     
     private void DrawCircle(Coordinate centre, int radius)
@@ -400,7 +419,7 @@ public class MapGenerator : MonoBehaviour
                     int drawY = centre.tileY + y;
 
                     if (IsInMapRange(drawX, drawY))
-                        noiseMap[drawX, drawY] = wallTile;
+                        noiseMap[drawX, drawY] = WaterTile;
                 }
             }
         }

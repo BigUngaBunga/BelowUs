@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 38539926}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9175131, y: -0.396801, z: -10}
+  m_LocalPosition: {x: 47.2, y: 24.1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -398,7 +398,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 780457248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.65, y: -5.38, z: 0}
+  m_LocalPosition: {x: 36, y: 16.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -462,11 +462,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   height: 50
   width: 80
-  seed: 4407,090114
+  seed: 99117,53131
   useRandomSeed: 0
-  openWaterPercentage: 50
+  openWaterPercentage: 47
   timesToSmoothMap: 3
-  enclaveRemovalSize: 7
+  enclaveRemovalSize: 10
   passagewayRadius: 3
 --- !u!4 &806146781
 Transform:
@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 405206529}
-  tileAmount: 2
+  tileAmount: 1
 --- !u!1 &1783707539
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,7 +526,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.6
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -560,7 +560,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -583,10 +583,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783707539}
-  m_LocalRotation: {x: 0, y: 0, z: -1, w: 0}
+  m_LocalRotation: {x: -0, y: -0.0029527377, z: -0.9999957, w: 0}
   m_LocalPosition: {x: 22.86, y: 7, z: -65.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 180, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 180.338, y: 180, z: 0}
