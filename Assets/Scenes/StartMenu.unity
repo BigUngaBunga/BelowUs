@@ -718,7 +718,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 235.2, y: -279.92624}
+  m_AnchoredPosition: {x: 235.19998, y: -279.92624}
   m_SizeDelta: {x: 390.4, y: 26.5475}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2402239324612676491
@@ -1437,7 +1437,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 235.2, y: -139.47125}
+  m_AnchoredPosition: {x: 235.19998, y: -139.47125}
   m_SizeDelta: {x: 390.4, y: 85.4075}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2402239325046087755
@@ -2638,7 +2638,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 235.2, y: -48.38376}
+  m_AnchoredPosition: {x: 235.19998, y: -48.38376}
   m_SizeDelta: {x: 390.4, y: 56.7675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2402239326061034467
@@ -2683,7 +2683,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 235.2, y: -224.41376}
+  m_AnchoredPosition: {x: 235.19998, y: -224.41376}
   m_SizeDelta: {x: 390.4, y: 44.4775}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3883927348823174108
@@ -3140,6 +3140,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1511994682964710781, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
+      propertyPath: spawnPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511994682964710781, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
+      propertyPath: spawnPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 7106082335865075385, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
 --- !u!114 &8694520055643492824
