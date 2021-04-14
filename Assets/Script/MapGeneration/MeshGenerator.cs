@@ -360,7 +360,7 @@ public class MeshGenerator : MonoBehaviour
         public Node centreTop, centreRight, centreBottom, centreLeft;
         public int configuration;
 
-        public Square (ControlNode topLeft, ControlNode topRight, ControlNode bottomLeft, ControlNode bottomRight)
+        public Square(ControlNode topLeft, ControlNode topRight, ControlNode bottomLeft, ControlNode bottomRight)
         {
             this.topLeft = topLeft;
             this.topRight = topRight;
@@ -368,18 +368,18 @@ public class MeshGenerator : MonoBehaviour
             this.bottomRight = bottomRight;
 
             centreTop = topLeft.right;
-            centreRight = bottomRight.above;
             centreBottom = bottomLeft.right;
             centreLeft = bottomLeft.above;
+            centreRight = bottomRight.above;
 
             if (topLeft.isActive)
                 configuration += 8;
             if (topRight.isActive)
                 configuration += 4;
-            if (bottomRight.isActive)
-                configuration += 2;
             if (bottomLeft.isActive)
                 configuration += 1;
+            if (bottomRight.isActive)
+                configuration += 2;
         }
     }
 
