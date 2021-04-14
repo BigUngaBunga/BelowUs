@@ -130,13 +130,13 @@ public class MapGenerator : MonoBehaviour
         noiseMap = new int[width, height];
         int borderThickness = 2;
         FillMapWithNoise();
+        AddBorderToNoiseMap(borderThickness);
         SmoothNoiseMap(timesToSmoothMap);
-        //AddBorderToNoiseMap(borderThickness);
+        
         RemoveTileEnclaves();
-        CreateStartAndEndRooms();
+        //CreateStartAndEndRooms();
         ClearPathways();
 
-        noiseMap = CreateBorderedMap(borderThickness);
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
         meshGenerator.GenerateMesh(noiseMap, 1);
     }
@@ -207,9 +207,8 @@ public class MapGenerator : MonoBehaviour
         System.Random random = new System.Random(seed.GetHashCode());
         Coordinate startingRoomCoordinate, endRoomCoordinate;
 
-        startingRoomCoordinate = new Coordinate(noiseMap.GetLength(0) / 2, 0);
-        endRoomCoordinate.tileX = random.Next(1, noiseMap.GetLength(0) - passagewayRadius - 1);
-        endRoomCoordinate.tileY = noiseMap.GetLength(1) - 1;
+        startingRoomCoordinate = new Coordinate(noiseMap.GetLength(0) / 2, noiseMap.GetLength(1) - 1);
+        endRoomCoordinate = new Coordinate(random.Next(1, noiseMap.GetLength(0) - passagewayRadius - 1), 0);
 
         DrawCircle(startingRoomCoordinate, 1);
         DrawCircle(endRoomCoordinate, 1);
@@ -228,26 +227,6 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
-
-    private int[,] CreateBorderedMap(int borderSize)
-    {
-        int[,] borderedMap = new int[width + borderSize * 2, height + borderSize * 2];
-        for (int x = 0; x < borderedMap.GetLength(0); x++)
-        {
-            for (int y = 0; y < borderedMap.GetLength(1); y++)
-            {
-                if (x >= borderSize && x < width + borderSize && y >= borderSize && y < height + borderSize)
-                {
-                    borderedMap[x, y] = noiseMap[x - borderSize, y - borderSize];
-                }
-                else
-                    borderedMap[x, y] = WallTile;
-            }
-        }
-
-        return borderedMap;
-    }
-
 
     private void ClearPathways()
     {
