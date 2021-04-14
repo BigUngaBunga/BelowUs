@@ -107,15 +107,8 @@ public class MeshGenerator : MonoBehaviour
     private void MeshFromPoints(params Node[] points)
     {
         AssignVertices(points);
-
-        if (points.Length >= 3)
-            CreateTriangle(points[0], points[1], points[2]);
-        if (points.Length >= 4)
-            CreateTriangle(points[0], points[2], points[3]);
-        if (points.Length >= 5)
-            CreateTriangle(points[0], points[3], points[4]);
-        if (points.Length >= 6)
-            CreateTriangle(points[0], points[4], points[5]);
+        int lastIndex = points.Length - 1;
+        CreateTriangle(points[0], points[lastIndex - 1], points[lastIndex]);
     }
 
     private void AssignVertices(Node[] points)
