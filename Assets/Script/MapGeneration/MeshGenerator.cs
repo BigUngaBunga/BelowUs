@@ -48,48 +48,48 @@ public class MeshGenerator : MonoBehaviour
             //TODO Simplify this
             //One point active
             case 1:
-                MeshFromPoints(square.centreLeft, square.centreBottom, square.bottomLeft);
+                MeshFromPoints(square.centreLeft, square.centreBottom, square.bottomLeft); //BottomLeft
                 break;
             case 2:
-                MeshFromPoints(square.bottomRight, square.centreBottom, square.centreRight);
+                MeshFromPoints(square.bottomRight, square.centreBottom, square.centreRight); //BottomRight
                 break;
             case 4:
-                MeshFromPoints(square.topRight, square.centreRight, square.centreTop);
+                MeshFromPoints(square.topRight, square.centreRight, square.centreTop); //TopRight
                 break;
             case 8:
-                MeshFromPoints(square.topLeft, square.centreTop, square.centreLeft);
+                MeshFromPoints(square.topLeft, square.centreTop, square.centreLeft); //TopLeft
                 break;
             //Two points active
             case 3:
-                MeshFromPoints(square.centreRight, square.bottomRight, square.bottomLeft, square.centreLeft);
+                MeshFromPoints(square.centreRight, square.bottomRight, square.bottomLeft, square.centreLeft); //BottomLeft & BottomRight
                 break;
             case 6:
-                MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.centreBottom);
+                MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.centreBottom); //BottomRight & TopRight
                 break;
             case 9:
-                MeshFromPoints(square.topLeft, square.centreTop, square.centreBottom, square.bottomLeft);
+                MeshFromPoints(square.topLeft, square.centreTop, square.centreBottom, square.bottomLeft); //BottomLeft & TopLeft
                 break;
             case 12:
-                MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreLeft);
+                MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreLeft); //TopRight & TopLeft
                 break;
             case 5:
-                MeshFromPoints(square.centreTop, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft, square.centreLeft);
+                MeshFromPoints(square.centreTop, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft, square.centreLeft); //BottomLeft & TopRight
                 break;
             case 10:
-                MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.centreBottom, square.centreLeft);
+                MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.centreBottom, square.centreLeft); //BottomRight & TopLeft
                 break;
             //Three points active
             case 7:
-                MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.bottomLeft, square.centreLeft);
+                MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.bottomLeft, square.centreLeft); //TopRight & BottomLeft & BottomRight
                 break;
             case 11:
-                MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.bottomLeft);
+                MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.bottomLeft); //BottomLeft & BottomRight & TopLeft
                 break;
             case 13:
-                MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft);
+                MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft); //BottomLeft & TopRight & TopLeft
                 break;
             case 14:
-                MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.centreBottom, square.centreLeft);
+                MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.centreBottom, square.centreLeft); //BottomRight & TopRight & TopLeft
                 break;
             //All points active
             case 15:
@@ -107,15 +107,8 @@ public class MeshGenerator : MonoBehaviour
     private void MeshFromPoints(params Node[] points)
     {
         AssignVertices(points);
-
-        if (points.Length >= 3)
-            CreateTriangle(points[0], points[1], points[2]);
-        if (points.Length >= 4)
-            CreateTriangle(points[0], points[2], points[3]);
-        if (points.Length >= 5)
-            CreateTriangle(points[0], points[3], points[4]);
-        if (points.Length >= 6)
-            CreateTriangle(points[0], points[4], points[5]);
+        int lastIndex = points.Length - 1;
+        CreateTriangle(points[0], points[lastIndex - 1], points[lastIndex]);
     }
 
     private void AssignVertices(Node[] points)
@@ -316,7 +309,7 @@ public class MeshGenerator : MonoBehaviour
         public Node centreTop, centreRight, centreBottom, centreLeft;
         public int configuration;
 
-        public Square (ControlNode topLeft, ControlNode topRight, ControlNode bottomLeft, ControlNode bottomRight)
+        public Square(ControlNode topLeft, ControlNode topRight, ControlNode bottomLeft, ControlNode bottomRight)
         {
             this.topLeft = topLeft;
             this.topRight = topRight;
@@ -324,18 +317,18 @@ public class MeshGenerator : MonoBehaviour
             this.bottomRight = bottomRight;
 
             centreTop = topLeft.right;
-            centreRight = bottomRight.above;
             centreBottom = bottomLeft.right;
             centreLeft = bottomLeft.above;
+            centreRight = bottomRight.above;
 
             if (topLeft.isActive)
                 configuration += 8;
             if (topRight.isActive)
                 configuration += 4;
-            if (bottomRight.isActive)
-                configuration += 2;
             if (bottomLeft.isActive)
                 configuration += 1;
+            if (bottomRight.isActive)
+                configuration += 2;
         }
     }
 
