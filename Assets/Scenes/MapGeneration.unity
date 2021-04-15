@@ -475,9 +475,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5035d83a48e416f49ab9985eb4be9e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height: 50
-  width: 80
-  seed: 99117,53131
+  mapHeight: 50
+  mapWidth: 80
+  borderThickness: 2
+  seed: 977240781,556066
   useRandomSeed: 0
   openWaterPercentage: 47
   timesToSmoothMap: 3

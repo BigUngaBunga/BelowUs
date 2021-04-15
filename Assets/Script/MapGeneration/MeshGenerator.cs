@@ -18,9 +18,9 @@ public class MeshGenerator : MonoBehaviour
     private Dictionary<int, List<Triangle>> triangleDictionary;
 
 
-    public void GenerateMesh(int[,] map, float squareSize)
+    public void GenerateMesh(int[,] Map, float SquareSize, int WallTile)
     {
-        squareGrid = new SquareGrid(map, squareSize);
+        squareGrid = new SquareGrid(Map, SquareSize, WallTile);
         vertices = new List<Vector3>();
         triangles = new List<int>();
         checkedVertices = new HashSet<int>();
@@ -37,7 +37,7 @@ public class MeshGenerator : MonoBehaviour
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
 
-        mesh.uv = CreateUV(map, squareSize);
+        mesh.uv = CreateUV(Map, SquareSize);
         Generate2DCollider();
     }
 
@@ -160,9 +160,6 @@ public class MeshGenerator : MonoBehaviour
         {
             float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x);
             float percentY = Mathf.InverseLerp(-map.GetLength(1) / 2 * squareSize, map.GetLength(1) / 2 * squareSize, vertices[i].y);
-
-            //float percentX = Mathf.InverseLerp(0, map.GetLength(0) * squareSize, vertices[i].x);
-            //float percentY = Mathf.InverseLerp(0, map.GetLength(1) * squareSize, vertices[i].y);
             uvs[i] = new Vector2(percentX, percentY) / tileAmount;
         }
 
@@ -198,9 +195,8 @@ public class MeshGenerator : MonoBehaviour
         int nextVertexIndex = GetConnectedOutlineVertex(vertexIndex);
 
         if (nextVertexIndex != -1)
-        {
             FollowOutline(nextVertexIndex, outlineIndex);
-        }
+
     }
 
     private int GetConnectedOutlineVertex(int vertexIndex)
@@ -257,38 +253,6 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    //DEBUG REMOVE LATER
-    private void OnDrawGizmos()
-    {
-        //if (squareGrid != null)
-        //{
-        //    for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
-        //    {
-        //        for (int y = 0; y < squareGrid.squares.GetLength(1); y++)
-        //        {
-        //            Gizmos.color = (squareGrid.squares[x, y].topLeft.isActive) ? Color.blue : Color.black;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].topLeft.position, Vector3.one * 0.6f);
-
-        //            Gizmos.color = (squareGrid.squares[x, y].topRight.isActive) ? Color.blue : Color.black;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].topRight.position, Vector3.one * 0.6f);
-
-        //            Gizmos.color = (squareGrid.squares[x, y].bottomRight.isActive) ? Color.blue : Color.black;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].bottomRight.position, Vector3.one * 0.6f);
-
-        //            Gizmos.color = (squareGrid.squares[x, y].bottomLeft.isActive) ? Color.blue : Color.black;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].bottomLeft.position, Vector3.one * 0.6f);
-
-        //            Gizmos.color = Color.red;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].centreTop.position, Vector3.one * 0.2f);
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].centreRight.position, Vector3.one * 0.2f);
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].centreLeft.position, Vector3.one * 0.2f);
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].centreBottom.position, Vector3.one * 0.2f);
-        //        }
-        //    }
-        //}
-    }
-
-
     public struct Triangle
     {
         public int vertexIndexA;
@@ -323,34 +287,26 @@ public class MeshGenerator : MonoBehaviour
     public class SquareGrid
     {
         public Square[,] squares;
-        public SquareGrid(int[,] map, float squareSize)
+        public SquareGrid(int[,] Map, float SquareSize, int WallTile)
         {
-            int nodeCountX = map.GetLength(0);
-            int nodeCountY = map.GetLength(1);
-            float mapWidth = nodeCountX * squareSize;
-            float mapHeight = nodeCountY * squareSize;
+            int nodeCountX = Map.GetLength(0);
+            int nodeCountY = Map.GetLength(1);
+            float mapWidth = nodeCountX * SquareSize;
+            float mapHeight = nodeCountY * SquareSize;
 
             ControlNode[,] controlNodes = new ControlNode[nodeCountX, nodeCountY];
 
             for (int x = 0; x < nodeCountX; x++)
-            {
                 for (int y = 0; y < nodeCountY; y++)
                 {
-                    Vector3 position = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, -mapHeight / 2 + y * squareSize + squareSize / 2, 0);
-                   
-                    //Vector3 position = new Vector3(x * squareSize, y * squareSize , 0);
-                    controlNodes[x, y] = new ControlNode(position, map[x, y] == MapGenerator.WallTile, squareSize);
+                    Vector3 position = new Vector3(-mapWidth / 2 + x * SquareSize + SquareSize / 2, -mapHeight / 2 + y * SquareSize + SquareSize / 2, 0);
+                    controlNodes[x, y] = new ControlNode(position, Map[x, y] == WallTile, SquareSize);
                 }
-            }
 
             squares = new Square[nodeCountX -1, nodeCountY -1];
             for (int x = 0; x < nodeCountX - 1; x++)
-            {
                 for (int y = 0; y < nodeCountY - 1; y++)
-                {
                     squares[x, y] = new Square(controlNodes[x, y + 1], controlNodes[x + 1, y + 1], controlNodes[x, y], controlNodes[x + 1, y]);
-                }
-            }
         }
     }
 
