@@ -413,7 +413,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 780457248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 25, z: 0}
+  m_LocalPosition: {x: 0, y: 25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -477,10 +477,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapHeight: 50
   mapWidth: 80
-  borderThickness: 2
   seed: 977240781,556066
-  useRandomSeed: 0
+  useRandomSeed: 1
+  generateExit: 1
   openWaterPercentage: 47
+  borderThickness: 3
   timesToSmoothMap: 3
   enclaveRemovalSize: 10
   passagewayRadius: 3

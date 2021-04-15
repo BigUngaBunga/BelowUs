@@ -94,10 +94,6 @@ public class MeshGenerator : MonoBehaviour
             //All points active
             case 15:
                 MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.bottomLeft);
-                checkedVertices.Add(square.topLeft.vertexIndex);
-                checkedVertices.Add(square.topRight.vertexIndex);
-                checkedVertices.Add(square.bottomRight.vertexIndex);
-                checkedVertices.Add(square.bottomLeft.vertexIndex);
                 break;
             default:
                 break;
@@ -107,8 +103,8 @@ public class MeshGenerator : MonoBehaviour
     private void MeshFromPoints(params Node[] points)
     {
         AssignVertices(points);
-        int lastIndex = points.Length - 1;
-        CreateTriangle(points[0], points[lastIndex - 1], points[lastIndex]);
+        for (int i = 3; i <= points.Length; i++)
+            CreateTriangle(points[0], points[i - 2], points[i - 1]);
     }
 
     private void AssignVertices(Node[] points)
@@ -151,9 +147,9 @@ public class MeshGenerator : MonoBehaviour
         Vector2[] uvs = new Vector2[vertices.Count];
         for (int i = 0; i < vertices.Count; i++)
         {
-            float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x);
-            float percentY = Mathf.InverseLerp(-map.GetLength(1) / 2 * squareSize, map.GetLength(1) / 2 * squareSize, vertices[i].y);
-            uvs[i] = new Vector2(percentX, percentY) / tileAmount;
+            float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x) * tileAmount;
+            float percentY = Mathf.InverseLerp(-map.GetLength(1) / 2 * squareSize, map.GetLength(1) / 2 * squareSize, vertices[i].y) * tileAmount;
+            uvs[i] = new Vector2(percentX, percentY);
         }
 
         return uvs;

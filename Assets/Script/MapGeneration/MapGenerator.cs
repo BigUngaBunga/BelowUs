@@ -7,12 +7,14 @@ using Random = System.Random;
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] private int mapHeight, mapWidth;
-    [SerializeField] private int borderThickness;
     [SerializeField] private string seed;
-    [SerializeReference] private bool useRandomSeed;
+    [SerializeReference] private bool useRandomSeed, generateExit;
 
     [Range(40, 70)]
     [SerializeField] private int openWaterPercentage;
+
+    [Range(3, 10)]
+    [SerializeField] private int borderThickness;
 
     [Range(1, 10)]
     [SerializeField] private int timesToSmoothMap;
@@ -123,7 +125,7 @@ public class MapGenerator : MonoBehaviour
         SmoothNoiseMap(timesToSmoothMap);
 
         RemoveTileEnclaves();
-        CreateStartAndEndRooms();
+        CreateEntranceAndExit();
         ClearPathways();
 
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
@@ -186,14 +188,21 @@ public class MapGenerator : MonoBehaviour
         ReplaceSmallTileRegion(wallTile);
     }
 
-    private void CreateStartAndEndRooms()
+    private void CreateEntranceAndExit()
     {
-        Coordinate startingRoomCoordinate, endRoomCoordinate;
-        startingRoomCoordinate = new Coordinate(noiseMap.GetLength(0) / 2, noiseMap.GetLength(1) - 1);
-        endRoomCoordinate = new Coordinate(random.Next(1, noiseMap.GetLength(0) - passagewayRadius - 1), 0);
+        int entranceSize = borderThickness - 2;
+        int exitDistanceFromCorners = 2 + passagewayRadius;
+        Coordinate mapEntranceCoordinate;
+        mapEntranceCoordinate = new Coordinate(noiseMap.GetLength(0) / 2, noiseMap.GetLength(1) - 1);
+        DrawCircle(mapEntranceCoordinate, entranceSize);
 
-        DrawCircle(startingRoomCoordinate, 1);
-        DrawCircle(endRoomCoordinate, 1);
+        if (generateExit)
+        {
+            Coordinate mapExitCoordinate;
+            mapExitCoordinate = new Coordinate(random.Next(exitDistanceFromCorners, noiseMap.GetLength(0) - exitDistanceFromCorners), 0);
+            DrawCircle(mapExitCoordinate, entranceSize);
+        }
+        
     }
 
     private void AddBorderToNoiseMap(int BorderSize)
