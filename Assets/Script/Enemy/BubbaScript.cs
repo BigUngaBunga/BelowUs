@@ -6,7 +6,7 @@ public class BubbaScript : EnemyBase
 {
     
     private Rigidbody2D rb;
-    private float maxSpeed = 0.1f;
+    //private float maxSpeed = 0.1f;
     public float movementSpeed = 5f;   
 
     protected override void Start()

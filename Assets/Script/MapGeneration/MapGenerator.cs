@@ -1,34 +1,36 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System;
 using System.Linq;
+using Random = System.Random;
 
 public class MapGenerator : MonoBehaviour
 {
-    public int height, width;
-    public string seed;
-    public bool useRandomSeed;
-    private int waterTile = 0;
-    private int wallTile = 1;
-
+    [SerializeField] private int mapHeight, mapWidth;
+    [SerializeField] private string seed;
+    [SerializeReference] private bool useRandomSeed, generateExit;
 
     [Range(40, 70)]
-    public int openWaterPercentage;
+    [SerializeField] private int openWaterPercentage;
+
+    [Range(3, 10)]
+    [SerializeField] private int borderThickness;
 
     [Range(1, 10)]
-    public int timesToSmoothMap;
+    [SerializeField] private int timesToSmoothMap;
 
     [Range(0, 100)]
-    public int enclaveRemovalSize;
+    [SerializeField] private int enclaveRemovalSize;
 
     [Range(0, 5)]
-    public int passagewayRadius;
+    [SerializeField] private int passagewayRadius;
 
-    int[,] noiseMap;
+    private const int waterTile = 1;
+    private const int wallTile = 0;
+    private int[,] noiseMap;
+    private Random random;
 
-    struct Coordinate
+    private struct Coordinate
     {
         public int tileX;
         public int tileY;
@@ -40,7 +42,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    class Room : IComparable<Room>
+    private class Room : IComparable<Room>
     {
         public List<Coordinate> tiles;
         public List<Coordinate> edgeTiles;
@@ -48,54 +50,39 @@ public class MapGenerator : MonoBehaviour
         public int tilesInRoom;
         public bool isMainRoom, isAccesibleFromMainRoom;
 
-        public Room()
+        public Room(List<Coordinate> Tiles, int[,] Map, int WaterTile)
         {
-
-        }
-
-        public Room(List<Coordinate> tiles, int[,] map, int waterTile, int wallTile)
-        {
-            this.tiles = tiles;
+            tiles = Tiles;
             tilesInRoom = tiles.Count;
             connectedRooms = new List<Room>();
             edgeTiles = new List<Coordinate>();
 
             foreach (Coordinate tile in tiles)
-            {
-                for (int x = tile.tileX - 1; x <= tile.tileX; x++) // +1
-                    for (int y = tile.tileY - 1; y <= tile.tileY; y++) // +1
-                    {
-                        if (x == tile.tileX || y == tile.tileY)
-                            if (x >= 0 && y >= 0)
-                            {
-                                if (map[x, y] == waterTile)
-                                {
-                                    edgeTiles.Add(tile);
-                                }
-                            }
-                    }
-            }
+                for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++)
+                    for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
+                        if (x == tile.tileX || y == tile.tileY && IsInMapRange(x, y, Map) && Map[x, y] == WaterTile)
+                            edgeTiles.Add(tile);
         }
 
-        public static void ConnectRooms(Room roomA, Room roomB)
+        public static void ConnectRooms(Room RoomA, Room RoomB)
         {
-            if (roomA.isAccesibleFromMainRoom)
-                roomB.SetAccesibleFromMainRoom();
-            else if (roomB.isAccesibleFromMainRoom)
-                roomA.SetAccesibleFromMainRoom();
+            if (RoomA.isAccesibleFromMainRoom)
+                RoomB.SetAccesibleFromMainRoom();
+            else if (RoomB.isAccesibleFromMainRoom)
+                RoomA.SetAccesibleFromMainRoom();
 
-            roomA.connectedRooms.Add(roomB);
-            roomB.connectedRooms.Add(roomA);
+            RoomA.connectedRooms.Add(RoomB);
+            RoomB.connectedRooms.Add(RoomA);
         }
 
-        public bool IsConnected(Room otherRoom)
+        public bool IsConnected(Room OtherRoom)
         {
-            return connectedRooms.Contains(otherRoom);
+            return connectedRooms.Contains(OtherRoom);
         }
 
-        public int CompareTo(Room otherRoom)
+        public int CompareTo(Room Other)
         {
-            return otherRoom.tilesInRoom.CompareTo(tilesInRoom);
+            return Other.tilesInRoom.CompareTo(tilesInRoom);
         }
 
         public void SetAccesibleFromMainRoom()
@@ -107,9 +94,14 @@ public class MapGenerator : MonoBehaviour
                     connectedRoom.SetAccesibleFromMainRoom();
             }
         }
+
+        public bool IsInMapRange(int TileX, int TileY, int[,] Map)
+        {
+            return TileX >= 0 && TileX < Map.GetLength(0) && TileY >= 0 && TileY < Map.GetLength(1);
+        }
     }
 
-    void Start()
+    public void Start()
     {
         GenerateMap();
     }
@@ -120,93 +112,114 @@ public class MapGenerator : MonoBehaviour
             GenerateMap();
     }
 
-    public bool IsInMapRange(int tileX, int tileY)
+    public bool IsInMapRange(int TileX, int TileY)
     {
-        return tileX >= 0 && tileX < width && tileY >= 0 && tileY < height;
+        return TileX >= 0 && TileX < mapWidth && TileY >= 0 && TileY < mapHeight;
     }
 
     private void GenerateMap()
     {
-        noiseMap = new int[width, height];
+        noiseMap = new int[mapWidth, mapHeight];
         FillMapWithNoise();
+        AddBorderToNoiseMap(borderThickness);
         SmoothNoiseMap(timesToSmoothMap);
+
         RemoveTileEnclaves();
+        CreateEntranceAndExit();
         ClearPathways();
 
-        int[,] borderedMap = CreateBorderedMap(5);
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-        meshGenerator.GenerateMesh(borderedMap, 1);
+        meshGenerator.GenerateMesh(noiseMap, 1, wallTile);
     }
 
-    void FillMapWithNoise()
+    private void FillMapWithNoise()
     {
         if (useRandomSeed)
-            seed = System.DateTime.Now.Millisecond.ToString() + Time.time.ToString();
+            seed = Environment.TickCount.ToString() + Time.deltaTime.ToString();
 
-        System.Random random = new System.Random(seed.GetHashCode());
+        random = new Random(seed.GetHashCode());
 
-        for (int x = 0; x < width; x++)
-            for (int y = 0; y < height; y++)
-                noiseMap[x, y] = (random.Next(0, 100) >= openWaterPercentage) ? waterTile : wallTile;
+        for (int x = 0; x < mapWidth; x++)
+            for (int y = 0; y < mapHeight; y++)
+                noiseMap[x, y] = (random.Next(0, 100) >= openWaterPercentage) ? wallTile : waterTile;
     }
 
     //Meant to consolidate the noisemap to larger chunks
-    void SmoothNoiseMap(int timesToRun)
+    private void SmoothNoiseMap(int TimesToRun)
     {
-        for (int i = 0; i < timesToRun; i++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
+        for (int i = 0; i < TimesToRun; i++)
+            for (int x = 0; x < mapWidth; x++)
+                for (int y = 0; y < mapHeight; y++)
                 {
-                    int neighbourWallTiles = GetSurrondingPixels(x, y);
+                    int neighbouringWallTiles = GetSurrondingwallTiles(x, y);
 
-                    if (neighbourWallTiles > 4)
+                    if (neighbouringWallTiles > 4)
                         noiseMap[x, y] = wallTile;
-                    else if (neighbourWallTiles < 4)
+                    else if (neighbouringWallTiles < 4)
                         noiseMap[x, y] = waterTile;
                 }
-            }
-        }
     }
 
-    int GetSurrondingPixels(int gridX, int gridY)
+    private int GetSurrondingwallTiles(int XPosition, int YPosition)
     {
-        int wallCount = 0;
-        for (int neighbouringX = gridX - 1; neighbouringX <= gridX + 1; neighbouringX++)
-            for (int neighbouringY = gridY - 1; neighbouringY <= gridY + 1; neighbouringY++)
-                if (IsInMapRange(neighbouringX, neighbouringY))
-                    if (neighbouringX != gridX || neighbouringY != gridY)
-                        if (noiseMap[neighbouringX, neighbouringY] == wallTile)
-                            wallCount++;
-        return wallCount;
+        int adjacentWallCount = 0;
+        for (int neighbouringX = XPosition - 1; neighbouringX <= XPosition + 1; neighbouringX++)
+            for (int neighbouringY = YPosition - 1; neighbouringY <= YPosition + 1; neighbouringY++)
+                if (IsInMapRange(neighbouringX, neighbouringY) && (neighbouringX != XPosition || neighbouringY != YPosition))
+                    if (noiseMap[neighbouringX, neighbouringY] == wallTile)
+                        adjacentWallCount++;
+        return adjacentWallCount;
     }
-
 
     private void RemoveTileEnclaves()
     {
-        void ReplaceSmallTileRegion(int removeType, int replaceType)
+        void ReplaceSmallTileRegion(int tileTypeToRemove)
         {
-            List<List<Coordinate>> tileRegions = GetRegion(removeType);
+            int replacingTileType = tileTypeToRemove != waterTile ? waterTile : wallTile;
+            List<List<Coordinate>> tileRegions = GetRegion(tileTypeToRemove);
             foreach (List<Coordinate> tileRegion in tileRegions)
             {
                 if (tileRegion.Count < enclaveRemovalSize)
                     foreach (Coordinate tile in tileRegion)
-                        noiseMap[tile.tileX, tile.tileY] = replaceType;
+                        noiseMap[tile.tileX, tile.tileY] = replacingTileType;
             }
         }
-        ReplaceSmallTileRegion(waterTile, wallTile);
-        ReplaceSmallTileRegion(wallTile, waterTile);
+        ReplaceSmallTileRegion(waterTile);
+        ReplaceSmallTileRegion(wallTile);
     }
+
+    private void CreateEntranceAndExit()
+    {
+        int entranceSize = borderThickness - 2;
+        int exitDistanceFromCorners = 2 + passagewayRadius;
+        Coordinate mapEntranceCoordinate;
+        mapEntranceCoordinate = new Coordinate(noiseMap.GetLength(0) / 2, noiseMap.GetLength(1) - 1);
+        DrawCircle(mapEntranceCoordinate, entranceSize);
+
+        if (generateExit)
+        {
+            Coordinate mapExitCoordinate;
+            mapExitCoordinate = new Coordinate(random.Next(exitDistanceFromCorners, noiseMap.GetLength(0) - exitDistanceFromCorners), 0);
+            DrawCircle(mapExitCoordinate, entranceSize);
+        }
+        
+    }
+
+    private void AddBorderToNoiseMap(int BorderSize)
+    {
+        for (int x = 0; x < noiseMap.GetLength(0); x++)
+            for (int y = 0; y < noiseMap.GetLength(1); y++)
+                if (x <= BorderSize || y <= BorderSize || x >= noiseMap.GetLength(0) - BorderSize || y >= noiseMap.GetLength(1) - BorderSize)
+                    noiseMap[x, y] = wallTile;
+    }
+
     private void ClearPathways()
     {
-        List<List<Coordinate>> tileRegions = GetRegion(wallTile);
+        List<List<Coordinate>> waterTileRegions = GetRegion(waterTile);
         List<Room> rooms = new List<Room>();
 
-        foreach (List<Coordinate> region in tileRegions)
-        {
-            rooms.Add(new Room(region, noiseMap, waterTile, wallTile));
-        }
+        foreach (List<Coordinate> region in waterTileRegions)
+            rooms.Add(new Room(region, noiseMap, waterTile));
 
         rooms.Sort();
         rooms[0].isMainRoom = true;
@@ -215,57 +228,34 @@ public class MapGenerator : MonoBehaviour
         ConnectAllRooms(rooms);
     }
 
-    private int[,] CreateBorderedMap(int borderSize)
-    {
-        int[,] borderedMap = new int[width + borderSize * 2, height + borderSize * 2];
-        for (int x = 0; x < borderedMap.GetLength(0); x++)
-        {
-            for (int y = 0; y < borderedMap.GetLength(1); y++)
-            {
-                if (x >= borderSize && x < width + borderSize && y >= borderSize && y < height + borderSize)
-                {
-                    borderedMap[x, y] = noiseMap[x - borderSize, y - borderSize];
-                }
-                else
-                {
-                    borderedMap[x, y] = waterTile;
-                }
-            }
-        }
-
-        return borderedMap;
-    }
-
-    private List<List<Coordinate>> GetRegion(int tileType)
+    private List<List<Coordinate>> GetRegion(int TileType)
     {
         List<List<Coordinate>> regions = new List<List<Coordinate>>();
-        int[,] flaggedTiles = new int[width, height];
+        int[,] flaggedTiles = new int[mapWidth, mapHeight];
 
-        for (int x = 0; x < width; x++)
-            for (int y = 0; y < height; y++)
-                if (flaggedTiles[x, y] == 0 && noiseMap[x, y] == tileType)
+        for (int x = 0; x < mapWidth; x++)
+            for (int y = 0; y < mapHeight; y++)
+                if (flaggedTiles[x, y] == 0 && noiseMap[x, y] == TileType)
                 {
                     List<Coordinate> newRegion = GetRegionTiles(x, y);
                     regions.Add(newRegion);
 
                     foreach (Coordinate tile in newRegion)
-                    {
                         flaggedTiles[tile.tileX, tile.tileY] = 1;
-                    }
                 }
 
         return regions;
     }
 
-    private List<Coordinate> GetRegionTiles(int startX, int startY)
+    private List<Coordinate> GetRegionTiles(int StartX, int StartY)
     {
         List<Coordinate> tiles = new List<Coordinate>();
-        int[,] flaggedTiles = new int[width, height];
-        int tileType = noiseMap[startX, startY];
+        int[,] flaggedTiles = new int[mapWidth, mapHeight];
+        int tileType = noiseMap[StartX, StartY];
 
         Queue<Coordinate> queue = new Queue<Coordinate>();
-        queue.Enqueue(new Coordinate(startX, startY));
-        flaggedTiles[startX, startY] = 1;
+        queue.Enqueue(new Coordinate(StartX, StartY));
+        flaggedTiles[StartX, StartY] = 1;
 
         while (queue.Count > 0)
         {
@@ -285,14 +275,14 @@ public class MapGenerator : MonoBehaviour
         return tiles;
     }
 
-    private void ConnectAllRooms(List<Room> rooms, bool forceAccessibilityFromMainRoom = false)
+    private void ConnectAllRooms(List<Room> Rooms, bool ForceAccessibilityFromMainRoom = false)
     {
         List<Room> unconnectedRooms = new List<Room>();
         List<Room> connectedRooms = new List<Room>();
 
-        if (forceAccessibilityFromMainRoom)
+        if (ForceAccessibilityFromMainRoom)
         {
-            foreach (Room room in rooms)
+            foreach (Room room in Rooms)
             {
                 if (room.isAccesibleFromMainRoom)
                     connectedRooms.Add(room);
@@ -302,25 +292,23 @@ public class MapGenerator : MonoBehaviour
             ConnectRooms(unconnectedRooms, connectedRooms);
         }
         else
-            ConnectRooms(rooms, rooms);
+            ConnectRooms(Rooms, Rooms);
 
-        if (!forceAccessibilityFromMainRoom)
-        {
-            ConnectAllRooms(rooms, true);
-        }
+        if (!ForceAccessibilityFromMainRoom)
+            ConnectAllRooms(Rooms, true);
     }
 
-    private void ConnectRooms(List<Room> roomsA, List<Room> roomsB)
+    private void ConnectRooms(List<Room> RoomsA, List<Room> RoomsB)
     {
         int closestDistance = 0;
         Coordinate bestTileA = new Coordinate();
         Coordinate bestTileB = new Coordinate();
-        Room bestRoomA = new Room();
-        Room bestRoomB = new Room();
+        Room bestRoomA = null;
+        Room bestRoomB = null;
         bool possibleConnectionEstablished = false;
-        bool isForcingStartAccesibility = !roomsA.Equals(roomsB);
+        bool isForcingStartAccesibility = !RoomsA.Equals(RoomsB);
 
-        foreach (Room roomA in roomsA)
+        foreach (Room roomA in RoomsA)
         {
             if (!isForcingStartAccesibility)
             {
@@ -329,7 +317,7 @@ public class MapGenerator : MonoBehaviour
                     continue;
             }
 
-            foreach (Room roomB in roomsB)
+            foreach (Room roomB in RoomsB)
             {
                 if (roomA == roomB || roomA.IsConnected(roomB))
                     continue;
@@ -341,79 +329,64 @@ public class MapGenerator : MonoBehaviour
         }
 
         if (possibleConnectionEstablished && isForcingStartAccesibility)
-        { 
+        {
             CreatePassage(bestRoomA, bestRoomB, bestTileA, bestTileB);
-            List<Room> rooms = roomsA.Union(roomsB).ToList();
+            List<Room> rooms = RoomsA.Union(RoomsB).ToList();
             ConnectAllRooms(rooms, true);
         }
     }
 
-    private void FindClosestTile(ref Room bestRoomA, ref Room bestRoomB, ref Coordinate bestTileA, ref Coordinate bestTileB, ref bool connection, ref int closestDistance, Room roomA, Room roomB)
+    private void FindClosestTile(ref Room BestRoomA, ref Room BestRoomB, ref Coordinate BestTileA, ref Coordinate BestTileB, ref bool Connection, ref int ClosestDistance, Room RoomA, Room RoomB)
     {
-        for (int tileIndexA = 0; tileIndexA < roomA.edgeTiles.Count; tileIndexA++)
-            for (int tileIndexB = 0; tileIndexB < roomB.edgeTiles.Count; tileIndexB++)
+        for (int tileIndexA = 0; tileIndexA < RoomA.edgeTiles.Count; tileIndexA++)
+            for (int tileIndexB = 0; tileIndexB < RoomB.edgeTiles.Count; tileIndexB++)
             {
-                Coordinate tileA = roomA.edgeTiles[tileIndexA];
-                Coordinate tileB = roomB.edgeTiles[tileIndexB];
+                Coordinate tileA = RoomA.edgeTiles[tileIndexA];
+                Coordinate tileB = RoomB.edgeTiles[tileIndexB];
                 int distanceBetweenRooms = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
 
-                if (distanceBetweenRooms < closestDistance || !connection)
+                if (distanceBetweenRooms < ClosestDistance || !Connection)
                 {
-                    closestDistance = distanceBetweenRooms;
-                    connection = true;
-                    bestTileA = tileA;
-                    bestTileB = tileB;
-                    bestRoomA = roomA;
-                    bestRoomB = roomB;
+                    ClosestDistance = distanceBetweenRooms;
+                    Connection = true;
+                    BestTileA = tileA;
+                    BestTileB = tileB;
+                    BestRoomA = RoomA;
+                    BestRoomB = RoomB;
                 }
             }
     }
 
-    private void CreatePassage(Room roomA, Room roomB, Coordinate tileA, Coordinate tileB)
+    private void CreatePassage(Room RoomA, Room RoomB, Coordinate TileA, Coordinate TileB)
     {
-        Room.ConnectRooms(roomA, roomB);
-
-        //DEBUG Ritar linje där vägar skapas
-        //Vector3 CoordinateToWorldPoint(Coordinate tile)
-        //{
-        //    return new Vector3(-width / 2 + 0.5f + tile.tileX, -height / 2 + 0.5f + tile.tileY, -1);
-        //}
-        //Debug.DrawLine(CoordinateToWorldPoint(tileA), CoordinateToWorldPoint(tileB), Color.red, 10);
-
-
-        List<Coordinate> line = GetLine(tileA, tileB);
+        Room.ConnectRooms(RoomA, RoomB);
+        List<Coordinate> line = GetLine(TileA, TileB);
         foreach (Coordinate point in line)
-        {
             DrawCircle(point, passagewayRadius);
-        }
     }
-    
-    private void DrawCircle(Coordinate centre, int radius)
+
+    private void DrawCircle(Coordinate Centre, int Radius)
     {
-        for (int x = -radius; x < radius; x++)
-        {
-            for (int y = -radius; y < radius; y++)
-            {
-                if (x*x + y*y <= radius * radius)
+        for (int x = -Radius; x < Radius; x++)
+            for (int y = -Radius; y < Radius; y++)
+                if (x * x + y * y <= Radius * Radius)
                 {
-                    int drawX = centre.tileX + x;
-                    int drawY = centre.tileY + y;
+                    int drawX = Centre.tileX + x;
+                    int drawY = Centre.tileY + y;
 
                     if (IsInMapRange(drawX, drawY))
-                        noiseMap[drawX, drawY] = wallTile;
+                        noiseMap[drawX, drawY] = waterTile;
                 }
-            }
-        }
     }
 
-    private List<Coordinate> GetLine(Coordinate from, Coordinate to)
+    private List<Coordinate> GetLine(Coordinate From, Coordinate To)
     {
         List<Coordinate> line = new List<Coordinate>();
-        int x = from.tileX;
-        int y = from.tileY;
+        int x = From.tileX;
+        int y = From.tileY;
 
-        int deltaX = to.tileX - from.tileX;
-        int deltaY = to.tileY - from.tileY;
+        int deltaX = To.tileX - From.tileX;
+        int deltaY = To.tileY - From.tileY;
 
         int step = Math.Sign(deltaX);
         int gradientStep = Math.Sign(deltaY);
@@ -437,13 +410,10 @@ public class MapGenerator : MonoBehaviour
             line.Add(new Coordinate(x, y));
 
             if (inverted)
-            {
                 y += step;
-            }
+
             else
-            {
                 x += step;
-            }
 
             gradientAccumulation += shortest;
             if (gradientAccumulation >= longest)
