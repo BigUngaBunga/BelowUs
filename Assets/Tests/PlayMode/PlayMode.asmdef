@@ -4,8 +4,9 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Controllers",
-        "Mirror"
+        "ScriptableObjects",
+        "Mirror",
+        "UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

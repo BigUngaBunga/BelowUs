@@ -1,4 +1,3 @@
-using RoboRyanTron.Unite2017.Variables;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,24 +8,32 @@ using UnityEngine.UI;
 public class ImageFillSetter : MonoBehaviour
 {
     [Tooltip("Value to use as the current ")]
-    public FloatReference Variable;
+    [SerializeField] private FloatReference Variable;
 
     [Tooltip("Min value that Variable to have no fill on Image.")]
-    public FloatReference Min;
+    [SerializeField] private FloatReference Min;
 
     [Tooltip("Max value that Variable can be to fill Image.")]
-    public FloatReference Max;
+    [SerializeField] private FloatReference Max;
 
     [Tooltip("Image to set the fill amount on.")]
-    public Image Image;
+    [SerializeField] private Image Image = null;
 
     private void Start()
     {
-        UpdateDisplay();
+        if (Image != null)
+            UpdateImageFill();
+        else
+            Debug.Log(transform.name + " has an unassigned image!");
     }
 
-    public void UpdateDisplay()
+    public float GetFillAmount(FloatReference min, FloatReference max, FloatReference var)
     {
-        Image.fillAmount = Mathf.Clamp01(Mathf.InverseLerp(Min, Max, Variable));
+        return Mathf.Clamp01(Mathf.InverseLerp(min, max, var));
+    }
+
+    private void UpdateImageFill()
+    {
+        Image.fillAmount = GetFillAmount(Min, Max, Variable);
     }
 }

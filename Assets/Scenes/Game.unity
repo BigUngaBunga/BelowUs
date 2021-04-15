@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 272935456}
   - component: {fileID: 272935455}
   m_Layer: 0
-  m_Name: Backup spawner
+  m_Name: Testing spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

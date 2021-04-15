@@ -1,26 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 
-public class TestHealth
+namespace Tests
 {
-    // A Test behaves as an ordinary method
-    [Test]
-    public void TestHealthSimplePasses()
+    public class TestHealth
     {
-        // Use the Assert class to test conditions
-    }
+        [Test]
+        public void TestImageFill()
+        {
+            FloatVariable health = ScriptableObject.CreateInstance<FloatVariable>();
+            FloatVariable maxHealth = ScriptableObject.CreateInstance<FloatVariable>();
+            FloatReference minimum = new FloatReference(0);
+            FloatReference healthRef = new FloatReference(health);
+            FloatReference maxHealthRef = new FloatReference(maxHealth);
 
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator TestHealthWithEnumeratorPasses()
-    {
+            GameObject imageHolder = new GameObject("TestGameObject");
+            ImageFillSetter imgFSetter = imageHolder.AddComponent<ImageFillSetter>();
+            float expectedFill;
 
-        // Use the Assert class to test conditions.
-        // Use yield to skip a frame.
-        yield return null;
+            //Simple test with half hp
+            maxHealth.SetValue(100);
+            health.SetValue(maxHealth.Value / 2);
+            expectedFill = 0.5f;
+            Assert.AreEqual(imgFSetter.GetFillAmount(minimum, maxHealthRef, healthRef), expectedFill);
+
+            //Testing full hp
+            maxHealth.SetValue(50);
+            expectedFill = 1;
+            Assert.AreEqual(imgFSetter.GetFillAmount(minimum, maxHealthRef, healthRef), expectedFill);
+
+            //Testing zero hp
+            health.SetValue(0);
+            expectedFill = 0;
+            Assert.AreEqual(imgFSetter.GetFillAmount(minimum, maxHealthRef, healthRef), expectedFill);
+
+            //Testing with non zero minimum
+            health.SetValue(37.5f);
+            minimum.ConstantValue = 25;
+            expectedFill = 0.5f;
+            Assert.AreEqual(imgFSetter.GetFillAmount(minimum, maxHealthRef, healthRef), expectedFill);
+        }
     }
 }
