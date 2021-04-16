@@ -1,5 +1,6 @@
 using Mirror;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCharacterController : NetworkBehaviour
 {
@@ -21,6 +22,7 @@ public class PlayerCharacterController : NetworkBehaviour
     private Vector2 boxSize;
 
     private float horizontalInput;
+    private float verticalInput;
 
     private void Start()
     {
@@ -29,12 +31,23 @@ public class PlayerCharacterController : NetworkBehaviour
         boxSize = new Vector2(playerSize.x, groundBuffer);
     }
 
-    private void Update()
+    public void OnMove(InputAction.CallbackContext value)
     {
-        if (Input.GetButtonDown("Jump") && !isClimbing && grounded)
-            jumpRequest = true;
+        horizontalInput = value.ReadValue<Vector2>().x;
+    }
 
-        horizontalInput = Input.GetAxis("Horizontal");
+    public void OnJump(InputAction.CallbackContext value)
+    {
+        if (!isClimbing && grounded)
+            jumpRequest = true;
+        else if (isClimbing)
+            verticalInput = value.ReadValue<float>();
+    }
+
+    public void OnClimbDown(InputAction.CallbackContext value)
+    {
+        if (isClimbing)
+            verticalInput = -value.ReadValue<float>();
     }
 
     private void FixedUpdate()
@@ -52,7 +65,6 @@ public class PlayerCharacterController : NetworkBehaviour
     {
         float horizontalMovement = horizontalInput * movementSpeed.Value * Time.deltaTime;
         rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
-        //rb.MovePosition((Vector2)transform.position + new Vector2(horizontalMovement, rb.velocity.y * Time.deltaTime));
 
         if (!Mathf.Approximately(0, horizontalMovement))
             transform.rotation = horizontalMovement > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
@@ -70,8 +82,7 @@ public class PlayerCharacterController : NetworkBehaviour
     {
         if (isClimbing)
         {
-            var verticalMovement = Input.GetAxis("Vertical") * Time.deltaTime * climbingSpeed.Value;
-            rb.velocity = new Vector2(rb.velocity.x, verticalMovement);
+            rb.velocity = new Vector2(rb.velocity.x, verticalInput);
 
             if (rb.gravityScale != 0)
             {
