@@ -16,6 +16,12 @@ public class FloatReference
         ConstantValue = value;
     }
 
+    public FloatReference(FloatVariable variable)
+    {
+        UseConstant = false;
+        Variable = variable;
+    }
+
     public float Value
     {
         get { return UseConstant ? ConstantValue : Variable.Value; }
@@ -23,6 +29,9 @@ public class FloatReference
 
     public static implicit operator float(FloatReference reference)
     {
-        return reference.Value;
+        if (reference != null)
+            return reference.Value;
+        else
+            return 0;
     }
 }

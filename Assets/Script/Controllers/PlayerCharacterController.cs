@@ -52,7 +52,6 @@ public class PlayerCharacterController : NetworkBehaviour
     {
         float horizontalMovement = horizontalInput * movementSpeed.Value * Time.deltaTime;
         rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
-        //rb.MovePosition((Vector2)transform.position + new Vector2(horizontalMovement, rb.velocity.y * Time.deltaTime));
 
         if (!Mathf.Approximately(0, horizontalMovement))
             transform.rotation = horizontalMovement > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
