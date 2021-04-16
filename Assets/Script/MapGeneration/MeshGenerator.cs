@@ -18,9 +18,9 @@ public class MeshGenerator : MonoBehaviour
     private Dictionary<int, List<Triangle>> triangleDictionary;
 
 
-    public void GenerateMesh(int[,] map, float squareSize)
+    public void GenerateMesh(int[,] Map, float SquareSize, int WallTile)
     {
-        squareGrid = new SquareGrid(map, squareSize);
+        squareGrid = new SquareGrid(Map, SquareSize, WallTile);
         vertices = new List<Vector3>();
         triangles = new List<int>();
         checkedVertices = new HashSet<int>();
@@ -37,7 +37,7 @@ public class MeshGenerator : MonoBehaviour
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
 
-        mesh.uv = CreateUV(map, squareSize);
+        mesh.uv = CreateUV(Map, SquareSize);
         Generate2DCollider();
     }
 
@@ -48,56 +48,52 @@ public class MeshGenerator : MonoBehaviour
             //TODO Simplify this
             //One point active
             case 1:
-                MeshFromPoints(square.centreLeft, square.centreBottom, square.bottomLeft);
+                MeshFromPoints(square.centreLeft, square.centreBottom, square.bottomLeft); //BottomLeft
                 break;
             case 2:
-                MeshFromPoints(square.bottomRight, square.centreBottom, square.centreRight);
+                MeshFromPoints(square.bottomRight, square.centreBottom, square.centreRight); //BottomRight
                 break;
             case 4:
-                MeshFromPoints(square.topRight, square.centreRight, square.centreTop);
+                MeshFromPoints(square.topRight, square.centreRight, square.centreTop); //TopRight
                 break;
             case 8:
-                MeshFromPoints(square.topLeft, square.centreTop, square.centreLeft);
+                MeshFromPoints(square.topLeft, square.centreTop, square.centreLeft); //TopLeft
                 break;
             //Two points active
             case 3:
-                MeshFromPoints(square.centreRight, square.bottomRight, square.bottomLeft, square.centreLeft);
+                MeshFromPoints(square.centreRight, square.bottomRight, square.bottomLeft, square.centreLeft); //BottomLeft & BottomRight
                 break;
             case 6:
-                MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.centreBottom);
+                MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.centreBottom); //BottomRight & TopRight
                 break;
             case 9:
-                MeshFromPoints(square.topLeft, square.centreTop, square.centreBottom, square.bottomLeft);
+                MeshFromPoints(square.topLeft, square.centreTop, square.centreBottom, square.bottomLeft); //BottomLeft & TopLeft
                 break;
             case 12:
-                MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreLeft);
+                MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreLeft); //TopRight & TopLeft
                 break;
             case 5:
-                MeshFromPoints(square.centreTop, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft, square.centreLeft);
+                MeshFromPoints(square.centreTop, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft, square.centreLeft); //BottomLeft & TopRight
                 break;
             case 10:
-                MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.centreBottom, square.centreLeft);
+                MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.centreBottom, square.centreLeft); //BottomRight & TopLeft
                 break;
             //Three points active
             case 7:
-                MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.bottomLeft, square.centreLeft);
+                MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.bottomLeft, square.centreLeft); //TopRight & BottomLeft & BottomRight
                 break;
             case 11:
-                MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.bottomLeft);
+                MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.bottomLeft); //BottomLeft & BottomRight & TopLeft
                 break;
             case 13:
-                MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft);
+                MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft); //BottomLeft & TopRight & TopLeft
                 break;
             case 14:
-                MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.centreBottom, square.centreLeft);
+                MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.centreBottom, square.centreLeft); //BottomRight & TopRight & TopLeft
                 break;
             //All points active
             case 15:
                 MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.bottomLeft);
-                checkedVertices.Add(square.topLeft.vertexIndex);
-                checkedVertices.Add(square.topRight.vertexIndex);
-                checkedVertices.Add(square.bottomRight.vertexIndex);
-                checkedVertices.Add(square.bottomLeft.vertexIndex);
                 break;
             default:
                 break;
@@ -107,15 +103,8 @@ public class MeshGenerator : MonoBehaviour
     private void MeshFromPoints(params Node[] points)
     {
         AssignVertices(points);
-
-        if (points.Length >= 3)
-            CreateTriangle(points[0], points[1], points[2]);
-        if (points.Length >= 4)
-            CreateTriangle(points[0], points[2], points[3]);
-        if (points.Length >= 5)
-            CreateTriangle(points[0], points[3], points[4]);
-        if (points.Length >= 6)
-            CreateTriangle(points[0], points[4], points[5]);
+        for (int i = 3; i <= points.Length; i++)
+            CreateTriangle(points[0], points[i - 2], points[i - 1]);
     }
 
     private void AssignVertices(Node[] points)
@@ -148,10 +137,7 @@ public class MeshGenerator : MonoBehaviour
             triangleDictionary[vertexIndexKey].Add(triangle);
         else
         {
-            List<Triangle> listOfTriangles = new List<Triangle>
-            {
-                triangle
-            };
+            List<Triangle> listOfTriangles = new List<Triangle> { triangle };
             triangleDictionary.Add(vertexIndexKey, listOfTriangles);
         }
     }
@@ -161,9 +147,9 @@ public class MeshGenerator : MonoBehaviour
         Vector2[] uvs = new Vector2[vertices.Count];
         for (int i = 0; i < vertices.Count; i++)
         {
-            float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x);
-            float percentY = Mathf.InverseLerp(-map.GetLength(1) / 2 * squareSize, map.GetLength(1) / 2 * squareSize, vertices[i].y);
-            uvs[i] = new Vector2(percentX, percentY) * tileAmount;
+            float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x) * tileAmount;
+            float percentY = Mathf.InverseLerp(-map.GetLength(1) / 2 * squareSize, map.GetLength(1) / 2 * squareSize, vertices[i].y) * tileAmount;
+            uvs[i] = new Vector2(percentX, percentY);
         }
 
         return uvs;
@@ -198,9 +184,8 @@ public class MeshGenerator : MonoBehaviour
         int nextVertexIndex = GetConnectedOutlineVertex(vertexIndex);
 
         if (nextVertexIndex != -1)
-        {
             FollowOutline(nextVertexIndex, outlineIndex);
-        }
+
     }
 
     private int GetConnectedOutlineVertex(int vertexIndex)
@@ -257,38 +242,6 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    //DEBUG REMOVE LATER
-    private void OnDrawGizmos()
-    {
-        //if (squareGrid != null)
-        //{
-        //    for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
-        //    {
-        //        for (int y = 0; y < squareGrid.squares.GetLength(1); y++)
-        //        {
-        //            Gizmos.color = (squareGrid.squares[x, y].topLeft.isActive) ? Color.blue : Color.black;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].topLeft.position, Vector3.one * 0.6f);
-
-        //            Gizmos.color = (squareGrid.squares[x, y].topRight.isActive) ? Color.blue : Color.black;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].topRight.position, Vector3.one * 0.6f);
-
-        //            Gizmos.color = (squareGrid.squares[x, y].bottomRight.isActive) ? Color.blue : Color.black;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].bottomRight.position, Vector3.one * 0.6f);
-
-        //            Gizmos.color = (squareGrid.squares[x, y].bottomLeft.isActive) ? Color.blue : Color.black;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].bottomLeft.position, Vector3.one * 0.6f);
-
-        //            Gizmos.color = Color.red;
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].centreTop.position, Vector3.one * 0.2f);
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].centreRight.position, Vector3.one * 0.2f);
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].centreLeft.position, Vector3.one * 0.2f);
-        //            Gizmos.DrawCube(squareGrid.squares[x, y].centreBottom.position, Vector3.one * 0.2f);
-        //        }
-        //    }
-        //}
-    }
-
-
     public struct Triangle
     {
         public int vertexIndexA;
@@ -323,32 +276,26 @@ public class MeshGenerator : MonoBehaviour
     public class SquareGrid
     {
         public Square[,] squares;
-        public SquareGrid(int[,] map, float squareSize)
+        public SquareGrid(int[,] Map, float SquareSize, int WallTile)
         {
-            int nodeCountX = map.GetLength(0);
-            int nodeCountY = map.GetLength(1);
-            float mapWidth = nodeCountX * squareSize;
-            float mapHeight = nodeCountY * squareSize;
+            int nodeCountX = Map.GetLength(0);
+            int nodeCountY = Map.GetLength(1);
+            float mapWidth = nodeCountX * SquareSize;
+            float mapHeight = nodeCountY * SquareSize;
 
             ControlNode[,] controlNodes = new ControlNode[nodeCountX, nodeCountY];
 
             for (int x = 0; x < nodeCountX; x++)
-            {
                 for (int y = 0; y < nodeCountY; y++)
                 {
-                    Vector3 position = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, -mapHeight / 2 + y * squareSize + squareSize / 2, 0);
-                    controlNodes[x, y] = new ControlNode(position, map[x, y] == 0, squareSize);
+                    Vector3 position = new Vector3(-mapWidth / 2 + x * SquareSize + SquareSize / 2, -mapHeight / 2 + y * SquareSize + SquareSize / 2, 0);
+                    controlNodes[x, y] = new ControlNode(position, Map[x, y] == WallTile, SquareSize);
                 }
-            }
 
             squares = new Square[nodeCountX -1, nodeCountY -1];
             for (int x = 0; x < nodeCountX - 1; x++)
-            {
                 for (int y = 0; y < nodeCountY - 1; y++)
-                {
                     squares[x, y] = new Square(controlNodes[x, y + 1], controlNodes[x + 1, y + 1], controlNodes[x, y], controlNodes[x + 1, y]);
-                }
-            }
         }
     }
 
@@ -358,7 +305,7 @@ public class MeshGenerator : MonoBehaviour
         public Node centreTop, centreRight, centreBottom, centreLeft;
         public int configuration;
 
-        public Square (ControlNode topLeft, ControlNode topRight, ControlNode bottomLeft, ControlNode bottomRight)
+        public Square(ControlNode topLeft, ControlNode topRight, ControlNode bottomLeft, ControlNode bottomRight)
         {
             this.topLeft = topLeft;
             this.topRight = topRight;
@@ -366,18 +313,18 @@ public class MeshGenerator : MonoBehaviour
             this.bottomRight = bottomRight;
 
             centreTop = topLeft.right;
-            centreRight = bottomRight.above;
             centreBottom = bottomLeft.right;
             centreLeft = bottomLeft.above;
+            centreRight = bottomRight.above;
 
             if (topLeft.isActive)
                 configuration += 8;
             if (topRight.isActive)
                 configuration += 4;
-            if (bottomRight.isActive)
-                configuration += 2;
             if (bottomLeft.isActive)
                 configuration += 1;
+            if (bottomRight.isActive)
+                configuration += 2;
         }
     }
 
