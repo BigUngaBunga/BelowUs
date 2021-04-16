@@ -9,17 +9,12 @@ public class PauseMenu : MonoBehaviour
     public static bool IsOpen { get; private set; } = false;
 
     private MenuAction action;
-    private NetworkManager manager;
+    private NetworkManager manager = null;
 
     private void Awake()
     {
         action = new MenuAction();
         action.Menu.MenuButton.performed += _ => ShowOrHideMenu();
-    }
-
-    private void Start()
-    {
-        manager = NetworkManager.singleton;
     }
 
     private void OnEnable()
@@ -65,6 +60,9 @@ public class PauseMenu : MonoBehaviour
     public void CheckIfPause()
     {
         //Only pause if you are the only player in the server and the pausemenu is open
+        if (manager == null)
+            manager = NetworkManager.singleton;
+
         if (manager.numPlayers == 1 && pauseMenu.activeSelf)
             Time.timeScale = 0;
         else
