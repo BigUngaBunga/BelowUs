@@ -31,25 +31,6 @@ public class PlayerCharacterController : NetworkBehaviour
         boxSize = new Vector2(playerSize.x, groundBuffer);
     }
 
-    public void OnMove(InputAction.CallbackContext value)
-    {
-        horizontalInput = value.ReadValue<Vector2>().x;
-    }
-
-    public void OnJump(InputAction.CallbackContext value)
-    {
-        if (!isClimbing && grounded)
-            jumpRequest = true;
-        else if (isClimbing)
-            verticalInput = value.ReadValue<float>();
-    }
-
-    public void OnClimbDown(InputAction.CallbackContext value)
-    {
-        if (isClimbing)
-            verticalInput = -value.ReadValue<float>();
-    }
-
     private void FixedUpdate()
     {
         // Exit from update if this is not the local player
@@ -60,6 +41,39 @@ public class PlayerCharacterController : NetworkBehaviour
         HandleJumping();
         HandleClimbing();
     }
+
+    public override void OnStartAuthority()
+    {
+        base.OnStartAuthority();
+
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        playerInput.enabled = true;
+    }
+
+    #region Events
+    public void OnMove(InputAction.CallbackContext value)
+    {
+        if (!PauseMenu.IsOpen)
+            horizontalInput = value.ReadValue<Vector2>().x;
+    }
+
+    public void OnJump(InputAction.CallbackContext value)
+    {
+        if (!PauseMenu.IsOpen)
+        {
+            if (isClimbing)
+                verticalInput = value.ReadValue<float>();
+            else if (grounded)
+                jumpRequest = true;
+        }
+    }
+
+    public void OnClimbDown(InputAction.CallbackContext value)
+    {
+        if (isClimbing && !PauseMenu.IsOpen)
+            verticalInput = -value.ReadValue<float>();
+    }
+    #endregion
 
     private void HorizontalMovement()
     {
