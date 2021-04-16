@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Tests
 {
-    public class TestHealth
+    public class UITests
     {
         [Test]
-        public void TestImageFill()
+        public void ImageFillSetterPasses()
         {
             FloatVariable health = ScriptableObject.CreateInstance<FloatVariable>();
             FloatVariable maxHealth = ScriptableObject.CreateInstance<FloatVariable>();
