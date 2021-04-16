@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BubbaScript : EnemyBase
 {
-    
+
     private Rigidbody2D rb;
     private float maxSpeed = 0.1f;
-    public float movementSpeed = 5f;   
+    public float movementSpeed = 5f;
 
     protected override void Start()
     {
@@ -54,21 +54,14 @@ public class BubbaScript : EnemyBase
     //    rb.rotation = -angle;
     //    direction.Normalize();
     //}
-    //Add force movement 
-    //protected void UpdateMovementChasing()
-    //{
-    //    Vector2 direction = (TargetLocation.position - transform.position).normalized;
-    //    float DistanceMultiplier = 20 - Vector2.Distance(TargetLocation.position, transform.position);
-    //    Vector2 movement = direction * movementSpeed * Time.deltaTime * DistanceMultiplier;
-
-
-    //    rb.AddForce(movement);
-
-    //    if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
-    //    {
-    //        base.GetNextPatrolPosition();
-    //    }
-    //}
+    //Add force movement
+    protected void UpdateMovementChasing()
+    {
+        Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
+        //float DistanceMultiplier = 20 - Vector2.Distance(targetGameObject.transform.position, transform.position);
+        Vector2 movement = direction * movementSpeed * Time.deltaTime ; //*DistanceMultiplier
+        rb.AddForce(movement);
+    }
     //Ny movement
     //protected void UpdateMovementPatrolling()
     //{
@@ -83,11 +76,11 @@ public class BubbaScript : EnemyBase
     //    }
     //}
 
-    protected void UpdateMovementChasing()
-    {
-        Vector2 direction = targetGameObject.transform.position - transform.position;
-        rb.MovePosition((Vector2)transform.position + (direction * moveSpeedChasing * Time.deltaTime));
-    }
+    //protected void UpdateMovementChasing()
+    //{
+    //    Vector2 direction = targetGameObject.transform.position - transform.position;
+    //    rb.MovePosition((Vector2)transform.position + (direction * moveSpeedChasing * Time.deltaTime));
+    //}
 
     protected void UpdateRotationChasing()
     {
@@ -122,7 +115,7 @@ public class BubbaScript : EnemyBase
         if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
         {
             base.GetNextPatrolPosition();
-        }       
+        }
     }
 
     void CheckForFlip()
@@ -146,4 +139,10 @@ public class BubbaScript : EnemyBase
 
 
     #endregion patrolling
+
+    #region Collision
+   
+    
+
+    #endregion Collision
 }

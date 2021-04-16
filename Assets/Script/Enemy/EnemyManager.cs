@@ -10,9 +10,9 @@ public class EnemyManager : NetworkBehaviour
     public GameObject SkeletonPrefab;
     void Start()
     {
-        SpawnEnemy(new Vector3(0, 0, 0));
-        SpawnEnemy(new Vector3(0, 100, 0));
-        SpawnEnemy(new Vector3(0, 200, 0));
+        //SpawnEnemy(new Vector3(0, 0, 0));
+        //SpawnEnemy(new Vector3(0, 100, 0));
+        //SpawnEnemy(new Vector3(0, 200, 0));
     }
 
     void Update()
