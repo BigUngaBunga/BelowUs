@@ -12,7 +12,6 @@ public class CameraController : NetworkBehaviour
     [Range(2, 16)]
     [SerializeField] private float smoothFactor;
 
-
     [TagSelector][SerializeField] private string playerTag;
     [TagSelector][SerializeField] private string submarineTag;
 

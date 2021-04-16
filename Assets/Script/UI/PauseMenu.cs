@@ -1,15 +1,37 @@
 using Mirror;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
+    [TagSelector] [SerializeField] private string playerTag;
 
+    public static bool IsOpen { get; private set; } = false;
+
+    private MenuAction action;
     private NetworkManager manager;
+
+    private void Awake()
+    {
+        action = new MenuAction();
+        action.Menu.MenuButton.performed += _ => ShowOrHideMenu();
+    }
 
     private void Start()
     {
         manager = NetworkManager.singleton;
+    }
+
+    private void OnEnable()
+    {
+        action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        action.Disable();
     }
 
     public void ShowOrHideMenu()
@@ -25,12 +47,14 @@ public class PauseMenu : MonoBehaviour
     private void ShowMenu()
     {
         pauseMenu.SetActive(true);
+        IsOpen = true;
         CheckIfPause();
     }
 
     private void HideMenu()
     {
         pauseMenu.SetActive(false);
+        IsOpen = false;
         CheckIfPause();
     }
 

@@ -1,5 +1,6 @@
 using Mirror;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCharacterController : NetworkBehaviour
 {
@@ -21,20 +22,13 @@ public class PlayerCharacterController : NetworkBehaviour
     private Vector2 boxSize;
 
     private float horizontalInput;
+    private float verticalInput;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerSize = GetComponent<BoxCollider2D>().size;
         boxSize = new Vector2(playerSize.x, groundBuffer);
-    }
-
-    private void Update()
-    {
-        if (Input.GetButtonDown("Jump") && !isClimbing && grounded)
-            jumpRequest = true;
-
-        horizontalInput = Input.GetAxis("Horizontal");
     }
 
     private void FixedUpdate()
@@ -47,6 +41,39 @@ public class PlayerCharacterController : NetworkBehaviour
         HandleJumping();
         HandleClimbing();
     }
+
+    public override void OnStartAuthority()
+    {
+        base.OnStartAuthority();
+
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        playerInput.enabled = true;
+    }
+
+    #region Events
+    public void OnMove(InputAction.CallbackContext value)
+    {
+        if (!PauseMenu.IsOpen)
+            horizontalInput = value.ReadValue<Vector2>().x;
+    }
+
+    public void OnJump(InputAction.CallbackContext value)
+    {
+        if (!PauseMenu.IsOpen)
+        {
+            if (isClimbing)
+                verticalInput = value.ReadValue<float>();
+            else if (grounded)
+                jumpRequest = true;
+        }
+    }
+
+    public void OnClimbDown(InputAction.CallbackContext value)
+    {
+        if (isClimbing && !PauseMenu.IsOpen)
+            verticalInput = -value.ReadValue<float>();
+    }
+    #endregion
 
     private void HorizontalMovement()
     {
@@ -69,8 +96,7 @@ public class PlayerCharacterController : NetworkBehaviour
     {
         if (isClimbing)
         {
-            var verticalMovement = Input.GetAxis("Vertical") * Time.deltaTime * climbingSpeed.Value;
-            rb.velocity = new Vector2(rb.velocity.x, verticalMovement);
+            rb.velocity = new Vector2(rb.velocity.x, verticalInput);
 
             if (rb.gravityScale != 0)
             {
