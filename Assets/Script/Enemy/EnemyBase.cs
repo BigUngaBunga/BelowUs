@@ -11,15 +11,15 @@ public class EnemyBase : MonoBehaviour
         Attacking
     }
 
-    protected string targetName;
-    public float moveSpeedPatrolling;
-    public float moveSpeedChasing;
-    protected float currentMoveSpeed = 0;
-    [SerializeField]protected GameObject targetGameObject;
+    [SerializeField] protected float moveSpeedPatrolling;
+    [SerializeField] protected float moveSpeedChasing;
+    protected GameObject targetGameObject;
     protected List<Vector3> patrolPositions = new List<Vector3>();
     protected Vector3 currentPatrolTarget;
     private float patrolRange = 5;
     protected enemyState currentState;
+    protected Rigidbody2D rb;
+    [SerializeField] protected float movementSpeed = 5f;
 
     [TagSelector][SerializeField] private string submarineTag;
 

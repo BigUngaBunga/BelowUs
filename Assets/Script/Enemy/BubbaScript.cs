@@ -5,16 +5,14 @@ using UnityEngine;
 public class BubbaScript : EnemyBase
 {
 
-    private Rigidbody2D rb;
-    private float maxSpeed = 0.1f;
-    public float movementSpeed = 5f;
+    private Weapon weapon;
 
     protected override void Start()
     {
+        weapon = this.GetComponent<Weapon>();
         rb = this.GetComponent<Rigidbody2D>();
         moveSpeedPatrolling = 5f;
         moveSpeedChasing = 7f;
-        targetName = "Gameobject";
         currentState = enemyState.Patrolling;
         CreatePatrolArea();
         SetTarget();
@@ -39,49 +37,21 @@ public class BubbaScript : EnemyBase
             case enemyState.Chasing:
                 UpdateRotationChasing();
                 UpdateMovementChasing();
+                CheckForFlip();
                 break;
         }
     }
 
     #region chasing
 
-    //gammal Rotation
-    //protected void UpdateRotationChasing()
-    //{
-    //    Vector3 direction = currentPatrolTarget - transform.position;
-    //    direction = targetGameObject.transform.position - transform.position;
-    //    float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-    //    rb.rotation = -angle;
-    //    direction.Normalize();
-    //}
-    //Add force movement
+    
     protected void UpdateMovementChasing()
     {
         Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
         //float DistanceMultiplier = 20 - Vector2.Distance(targetGameObject.transform.position, transform.position);
         Vector2 movement = direction * movementSpeed * Time.deltaTime ; //*DistanceMultiplier
         rb.AddForce(movement);
-    }
-    //Ny movement
-    //protected void UpdateMovementPatrolling()
-    //{
-    //    Vector2 direction = (currentPatrolTarget - transform.position).normalized;
-    //    Vector2 movement = direction * movementSpeed * Time.deltaTime;
-
-    //     rb.AddForce(movement);
-
-    //    if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
-    //    {
-    //        base.GetNextPatrolPosition();
-    //    }
-    //}
-
-    //protected void UpdateMovementChasing()
-    //{
-    //    Vector2 direction = targetGameObject.transform.position - transform.position;
-    //    rb.MovePosition((Vector2)transform.position + (direction * moveSpeedChasing * Time.deltaTime));
-    //}
-
+    }    
     protected void UpdateRotationChasing()
     {
         Vector2 direction = targetGameObject.transform.position - transform.position;
@@ -141,7 +111,6 @@ public class BubbaScript : EnemyBase
     #endregion patrolling
 
     #region Collision
-   
     
 
     #endregion Collision
