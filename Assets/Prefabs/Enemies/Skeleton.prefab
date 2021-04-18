@@ -580,7 +580,7 @@ GameObject:
   - component: {fileID: -1325226182679564702}
   m_Layer: 0
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -653,9 +653,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeedPatrolling: 0
   moveSpeedChasing: 0
-  targetGameObject: {fileID: 0}
-  submarineTag: Submarine
   movementSpeed: 1000
+  patrolRange: 5
+  chasingRange: 0
+  attackingRange: 0
+  submarineTag: Submarine
 --- !u!50 &6450413785958905961
 Rigidbody2D:
   serializedVersion: 4

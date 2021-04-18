@@ -16,6 +16,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         Debug.Log(collider.name);
+        if(collider.tag == "Submarine")
         Destroy(gameObject);
     }
 }

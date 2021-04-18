@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] Transform firePoint;
+    [SerializeField] GameObject firePoint;
     [SerializeField] GameObject bulletPrefab;
   
     void Update()
@@ -14,6 +14,6 @@ public class Weapon : MonoBehaviour
 
     public void shoot()
     {
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
     }
 }
