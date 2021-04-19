@@ -58,9 +58,14 @@ public class CameraController : NetworkBehaviour
             return submarine.position + offsetSubmarine;
     }
 
-    public void SwitchTarget()
+    public void SwitchTarget(string TargetTag)
     {
-        followPlayer = !followPlayer;
-        transform.position = CalculateTargetPosition();
+        if (TargetTag == playerTag)
+            followPlayer = true;
+        else if (TargetTag == submarineTag)
+        {
+            followPlayer = false;
+            transform.position = CalculateTargetPosition();
+        }
     }
 }

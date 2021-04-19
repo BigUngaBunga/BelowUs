@@ -19,12 +19,12 @@ public class PauseMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        action.Enable();
+        action?.Enable();
     }
 
     private void OnDisable()
     {
-        action.Disable();
+        action?.Disable();
     }
 
     public void ShowOrHideMenu()
