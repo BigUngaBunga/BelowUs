@@ -4,7 +4,7 @@ using UnityEngine;
 public class CameraController : NetworkBehaviour
 {
     private Transform player;
-    private Transform submarine;
+    [SerializeField] private Transform submarine;
     [SerializeField] private Vector3 offsetPlayer;
     [SerializeField] private Vector3 offsetSubmarine;
     [SerializeField] private bool followPlayer;
@@ -42,7 +42,7 @@ public class CameraController : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (player != null)
+        if (player != null || !followPlayer)
         {
             Vector3 targetPosition = CalculateTargetPosition();
             Vector3 smoothedPosition = Vector3.Lerp(transform.position, targetPosition, smoothFactor * Time.fixedDeltaTime);
@@ -63,9 +63,6 @@ public class CameraController : NetworkBehaviour
         if (TargetTag == playerTag)
             followPlayer = true;
         else if (TargetTag == submarineTag)
-        {
             followPlayer = false;
-            transform.position = CalculateTargetPosition();
-        }
     }
 }

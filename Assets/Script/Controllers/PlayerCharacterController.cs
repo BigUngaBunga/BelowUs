@@ -1,6 +1,7 @@
 using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class PlayerCharacterController : NetworkBehaviour
 {
@@ -29,6 +30,10 @@ public class PlayerCharacterController : NetworkBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerSize = GetComponent<BoxCollider2D>().size;
         boxSize = new Vector2(playerSize.x, groundBuffer);
+        PlayerInput input = GetComponent<PlayerInput>();
+
+        if (input.uiInputModule == null)
+            input.uiInputModule = FindObjectOfType<InputSystemUIInputModule>();
     }
 
     private void FixedUpdate()

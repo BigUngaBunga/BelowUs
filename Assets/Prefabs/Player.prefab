@@ -138,17 +138,17 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   movementSpeed:
-    UseConstant: 0
+    UseConstant: 1
     ConstantValue: 0
-    Variable: {fileID: 11400000, guid: 56e5dfaee12367e4dadb2303188afbe1, type: 2}
+    Variable: {fileID: 0}
   jumpForce:
-    UseConstant: 0
+    UseConstant: 1
     ConstantValue: 0
-    Variable: {fileID: 11400000, guid: b3380c7ad83fa3b408d6fb0ff0b41dcf, type: 2}
+    Variable: {fileID: 0}
   climbingSpeed:
-    UseConstant: 0
+    UseConstant: 1
     ConstantValue: 0
-    Variable: {fileID: 11400000, guid: 5770db1114ffc984591c4427a5a05d9c, type: 2}
+    Variable: {fileID: 0}
   ladderMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427143692487560651}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -277,7 +277,7 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9e98ed0b-9734-43de-8cef-981bcf84c3ad
     m_ActionName: Player/Climb Down[/Keyboard/s,/Keyboard/downArrow]
-  m_NeverAutoSwitchControlSchemes: 0
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1

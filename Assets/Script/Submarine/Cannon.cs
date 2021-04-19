@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Cannon : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class Cannon : MonoBehaviour
     
     void Update()
     {
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         pos = this.transform.position;
 
         subRotation = (float)((Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI) * 180) + 7;
@@ -37,9 +38,11 @@ public class Cannon : MonoBehaviour
             this.transform.rotation = Quaternion.Euler(0, 0, angleDeg + 90);
         }
 
+        /* Need new input system
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //pos = new Vector3(pos.x, pos.y, -1);
         }
+        */
     }
 }
