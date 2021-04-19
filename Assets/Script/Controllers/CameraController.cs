@@ -4,7 +4,7 @@ using UnityEngine;
 public class CameraController : NetworkBehaviour
 {
     private Transform player;
-    [SerializeField] private Transform submarine;
+    private Transform submarine;
     [SerializeField] private Vector3 offsetPlayer;
     [SerializeField] private Vector3 offsetSubmarine;
     [SerializeField] private bool followPlayer;
