@@ -135,7 +135,7 @@ namespace BelowUs
             meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile);
 
             MapExitDetector exitDetector = GetComponent<MapExitDetector>();
-            exitDetector.CreateExitDetector(exitLocation, new Vector2(passagewayRadius * 2, passagewayRadius * 2));
+            exitDetector.CreateExitDetector(exitLocation, passagewayRadius, new Vector2(mapWidth, mapHeight));
         }
 
         private void FillMapWithNoise()
