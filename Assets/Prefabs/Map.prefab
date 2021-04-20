@@ -53,9 +53,10 @@ MonoBehaviour:
   generateExit: 1
   maximumOpenWaterPercentage: 54
   minimumOpenWaterPercentage: 47
+  maximumEnclaveRemovalSize: 25
+  minimumEnclaveRemovalSize: 4
   borderThickness: 3
-  timesToSmoothMap: 3
-  enclaveRemovalSize: 10
+  timesToSmoothMap: 5
   passagewayRadius: 3
 --- !u!114 &4239500959107569486
 MonoBehaviour:

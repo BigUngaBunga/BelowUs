@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class FollowObject : MonoBehaviour
+namespace BelowUs
 {
-    [SerializeReference] private Transform followTarget;
-    [SerializeField] private int zPosition;
-
-    public void Update()
+    public class FollowObject : MonoBehaviour
     {
-        transform.position = new Vector3(followTarget.transform.position.x, followTarget.transform.position.y, zPosition);
+        [SerializeReference] private Transform followTarget;
+        [SerializeField] private int zPosition;
+
+        public void Update()
+        {
+            transform.position = new Vector3(followTarget.transform.position.x, followTarget.transform.position.y, zPosition);
+        }
     }
 }

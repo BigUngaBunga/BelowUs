@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Random = System.Random;
 
 namespace BelowUs
@@ -13,6 +13,7 @@ namespace BelowUs
         [SerializeReference] private bool useRandomSeed, generateExit;
 
         [SerializeField] private int maximumOpenWaterPercentage, minimumOpenWaterPercentage;
+        [SerializeField] private int maximumEnclaveRemovalSize, minimumEnclaveRemovalSize;
 
         [Range(3, 10)]
         [SerializeField] private int borderThickness;
@@ -20,18 +21,18 @@ namespace BelowUs
         [Range(1, 10)]
         [SerializeField] private int timesToSmoothMap;
 
-        [Range(0, 100)]
-        [SerializeField] private int enclaveRemovalSize;
-
         [Range(0, 5)]
         [SerializeField] private int passagewayRadius;
 
         private int openWaterPercentage;
+        private int enclaveRemovalSize;
         private const int waterTile = 1;
         private const int wallTile = 0;
         private int[,] noiseMap;
+        private float timeSinceCheck;
         private Random random;
-        private Vector2 exitLocation;
+        public Vector2 ExitLocation { get; private set; }
+        public Vector2 MapSize { get { return new Vector2(mapWidth, mapHeight); } }
 
         private struct Coordinate
         {
@@ -124,16 +125,17 @@ namespace BelowUs
             meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile);
 
             MapExitDetector exitDetector = GetComponent<MapExitDetector>();
-            exitDetector.CreateExitDetector(exitLocation, passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
+            exitDetector.CreateExitDetector(ExitLocation, passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
         }
 
         private void RandomizeMapVariables()
         {
             if (useRandomSeed)
-                seed = Environment.TickCount.ToString() + Time.deltaTime.ToString();
+                seed = Environment.TickCount.ToString();
             random = new Random(seed.GetHashCode());
 
             openWaterPercentage = random.Next(minimumOpenWaterPercentage, maximumOpenWaterPercentage);
+            enclaveRemovalSize = random.Next(minimumEnclaveRemovalSize, maximumEnclaveRemovalSize);
         }
 
         private void FillMapWithNoise()
@@ -197,10 +199,10 @@ namespace BelowUs
 
             if (generateExit)
             {
-                exitLocation = new Vector2(random.Next(exitDistanceFromCorners, noiseMap.GetLength(0) - exitDistanceFromCorners), 0);
-                DrawCircle(exitLocation, entranceSize);
+                ExitLocation = new Vector2(random.Next(exitDistanceFromCorners, noiseMap.GetLength(0) - exitDistanceFromCorners), 0);
+                DrawCircle(ExitLocation, entranceSize);
             }
-        
+
         }
 
         private void AddBorderToNoiseMap(int borderSize)

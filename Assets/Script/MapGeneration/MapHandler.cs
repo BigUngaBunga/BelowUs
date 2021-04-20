@@ -13,16 +13,30 @@ namespace BelowUs
         private void Start()
         {
             maps = new List<GameObject> ();
-            squareSize = 1;
-            CreateNewMap(Vector2.zero);
+            squareSize = 2;
+            CreateNewMap();
         }
-
-        public void CreateNewMap(Vector2 startPosition)
+        
+        public void CreateNewMap()//Vector2 startPosition
         {
+            Vector2 startPosition = CalculateNextPosition();
+            Debug.Log(startPosition);
             GameObject map = Instantiate(mapPrefab, new Vector3(startPosition.x, startPosition.y), Quaternion.identity);
             map.GetComponent<MapGenerator>().GenerateMap(this, squareSize);
             maps.Add(map);
-        } 
+        }
+
+        private Vector2 CalculateNextPosition()
+        {
+            if (maps.Count > 0)
+            {
+                MapGenerator mapGenerator = maps[maps.Count - 1].GetComponent<MapGenerator>();
+                return new Vector2(mapGenerator.transform.position.x + (mapGenerator.ExitLocation.x - mapGenerator.MapSize.x / 2) * squareSize,
+                                    mapGenerator.transform.position.y - (mapGenerator.MapSize.y - 1) * squareSize);
+            }
+
+            return Vector2.zero;
+        }
     }
 
 }
