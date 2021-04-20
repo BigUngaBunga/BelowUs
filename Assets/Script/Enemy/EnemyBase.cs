@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public class EnemyBase : NetworkBehaviour
 {
     protected enum enemyState
     {

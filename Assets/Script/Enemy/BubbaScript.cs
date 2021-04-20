@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class BubbaScript : EnemyBase
 {
@@ -19,6 +20,7 @@ public class BubbaScript : EnemyBase
         GetNextPatrolPosition();
     }
 
+    [Server]
     protected override void Update()
     {
         switch (currentState)

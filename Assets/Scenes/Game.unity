@@ -2399,6 +2399,26 @@ PrefabInstance:
       propertyPath: sceneId
       value: 2775823559
       objectReference: {fileID: 0}
+    - target: {fileID: 1733476386753260917, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
+      propertyPath: serverOnly
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635006418229745303, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
+      propertyPath: m_Bounds.m_Center.y
+      value: -0.0006749481
+      objectReference: {fileID: 0}
+    - target: {fileID: 5933869210887381576, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
+      propertyPath: m_Bounds.m_Center.x
+      value: 0.000000029802322
+      objectReference: {fileID: 0}
+    - target: {fileID: 5933869210887381576, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
+      propertyPath: m_Bounds.m_Center.y
+      value: -0.00000029802322
+      objectReference: {fileID: 0}
+    - target: {fileID: 5933869210887381576, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
+      propertyPath: m_Bounds.m_Extent.y
+      value: 0.5000002
+      objectReference: {fileID: 0}
     - target: {fileID: 7106082335865075385, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
       propertyPath: m_Name
       value: Skeleton
@@ -2447,7 +2467,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9147240709594653566, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
+      propertyPath: m_Bounds.m_Center.y
+      value: -0.00035010278
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147240709594653566, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
+      propertyPath: m_Bounds.m_Extent.y
+      value: 0.1446499
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
 --- !u!1 &1047574446 stripped
 GameObject:
@@ -5005,6 +5034,18 @@ PrefabInstance:
       propertyPath: playerSpawnMethod
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1511994682964710781, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
+      propertyPath: spawnPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511994682964710781, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
+      propertyPath: spawnPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 3820843256020973064, guid: 0268277da6aa72d47b17151dfadf2e3c, type: 3}
+    - target: {fileID: 1511994682964710781, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
+      propertyPath: spawnPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 7106082335865075385, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
 --- !u!224 &2092406041 stripped
@@ -5546,7 +5587,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.05
+  m_fontSize: 18.35
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6313,7 +6354,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 0268277da6aa72d47b17151dfadf2e3c, type: 3}
 --- !u!1001 &7495443478926676514
 PrefabInstance:

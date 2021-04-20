@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
+
 
 public class SpookScript : EnemyBase
 {
     private Weapon weapon;
     [SerializeField] private float timeBetweenShoots = 2;
     private float timeElapsed = 0;
+    
     protected override void Start()
     {
         weapon = this.GetComponent<Weapon>();
@@ -23,6 +26,7 @@ public class SpookScript : EnemyBase
         GetNextPatrolPosition();
     }
 
+    [Server]
     protected override void Update()
     {
         CheckDistanceToTarget();
@@ -50,6 +54,7 @@ public class SpookScript : EnemyBase
                 }
                 break;
         }
+
     }
 
     protected void UpdateMovementChasing()

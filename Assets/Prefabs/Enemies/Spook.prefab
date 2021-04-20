@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 9073243902447456325}
   - component: {fileID: 2380497402004433974}
   - component: {fileID: 2075641956583834902}
-  - component: {fileID: -6506874777066402277}
+  - component: {fileID: 8416942398362102259}
   - component: {fileID: 1410107557722617158}
   - component: {fileID: -2898043021246271424}
   m_Layer: 0
@@ -590,7 +590,7 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &-6506874777066402277
+--- !u!114 &8416942398362102259
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -599,15 +599,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 3820843256020973064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 741bbe11f5357b44593b15c0d11b16bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
   clientAuthority: 0
+  excludeOwnerUpdate: 1
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
+  lastPosition: {x: 0, y: 0, z: 0}
+  lastRotation: {x: 0, y: 0, z: 0, w: 0}
+  lastScale: {x: 0, y: 0, z: 0}
+  start:
+    timeStamp: 0
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0, w: 0}
+    localScale: {x: 0, y: 0, z: 0}
+    movementSpeed: 0
+  goal:
+    timeStamp: 0
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0, w: 0}
+    localScale: {x: 0, y: 0, z: 0}
+    movementSpeed: 0
 --- !u!114 &1410107557722617158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,6 +642,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26632497d5540f3498c48e0ba46e3ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   moveSpeedPatrolling: 0
   moveSpeedChasing: 0
   movementSpeed: 5
