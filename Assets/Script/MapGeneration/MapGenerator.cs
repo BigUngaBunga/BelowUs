@@ -104,25 +104,13 @@ namespace BelowUs
             }
         }
 
-        public void Start()
-        {
-            GenerateMap(Vector2.zero);
-        }
-
-        public void Update()
-        {
-            if (Input.GetMouseButtonDown(0))
-                GenerateMap(Vector2.zero);
-        }
-
         public bool IsInMapRange(int tileX, int tileY)
         {
             return tileX >= 0 && tileX < mapWidth && tileY >= 0 && tileY < mapHeight;
         }
 
-        public void GenerateMap(Vector2 previousExit)
+        public void GenerateMap(MapHandler mapHandler, int squareSize)
         {
-            int squareSize = 1;
             noiseMap = new int[mapWidth, mapHeight];
             FillMapWithNoise();
             AddBorderToNoiseMap(borderThickness);
@@ -135,7 +123,7 @@ namespace BelowUs
             meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile);
 
             MapExitDetector exitDetector = GetComponent<MapExitDetector>();
-            exitDetector.CreateExitDetector(exitLocation, passagewayRadius, new Vector2(mapWidth, mapHeight));
+            exitDetector.CreateExitDetector(exitLocation, passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
         }
 
         private void FillMapWithNoise()
