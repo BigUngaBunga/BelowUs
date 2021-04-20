@@ -51,7 +51,8 @@ MonoBehaviour:
   seed: 977240781,556066
   useRandomSeed: 1
   generateExit: 1
-  openWaterPercentage: 47
+  maximumOpenWaterPercentage: 54
+  minimumOpenWaterPercentage: 47
   borderThickness: 3
   timesToSmoothMap: 3
   enclaveRemovalSize: 10

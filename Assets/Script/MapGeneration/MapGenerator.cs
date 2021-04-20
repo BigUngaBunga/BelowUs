@@ -12,8 +12,7 @@ namespace BelowUs
         [SerializeField] private string seed;
         [SerializeReference] private bool useRandomSeed, generateExit;
 
-        [Range(40, 70)]
-        [SerializeField] private int openWaterPercentage;
+        [SerializeField] private int maximumOpenWaterPercentage, minimumOpenWaterPercentage;
 
         [Range(3, 10)]
         [SerializeField] private int borderThickness;
@@ -27,6 +26,7 @@ namespace BelowUs
         [Range(0, 5)]
         [SerializeField] private int passagewayRadius;
 
+        private int openWaterPercentage;
         private const int waterTile = 1;
         private const int wallTile = 0;
         private int[,] noiseMap;
@@ -112,6 +112,7 @@ namespace BelowUs
         public void GenerateMap(MapHandler mapHandler, int squareSize)
         {
             noiseMap = new int[mapWidth, mapHeight];
+            RandomizeMapVariables();
             FillMapWithNoise();
             AddBorderToNoiseMap(borderThickness);
             SmoothNoiseMap(timesToSmoothMap);
@@ -126,13 +127,17 @@ namespace BelowUs
             exitDetector.CreateExitDetector(exitLocation, passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
         }
 
-        private void FillMapWithNoise()
+        private void RandomizeMapVariables()
         {
             if (useRandomSeed)
                 seed = Environment.TickCount.ToString() + Time.deltaTime.ToString();
-
             random = new Random(seed.GetHashCode());
 
+            openWaterPercentage = random.Next(minimumOpenWaterPercentage, maximumOpenWaterPercentage);
+        }
+
+        private void FillMapWithNoise()
+        {
             for (int x = 0; x < mapWidth; x++)
                 for (int y = 0; y < mapHeight; y++)
                     noiseMap[x, y] = (random.Next(0, 100) >= openWaterPercentage) ? wallTile : waterTile;
