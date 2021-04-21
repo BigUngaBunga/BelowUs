@@ -48,7 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeedPatrolling: 0
   moveSpeedChasing: 0
-  TargetLocation: {fileID: 0}
+  targetGameObject: {fileID: 0}
+  submarineTag: 
   movementSpeed: 5
 --- !u!50 &532148088417316143
 Rigidbody2D:

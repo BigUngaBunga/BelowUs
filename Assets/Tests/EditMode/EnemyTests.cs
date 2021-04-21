@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,23 +8,24 @@ public class EnemyTests
     [Test]
     public void EnemyTestsSimplePasses()
     {
-        //Checks so that all the enemies have a submarine tag
-        /*
-        GameObject bubba = new GameObject();
-        Component bubbaScript = bubba.AddComponent(typeof(BubbaScript));
+        //Grabs all the enemy prefabs
+        string[] guids = AssetDatabase.FindAssets("", new[] { "Assets/Prefabs/Enemies" });
+        List<GameObject> files = new List<GameObject>();
 
-        List<EnemyBase> derivedScripts = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.IsSubclassOf(typeof(EnemyBase)))
-                .Select(type => Activator.CreateInstance(type) as EnemyBase).ToList();
-        */
-
-        string scriptType = "t:" + nameof(EnemyBase);
-        //, new[] { "Assets/Script/Enemy" }
-        string[] guids = AssetDatabase.FindAssets(scriptType);
+        //Grabs all the scripts from the enemies
         foreach (string guid in guids)
+            files.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid)));
+
+        //Checks so that all the prefabs have the submarinetag defined
+        foreach (GameObject prefab in files)
         {
-            Debug.Log("ScriptObj: " + AssetDatabase.GUIDToAssetPath(guid));
+            EnemyBase script = prefab.GetComponent<EnemyBase>();
+            bool incorrect = script.SubmarineTag == "";
+
+            if (incorrect)
+                Debug.Log(prefab.name + " is missing the submarine tag!!");
+
+            Assert.IsFalse(incorrect);
         }
     }
 }
