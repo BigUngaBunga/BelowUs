@@ -17,7 +17,13 @@ public class EnemyBase : NetworkBehaviour
     [SerializeField] protected float movementSpeed = 5f;
     [SerializeField] protected float patrolRange = 5;
     [SerializeField] protected float chasingRange, attackingRange;
-    [SerializeField] public float health;
+    [SerializeField] protected float health;
+    [SerializeField] protected float collisionDamage;
+
+    public float CollisionDamage
+    {
+        get { return collisionDamage; }
+    }
 
     protected GameObject targetGameObject;
     protected List<Vector3> patrolPositions = new List<Vector3>();
@@ -82,6 +88,23 @@ public class EnemyBase : NetworkBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    protected void CheckDistanceToTarget()
+    {
+        float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
+        if (distance < attackingRange) currentState = enemyState.Attacking;
+        else if (distance < chasingRange) currentState = enemyState.Chasing;
+        else currentState = enemyState.Patrolling;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "AllyBullet")
+        {
+            health -= collision.gameObject.GetComponent<Bullet>().Damage;
+        }
+        CheckIfAlive();
     }
 }
 

@@ -6,23 +6,20 @@ using Mirror;
 public class EnemyManager : NetworkBehaviour
 {
     [SyncVar]
-    List<GameObject> EnemyList = new List<GameObject>();
-    public GameObject SkeletonPrefab;
-    void Start()
+    private List<GameObject> EnemyList = new List<GameObject>();
+    [SerializeField] private GameObject SkeletonPrefab;
+    private void Start()
     {
         //SpawnEnemy(new Vector3(0, 0, 0));
         //SpawnEnemy(new Vector3(0, 100, 0));
         //SpawnEnemy(new Vector3(0, 200, 0));
     }
 
-    void Update()
-    {
-        foreach(GameObject enemy in EnemyList)
-        {
-        }
+    private void Update()
+    {        
     }
 
-    void SpawnEnemy(Vector3 position)
+    private void SpawnEnemy(Vector3 position)
     {
         var enemy = NetworkManager.Instantiate(SkeletonPrefab, position, Quaternion.identity);
         EnemyList.Add(enemy);

@@ -16,16 +16,8 @@ public class SpookScript : EnemyBase
     {
         weapon = this.GetComponent<Weapon>();
         rb = this.GetComponent<Rigidbody2D>();
-        firePoint = gameObject.transform.Find("FirePoint");
-        moveSpeedPatrolling = 5f;
-        moveSpeedChasing = 7f;
-
-        chasingRange = 50f;
-        attackingRange = 30f;
-        currentState = enemyState.Patrolling;
-
-        health = 100f;
-
+        firePoint = gameObject.transform.Find("FirePoint");        
+        
         CreatePatrolArea();
         SetTarget();
         GetNextPatrolPosition();
@@ -104,7 +96,7 @@ public class SpookScript : EnemyBase
 
     protected void UpdateRotationAttacking()
     {
-        //Uträckning av direction är omvänd för att fisken ska rotera 180 grader så att baksidan är roterad mot submarine;
+        //Uträkningen av direction är omvänd för att fisken ska rotera 180 grader så att baksidan är roterad mot submarine;
         Vector2 direction = transform.position - targetGameObject.transform.position;
         float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
@@ -113,26 +105,13 @@ public class SpookScript : EnemyBase
 
     protected void UpdateFirePointRotation()
     {
+        //Används endast så att skoten skjuts i rätt riktning pga av UpdateRotationAttacking
         Vector2 direction = targetGameObject.transform.position - firePoint.transform.position;
         float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
         firePoint.rotation = (Quaternion.Slerp(firePoint.transform.rotation, rotation, Time.deltaTime * 5f));
     }
-   
-    private void CheckDistanceToTarget()
-    {
-        float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
-        if (distance < attackingRange) currentState = enemyState.Attacking;
-        else if (distance < chasingRange) currentState = enemyState.Chasing;
-        else currentState = enemyState.Patrolling;
-    }
+     
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "AllyBullet")
-        {
-             health -= collision.gameObject.GetComponent<Bullet>().Damage;
-        } 
-        base.CheckIfAlive();
-    }
+    
 }

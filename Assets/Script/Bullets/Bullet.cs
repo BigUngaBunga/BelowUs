@@ -5,9 +5,9 @@ using Mirror;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D rb;
-    [SerializeField] float velocity = 20;
-    [SerializeField] float damage;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private float velocity = 20;
+    [SerializeField] private float damage;
     public float Damage
     {
         get { return damage; }
@@ -22,8 +22,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-
+        if(collider.gameObject.tag == "enemy")
         Destroy(gameObject);
-
     }
 }

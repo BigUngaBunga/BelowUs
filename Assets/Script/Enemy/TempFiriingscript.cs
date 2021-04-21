@@ -5,7 +5,7 @@ using Mirror;
 
 public class TempFiriingscript : MonoBehaviour
 {
-
+    //**Används endast för att testa skjua mot fiender, Tas bort sen**
     private float timeElapsed = 0;
     private Weapon weapon;
     private Transform firePoint;

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] GameObject firePoint;
-    [SerializeField] GameObject bulletPrefab;   
+    [SerializeField] private GameObject firePoint;
+    [SerializeField] private GameObject bulletPrefab;   
 
     public void shoot()
     {

@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Submarine
+  - Enemy
+  - AllyBullet
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX

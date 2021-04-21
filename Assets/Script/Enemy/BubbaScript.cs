@@ -5,16 +5,10 @@ using Mirror;
 
 public class BubbaScript : EnemyBase
 {
-
-    private Weapon weapon;
-
     protected override void Start()
     {
-        weapon = this.GetComponent<Weapon>();
         rb = this.GetComponent<Rigidbody2D>();
-        moveSpeedPatrolling = 5f;
-        moveSpeedChasing = 7f;
-        currentState = enemyState.Patrolling;
+       
         CreatePatrolArea();
         SetTarget();
         GetNextPatrolPosition();
@@ -23,20 +17,22 @@ public class BubbaScript : EnemyBase
     [Server]
     protected override void Update()
     {
+
+        CheckDistanceToTarget();
+
         switch (currentState)
         {
             case enemyState.Patrolling:
                 UpdateRotationPatrolling();
                 UpdateMovementPatrolling();
-                CheckForFlip();
-
-                if (Vector3.Distance(targetGameObject.transform.position, transform.position) < 50f)
-                {
-                    currentState = enemyState.Chasing;
-                }
-
+                CheckForFlip();                
                 break;
             case enemyState.Chasing:
+                UpdateRotationChasing();
+                UpdateMovementChasing();
+                CheckForFlip();
+                break;
+            case enemyState.Attacking:
                 UpdateRotationChasing();
                 UpdateMovementChasing();
                 CheckForFlip();
@@ -50,8 +46,7 @@ public class BubbaScript : EnemyBase
     protected void UpdateMovementChasing()
     {
         Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
-        //float DistanceMultiplier = 20 - Vector2.Distance(targetGameObject.transform.position, transform.position);
-        Vector2 movement = direction * movementSpeed * Time.deltaTime ; //*DistanceMultiplier
+        Vector2 movement = direction * movementSpeed * Time.deltaTime;
         rb.AddForce(movement);
     }    
     protected void UpdateRotationChasing()
@@ -88,32 +83,7 @@ public class BubbaScript : EnemyBase
         {
             base.GetNextPatrolPosition();
         }
-    }
+    }    
 
-    void CheckForFlip()
-    {
-        //Checks which direction the objeckt is facing and wether it has flipped the right way thru localscale
-        if (transform.rotation.z > 0 && transform.localScale.x < 0)
-        {
-            flip();
-        }
-        else if (transform.rotation.z < 0 && transform.localScale.x > 0)
-        {
-            flip();
-        }
-    }
-    void flip()
-    {
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
-    }
-
-
-    #endregion patrolling
-
-    #region Collision
-    
-
-    #endregion Collision
+    #endregion patrolling   
 }
