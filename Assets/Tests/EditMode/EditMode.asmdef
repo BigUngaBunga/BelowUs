@@ -9,7 +9,8 @@
         "Mirror",
         "Stations",
         "Spawners",
-        "NewAssembly"
+        "NewAssembly",
+        "Controllers"
     ],
     "includePlatforms": [
         "Editor"

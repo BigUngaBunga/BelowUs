@@ -11,6 +11,11 @@ namespace BelowUs
         [SerializeField] private FloatReference movementSpeed;
         [SerializeField] private FloatReference jumpForce;
         [SerializeField] private FloatReference climbingSpeed;
+
+        public FloatReference MovementSpeed { get { return movementSpeed; } }
+        public FloatReference JumpForce { get { return jumpForce; } }
+        public FloatReference ClimbingSpeed { get { return climbingSpeed; } }
+
         [SerializeField] private LayerMask ladderMask;
 
         [SerializeField] private bool isClimbing;

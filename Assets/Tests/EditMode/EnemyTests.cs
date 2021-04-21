@@ -23,7 +23,7 @@ public class EnemyTests
             bool incorrect = script.SubmarineTag == "";
 
             if (incorrect)
-                Debug.Log(prefab.name + " is missing the submarine tag!!");
+                Debug.LogError(prefab.name + " is missing the submarine tag!!");
 
             Assert.IsFalse(incorrect);
         }
