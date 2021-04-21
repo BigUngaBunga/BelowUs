@@ -12,8 +12,6 @@ public class BubbaScript : EnemyBase
     protected override void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
-        moveSpeedPatrolling = 5f;
-        moveSpeedChasing = 7f;
         targetName = "Gameobject";
         currentState = enemyState.Patrolling;
         CreatePatrolArea();

@@ -649,8 +649,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a5495e552b94a43bc36332c5d6adc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeedPatrolling: 0
-  moveSpeedChasing: 0
+  moveSpeedPatrolling: 5
+  moveSpeedChasing: 7
+  maxPatrolRange: 5
   targetGameObject: {fileID: 0}
   submarineTag: Submarine
   movementSpeed: 5

@@ -10,15 +10,21 @@ public class EnemyBase : MonoBehaviour
         Chasing,
         Attacking
     }
-
+    
     protected string targetName;
-    public float moveSpeedPatrolling;
-    public float moveSpeedChasing;
+    
+    [SerializeField] protected float moveSpeedPatrolling;
+    [SerializeField] protected float moveSpeedChasing;
+    [SerializeField] protected float maxPatrolRange;
+
+    public float MoveSpeedPatrolling { get { return moveSpeedPatrolling; } }
+    public float MoveSpeedChasing { get { return moveSpeedChasing; } }
+    public float MaxPatrolRange { get { return maxPatrolRange; } }
+
     protected float currentMoveSpeed = 0;
     [SerializeField]protected GameObject targetGameObject;
     protected List<Vector3> patrolPositions = new List<Vector3>();
     protected Vector3 currentPatrolTarget;
-    private float patrolRange = 5;
     protected enemyState currentState;
 
     [TagSelector][SerializeField] private string submarineTag;
@@ -40,16 +46,16 @@ public class EnemyBase : MonoBehaviour
         targetGameObject = GameObject.FindGameObjectWithTag(submarineTag);
     }
 
-    private float GetRandomPatrolNumber()
+    private void AddRandomPatrolNumber()
     {
-        return Random.Range(-patrolRange, patrolRange);
+        patrolPositions.Add(new Vector3(Random.Range(-maxPatrolRange, maxPatrolRange), Random.Range(-maxPatrolRange, maxPatrolRange)));
     }
 
     protected void CreatePatrolArea()
     {
         for (int i = 0; i < 4; i++)
         {
-            patrolPositions.Add(new Vector3(GetRandomPatrolNumber(), GetRandomPatrolNumber(), 0));
+            AddRandomPatrolNumber();
         }
     }
 
@@ -57,7 +63,7 @@ public class EnemyBase : MonoBehaviour
     {
         currentPatrolTarget = patrolPositions[0];
         patrolPositions.RemoveAt(0);
-        patrolPositions.Add(new Vector3(GetRandomPatrolNumber(), GetRandomPatrolNumber(), 0));
+        AddRandomPatrolNumber();
     }
 }
 
