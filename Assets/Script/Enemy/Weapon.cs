@@ -5,12 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] GameObject firePoint;
-    [SerializeField] GameObject bulletPrefab;
-  
-    void Update()
-    {
-
-    }
+    [SerializeField] GameObject bulletPrefab;   
 
     public void shoot()
     {

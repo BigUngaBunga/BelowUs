@@ -7,19 +7,24 @@ using Mirror;
 public class SpookScript : EnemyBase
 {
     private Weapon weapon;
-    [SerializeField] private float timeBetweenShoots = 2;
+    private Transform firePoint;
     private float timeElapsed = 0;
+
+    [SerializeField] private float timeBetweenShoots = 2;
     
     protected override void Start()
     {
         weapon = this.GetComponent<Weapon>();
         rb = this.GetComponent<Rigidbody2D>();
+        firePoint = gameObject.transform.Find("FirePoint");
         moveSpeedPatrolling = 5f;
         moveSpeedChasing = 7f;
 
         chasingRange = 50f;
         attackingRange = 30f;
         currentState = enemyState.Patrolling;
+
+        health = 100f;
 
         CreatePatrolArea();
         SetTarget();
@@ -36,24 +41,25 @@ public class SpookScript : EnemyBase
             case enemyState.Patrolling:
                 UpdateRotationPatrolling();
                 UpdateMovementPatrolling();
-                CheckForFlip();
+                base.CheckForFlip();
                 break;
             case enemyState.Chasing:
                 UpdateRotationChasing();
                 UpdateMovementChasing();
-                CheckForFlip();
+                base.CheckForFlip();
                 break;
             case enemyState.Attacking:
-
+                UpdateRotationAttacking();
+                UpdateFirePointRotation();
                 timeElapsed += Time.deltaTime;
                 if (timeElapsed >= timeBetweenShoots)
                 {
                     timeElapsed -= timeBetweenShoots;
                     weapon.shoot();
-
                 }
                 break;
         }
+
 
     }
 
@@ -96,30 +102,37 @@ public class SpookScript : EnemyBase
         }
     }
 
-    private void CheckForFlip()
+    protected void UpdateRotationAttacking()
     {
-        //Checks which direction the objeckt is facing and wether it has flipped the right way thru localscale
-        if (transform.rotation.z > 0 && transform.localScale.x < 0)
-        {
-            flip();
-        }
-        else if (transform.rotation.z < 0 && transform.localScale.x > 0)
-        {
-            flip();
-        }
-    }
-    private void flip()
-    {
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
+        //Uträckning av direction är omvänd för att fisken ska rotera 180 grader så att baksidan är roterad mot submarine;
+        Vector2 direction = transform.position - targetGameObject.transform.position;
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
     }
 
+    protected void UpdateFirePointRotation()
+    {
+        Vector2 direction = targetGameObject.transform.position - firePoint.transform.position;
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        firePoint.rotation = (Quaternion.Slerp(firePoint.transform.rotation, rotation, Time.deltaTime * 5f));
+    }
+   
     private void CheckDistanceToTarget()
     {
         float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
         if (distance < attackingRange) currentState = enemyState.Attacking;
         else if (distance < chasingRange) currentState = enemyState.Chasing;
         else currentState = enemyState.Patrolling;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "AllyBullet")
+        {
+             health -= collision.gameObject.GetComponent<Bullet>().Damage;
+        } 
+        base.CheckIfAlive();
     }
 }

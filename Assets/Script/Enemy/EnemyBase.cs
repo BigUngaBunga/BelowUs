@@ -17,6 +17,7 @@ public class EnemyBase : NetworkBehaviour
     [SerializeField] protected float movementSpeed = 5f;
     [SerializeField] protected float patrolRange = 5;
     [SerializeField] protected float chasingRange, attackingRange;
+    [SerializeField] public float health;
 
     protected GameObject targetGameObject;
     protected List<Vector3> patrolPositions = new List<Vector3>();
@@ -62,6 +63,25 @@ public class EnemyBase : NetworkBehaviour
         currentPatrolTarget = patrolPositions[0];
         patrolPositions.RemoveAt(0);
         patrolPositions.Add(new Vector3(GetRandomPatrolNumber(), GetRandomPatrolNumber(), 0));
+    }
+
+    protected void CheckIfAlive()
+    {
+        if (health <= 0) Destroy(gameObject);
+    }
+
+    protected void CheckForFlip()
+    {
+        //Checks which direction the objeckt is facing and wether it has flipped the right way thru localscale
+        if (transform.rotation.z > 0 && transform.localScale.x < 0) flip();
+        else if (transform.rotation.z < 0 && transform.localScale.x > 0) flip();
+    }
+
+    protected void flip()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 }
 
