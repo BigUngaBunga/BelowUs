@@ -138,17 +138,17 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   movementSpeed:
-    UseConstant: 1
+    UseConstant: 0
     ConstantValue: 0
-    Variable: {fileID: 0}
+    Variable: {fileID: 11400000, guid: 56e5dfaee12367e4dadb2303188afbe1, type: 2}
   jumpForce:
-    UseConstant: 1
+    UseConstant: 0
     ConstantValue: 0
-    Variable: {fileID: 0}
+    Variable: {fileID: 11400000, guid: b3380c7ad83fa3b408d6fb0ff0b41dcf, type: 2}
   climbingSpeed:
-    UseConstant: 1
+    UseConstant: 0
     ConstantValue: 0
-    Variable: {fileID: 0}
+    Variable: {fileID: 11400000, guid: 5770db1114ffc984591c4427a5a05d9c, type: 2}
   ladderMask:
     serializedVersion: 2
     m_Bits: 2048

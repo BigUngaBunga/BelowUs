@@ -22,6 +22,7 @@ public class EnemyBase : MonoBehaviour
     protected enemyState currentState;
 
     [TagSelector][SerializeField] private string submarineTag;
+    public string SubmarineTag { get { return submarineTag; } }
 
     protected virtual void Start()
     {

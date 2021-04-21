@@ -1,11 +1,14 @@
 using Mirror;
 using UnityEngine;
 
-public class TestingSpawner : MonoBehaviour
+public class BackupPlayerSpawner : MonoBehaviour
 {
     [TagSelector] [SerializeField] private string playerTag;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject networkManager;
+    public GameObject PlayerPrefab { get { return playerPrefab; } }
+    public GameObject NetManager { get { return networkManager; } }
+
     private NetworkManager manager;
 
     // Start is called before the first frame update

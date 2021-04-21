@@ -7,7 +7,10 @@ namespace BelowUs
         [SerializeField] private CameraController controller;
         [SerializeField] private GameObject leaveButton;
         [SerializeField] [TagSelector] private string playerTag;
-        [SerializeField] [TagSelector] private string stationTag;
+        [Tooltip("The tag of the object that the camera should switch to on collision. For example player or station.")]
+        [SerializeField] [TagSelector] private string switchTag;
+        public string PlayerTag { get { return playerTag; } }
+        public string SwitchTag { get { return switchTag; } }
 
         private bool isTaken = false;
 
@@ -16,7 +19,7 @@ namespace BelowUs
             if (!isTaken && collision.collider.CompareTag(playerTag))
             {
                 isTaken = true;
-                controller.SwitchTarget(stationTag);
+                controller.SwitchTarget(switchTag);
             }
         }
 

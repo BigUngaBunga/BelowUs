@@ -6,7 +6,10 @@
         "UnityEditor.TestRunner",
         "ScriptableObjects",
         "UI",
-        "Mirror"
+        "Mirror",
+        "Stations",
+        "Spawners",
+        "NewAssembly"
     ],
     "includePlatforms": [
         "Editor"
