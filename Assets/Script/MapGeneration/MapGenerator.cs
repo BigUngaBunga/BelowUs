@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,12 +25,12 @@ namespace BelowUs
         [Range(0, 5)]
         [SerializeField] private int passagewayRadius;
 
+        private Coroutine coroutine;
         private int openWaterPercentage;
         private int enclaveRemovalSize;
         private const int waterTile = 1;
         private const int wallTile = 0;
         private int[,] noiseMap;
-        private float timeSinceCheck;
         private Random random;
         public Vector2 ExitLocation { get; private set; }
         public Vector2 MapSize { get { return new Vector2(mapWidth, mapHeight); } }
@@ -112,6 +113,8 @@ namespace BelowUs
 
         public void GenerateMap(MapHandler mapHandler, int squareSize)
         {
+            //TODO add coroutines
+
             noiseMap = new int[mapWidth, mapHeight];
             RandomizeMapVariables();
             FillMapWithNoise();
@@ -225,6 +228,7 @@ namespace BelowUs
             rooms[0].isMainRoom = true;
             rooms[0].isAccesibleFromMainRoom = true;
 
+            //coroutine = ConnectAllRooms(rooms);
             ConnectAllRooms(rooms);
         }
 
@@ -275,7 +279,7 @@ namespace BelowUs
             return tiles;
         }
 
-        private void ConnectAllRooms(List<Room> Rooms, bool ForceAccessibilityFromMainRoom = false)
+        private void ConnectAllRooms(List<Room> Rooms, bool ForceAccessibilityFromMainRoom = false) //IEnumerator
         {
             List<Room> unconnectedRooms = new List<Room>();
             List<Room> connectedRooms = new List<Room>();
@@ -290,12 +294,18 @@ namespace BelowUs
                         unconnectedRooms.Add(room);
                 }
                 ConnectRooms(unconnectedRooms, connectedRooms);
+                //yield return new WaitForEndOfFrame();
             }
             else
+            {
                 ConnectRooms(Rooms, Rooms);
+                //yield return new WaitForEndOfFrame();
+            }
 
             if (!ForceAccessibilityFromMainRoom)
                 ConnectAllRooms(Rooms, true);
+
+            //return ;
         }
 
         private void ConnectRooms(List<Room> RoomsA, List<Room> RoomsB)

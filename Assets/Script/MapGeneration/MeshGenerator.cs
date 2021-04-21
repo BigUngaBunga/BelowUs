@@ -22,6 +22,8 @@ namespace BelowUs
 
         public void GenerateMesh(int[,] Map, float SquareSize, int WallTile)
         {
+            //TODO add Coroutines
+
             squareGrid = new SquareGrid(Map, SquareSize, WallTile);
             vertices = new List<Vector3>();
             triangles = new List<int>();
@@ -35,6 +37,7 @@ namespace BelowUs
 
             Mesh mesh = new Mesh();
             meshFilter.mesh = mesh;
+
             mesh.vertices = vertices.ToArray();
             mesh.triangles = triangles.ToArray();
             mesh.RecalculateNormals();
@@ -147,11 +150,12 @@ namespace BelowUs
         private Vector2[] CreateUV(int[,] map, float squareSize)
         {
             Vector2[] uvs = new Vector2[vertices.Count];
+            int divideMapSize = 2;
             for (int i = 0; i < vertices.Count; i++)
             {
-                float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x) * tileAmount;
-                float percentY = Mathf.InverseLerp(-map.GetLength(1) / 2 * squareSize, map.GetLength(1) / 2 * squareSize, vertices[i].y) * tileAmount;
-                uvs[i] = new Vector2(percentX, percentY);
+                float fillPercentX = Mathf.InverseLerp(map.GetLength(0) / divideMapSize * squareSize, -map.GetLength(0) / divideMapSize * squareSize, vertices[i].x);
+                float fillPercentY = Mathf.InverseLerp(map.GetLength(1) / divideMapSize * squareSize, -map.GetLength(1) / divideMapSize * squareSize, vertices[i].y);
+                uvs[i] = new Vector2(fillPercentX, fillPercentY) * tileAmount;
             }
 
             return uvs;
