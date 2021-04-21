@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class StationCollisionScript : MonoBehaviour
+namespace BelowUs
 {
-    private Station station;
-
-    private void Awake()
+    public class StationCollisionScript : MonoBehaviour
     {
-        station = GetComponentInParent<Station>();
+        private Station station;
+
+        private void Awake()
+        {
+            station = GetComponentInParent<Station>();
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            station.CheckCollision(collision);
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        station.CheckCollision(collision);
-    }
 }

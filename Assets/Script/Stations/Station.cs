@@ -1,26 +1,31 @@
 using UnityEngine;
 
-public class Station : MonoBehaviour
+namespace BelowUs
 {
-    [SerializeField] private CameraController controller;
-    [SerializeField] private GameObject leaveButton;
-    [SerializeField] [TagSelector] private string playerTag;
-    [SerializeField] [TagSelector] private string stationTag;
-
-    private bool isTaken = false;
-
-    public void CheckCollision(Collision2D collision)
+    public class Station : MonoBehaviour
     {
-        if (!isTaken && collision.collider.CompareTag(playerTag))
+        [SerializeField] private CameraController controller;
+        [SerializeField] private GameObject leaveButton;
+        [SerializeField] [TagSelector] private string playerTag;
+        [SerializeField] [TagSelector] private string stationTag;
+
+        private bool isTaken = false;
+
+        public void CheckCollision(Collision2D collision)
         {
-            isTaken = true;
-            controller.SwitchTarget(stationTag);
+            if (!isTaken && collision.collider.CompareTag(playerTag))
+            {
+                isTaken = true;
+                controller.SwitchTarget(stationTag);
+            }
+        }
+
+        public void Leave()
+        {
+            isTaken = false;
+            controller.SwitchTarget(playerTag);
         }
     }
-
-    public void Leave()
-    {
-        isTaken = false;
-        controller.SwitchTarget(playerTag);
-    }
 }
+
+

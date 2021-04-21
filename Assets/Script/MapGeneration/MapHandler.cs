@@ -20,7 +20,6 @@ namespace BelowUs
         public void CreateNewMap()//Vector2 startPosition
         {
             Vector2 startPosition = CalculateNextPosition();
-            Debug.Log(startPosition);
             GameObject map = Instantiate(mapPrefab, new Vector3(startPosition.x, startPosition.y), Quaternion.identity);
             map.GetComponent<MapGenerator>().GenerateMap(this, squareSize);
             maps.Add(map);
