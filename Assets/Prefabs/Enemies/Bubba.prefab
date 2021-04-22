@@ -654,12 +654,12 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   moveSpeedPatrolling: 5
-  moveSpeedChasing: 7
-  movementSpeed: 1000
+  moveSpeedChasing: 1000
   patrolRange: 5
   chasingRange: 30
   attackingRange: 50
   health: 100
+  collisionDamage: 50
   submarineTag: Submarine
 --- !u!50 &6450413785958905961
 Rigidbody2D:

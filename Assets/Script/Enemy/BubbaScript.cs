@@ -46,7 +46,7 @@ public class BubbaScript : EnemyBase
     protected void UpdateMovementChasing()
     {
         Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
-        Vector2 movement = direction * movementSpeed * Time.deltaTime;
+        Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
         rb.AddForce(movement);
     }    
     protected void UpdateRotationChasing()
@@ -73,11 +73,10 @@ public class BubbaScript : EnemyBase
         transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
     }
 
-
     protected void UpdateMovementPatrolling()
     {
         Vector3 direction = (currentPatrolTarget - transform.position);
-        rb.MovePosition((Vector3)transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
+        rb.MovePosition(transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
 
         if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
         {

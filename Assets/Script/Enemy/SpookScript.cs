@@ -10,7 +10,7 @@ public class SpookScript : EnemyBase
     private Transform firePoint;
     private float timeElapsed = 0;
 
-    [SerializeField] private float timeBetweenShoots = 2;
+    [SerializeField] private float timeBetweenShoots;
     
     protected override void Start()
     {
@@ -51,14 +51,12 @@ public class SpookScript : EnemyBase
                 }
                 break;
         }
-
-
     }
 
     protected void UpdateMovementChasing()
     {
         Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
-        Vector2 movement = direction * movementSpeed * Time.deltaTime;
+        Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
         rb.AddForce(movement);
     }
     protected void UpdateRotationChasing()
@@ -86,7 +84,7 @@ public class SpookScript : EnemyBase
     protected void UpdateMovementPatrolling()
     {
         Vector3 direction = (currentPatrolTarget - transform.position);
-        rb.MovePosition((Vector3)transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
+        rb.MovePosition(transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
 
         if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
         {
@@ -110,8 +108,5 @@ public class SpookScript : EnemyBase
         float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
         firePoint.rotation = (Quaternion.Slerp(firePoint.transform.rotation, rotation, Time.deltaTime * 5f));
-    }
-     
-
-    
+    }      
 }

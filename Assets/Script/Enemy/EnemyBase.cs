@@ -14,8 +14,7 @@ public class EnemyBase : NetworkBehaviour
 
     [SerializeField] protected float moveSpeedPatrolling;
     [SerializeField] protected float moveSpeedChasing;
-    [SerializeField] protected float movementSpeed = 5f;
-    [SerializeField] protected float patrolRange = 5;
+    [SerializeField] protected float patrolRange;
     [SerializeField] protected float chasingRange, attackingRange;
     [SerializeField] protected float health;
     [SerializeField] protected float collisionDamage;

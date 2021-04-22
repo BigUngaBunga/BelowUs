@@ -645,12 +645,12 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   moveSpeedPatrolling: 5
-  moveSpeedChasing: 7
-  movementSpeed: 5
+  moveSpeedChasing: 1000
   patrolRange: 5
   chasingRange: 50
   attackingRange: 30
-  health: 100
+  health: 10000
+  collisionDamage: 10
   submarineTag: Submarine
   timeBetweenShoots: 2
 --- !u!114 &-2898043021246271424
