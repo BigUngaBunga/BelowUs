@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+
 public class BubbaScript : EnemyBase
 {
     protected override void Start()

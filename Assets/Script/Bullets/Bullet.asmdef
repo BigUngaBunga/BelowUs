@@ -1,10 +1,9 @@
 {
-    "name": "NewAssembly",
+    "name": "Bullet",
     "rootNamespace": "",
     "references": [
         "GUID:3b43d212987018b49ab32aaca7771b2c",
-        "GUID:30817c1a0e6d646d99c048fc403f5979",
-        "GUID:ed4bdf1cf443e71469a84fa3b995368b"
+        "GUID:30817c1a0e6d646d99c048fc403f5979"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
