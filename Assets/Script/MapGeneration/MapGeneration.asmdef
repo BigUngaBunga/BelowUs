@@ -1,0 +1,16 @@
+{
+    "name": "MapGeneration",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a37891b8f7c139a42a19f35963ebab35"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

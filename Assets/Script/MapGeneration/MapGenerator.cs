@@ -9,21 +9,38 @@ namespace BelowUs
 {
     public class MapGenerator : MonoBehaviour
     {
-        [SerializeField] private int mapHeight, mapWidth;
+        [Min(50)]
+        [SerializeField] private int mapHeight;
+
+        [Min(50)]
+        [SerializeField] private int mapWidth;
+
         [SerializeField] private string seed;
         [SerializeReference] private bool useRandomSeed, generateExit;
 
-        [SerializeField] private int maximumOpenWaterPercentage, minimumOpenWaterPercentage;
-        [SerializeField] private int maximumEnclaveRemovalSize, minimumEnclaveRemovalSize;
+        [Range(0, 99)]
+        [SerializeField] private byte minimumOpenWaterPercentage;
+
+        [Range(0, 99)]
+        [SerializeField] private byte maximumOpenWaterPercentage;
+
+        public byte MinimumOpenWaterPercentage { get { return minimumOpenWaterPercentage; } }
+        public byte MaximumOpenWaterPercentage { get { return maximumOpenWaterPercentage; } }
+
+        [SerializeField] private uint minimumEnclaveRemovalSize;
+        [SerializeField] private uint maximumEnclaveRemovalSize;
+
+        public uint MinimumEnclaveRemovalSize { get { return minimumEnclaveRemovalSize; } }
+        public uint MaximumEnclaveRemovalSize { get { return maximumEnclaveRemovalSize; } }
 
         [Range(3, 10)]
-        [SerializeField] private int borderThickness;
+        [SerializeField] private byte borderThickness;
 
         [Range(1, 10)]
-        [SerializeField] private int timesToSmoothMap;
+        [SerializeField] private byte timesToSmoothMap;
 
         [Range(0, 5)]
-        [SerializeField] private int passagewayRadius;
+        [SerializeField] private byte passagewayRadius;
 
         private int openWaterPercentage;
         private int enclaveRemovalSize;
@@ -144,7 +161,7 @@ namespace BelowUs
             random = new Random(seed.GetHashCode());
 
             openWaterPercentage = random.Next(minimumOpenWaterPercentage, maximumOpenWaterPercentage);
-            enclaveRemovalSize = random.Next(minimumEnclaveRemovalSize, maximumEnclaveRemovalSize);
+            enclaveRemovalSize = random.Next((int)minimumEnclaveRemovalSize, (int)maximumEnclaveRemovalSize);
         }
 
         private void FillMapWithNoise()

@@ -60,5 +60,15 @@ namespace Tests
                 Assert.IsNotNull(spawners[0].NetManager, spawnerName + " is missing a NetManagerPrefab!");
             }
         }
+
+        [Test] public void MapTests()
+        {
+            //Checks so that there is one MapHandler in the scene in the scene
+            MapHandler[] mapHandlers = Object.FindObjectsOfType<MapHandler>();
+            Assert.IsTrue(mapHandlers.Length > 0, "There is no map handler in the scene!");
+            Assert.IsTrue(mapHandlers.Length < 2, "There are more than one map handlers in the scene!");
+
+            Assert.IsNotNull(mapHandlers[0].MapPrefab, "The map handler is missing a map prefab!");
+        }
     }
 }

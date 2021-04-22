@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 namespace BelowUs
 {
@@ -9,6 +8,8 @@ namespace BelowUs
     {
         [SerializeField] private SquareGrid squareGrid;
         [SerializeField] private MeshFilter meshFilter;
+
+        public MeshFilter MeshFilter { get { return meshFilter; } }
 
         [Range(1, 20)]
         [SerializeField] private int tileAmount;

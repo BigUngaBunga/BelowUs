@@ -13,13 +13,9 @@ public class EnemyBase : MonoBehaviour
     
     protected string targetName;
     
-    [SerializeField] protected float moveSpeedPatrolling;
-    [SerializeField] protected float moveSpeedChasing;
-    [SerializeField] protected float maxPatrolRange;
-
-    public float MoveSpeedPatrolling { get { return moveSpeedPatrolling; } }
-    public float MoveSpeedChasing { get { return moveSpeedChasing; } }
-    public float MaxPatrolRange { get { return maxPatrolRange; } }
+    [SerializeField][Min(10)] protected float moveSpeedPatrolling;
+    [SerializeField][Min(10)] protected float moveSpeedChasing;
+    [SerializeField][Min(1)] protected float maxPatrolRange;
 
     protected float currentMoveSpeed = 0;
     [SerializeField]protected GameObject targetGameObject;

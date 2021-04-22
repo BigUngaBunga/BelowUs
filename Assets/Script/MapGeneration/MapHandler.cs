@@ -9,6 +9,7 @@ namespace BelowUs
         private List<GameObject> maps;
         private int squareSize;
         [SerializeReference] private GameObject mapPrefab;
+        public GameObject MapPrefab { get { return mapPrefab; } }
 
         private void Start()
         {

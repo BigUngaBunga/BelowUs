@@ -10,7 +10,8 @@
         "Stations",
         "Spawners",
         "NewAssembly",
-        "Controllers"
+        "Controllers",
+        "MapGeneration"
     ],
     "includePlatforms": [
         "Editor"
