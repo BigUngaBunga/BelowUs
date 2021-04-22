@@ -132,8 +132,10 @@ namespace BelowUs
             return CorutineUtilities.Wait(0.005f, text);
         }
 
-        public IEnumerator GenerateMap(MapHandler mapHandler, int squareSize)
+        public IEnumerator GenerateMap(MapHandler mapHandler, Vector2 mapSize, int squareSize)
         {
+            mapWidth = (int)mapSize.x;
+            mapHeight = (int)mapSize.y;
             noiseMap = new int[mapWidth, mapHeight];
             RandomizeMapVariables();
             FillMapWithNoise();
@@ -149,9 +151,29 @@ namespace BelowUs
             MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
             yield return StartCoroutine(meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile));
 
-            //TODO fix this
             MapEntranceDetector entranceDetector = GetComponent<MapEntranceDetector>();
             entranceDetector.CreateEntranceDetector(passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
+        }
+
+        public IEnumerator GenerateSeaFloor(MapHandler mapHandler, Vector2 mapSize, int squareSize)
+        {
+            //TODO make entrance triangular, like real sand
+
+            mapWidth = (int)mapSize.x;
+            mapHeight = (int)mapSize.y;
+            noiseMap = new int[mapWidth, mapHeight];
+
+            for (int x = 0; x < noiseMap.GetLength(0); x++)
+                for (int y = 0; y < noiseMap.GetLength(1); y++)
+                    noiseMap[x, y] = wallTile;
+
+            yield return Wait("Filled noise map");
+
+            CreateEntranceAndExit(false);
+            yield return StartCoroutine(ClearPathways());
+
+            MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
+            yield return StartCoroutine(meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile));
         }
 
         private void RandomizeMapVariables()
@@ -216,7 +238,7 @@ namespace BelowUs
             yield return StartCoroutine(ReplaceSmallTileRegion(wallTile));
         }
 
-        private void CreateEntranceAndExit()
+        private void CreateEntranceAndExit(bool randomExitPlacement = true)
         {
             int entranceSize = borderThickness - 2;
             int exitDistanceFromCorners = 2 + passagewayRadius;
@@ -226,7 +248,13 @@ namespace BelowUs
 
             if (generateExit)
             {
-                ExitLocation = new Vector2(random.Next(exitDistanceFromCorners, noiseMap.GetLength(0) - exitDistanceFromCorners), 0);
+                if (randomExitPlacement)
+                    ExitLocation = new Vector2(random.Next(exitDistanceFromCorners, noiseMap.GetLength(0) - exitDistanceFromCorners), 0);
+                else
+                {
+                    ExitLocation = new Vector2(noiseMap.GetLength(0) / 2, 0);
+                }
+                    
                 DrawCircle(ExitLocation, entranceSize);
             }
 
@@ -365,7 +393,7 @@ namespace BelowUs
                             }
                         }
 
-                        if (CorutineUtilities.WaitAmountOfTimes(tileIndexA, roomA.edgeTiles.Count, 5))
+                        if (CorutineUtilities.WaitAmountOfTimes(tileIndexA, roomA.edgeTiles.Count, 10))
                             yield return Wait("Finding closest tiles");
                     }
                 }

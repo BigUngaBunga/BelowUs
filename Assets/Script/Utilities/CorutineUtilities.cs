@@ -19,11 +19,12 @@ namespace BelowUs
         {
             //Disabled debugging measure
             //remove "&& textToWrite == "" to reactivate
-            if (textToWrite != "" && textToWrite == "")
+            if (textToWrite != "" )//&& textToWrite == "")
             {
                 float time = TimeInSeconds - timeSinceLastCall;
                 UpdateTimeSinceLastCall();
-                Debug.Log($"{textToWrite} took {time} seconds");
+                if (time > 0.05f)
+                    Debug.Log($"{textToWrite} took {time} seconds");
             }
 
             return new WaitForSeconds(timeToWait);
@@ -31,7 +32,10 @@ namespace BelowUs
 
         public static bool WaitAmountOfTimes(int counter, int total, int timesToPass)
         {
-            return counter % (total / timesToPass) <= 1;
+            if (total / timesToPass > 0)
+                return counter % (total / timesToPass) <= 1;
+
+            return false;
         }
     }
 }
