@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class BubbaScript : EnemyBase
+
+public class SpookScript : EnemyBase
 {
+    private Weapon weapon;
+    private Transform firePoint;
+    private float timeElapsed = 0;
+
+    [SerializeField] private float timeBetweenShoots;
+    
     protected override void Start()
     {
+        weapon = this.GetComponent<Weapon>();
         rb = this.GetComponent<Rigidbody2D>();
-       
+        firePoint = gameObject.transform.Find("FirePoint");        
+        
         CreatePatrolArea();
         SetTarget();
         GetNextPatrolPosition();
@@ -17,7 +26,6 @@ public class BubbaScript : EnemyBase
     [Server]
     protected override void Update()
     {
-
         CheckDistanceToTarget();
 
         switch (currentState)
@@ -25,30 +33,32 @@ public class BubbaScript : EnemyBase
             case enemyState.Patrolling:
                 UpdateRotationPatrolling();
                 UpdateMovementPatrolling();
-                CheckForFlip();                
+                base.CheckForFlip();
                 break;
             case enemyState.Chasing:
                 UpdateRotationChasing();
                 UpdateMovementChasing();
-                CheckForFlip();
+                base.CheckForFlip();
                 break;
             case enemyState.Attacking:
-                UpdateRotationChasing();
-                UpdateMovementChasing();
-                CheckForFlip();
+                UpdateRotationAttacking();
+                UpdateFirePointRotation();
+                timeElapsed += Time.deltaTime;
+                if (timeElapsed >= timeBetweenShoots)
+                {
+                    timeElapsed -= timeBetweenShoots;
+                    weapon.shoot();
+                }
                 break;
         }
     }
 
-    #region chasing
-
-    
     protected void UpdateMovementChasing()
     {
         Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
         Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
         rb.AddForce(movement);
-    }    
+    }
     protected void UpdateRotationChasing()
     {
         Vector2 direction = targetGameObject.transform.position - transform.position;
@@ -57,9 +67,6 @@ public class BubbaScript : EnemyBase
         transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
 
     }
-    #endregion chasing
-
-    #region patrolling
 
     protected void UpdateRotationPatrolling()
     {
@@ -73,6 +80,7 @@ public class BubbaScript : EnemyBase
         transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
     }
 
+
     protected void UpdateMovementPatrolling()
     {
         Vector3 direction = (currentPatrolTarget - transform.position);
@@ -82,7 +90,23 @@ public class BubbaScript : EnemyBase
         {
             base.GetNextPatrolPosition();
         }
-    }    
+    }
 
-    #endregion patrolling   
+    protected void UpdateRotationAttacking()
+    {
+        //Uträkningen av direction är omvänd för att fisken ska rotera 180 grader så att baksidan är roterad mot submarine;
+        Vector2 direction = transform.position - targetGameObject.transform.position;
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
+    }
+
+    protected void UpdateFirePointRotation()
+    {
+        //Används endast så att skoten skjuts i rätt riktning pga av UpdateRotationAttacking
+        Vector2 direction = targetGameObject.transform.position - firePoint.transform.position;
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        firePoint.rotation = (Quaternion.Slerp(firePoint.transform.rotation, rotation, Time.deltaTime * 5f));
+    }      
 }
