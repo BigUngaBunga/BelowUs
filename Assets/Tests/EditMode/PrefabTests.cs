@@ -35,7 +35,12 @@ namespace Tests
 
             //Grabs all the scripts from the enemies
             foreach (string guid in guids)
-                scripts.Add(AssetDatabase.LoadAssetAtPath<EnemyBase>(AssetDatabase.GUIDToAssetPath(guid)).GetComponent<EnemyBase>());
+            {
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));
+                EnemyBase eBase = prefab.GetComponent<EnemyBase>();
+                Assert.IsNotNull(eBase, "The prefab " + prefab.name + " is missing an enemy script or should not be in the enemy prefab folder!");
+                scripts.Add(eBase);
+            }
 
             //Checks so that all the prefabs have the submarinetag defined
             foreach (EnemyBase script in scripts)
@@ -45,22 +50,22 @@ namespace Tests
         [Test]
         public void MapPrefabTests()
         {
-            string[] guids = AssetDatabase.FindAssets("Map", new[] { "Assets/Prefabs" });
+            string[] guids = AssetDatabase.FindAssets("Map", new[] { "Assets/Prefabs/Maps" });
 
             int foundAssets = guids.Length;
-            Assert.IsTrue(foundAssets == 1, "Found more or less than one map asset. Printing the names of all of them!");
-            if (foundAssets > 1)
-                foreach (string gui in guids)
-                    Debug.LogError(AssetDatabase.GUIDToAssetPath(gui));
 
-            string assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
-            MapGenerator mapGen = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath).GetComponent<MapGenerator>();
-            
-            Assert.IsFalse(mapGen.MinimumOpenWaterPercentage > mapGen.MaximumOpenWaterPercentage, "The MinimumOpenWaterPercentage should not be bigger than the MaximumOpenWaterPercentage!");
-            Assert.IsFalse(mapGen.MinimumEnclaveRemovalSize > mapGen.MaximumEnclaveRemovalSize, "The MinimumEnclaveRemovalSize should not be bigger than the MaximumEnclaveRemovalSize!");
+            for (int i = 0; i < foundAssets; i++)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+                GameObject mapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+                MapGenerator mapGen = mapPrefab.GetComponent<MapGenerator>();
 
-            MeshGenerator meshGen = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath).GetComponent<MeshGenerator>();
-            Assert.IsNotNull(meshGen.MeshFilter, "The meshfilter on " + assetPath + " is null!");
+                Assert.IsFalse(mapGen.MinimumOpenWaterPercentage > mapGen.MaximumOpenWaterPercentage, "The MinimumOpenWaterPercentage should not be bigger than the MaximumOpenWaterPercentage!");
+                Assert.IsFalse(mapGen.MinimumEnclaveRemovalSize > mapGen.MaximumEnclaveRemovalSize, "The MinimumEnclaveRemovalSize should not be bigger than the MaximumEnclaveRemovalSize!");
+
+                MeshGenerator meshGen = mapPrefab.GetComponent<MeshGenerator>();
+                Assert.IsNotNull(meshGen.MeshFilter, "The meshfilter on " + assetPath + " is null!");
+            }
         }
 
         private string ZeroText(string objectName, string varName)
