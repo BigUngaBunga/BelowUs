@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace BelowUs
 {
@@ -16,14 +17,17 @@ namespace BelowUs
         private List<int> triangles;
         private List<List<int>> outlines;
         private HashSet<int> checkedVertices;
+        private float timeToWait;
+
+        //DEBUG
+        private float time, lastMeasured;
 
         private Dictionary<int, List<Triangle>> triangleDictionary;
 
 
-        public void GenerateMesh(int[,] Map, float SquareSize, int WallTile)
+        public IEnumerator GenerateMesh(int[,] Map, float SquareSize, int WallTile)
         {
-            //TODO add Coroutines
-
+            timeToWait = 0.01f;
             squareGrid = new SquareGrid(Map, SquareSize, WallTile);
             vertices = new List<Vector3>();
             triangles = new List<int>();
@@ -41,9 +45,10 @@ namespace BelowUs
             mesh.vertices = vertices.ToArray();
             mesh.triangles = triangles.ToArray();
             mesh.RecalculateNormals();
-
             mesh.uv = CreateUV(Map, SquareSize);
-            Generate2DCollider();
+            yield return Wait("Created mesh");
+
+            yield return StartCoroutine(Generate2DCollider());
         }
 
         private void TriangulateSquare(Square square)
@@ -161,7 +166,7 @@ namespace BelowUs
             return uvs;
         }
 
-        private void CalculateMeshOutlines()
+        private IEnumerator CalculateMeshOutlines()
         {
             for (int vertexIndex = 0; vertexIndex < vertices.Count; vertexIndex++)
             {
@@ -180,6 +185,9 @@ namespace BelowUs
                         outlines[outlines.Count - 1].Add(vertexIndex);
                     }
                 }
+
+                if (CorutineUtilities.WaitAmountOfTimes(vertexIndex, vertices.Count, 30))
+                    yield return Wait("Calculating mesh outlines");
             }
         }
 
@@ -228,13 +236,13 @@ namespace BelowUs
             return sharedTriangleCount == 1;
         }
 
-        private void Generate2DCollider()
+        private IEnumerator Generate2DCollider()
         {
             EdgeCollider2D[] currentColliders = gameObject.GetComponents<EdgeCollider2D>();
             for (int i = 0; i < currentColliders.Length; i++)
                 Destroy(currentColliders[i]);
 
-            CalculateMeshOutlines();
+            yield return StartCoroutine(CalculateMeshOutlines());
 
             foreach (List<int> outline in outlines)
             {
@@ -246,6 +254,11 @@ namespace BelowUs
 
                 edgeCollider.points = edgePoints;
             }
+        }
+
+        private WaitForSeconds Wait(string text = "")
+        {
+            return CorutineUtilities.Wait(timeToWait, text);
         }
 
         public struct Triangle
@@ -277,7 +290,6 @@ namespace BelowUs
                 return vertexIndex == vertexIndexA || vertexIndex == vertexIndexB || vertexIndex == vertexIndexC;
             }
         }
-
 
         public class SquareGrid
         {

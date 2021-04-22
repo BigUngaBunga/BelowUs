@@ -16,12 +16,13 @@ namespace BelowUs
             squareSize = 2;
             CreateNewMap();
         }
-        
-        public void CreateNewMap()//Vector2 startPosition
+
+        public void CreateNewMap()
         {
             Vector2 startPosition = CalculateNextPosition();
             GameObject map = Instantiate(mapPrefab, new Vector3(startPosition.x, startPosition.y), Quaternion.identity);
-            map.GetComponent<MapGenerator>().GenerateMap(this, squareSize);
+            IEnumerator coroutine = map.GetComponent<MapGenerator>().GenerateMap(this, squareSize);
+            StartCoroutine(coroutine);
             maps.Add(map);
         }
 
