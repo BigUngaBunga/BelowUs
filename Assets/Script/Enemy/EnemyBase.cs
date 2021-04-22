@@ -22,7 +22,7 @@ public class EnemyBase : NetworkBehaviour
         get { return collisionDamage; }
     }
 
-    protected GameObject targetGameObject;
+    
     
     protected string targetName;
     
