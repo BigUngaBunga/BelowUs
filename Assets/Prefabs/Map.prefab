@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5035d83a48e416f49ab9985eb4be9e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapHeight: 50
+  mapHeight: 60
   mapWidth: 80
   seed: 977240781,556066
   useRandomSeed: 1
@@ -55,7 +55,7 @@ MonoBehaviour:
   minimumOpenWaterPercentage: 47
   maximumEnclaveRemovalSize: 25
   minimumEnclaveRemovalSize: 4
-  borderThickness: 3
+  borderThickness: 5
   timesToSmoothMap: 5
   passagewayRadius: 3
 --- !u!114 &4239500959107569486

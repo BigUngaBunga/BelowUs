@@ -4,21 +4,21 @@ using UnityEngine;
 
 namespace BelowUs
 {
-    public class MapExitDetector : MonoBehaviour
+    public class MapEntranceDetector : MonoBehaviour
     {
-        private bool hasExitedRoom;
+        private bool hasEnteredRoom;
         private MapHandler mapHandler;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.tag.Equals("Submarine") && !hasExitedRoom)
+            if (collision.gameObject.tag.Equals("Submarine") && !hasEnteredRoom)
             {
                 mapHandler.CreateNewMap();
-                hasExitedRoom = true;
+                hasEnteredRoom = true;
             }
         }
 
-        public void CreateExitDetector(Vector2 exitPosition, int passagewayRadius, Vector2 mapSize, int squareSize, MapHandler mapHandler)
+        public void CreateEntranceDetector(int passagewayRadius, Vector2 mapSize, int squareSize, MapHandler mapHandler)
         {
             this.mapHandler = mapHandler;
 
@@ -28,7 +28,7 @@ namespace BelowUs
             BoxCollider2D exitDetector = gameObject.AddComponent<BoxCollider2D>();
             exitDetector.isTrigger = true;
             exitDetector.size = new Vector2(passagewayRadius * 6, passagewayRadius * 2) * squareSize;
-            exitDetector.offset = new Vector2((exitPosition.x - mapSize.x / 2) * squareSize, (-mapSize.y * squareSize + exitDetector.size.y) / 2);
+            exitDetector.offset = new Vector2(0, (mapSize.y * squareSize - exitDetector.size.y) / 2);
         }
     }
 }

@@ -25,7 +25,6 @@ namespace BelowUs
         [Range(0, 5)]
         [SerializeField] private int passagewayRadius;
 
-        private Coroutine coroutine;
         private int openWaterPercentage;
         private int enclaveRemovalSize;
         private const int waterTile = 1;
@@ -111,24 +110,31 @@ namespace BelowUs
             return tileX >= 0 && tileX < mapWidth && tileY >= 0 && tileY < mapHeight;
         }
 
-        public void GenerateMap(MapHandler mapHandler, int squareSize)
+        private WaitForSeconds Wait(string text = "")
         {
-            //TODO add coroutines
+            return CorutineUtilities.Wait(0.005f, text);
+        }
 
+        public IEnumerator GenerateMap(MapHandler mapHandler, int squareSize)
+        {
             noiseMap = new int[mapWidth, mapHeight];
             RandomizeMapVariables();
             FillMapWithNoise();
             AddBorderToNoiseMap(borderThickness);
             SmoothNoiseMap(timesToSmoothMap);
-            RemoveTileEnclaves();
+            yield return Wait("Filled noise map");
+
+            yield return StartCoroutine(RemoveTileEnclaves());
+
             CreateEntranceAndExit();
-            ClearPathways();
+            yield return StartCoroutine(ClearPathways());
 
             MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-            meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile);
+            yield return StartCoroutine(meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile));
 
-            MapExitDetector exitDetector = GetComponent<MapExitDetector>();
-            exitDetector.CreateExitDetector(ExitLocation, passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
+            //TODO fix this
+            MapEntranceDetector entranceDetector = GetComponent<MapEntranceDetector>();
+            entranceDetector.CreateEntranceDetector(passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
         }
 
         private void RandomizeMapVariables()
@@ -169,27 +175,28 @@ namespace BelowUs
             int adjacentWallCount = 0;
             for (int neighbouringX = xPosition - 1; neighbouringX <= xPosition + 1; neighbouringX++)
                 for (int neighbouringY = yPosition - 1; neighbouringY <= yPosition + 1; neighbouringY++)
-                    if (IsInMapRange(neighbouringX, neighbouringY) && (neighbouringX != xPosition || neighbouringY != yPosition))
-                        if (noiseMap[neighbouringX, neighbouringY] == wallTile)
-                            adjacentWallCount++;
+                    if (IsInMapRange(neighbouringX, neighbouringY) && (neighbouringX != xPosition || neighbouringY != yPosition) && noiseMap[neighbouringX, neighbouringY] == wallTile)
+                        adjacentWallCount++;
+
             return adjacentWallCount;
         }
 
-        private void RemoveTileEnclaves()
+        private IEnumerator RemoveTileEnclaves()
         {
-            void ReplaceSmallTileRegion(int tileTypeToRemove)
+            IEnumerator ReplaceSmallTileRegion(int tileTypeToRemove)
             {
                 int replacingTileType = tileTypeToRemove != waterTile ? waterTile : wallTile;
                 List<List<Coordinate>> tileRegions = GetRegion(tileTypeToRemove);
                 foreach (List<Coordinate> tileRegion in tileRegions)
-                {
                     if (tileRegion.Count < enclaveRemovalSize)
                         foreach (Coordinate tile in tileRegion)
+                        {
                             noiseMap[tile.tileX, tile.tileY] = replacingTileType;
-                }
+                            yield return Wait($"Replaced tiles {tile.tileX} {tile.tileY}");
+                        }
             }
-            ReplaceSmallTileRegion(waterTile);
-            ReplaceSmallTileRegion(wallTile);
+            yield return StartCoroutine(ReplaceSmallTileRegion(waterTile));
+            yield return StartCoroutine(ReplaceSmallTileRegion(wallTile));
         }
 
         private void CreateEntranceAndExit()
@@ -216,7 +223,7 @@ namespace BelowUs
                         noiseMap[x, y] = wallTile;
         }
 
-        private void ClearPathways()
+        private IEnumerator ClearPathways()
         {
             List<List<Coordinate>> waterTileRegions = GetRegion(waterTile);
             List<Room> rooms = new List<Room>();
@@ -228,8 +235,7 @@ namespace BelowUs
             rooms[0].isMainRoom = true;
             rooms[0].isAccesibleFromMainRoom = true;
 
-            //coroutine = ConnectAllRooms(rooms);
-            ConnectAllRooms(rooms);
+            yield return StartCoroutine(ConnectAllRooms(rooms));
         }
 
         private List<List<Coordinate>> GetRegion(int tileType)
@@ -268,57 +274,48 @@ namespace BelowUs
 
                 for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++)
                     for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
-                        if (IsInMapRange(x, y) && (x == tile.tileX || y == tile.tileY))
-                            if (flaggedTiles[x, y] == 0 && noiseMap[x, y] == tileType)
-                            {
-                                flaggedTiles[x, y] = 1;
-                                queue.Enqueue(new Coordinate(x, y));
-                            }
+                        if (IsInMapRange(x, y) && (x == tile.tileX || y == tile.tileY) && flaggedTiles[x, y] == 0 && noiseMap[x, y] == tileType)
+                        {
+                            flaggedTiles[x, y] = 1;
+                            queue.Enqueue(new Coordinate(x, y));
+                        }
             }
 
             return tiles;
         }
 
-        private void ConnectAllRooms(List<Room> Rooms, bool ForceAccessibilityFromMainRoom = false) //IEnumerator
+        private IEnumerator ConnectAllRooms(List<Room> rooms, bool ForceAccessibilityFromMainRoom = false) //IEnumerator
         {
             List<Room> unconnectedRooms = new List<Room>();
             List<Room> connectedRooms = new List<Room>();
 
             if (ForceAccessibilityFromMainRoom)
             {
-                foreach (Room room in Rooms)
+                foreach (Room room in rooms)
                 {
                     if (room.isAccesibleFromMainRoom)
                         connectedRooms.Add(room);
                     else
                         unconnectedRooms.Add(room);
                 }
-                ConnectRooms(unconnectedRooms, connectedRooms);
-                //yield return new WaitForEndOfFrame();
+                yield return StartCoroutine(ConnectRooms(unconnectedRooms, connectedRooms));
             }
             else
-            {
-                ConnectRooms(Rooms, Rooms);
-                //yield return new WaitForEndOfFrame();
-            }
+                yield return StartCoroutine(ConnectRooms(rooms, rooms));
 
             if (!ForceAccessibilityFromMainRoom)
-                ConnectAllRooms(Rooms, true);
-
-            //return ;
+                yield return StartCoroutine(ConnectAllRooms(rooms, true));
         }
 
-        private void ConnectRooms(List<Room> RoomsA, List<Room> RoomsB)
+        private IEnumerator ConnectRooms(List<Room> roomsA, List<Room> roomsB)
         {
-            int closestDistance = 0;
-            Coordinate bestTileA = new Coordinate();
-            Coordinate bestTileB = new Coordinate();
-            Room bestRoomA = null;
-            Room bestRoomB = null;
             bool possibleConnectionEstablished = false;
-            bool isForcingStartAccesibility = !RoomsA.Equals(RoomsB);
+            bool isForcingStartAccesibility = !roomsA.Equals(roomsB);
+            Room bestRoomA = null, bestRoomB = null;
+            Coordinate bestTileA = new Coordinate(), bestTileB = new Coordinate();
+            int closestDistance = 0;
 
-            foreach (Room roomA in RoomsA)
+            foreach (Room roomA in roomsA)
             {
                 if (!isForcingStartAccesibility)
                 {
@@ -327,12 +324,33 @@ namespace BelowUs
                         continue;
                 }
 
-                foreach (Room roomB in RoomsB)
+                foreach (Room roomB in roomsB)
                 {
                     if (roomA == roomB || roomA.IsConnected(roomB))
                         continue;
 
-                    FindClosestTile(ref bestRoomA, ref bestRoomB, ref bestTileA, ref bestTileB, ref possibleConnectionEstablished, ref closestDistance, roomA, roomB);
+                    for (int tileIndexA = 0; tileIndexA < roomA.edgeTiles.Count; tileIndexA++)
+                    {
+                        for (int tileIndexB = 0; tileIndexB < roomB.edgeTiles.Count; tileIndexB++)
+                        {
+                            Coordinate tileA = roomA.edgeTiles[tileIndexA];
+                            Coordinate tileB = roomB.edgeTiles[tileIndexB];
+                            int distanceBetweenRooms = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
+
+                            if (distanceBetweenRooms < closestDistance || !possibleConnectionEstablished)
+                            {
+                                closestDistance = distanceBetweenRooms;
+                                possibleConnectionEstablished = true;
+                                bestTileA = tileA;
+                                bestTileB = tileB;
+                                bestRoomB = roomA;
+                                bestRoomA = roomB;
+                            }
+                        }
+
+                        if (CorutineUtilities.WaitAmountOfTimes(tileIndexA, roomA.edgeTiles.Count, 5))
+                            yield return Wait("Finding closest tiles");
+                    }
                 }
                 if (possibleConnectionEstablished && !isForcingStartAccesibility)
                     CreatePassage(bestRoomA, bestRoomB, bestTileA, bestTileB);
@@ -341,30 +359,9 @@ namespace BelowUs
             if (possibleConnectionEstablished && isForcingStartAccesibility)
             {
                 CreatePassage(bestRoomA, bestRoomB, bestTileA, bestTileB);
-                List<Room> rooms = RoomsA.Union(RoomsB).ToList();
-                ConnectAllRooms(rooms, true);
+                List<Room> rooms = roomsA.Union(roomsB).ToList();
+                yield return StartCoroutine(ConnectAllRooms(rooms, true));
             }
-        }
-
-        private void FindClosestTile(ref Room BestRoomA, ref Room BestRoomB, ref Coordinate BestTileA, ref Coordinate BestTileB, ref bool Connection, ref int ClosestDistance, Room RoomA, Room RoomB)
-        {
-            for (int tileIndexA = 0; tileIndexA < RoomA.edgeTiles.Count; tileIndexA++)
-                for (int tileIndexB = 0; tileIndexB < RoomB.edgeTiles.Count; tileIndexB++)
-                {
-                    Coordinate tileA = RoomA.edgeTiles[tileIndexA];
-                    Coordinate tileB = RoomB.edgeTiles[tileIndexB];
-                    int distanceBetweenRooms = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
-
-                    if (distanceBetweenRooms < ClosestDistance || !Connection)
-                    {
-                        ClosestDistance = distanceBetweenRooms;
-                        Connection = true;
-                        BestTileA = tileA;
-                        BestTileB = tileB;
-                        BestRoomA = RoomA;
-                        BestRoomB = RoomB;
-                    }
-                }
         }
 
         private void CreatePassage(Room RoomA, Room RoomB, Coordinate TileA, Coordinate TileB)
