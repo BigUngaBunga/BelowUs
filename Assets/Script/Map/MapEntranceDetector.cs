@@ -13,7 +13,7 @@ namespace BelowUs
         {
             if (collision.gameObject.tag.Equals("Submarine") && !hasEnteredRoom)
             {
-                mapHandler.CreateNewMap();
+                mapHandler.CreateReef();
                 hasEnteredRoom = true;
             }
         }
