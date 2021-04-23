@@ -24,12 +24,16 @@ namespace Tests
          */
         [Test] public void StationTests()
         {
-            Station[] stations = Object.FindObjectsOfType<Station>();
-            foreach (Station station in stations)
+            StationController[] stations = Object.FindObjectsOfType<StationController>();
+            foreach (StationController station in stations)
             {
                 string stationName = station.gameObject.name;
-                Assert.IsFalse(station.PlayerTag == "", stationName + " is missing a PlayerTag!");
-                Assert.IsFalse(station.SwitchTag == "", stationName + " is missing a SwitchTag!");
+                string errorMsg = stationName + " is missing a ";
+                Assert.IsNotNull(station.Controller, errorMsg + "Camera Controller!");
+                Assert.IsNotNull(station.LeaveButton, errorMsg + "Leave Button!");
+
+                Assert.IsFalse(station.PlayerTag == "", errorMsg + "PlayerTag!");
+                Assert.IsFalse(station.SwitchTag == "", errorMsg + "SwitchTag!");
             }
         }
 

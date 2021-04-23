@@ -18,7 +18,6 @@ public class BubbaScript : EnemyBase
     [Server]
     protected override void Update()
     {
-
         CheckDistanceToTarget();
 
         switch (currentState)

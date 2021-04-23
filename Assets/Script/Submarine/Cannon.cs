@@ -24,25 +24,25 @@ namespace BelowUs
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
+        //TODO change to new input system
         private void Update()
         {
-            mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            if(Camera.main != null)
+            {
+                mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                angleRad = Mathf.Atan2(mousePos.y - pos.y, mousePos.x - pos.x);
+                if (angleDeg + minimumRotation <= maximumRotation + subRotation && angleDeg + minimumRotation >= -maximumRotation + subRotation)
+                    transform.rotation = Quaternion.Euler(0, 0, angleDeg + 90);
+            }
+
             pos = transform.position;
-
-            subRotation = (float)((Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI) * 180) + minimumRotation;
-
-            angleRad = Mathf.Atan2(mousePos.y - pos.y, mousePos.x - pos.x);
-
-            angleDeg = (float)((angleRad / Math.PI) * 180);
+            subRotation = (float)(Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI * 180) + minimumRotation;
+            angleDeg = (float)(angleRad / Math.PI * 180);
             if (angleDeg < 0)
                 angleDeg += 360;
 
-
             if (subRotation < 0)
                 subRotation += 360;
-
-            if (angleDeg + minimumRotation <= maximumRotation + subRotation && angleDeg + minimumRotation >= -maximumRotation + subRotation)
-                transform.rotation = Quaternion.Euler(0, 0, angleDeg + 90);
 
             FlipCannon();
 

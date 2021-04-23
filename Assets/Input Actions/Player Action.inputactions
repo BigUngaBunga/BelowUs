@@ -28,6 +28,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Enter Station",
+                    "type": "PassThrough",
+                    "id": "1cb9a67c-d52f-4514-8c20-5fb6a227660f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -140,6 +148,17 @@
                     "action": "Climb Down",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "15deb7cf-069a-43b4-a87c-d974f88cacf8",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Enter Station",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -228,7 +247,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "MenuButton",
+                    "name": "Menu",
                     "type": "PassThrough",
                     "id": "07f9760a-944a-4b13-b67f-ac177e764d74",
                     "expectedControlType": "Button",
@@ -662,7 +681,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MenuButton",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

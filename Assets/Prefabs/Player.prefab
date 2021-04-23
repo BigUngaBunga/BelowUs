@@ -322,6 +322,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 07f9760a-944a-4b13-b67f-ac177e764d74
     m_ActionName: UI/MenuButton[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4004509393578156942}
+        m_TargetAssemblyTypeName: BelowUs.PlayerCharacterController, Controllers
+        m_MethodName: OnStationClick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1cb9a67c-d52f-4514-8c20-5fb6a227660f
+    m_ActionName: Player/EnterStation[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -339,3 +355,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21186f5a1db26894f926e7f72368f04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1

@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - AllyBullet
   - EnemyBullet
+  - Station
   layers:
   - Default
   - TransparentFX

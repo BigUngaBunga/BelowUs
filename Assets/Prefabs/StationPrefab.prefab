@@ -180,7 +180,6 @@ GameObject:
   - component: {fileID: 2101831432862745881}
   - component: {fileID: 2101831432862745880}
   - component: {fileID: 2101831432862745883}
-  - component: {fileID: 2101831432862745882}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -284,18 +283,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2101831432862745882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2101831432862745878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c483ef1e1696ebd4bbc93cdcecc4ec3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2101831433037438276
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +295,7 @@ GameObject:
   - component: {fileID: 2101831433037438278}
   m_Layer: 0
   m_Name: StationPrefab
-  m_TagString: Untagged
+  m_TagString: Station
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -342,5 +329,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  leaveButton: {fileID: 0}
   playerTag: Player
-  stationTag: Submarine
+  switchTag: 

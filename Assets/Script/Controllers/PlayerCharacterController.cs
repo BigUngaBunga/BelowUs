@@ -29,15 +29,18 @@ namespace BelowUs
         private Vector2 playerSize;
         private Vector2 boxSize;
 
-        private float horizontalInput;
+        [SerializeField] private float horizontalInput;
         private float verticalInput;
+
+        private PlayerInput input;
+        private StationController station;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody2D>();
             playerSize = GetComponent<BoxCollider2D>().size;
             boxSize = new Vector2(playerSize.x, groundBuffer);
-            PlayerInput input = GetComponent<PlayerInput>();
+            input = GetComponent<PlayerInput>();
 
             if (input.uiInputModule == null)
                 input.uiInputModule = FindObjectOfType<InputSystemUIInputModule>();
@@ -65,6 +68,7 @@ namespace BelowUs
         #region Events
         public void OnMove(InputAction.CallbackContext value)
         {
+            Debug.Log("OnMove was called!");
             if (!PauseMenu.IsOpen)
                 horizontalInput = value.ReadValue<Vector2>().x;
         }
@@ -85,7 +89,34 @@ namespace BelowUs
             if (isClimbing && !PauseMenu.IsOpen)
                 verticalInput = -value.ReadValue<float>();
         }
+
+        public void OnStationClick(InputAction.CallbackContext value)
+        {
+            if (!PauseMenu.IsOpen && station != null)
+            {
+                station.Enter(input);
+                input.enabled = false;
+            }
+        }
         #endregion
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.collider.transform.parent == null)
+                return;
+
+            if (collision.collider.transform.parent.CompareTag("Station"))
+                station = collision.collider.transform.parent.GetComponent<StationController>();
+        }
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision.collider.transform.parent == null)
+                return;
+
+            if (collision.collider.transform.parent.CompareTag("Station"))
+                station = null;
+        }
 
         private void HorizontalMovement()
         {

@@ -5,7 +5,7 @@ public class ShipResource : NetworkBehaviour
 {
     #if UNITY_EDITOR
     public string ResourceName = "";
-#endif
+    #endif
 
     [SyncVar] private float currentValue;
     public float CurrentValue { get { return currentValue; } }
