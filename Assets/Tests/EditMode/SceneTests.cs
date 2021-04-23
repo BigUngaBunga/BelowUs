@@ -34,6 +34,8 @@ namespace Tests
 
                 Assert.IsFalse(station.PlayerTag == "", errorMsg + "PlayerTag!");
                 Assert.IsFalse(station.SwitchTag == "", errorMsg + "SwitchTag!");
+
+                Assert.IsTrue(station.CompareTag("Station"), stationName + " does not have a station tag!");
             }
         }
 
