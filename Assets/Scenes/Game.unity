@@ -1301,7 +1301,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   ResourceName: Depth
-  resetValue: 0
+  resetValue: 1
   startingValue:
     UseConstant: 1
     ConstantValue: 0
@@ -2128,15 +2128,15 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   ResourceName: Oxygen
-  resetValue: 0
+  resetValue: 1
   startingValue:
-    UseConstant: 1
+    UseConstant: 0
     ConstantValue: 0
-    Variable: {fileID: 0}
+    Variable: {fileID: 11400000, guid: b06340f2f26947c43becc9f7e3532492, type: 2}
   maximumValue:
-    UseConstant: 1
+    UseConstant: 0
     ConstantValue: 0
-    Variable: {fileID: 0}
+    Variable: {fileID: 11400000, guid: b06340f2f26947c43becc9f7e3532492, type: 2}
 --- !u!114 &820417562
 MonoBehaviour:
   m_ObjectHideFlags: 0
