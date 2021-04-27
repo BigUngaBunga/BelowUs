@@ -93,10 +93,7 @@ namespace BelowUs
         public void OnStationClick(InputAction.CallbackContext value)
         {
             if (!PauseMenu.IsOpen && station != null)
-            {
                 station.Enter(input);
-                input.enabled = false;
-            }
         }
         #endregion
 

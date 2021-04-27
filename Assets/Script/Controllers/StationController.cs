@@ -23,21 +23,21 @@ namespace BelowUs
         [SerializeField] private GameObject stationPlayerController = null;
         public GameObject StationPlayerController { get { return stationPlayerController; } }
 
-        private PlayerInput controllerPlayerInput = null;
-
-        public void Start()
-        {
-            leaveButton.onClick.AddListener(Leave);
-        }
+        [SerializeField] private PlayerInput controllerPlayerInput = null;
 
         public void Enter(PlayerInput player)
         {
             if(controllerPlayerInput == null)
             {
                 controllerPlayerInput = player;
+
                 stationPlayerController = player.gameObject;
-                controllerPlayerInput.enabled = false;
                 cameraController.SwitchTarget(switchTag);
+                LeaveButton.gameObject.SetActive(true);
+
+                controllerPlayerInput.enabled = false;
+
+                leaveButton.onClick.AddListener(Leave);
             }
         }
 
@@ -47,6 +47,8 @@ namespace BelowUs
             controllerPlayerInput = null;
             stationPlayerController = null;
             cameraController.SwitchTarget(playerTag);
+
+            leaveButton.onClick.RemoveListener(Leave);
         }
     }
 }
