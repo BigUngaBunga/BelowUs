@@ -1,3 +1,4 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,9 @@ namespace BelowUs
         float angularRetardation, lateralRetardation;
         public bool IsFlipped { get; private set; }
 
+        [SerializeField] private StationController subController;
+        
+
         private void Start()
         {
             rb2D = GetComponent<Rigidbody2D>();
@@ -26,9 +30,12 @@ namespace BelowUs
 
         private void FixedUpdate()
         {
-            HandleRotation();
-            HandleLateralMovement();
-            StopCollisionAngularMomentum();
+            if (subController.StationPlayerController != null && ClientScene.localPlayer.gameObject == subController.StationPlayerController)
+            {
+                HandleRotation();
+                HandleLateralMovement();
+                StopCollisionAngularMomentum();
+            }
         }
 
         private void Update()

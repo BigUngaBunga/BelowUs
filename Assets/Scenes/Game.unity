@@ -857,6 +857,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4893775870893433605, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: sceneId
+      value: 286861827
+      objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821933, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_Name
       value: Submarine (1)
@@ -873,6 +877,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: subController
+      value: 
+      objectReference: {fileID: 1182597047}
     - target: {fileID: 5089922518502821935, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_SortingLayer
       value: 1
@@ -1085,6 +1093,10 @@ PrefabInstance:
       propertyPath: leaveButton
       value: 
       objectReference: {fileID: 1851433524}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: cameraController
+      value: 
+      objectReference: {fileID: 519420030}
     - target: {fileID: 2101831433037438279, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -2828,6 +2840,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1182597047 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+  m_PrefabInstance: {fileID: 507069279}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b4decdca493d3647a4fe91a41791787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1221167155 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2460188666261443028, guid: e60ab7d62a2877147b7e6dd07613d66c, type: 3}
@@ -5603,7 +5626,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25.05
+  m_fontSize: 12
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
