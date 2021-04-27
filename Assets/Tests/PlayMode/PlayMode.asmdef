@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "ScriptableObjects",
         "Mirror",
-        "UI"
+        "UI",
+        "Utilities"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

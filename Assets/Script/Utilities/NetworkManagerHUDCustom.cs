@@ -11,7 +11,7 @@ public class NetworkManagerHUDCustom : MonoBehaviour
     [SerializeField] private GameObject cancelBtn;
     [SerializeField] private GameObject cancelConnBtn;
     
-    private NetworkManager manager;
+    private NetworkManager manager = NetworkManager.singleton;
 
     private void Start()
     {
