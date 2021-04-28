@@ -21,9 +21,9 @@ namespace Tests
 
             PlayerCharacterController playerCharCon = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guids[0])).GetComponent<PlayerCharacterController>();
             Assert.IsNotNull(playerCharCon);
-            Assert.IsFalse(playerCharCon.MovementSpeed.Value <= 0, ZeroText(playerCharCon.gameObject.name, "Movement Speed"));
-            Assert.IsFalse(playerCharCon.JumpForce.Value <= 0, ZeroText(playerCharCon.gameObject.name, "Jump Force"));
-            Assert.IsFalse(playerCharCon.ClimbingSpeed.Value <= 0, ZeroText(playerCharCon.gameObject.name, "Climbing Speed"));
+            Assert.IsFalse(playerCharCon.moveSpeed.Value <= 0, ZeroText(playerCharCon.gameObject.name, "Move Speed"));
+            Assert.IsFalse(playerCharCon.jumpForce.Value <= 0, ZeroText(playerCharCon.gameObject.name, "Jump Force"));
+            Assert.IsFalse(playerCharCon.climbSpeed.Value <= 0, ZeroText(playerCharCon.gameObject.name, "Climb Speed"));
         }
 
         [Test]

@@ -1,29 +1,27 @@
 using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 
 namespace BelowUs
 {
     public class PlayerCharacterController : NetworkBehaviour
     {
         [Header("References")]
-        [SerializeField] private FloatReference movementSpeed;
-        [SerializeField] private FloatReference jumpForce;
-        [SerializeField] private FloatReference climbingSpeed;
+        public FloatReference moveSpeed;
+        public FloatReference jumpForce;
+        public FloatReference climbSpeed;
 
-        public FloatReference MovementSpeed => movementSpeed;
-        public FloatReference JumpForce => jumpForce;
-        public FloatReference ClimbingSpeed => climbingSpeed;
+        public InputActionAsset playerActions;
 
-        [SerializeField] private LayerMask ladderMask;
+        public LayerMask ladderMask;
+        public LayerMask groundMask;
+        public LayerMask stationMask;
 
-        [SerializeField] private bool isClimbing;
+        public StationController Station { private get; set; }
 
-        [SerializeField] private LayerMask groundMask;
-        [SerializeField] private float groundBuffer = 0.05f;
+        private bool isClimbing;
+        private readonly float groundBuffer = 0.05f;
 
-        
         private bool jumpRequest;
         private bool grounded;
         private Vector2 boxSize;
@@ -31,26 +29,36 @@ namespace BelowUs
         private Rigidbody2D rb = null;
         private Vector2 playerSize;
 
-        [SerializeField] private LayerMask stationMask;
-        [SerializeField] public StationController Station { private get; set; }
-
-        [SerializeField] private InputActionAsset playerActions;
-
-        private PlayerInput input = null;
         private PlayerAction action;
-        [SerializeField] private float horizontalInput;
+        private float horizontalInput;
         private float verticalInput;
+
+        private PlayerInput input;
+
+        private void Awake()
+        {
+            input = gameObject.GetComponent<PlayerInput>();
+
+            action = new PlayerAction();
+            PlayerAction.PlayerActions playerAction = action.Player;
+            playerAction.Enable();
+
+            playerAction.Move.performed += OnMove;
+            playerAction.JumpClimbUp.performed += OnJump;
+            playerAction.ClimbDown.performed += OnClimbDown;
+            playerAction.EnterStation.performed += OnStationClick;
+
+            //In order to stop climbing when the button is released
+            playerAction.JumpClimbUp.canceled += OnJump;
+            playerAction.ClimbDown.canceled += OnClimbDown;
+
+            rb = GetComponent<Rigidbody2D>();
+            playerSize = GetComponent<BoxCollider2D>().size;
+            boxSize = new Vector2(playerSize.x, groundBuffer);
+        }
 
         private void FixedUpdate()
         {
-            // Exit from update if this is not the local player
-            if (!isLocalPlayer)
-            {
-                Destroy(input);
-                Destroy(this);
-                return;
-            }
-
             HorizontalMovement();
             HandleClimbingBool();
             HandleJumping();
@@ -60,44 +68,6 @@ namespace BelowUs
         private void OnEnable() => action?.Enable();
 
         private void OnDisable() => action?.Disable();
-
-        public override void OnStartAuthority()
-        {
-            base.OnStartAuthority();
-
-            if (isLocalPlayer && input == null)
-            {
-                input = gameObject.AddComponent<PlayerInput>();
-                input.actions = playerActions;
-                input.currentActionMap = playerActions.actionMaps[0];
-                input.defaultControlScheme = "Keyboard&Mouse";
-                input.defaultActionMap = "Player";
-                input.notificationBehavior = PlayerNotifications.InvokeUnityEvents;
-                input.enabled = true;
-
-                input.uiInputModule = FindObjectOfType<InputSystemUIInputModule>();
-
-                action = new PlayerAction();
-                PlayerAction.PlayerActions playerAction = action.Player;
-                playerAction.Enable();
-
-                playerAction.Move.performed += OnMove;
-                playerAction.JumpClimbUp.performed += OnJump;
-                playerAction.ClimbDown.performed += OnClimbDown;
-                playerAction.EnterStation.performed += OnStationClick;
-
-                //In order to stop climbing when the button is released
-                playerAction.JumpClimbUp.canceled += OnJump;
-                playerAction.ClimbDown.canceled += OnClimbDown;
-
-
-                rb = GetComponent<Rigidbody2D>();
-                playerSize = GetComponent<BoxCollider2D>().size;
-                boxSize = new Vector2(playerSize.x, groundBuffer);
-
-                playerActions.Enable();
-            }
-        }
 
         #region Events
         public void OnMove(InputAction.CallbackContext value)
@@ -126,7 +96,7 @@ namespace BelowUs
         public void OnStationClick(InputAction.CallbackContext value)
         {
             if (!rb.IsTouchingLayers(stationMask))
-                return;            
+                return;
 
             if (!PauseMenu.IsOpen && Station != null)
                 Station.Enter(input);
@@ -135,7 +105,7 @@ namespace BelowUs
 
         private void HorizontalMovement()
         {
-            float horizontalMovement = horizontalInput * movementSpeed.Value * Time.deltaTime;
+            float horizontalMovement = horizontalInput * moveSpeed.Value * Time.deltaTime;
             rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
 
             if (!Mathf.Approximately(0, horizontalMovement))
@@ -148,7 +118,7 @@ namespace BelowUs
         {
             if (isClimbing)
             {
-                rb.velocity = new Vector2(rb.velocity.x, verticalInput * climbingSpeed.Value * Time.deltaTime);
+                rb.velocity = new Vector2(rb.velocity.x, verticalInput * climbSpeed.Value * Time.deltaTime);
 
                 if (rb.gravityScale != 0)
                 {

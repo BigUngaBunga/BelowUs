@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1367560864791874607}
   - component: {fileID: -2072581977278357320}
   - component: {fileID: 7975207837187763287}
-  - component: {fileID: 4004509393578156942}
+  - component: {fileID: 2569432028825394515}
   - component: {fileID: -8455052746023811855}
   m_Layer: 0
   m_Name: Player
@@ -171,7 +171,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
---- !u!114 &4004509393578156942
+--- !u!114 &2569432028825394515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,12 +180,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1427143692487560651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9e12f26669693845a7925ce3e4d5bfd, type: 3}
+  m_Script: {fileID: 11500000, guid: 489943943a3043f468a94b229310d8d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  movementSpeed:
+  moveSpeed:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 56e5dfaee12367e4dadb2303188afbe1, type: 2}
@@ -193,26 +193,20 @@ MonoBehaviour:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: b3380c7ad83fa3b408d6fb0ff0b41dcf, type: 2}
-  climbingSpeed:
+  climbSpeed:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 5770db1114ffc984591c4427a5a05d9c, type: 2}
+  playerActions: {fileID: -944628639613478452, guid: 18c511f0feaa5284bb896513fc566ff1, type: 3}
   ladderMask:
     serializedVersion: 2
     m_Bits: 2048
-  isClimbing: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 128
-  groundBuffer: 0.05
-  horizontalInput: 0
-  input: {fileID: 0}
-  rb: {fileID: 0}
-  playerSize: {x: 0, y: 0}
   stationMask:
     serializedVersion: 2
     m_Bits: 4096
-  playerActions: {fileID: -944628639613478452, guid: 18c511f0feaa5284bb896513fc566ff1, type: 3}
 --- !u!114 &-8455052746023811855
 MonoBehaviour:
   m_ObjectHideFlags: 0
