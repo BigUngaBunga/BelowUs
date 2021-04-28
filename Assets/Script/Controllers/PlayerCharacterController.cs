@@ -116,7 +116,7 @@ namespace BelowUs
         {
             if (isClimbing)
             {
-                rb.velocity = new Vector2(rb.velocity.x, verticalInput);
+                rb.velocity = new Vector2(rb.velocity.x, verticalInput * climbingSpeed.Value * Time.deltaTime);
 
                 if (rb.gravityScale != 0)
                 {

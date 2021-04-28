@@ -35,10 +35,9 @@ namespace BelowUs
                 HandleRotation();
                 HandleLateralMovement();
                 StopCollisionAngularMomentum();
+                FlipSubmarine();
             }
         }
-
-        private void Update() => FlipSubmarine();
 
         private void HandleRotation()
         {
