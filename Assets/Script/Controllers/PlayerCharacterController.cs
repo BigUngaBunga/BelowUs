@@ -70,6 +70,8 @@ namespace BelowUs
         #region Events
         public void OnMove(InputAction.CallbackContext value)
         {
+            Debug.Log("Move Clicked!");
+
             if (!PauseMenu.IsOpen)
                 horizontalInput = value.ReadValue<Vector2>().x;
         }

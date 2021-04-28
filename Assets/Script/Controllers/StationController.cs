@@ -47,6 +47,7 @@ namespace BelowUs
             controllerPlayerInput = null;
             stationPlayerController = null;
             cameraController.SwitchTarget(playerTag);
+            LeaveButton.gameObject.SetActive(false);
 
             leaveButton.onClick.RemoveListener(Leave);
         }
