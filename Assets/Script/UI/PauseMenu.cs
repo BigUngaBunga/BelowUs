@@ -17,15 +17,9 @@ public class PauseMenu : MonoBehaviour
         action.Menu.MenuButton.performed += _ => ShowOrHideMenu();
     }
 
-    private void OnEnable()
-    {
-        action?.Enable();
-    }
+    private void OnEnable() => action?.Enable();
 
-    private void OnDisable()
-    {
-        action?.Disable();
-    }
+    private void OnDisable() => action?.Disable();
 
     public void ShowOrHideMenu()
     {
@@ -63,14 +57,8 @@ public class PauseMenu : MonoBehaviour
         if (manager == null)
             manager = NetworkManager.singleton;
 
-        if (manager.numPlayers == 1 && pauseMenu.activeSelf)
-            Time.timeScale = 0;
-        else
-            Time.timeScale = 1;
+        Time.timeScale = manager.numPlayers == 1 && pauseMenu.activeSelf ? 0 : 1;
     }
 
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
+    public void QuitGame() => Application.Quit();
 }

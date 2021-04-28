@@ -1913,7 +1913,6 @@ GameObject:
   - component: {fileID: 2402239325526357365}
   - component: {fileID: 2402239325526357370}
   - component: {fileID: 2402239325526357371}
-  - component: {fileID: 2402239325526357372}
   m_Layer: 5
   m_Name: MainPnl
   m_TagString: Untagged
@@ -1977,20 +1976,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
---- !u!114 &2402239325526357372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2402239325526357369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afb9bbcaa5b06f34599fd11b3f2ec1f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 2402239325526357369}
-  playerTag: 
 --- !u!222 &2402239325680851856
 CanvasRenderer:
   m_ObjectHideFlags: 0

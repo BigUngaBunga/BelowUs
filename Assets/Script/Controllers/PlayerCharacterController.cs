@@ -23,35 +23,33 @@ namespace BelowUs
         [SerializeField] private LayerMask groundMask;
         [SerializeField] private float groundBuffer = 0.05f;
 
-        private Rigidbody2D rb;
+        
         private bool jumpRequest;
         private bool grounded;
-        private Vector2 playerSize;
         private Vector2 boxSize;
 
-        [SerializeField] private float horizontalInput;
-        private float verticalInput;
-
-        private PlayerInput input;
+        private Rigidbody2D rb = null;
+        private Vector2 playerSize;
 
         [SerializeField] private LayerMask stationMask;
         [SerializeField] public StationController Station { private get; set; }
 
-        private void Start()
-        {
-            rb = GetComponent<Rigidbody2D>();
-            playerSize = GetComponent<BoxCollider2D>().size;
-            boxSize = new Vector2(playerSize.x, groundBuffer);
-            input = GetComponent<PlayerInput>();
+        [SerializeField] private InputActionAsset playerActions;
 
-            if (input.uiInputModule == null)
-                input.uiInputModule = FindObjectOfType<InputSystemUIInputModule>();
-        }
+        private PlayerInput input = null;
+        private PlayerAction action;
+        [SerializeField] private float horizontalInput;
+        private float verticalInput;
 
         private void FixedUpdate()
         {
             // Exit from update if this is not the local player
-            if (!isLocalPlayer) return;
+            if (!isLocalPlayer)
+            {
+                Destroy(input);
+                Destroy(this);
+                return;
+            }
 
             HorizontalMovement();
             HandleClimbingBool();
@@ -59,21 +57,53 @@ namespace BelowUs
             HandleClimbing();
         }
 
+        private void OnEnable() => action?.Enable();
+
+        private void OnDisable() => action?.Disable();
+
         public override void OnStartAuthority()
         {
             base.OnStartAuthority();
 
-            PlayerInput playerInput = GetComponent<PlayerInput>();
-            playerInput.enabled = true;
+            if (isLocalPlayer && input == null)
+            {
+                input = gameObject.AddComponent<PlayerInput>();
+                input.actions = playerActions;
+                input.currentActionMap = playerActions.actionMaps[0];
+                input.defaultControlScheme = "Keyboard&Mouse";
+                input.defaultActionMap = "Player";
+                input.notificationBehavior = PlayerNotifications.InvokeUnityEvents;
+                input.enabled = true;
+
+                input.uiInputModule = FindObjectOfType<InputSystemUIInputModule>();
+
+                action = new PlayerAction();
+                PlayerAction.PlayerActions playerAction = action.Player;
+                playerAction.Enable();
+
+                playerAction.Move.performed += OnMove;
+                playerAction.JumpClimbUp.performed += OnJump;
+                playerAction.ClimbDown.performed += OnClimbDown;
+                playerAction.EnterStation.performed += OnStationClick;
+
+                //In order to stop climbing when the button is released
+                playerAction.JumpClimbUp.canceled += OnJump;
+                playerAction.ClimbDown.canceled += OnClimbDown;
+
+
+                rb = GetComponent<Rigidbody2D>();
+                playerSize = GetComponent<BoxCollider2D>().size;
+                boxSize = new Vector2(playerSize.x, groundBuffer);
+
+                playerActions.Enable();
+            }
         }
 
         #region Events
         public void OnMove(InputAction.CallbackContext value)
         {
-            Debug.Log("Move Clicked!");
-
             if (!PauseMenu.IsOpen)
-                horizontalInput = value.ReadValue<Vector2>().x;
+                horizontalInput = value.ReadValue<float>();
         }
 
         public void OnJump(InputAction.CallbackContext value)
@@ -82,7 +112,7 @@ namespace BelowUs
             {
                 if (isClimbing)
                     verticalInput = value.ReadValue<float>();
-                else if (grounded)
+                else if (grounded && value.ReadValue<float>() > 0)
                     jumpRequest = true;
             }
         }
