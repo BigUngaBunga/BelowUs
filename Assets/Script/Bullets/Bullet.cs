@@ -3,26 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class Bullet : MonoBehaviour
+namespace BelowUs
 {
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float velocity = 20;
-    [SerializeField] private float damage;
-    public float Damage
+    public class Bullet : MonoBehaviour
     {
-        get { return damage; }
-    }
+        [SerializeField] private Rigidbody2D rb;
+        [SerializeField] private float velocity = 20;
+        [SerializeField] private float damage;
+        public float Damage
+        {
+            get { return damage; }
+        }
 
-    [Server]
-    private void Start()
-    {
-        rb.velocity = transform.right * velocity;
-        rb.velocity = transform.up * velocity;
-    }
+        [Server]
+        private void Start()
+        {
+            rb.velocity = transform.right * velocity;
+            rb.velocity = transform.up * velocity;
+        }
 
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if(collider.gameObject.tag == "enemy")
-        Destroy(gameObject);
+        private void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (collider.gameObject.tag == "enemy" || collider.gameObject.tag == "submarine")
+                Destroy(this);
+        }
     }
 }
+

@@ -7,21 +7,21 @@ namespace BelowUs
     public class StationController : MonoBehaviour
     {
         [SerializeField] private CameraController cameraController;
-        public CameraController Controller { get { return cameraController; } }
+        public CameraController Controller => cameraController;
 
         [SerializeField] private Button leaveButton;
-        public Button LeaveButton { get { return leaveButton; } }
+        public Button LeaveButton => leaveButton;
 
 
         [SerializeField] [TagSelector] private string playerTag;
         [Tooltip("The tag of the object that the camera should switch to on collision. For example station or weapon.")]
         [SerializeField] [TagSelector] private string switchTag;
-        public string PlayerTag { get { return playerTag; } }
-        public string SwitchTag { get { return switchTag; } }
+        public string PlayerTag => playerTag;
+        public string SwitchTag => switchTag;
 
        
         [SerializeField] private GameObject stationPlayerController = null;
-        public GameObject StationPlayerController { get { return stationPlayerController; } }
+        public GameObject StationPlayerController => stationPlayerController;
 
         [SerializeField] private PlayerInput controllerPlayerInput = null;
 

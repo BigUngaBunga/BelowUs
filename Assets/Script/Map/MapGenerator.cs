@@ -134,6 +134,8 @@ namespace BelowUs
 
         public IEnumerator GenerateMap(MapHandler mapHandler, Vector2 mapSize, int squareSize)
         {
+            yield return Wait("Started counting");
+
             mapWidth = (int)mapSize.x;
             mapHeight = (int)mapSize.y;
             noiseMap = new int[mapWidth, mapHeight];
@@ -157,17 +159,16 @@ namespace BelowUs
 
         public IEnumerator GenerateSeaFloor(MapHandler mapHandler, Vector2 mapSize, int squareSize)
         {
-            //TODO make entrance triangular, like real sand
+            yield return Wait("Started counting");
 
             mapWidth = (int)mapSize.x;
             mapHeight = (int)mapSize.y;
             noiseMap = new int[mapWidth, mapHeight];
-
-            for (int x = 0; x < noiseMap.GetLength(0); x++)
-                for (int y = 0; y < noiseMap.GetLength(1); y++)
-                    noiseMap[x, y] = wallTile;
-
+            FillMapWithNoise(false);
             yield return Wait("Filled noise map");
+
+            AddBoxColliders(squareSize);
+            yield return Wait("Added skybox");
 
             CreateEntranceAndExit(false);
             yield return StartCoroutine(ClearPathways());
@@ -186,11 +187,27 @@ namespace BelowUs
             enclaveRemovalSize = random.Next((int)minimumEnclaveRemovalSize, (int)maximumEnclaveRemovalSize);
         }
 
-        private void FillMapWithNoise()
+        private void FillMapWithNoise(bool isReef = true)
         {
-            for (int x = 0; x < mapWidth; x++)
-                for (int y = 0; y < mapHeight; y++)
-                    noiseMap[x, y] = (random.Next(0, 100) >= openWaterPercentage) ? wallTile : waterTile;
+            if (isReef)
+                for (int x = 0; x < mapWidth; x++)
+                    for (int y = 0; y < mapHeight; y++)
+                        noiseMap[x, y] = (random.Next(0, 100) >= openWaterPercentage) ? wallTile : waterTile;
+            else
+            {
+                int coneWidth = passagewayRadius;
+                int halfOfMapWidth = noiseMap.GetLength(0) / 2;
+
+                for (int x = 0; x < noiseMap.GetLength(0); x++)
+                    for (int y = 0; y < noiseMap.GetLength(1); y++)
+                    {
+                        if ((x <= halfOfMapWidth && x > halfOfMapWidth - coneWidth - y * 2) || (x > halfOfMapWidth && x < halfOfMapWidth + coneWidth + y * 2))
+                            noiseMap[x, y] = waterTile;
+                        else
+                            noiseMap[x, y] = wallTile;
+                    }
+            }
+                
         }
 
         //Meant to consolidate the noisemap to larger chunks
@@ -494,6 +511,22 @@ namespace BelowUs
             }
 
             return line;
+        }
+
+        private void AddBoxColliders(int squareSize)
+        {
+            BoxCollider2D rightWall = gameObject.AddComponent<BoxCollider2D>();
+            BoxCollider2D leftWall = gameObject.AddComponent<BoxCollider2D>();
+            BoxCollider2D roof = gameObject.AddComponent<BoxCollider2D>();
+            int mapWidth = noiseMap.GetLength(0) * squareSize;
+            int mapHeigt = noiseMap.GetLength(1) * squareSize;
+
+            rightWall.size = leftWall.size = new Vector2(2, mapHeigt);
+            roof.size = new Vector2(mapWidth, 2);
+
+            rightWall.offset = new Vector2(mapWidth / 2, mapHeigt - squareSize);
+            leftWall.offset = new Vector2(-mapWidth / 2, mapHeigt - squareSize);
+            roof.offset = new Vector2(0, (mapHeigt - squareSize) * 3/2f);
         }
     }
 }

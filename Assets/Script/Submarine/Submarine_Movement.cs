@@ -38,10 +38,7 @@ namespace BelowUs
             }
         }
 
-        private void Update()
-        {
-            FlipSubmarine();
-        }
+        private void Update() => FlipSubmarine();
 
         private void HandleRotation()
         {
@@ -77,9 +74,6 @@ namespace BelowUs
             }
         }
 
-        private void StopCollisionAngularMomentum()
-        {
-            rb2D.angularVelocity = Mathf.Lerp(rb2D.angularVelocity, 0, angularRetardation);
-        }
+        private void StopCollisionAngularMomentum() => rb2D.angularVelocity = Mathf.Lerp(rb2D.angularVelocity, 0, angularRetardation);
     }
 }

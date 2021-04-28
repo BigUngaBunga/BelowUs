@@ -7,19 +7,16 @@ namespace BelowUs
 {
     public static class CorutineUtilities
     {
-        private static float timeSinceLastCall; 
-        public static float TimeInSeconds { get { return DateTime.Now.Second + DateTime.Now.Millisecond / 1000f; } }
+        private static float timeSinceLastCall;
+        public static float TimeInSeconds => DateTime.Now.Second + (DateTime.Now.Millisecond / 1000f);
 
-        public static void UpdateTimeSinceLastCall()
-        {
-            timeSinceLastCall = TimeInSeconds;
-        }
+        public static void UpdateTimeSinceLastCall() => timeSinceLastCall = TimeInSeconds;
 
         public static WaitForSeconds Wait(float timeToWait, string textToWrite = "")
         {
             //Disabled debugging measure
             //remove "&& textToWrite == "" to reactivate
-            if (textToWrite != "" )//&& textToWrite == "")
+            if (textToWrite != "" && textToWrite == "")
             {
                 float time = TimeInSeconds - timeSinceLastCall;
                 UpdateTimeSinceLastCall();
