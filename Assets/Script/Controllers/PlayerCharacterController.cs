@@ -12,9 +12,9 @@ namespace BelowUs
         [SerializeField] private FloatReference jumpForce;
         [SerializeField] private FloatReference climbingSpeed;
 
-        public FloatReference MovementSpeed { get { return movementSpeed; } }
-        public FloatReference JumpForce { get { return jumpForce; } }
-        public FloatReference ClimbingSpeed { get { return climbingSpeed; } }
+        public FloatReference MovementSpeed => movementSpeed;
+        public FloatReference JumpForce => jumpForce;
+        public FloatReference ClimbingSpeed => climbingSpeed;
 
         [SerializeField] private LayerMask ladderMask;
 
@@ -33,7 +33,9 @@ namespace BelowUs
         private float verticalInput;
 
         private PlayerInput input;
-        private StationController station;
+
+        [SerializeField] private LayerMask stationMask;
+        [SerializeField] public StationController Station { private get; set; }
 
         private void Start()
         {
@@ -68,7 +70,6 @@ namespace BelowUs
         #region Events
         public void OnMove(InputAction.CallbackContext value)
         {
-            Debug.Log("OnMove was called!");
             if (!PauseMenu.IsOpen)
                 horizontalInput = value.ReadValue<Vector2>().x;
         }
@@ -92,28 +93,13 @@ namespace BelowUs
 
         public void OnStationClick(InputAction.CallbackContext value)
         {
-            if (!PauseMenu.IsOpen && station != null)
-                station.Enter(input);
+            if (!rb.IsTouchingLayers(stationMask))
+                return;            
+
+            if (!PauseMenu.IsOpen && Station != null)
+                Station.Enter(input);
         }
         #endregion
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.collider.transform.parent == null)
-                return;
-
-            if (collision.collider.transform.parent.CompareTag("Station"))
-                station = collision.collider.transform.parent.GetComponent<StationController>();
-        }
-
-        private void OnCollisionExit2D(Collision2D collision)
-        {
-            if (collision.collider.transform.parent == null)
-                return;
-
-            if (collision.collider.transform.parent.CompareTag("Station"))
-                station = null;
-        }
 
         private void HorizontalMovement()
         {
@@ -124,10 +110,7 @@ namespace BelowUs
                 transform.rotation = horizontalMovement > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
         }
 
-        private void HandleClimbingBool()
-        {
-            isClimbing = rb.IsTouchingLayers(ladderMask);
-        }
+        private void HandleClimbingBool() => isClimbing = rb.IsTouchingLayers(ladderMask);
 
         private void HandleClimbing()
         {

@@ -49,6 +49,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -158,6 +159,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   groundBuffer: 0.05
+  horizontalInput: 0
+  stationMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!50 &-2072581977278357320
 Rigidbody2D:
   serializedVersion: 4

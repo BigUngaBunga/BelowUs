@@ -1,0 +1,16 @@
+{
+    "name": "Stations",
+    "rootNamespace": "",
+    "references": [
+        "GUID:13734da6be915c54bb7f452a2fe717e8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
