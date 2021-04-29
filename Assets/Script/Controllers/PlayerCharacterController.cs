@@ -80,10 +80,10 @@ namespace BelowUs
         {
             if (!PauseMenu.IsOpen)
             {
-                if (isClimbing)
-                    verticalInput = value.ReadValue<float>();
-                else if (grounded && value.ReadValue<float>() > 0)
+                if (!isClimbing && grounded && value.ReadValue<float>() > 0)
                     jumpRequest = true;
+                else if (isClimbing || verticalInput > 0)
+                    verticalInput = value.ReadValue<float>();
             }
         }
 
@@ -141,7 +141,7 @@ namespace BelowUs
             }
             else
             {
-                Vector2 boxCenter = (Vector2)transform.position + Vector2.down * (playerSize.y + boxSize.y) * 0.5f;
+                Vector2 boxCenter = (Vector2)transform.position + (Vector2.down * (playerSize.y + boxSize.y) * 0.5f);
                 grounded = Physics2D.OverlapBox(boxCenter, boxSize, 0f, groundMask) != null;
             }
         }
