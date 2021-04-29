@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
 namespace BelowUs
 {
@@ -14,6 +15,11 @@ namespace BelowUs
         private float angleRad, angleDeg, offset, subRotation;
         private float minimumRotation, maximumRotation;
         private bool hasFlippedCannon;
+        private Light light;
+
+        [SerializeField] private StationController cannonController;
+
+        private bool IsOccupied => cannonController.StationPlayerController != null && ClientScene.localPlayer.gameObject == cannonController.StationPlayerController;
 
         private void Start()
         {
@@ -22,7 +28,10 @@ namespace BelowUs
             maximumRotation = 54;
             submarineMovement = GetComponentInParent<Submarine_Movement>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            light = GetComponentInChildren<Light>();
         }
+
+        //TODO make controllable by only player in station
 
         //TODO change to new input system
         private void Update()
@@ -61,8 +70,7 @@ namespace BelowUs
                 hasFlippedCannon = submarineMovement.IsFlipped;
                 spriteRenderer.flipX = hasFlippedCannon;
                 transform.localPosition = new Vector3(-transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
-            }
-                
+            }  
         }
     }
 

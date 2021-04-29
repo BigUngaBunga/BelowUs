@@ -30,7 +30,6 @@ namespace BelowUs
             if(controllerPlayerInput == null)
             {
                 controllerPlayerInput = player;
-
                 stationPlayerController = player.gameObject;
                 cameraController.SwitchTarget(switchTag);
                 LeaveButton.gameObject.SetActive(true);

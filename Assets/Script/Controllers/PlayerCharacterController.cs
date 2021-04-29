@@ -59,10 +59,14 @@ namespace BelowUs
 
         private void FixedUpdate()
         {
-            HorizontalMovement();
-            HandleClimbingBool();
-            HandleJumping();
-            HandleClimbing();
+            if (!IsInStation())
+            {
+                HorizontalMovement();
+                HandleClimbingBool();
+                HandleJumping();
+                HandleClimbing();
+            }
+            
         }
 
         private void OnEnable() => action?.Enable();
@@ -144,6 +148,14 @@ namespace BelowUs
                 Vector2 boxCenter = (Vector2)transform.position + Vector2.down * (playerSize.y + boxSize.y) * 0.5f;
                 grounded = Physics2D.OverlapBox(boxCenter, boxSize, 0f, groundMask) != null;
             }
+        }
+
+        private bool IsInStation()
+        {
+            if (Station != null)
+                return Station.StationPlayerController == gameObject;
+
+            return false;
         }
     }
 
