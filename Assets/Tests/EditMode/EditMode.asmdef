@@ -10,7 +10,8 @@
         "Spawners",
         "NewAssembly",
         "Controllers",
-        "MapGeneration"
+        "MapGeneration",
+        "Player"
     ],
     "includePlatforms": [
         "Editor"

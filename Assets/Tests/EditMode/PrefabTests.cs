@@ -19,11 +19,11 @@ namespace Tests
                 foreach (string gui in guids)
                     Debug.LogError(AssetDatabase.GUIDToAssetPath(gui));
 
-            PlayerCharacterController playerCharCon = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guids[0])).GetComponent<PlayerCharacterController>();
-            Assert.IsNotNull(playerCharCon);
-            Assert.IsFalse(playerCharCon.moveSpeed.Value <= 0, ZeroText(playerCharCon.gameObject.name, "Move Speed"));
-            Assert.IsFalse(playerCharCon.jumpForce.Value <= 0, ZeroText(playerCharCon.gameObject.name, "Jump Force"));
-            Assert.IsFalse(playerCharCon.climbSpeed.Value <= 0, ZeroText(playerCharCon.gameObject.name, "Climb Speed"));
+            PlayerSetup playerSetup = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guids[0])).GetComponent<PlayerSetup>();
+            Assert.IsNotNull(playerSetup);
+            Assert.IsFalse(playerSetup.MoveSpeed.Value <= 0, ZeroText(playerSetup.gameObject.name, "Move Speed"));
+            Assert.IsFalse(playerSetup.JumpForce.Value <= 0, ZeroText(playerSetup.gameObject.name, "Jump Force"));
+            Assert.IsFalse(playerSetup.ClimbSpeed.Value <= 0, ZeroText(playerSetup.gameObject.name, "Climb Speed"));
         }
 
         [Test]
@@ -68,9 +68,6 @@ namespace Tests
             }
         }
 
-        private string ZeroText(string objectName, string varName)
-        {
-            return "The " + objectName + " prefab has zero or lower " + varName + "!";
-        }
+        private string ZeroText(string objectName, string varName) => "The " + objectName + " prefab has zero or lower " + varName + "!";
     }
 }

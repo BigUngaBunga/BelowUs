@@ -18,6 +18,10 @@ namespace BelowUs
         [SerializeField] private LayerMask groundMask;
         [SerializeField] private LayerMask stationMask;
 
+        public FloatReference MoveSpeed => moveSpeed;
+        public FloatReference JumpForce => jumpForce;
+        public FloatReference ClimbSpeed => climbSpeed;
+
         public void Start()
         {
             if (!isLocalPlayer)
