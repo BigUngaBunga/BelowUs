@@ -24,14 +24,14 @@ namespace BelowUs
         [Range(0, 99)]
         [SerializeField] private byte maximumOpenWaterPercentage;
 
-        public byte MinimumOpenWaterPercentage { get { return minimumOpenWaterPercentage; } }
-        public byte MaximumOpenWaterPercentage { get { return maximumOpenWaterPercentage; } }
+        public byte MinimumOpenWaterPercentage => minimumOpenWaterPercentage;
+        public byte MaximumOpenWaterPercentage => maximumOpenWaterPercentage;
 
         [SerializeField] private uint minimumEnclaveRemovalSize;
         [SerializeField] private uint maximumEnclaveRemovalSize;
 
-        public uint MinimumEnclaveRemovalSize { get { return minimumEnclaveRemovalSize; } }
-        public uint MaximumEnclaveRemovalSize { get { return maximumEnclaveRemovalSize; } }
+        public uint MinimumEnclaveRemovalSize => minimumEnclaveRemovalSize;
+        public uint MaximumEnclaveRemovalSize => maximumEnclaveRemovalSize;
 
         [Range(3, 10)]
         [SerializeField] private byte borderThickness;
@@ -49,7 +49,7 @@ namespace BelowUs
         private int[,] noiseMap;
         private Random random;
         public Vector2 ExitLocation { get; private set; }
-        public Vector2 MapSize { get { return new Vector2(mapWidth, mapHeight); } }
+        public Vector2 MapSize => new Vector2(mapWidth, mapHeight);
 
         private struct Coordinate
         {
@@ -96,15 +96,9 @@ namespace BelowUs
                 roomB.connectedRooms.Add(roomA);
             }
 
-            public bool IsConnected(Room otherRoom)
-            {
-                return connectedRooms.Contains(otherRoom);
-            }
+            public bool IsConnected(Room otherRoom) => connectedRooms.Contains(otherRoom);
 
-            public int CompareTo(Room other)
-            {
-                return other.tilesInRoom.CompareTo(tilesInRoom);
-            }
+            public int CompareTo(Room other) => other.tilesInRoom.CompareTo(tilesInRoom);
 
             public void SetAccesibleFromMainRoom()
             {
@@ -116,21 +110,12 @@ namespace BelowUs
                 }
             }
 
-            public bool IsInmapRange(int tileX, int tileY, int[,] map)
-            {
-                return tileX >= 0 && tileX < map.GetLength(0) && tileY >= 0 && tileY < map.GetLength(1);
-            }
+            public bool IsInmapRange(int tileX, int tileY, int[,] map) => tileX >= 0 && tileX < map.GetLength(0) && tileY >= 0 && tileY < map.GetLength(1);
         }
 
-        public bool IsInMapRange(int tileX, int tileY)
-        {
-            return tileX >= 0 && tileX < mapWidth && tileY >= 0 && tileY < mapHeight;
-        }
+        public bool IsInMapRange(int tileX, int tileY) => tileX >= 0 && tileX < mapWidth && tileY >= 0 && tileY < mapHeight;
 
-        private WaitForSeconds Wait(string text = "")
-        {
-            return CorutineUtilities.Wait(0.005f, text);
-        }
+        private WaitForSeconds Wait(string text = "") => CorutineUtilities.Wait(0.005f, text);
 
         public IEnumerator GenerateMap(MapHandler mapHandler, Vector2 mapSize, int squareSize)
         {
@@ -155,6 +140,9 @@ namespace BelowUs
 
             MapEntranceDetector entranceDetector = GetComponent<MapEntranceDetector>();
             entranceDetector.CreateEntranceDetector(passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
+
+            ResourceGenerator resourceGenerator = GetComponent<ResourceGenerator>();
+            yield return StartCoroutine(resourceGenerator.GenerateResources(random, noiseMap, squareSize, waterTile));
         }
 
         public IEnumerator GenerateSeaFloor(MapHandler mapHandler, Vector2 mapSize, int squareSize)
@@ -319,15 +307,15 @@ namespace BelowUs
             return regions;
         }
 
-        private List<Coordinate> GetRegionTiles(int StartX, int StartY)
+        private List<Coordinate> GetRegionTiles(int startX, int startY)
         {
             List<Coordinate> tiles = new List<Coordinate>();
             int[,] flaggedTiles = new int[mapWidth, mapHeight];
-            int tileType = noiseMap[StartX, StartY];
+            int tileType = noiseMap[startX, startY];
 
             Queue<Coordinate> queue = new Queue<Coordinate>();
-            queue.Enqueue(new Coordinate(StartX, StartY));
-            flaggedTiles[StartX, StartY] = 1;
+            queue.Enqueue(new Coordinate(startX, startY));
+            flaggedTiles[startX, startY] = 1;
 
             while (queue.Count > 0)
             {
@@ -346,12 +334,12 @@ namespace BelowUs
             return tiles;
         }
 
-        private IEnumerator ConnectAllRooms(List<Room> rooms, bool ForceAccessibilityFromMainRoom = false) //IEnumerator
+        private IEnumerator ConnectAllRooms(List<Room> rooms, bool forceAccessibilityFromMainRoom = false) //IEnumerator
         {
             List<Room> unconnectedRooms = new List<Room>();
             List<Room> connectedRooms = new List<Room>();
 
-            if (ForceAccessibilityFromMainRoom)
+            if (forceAccessibilityFromMainRoom)
             {
                 foreach (Room room in rooms)
                 {
@@ -365,7 +353,7 @@ namespace BelowUs
             else
                 yield return StartCoroutine(ConnectRooms(rooms, rooms));
 
-            if (!ForceAccessibilityFromMainRoom)
+            if (!forceAccessibilityFromMainRoom)
                 yield return StartCoroutine(ConnectAllRooms(rooms, true));
         }
 
@@ -426,50 +414,50 @@ namespace BelowUs
             }
         }
 
-        private void CreatePassage(Room RoomA, Room RoomB, Coordinate TileA, Coordinate TileB)
+        private void CreatePassage(Room roomA, Room roomB, Coordinate tileA, Coordinate tileB)
         {
-            Room.ConnectRooms(RoomA, RoomB);
-            List<Coordinate> line = GetLine(TileA, TileB);
+            Room.ConnectRooms(roomA, roomB);
+            List<Coordinate> line = GetLine(tileA, tileB);
             foreach (Coordinate point in line)
                 DrawCircle(point, passagewayRadius);
         }
 
-        private void DrawCircle(Coordinate Centre, int Radius)
+        private void DrawCircle(Coordinate centre, int radius)
         {
-            for (int x = -Radius; x < Radius; x++)
-                for (int y = -Radius; y < Radius; y++)
-                    if (x * x + y * y <= Radius * Radius)
+            for (int x = -radius; x < radius; x++)
+                for (int y = -radius; y < radius; y++)
+                    if (x * x + y * y <= radius * radius)
                     {
-                        int drawX = Centre.tileX + x;
-                        int drawY = Centre.tileY + y;
+                        int drawX = centre.tileX + x;
+                        int drawY = centre.tileY + y;
 
                         if (IsInMapRange(drawX, drawY))
                             noiseMap[drawX, drawY] = waterTile;
                     }
         }
 
-        private void DrawCircle(Vector2 Centre, int Radius)
+        private void DrawCircle(Vector2 centre, int radius)
         {
-            for (int x = -Radius; x < Radius; x++)
-                for (int y = -Radius; y < Radius; y++)
-                    if (x * x + y * y <= Radius * Radius)
+            for (int x = -radius; x < radius; x++)
+                for (int y = -radius; y < radius; y++)
+                    if (x * x + y * y <= radius * radius)
                     {
-                        int drawX = (int)Centre.x + x;
-                        int drawY = (int)Centre.y + y;
+                        int drawX = (int)centre.x + x;
+                        int drawY = (int)centre.y + y;
 
                         if (IsInMapRange(drawX, drawY))
                             noiseMap[drawX, drawY] = waterTile;
                     }
         }
 
-        private List<Coordinate> GetLine(Coordinate From, Coordinate To)
+        private List<Coordinate> GetLine(Coordinate from, Coordinate to)
         {
             List<Coordinate> line = new List<Coordinate>();
-            int x = From.tileX;
-            int y = From.tileY;
+            int x = from.tileX;
+            int y = from.tileY;
 
-            int deltaX = To.tileX - From.tileX;
-            int deltaY = To.tileY - From.tileY;
+            int deltaX = to.tileX - from.tileX;
+            int deltaY = to.tileY - from.tileY;
 
             int step = Math.Sign(deltaX);
             int gradientStep = Math.Sign(deltaY);
@@ -518,15 +506,15 @@ namespace BelowUs
             BoxCollider2D rightWall = gameObject.AddComponent<BoxCollider2D>();
             BoxCollider2D leftWall = gameObject.AddComponent<BoxCollider2D>();
             BoxCollider2D roof = gameObject.AddComponent<BoxCollider2D>();
-            int mapWidth = noiseMap.GetLength(0) * squareSize;
-            int mapHeigt = noiseMap.GetLength(1) * squareSize;
+            int width = noiseMap.GetLength(0) * squareSize;
+            int height = noiseMap.GetLength(1) * squareSize;
 
-            rightWall.size = leftWall.size = new Vector2(2, mapHeigt);
-            roof.size = new Vector2(mapWidth, 2);
+            rightWall.size = leftWall.size = new Vector2(2, height);
+            roof.size = new Vector2(width, 2);
 
-            rightWall.offset = new Vector2(mapWidth / 2, mapHeigt - squareSize);
-            leftWall.offset = new Vector2(-mapWidth / 2, mapHeigt - squareSize);
-            roof.offset = new Vector2(0, (mapHeigt - squareSize) * 3/2f);
+            rightWall.offset = new Vector2(width / 2, height - squareSize);
+            leftWall.offset = new Vector2(-width / 2, height - squareSize);
+            roof.offset = new Vector2(0, (height - squareSize) * 3/2f);
         }
     }
 }

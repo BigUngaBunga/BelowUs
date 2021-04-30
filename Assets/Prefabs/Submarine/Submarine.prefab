@@ -382,8 +382,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1373120623
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 40f37d4ddc0f0694f8bc7e9a2c67717f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -408,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53b8aabe30f3cbe4d9fab1e94f1f564e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cannonController: {fileID: 0}
 --- !u!1 &8905952242596213076
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,15 +519,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8336949979966097797, guid: db053a4e34e5eb84ead1975d67c0cbab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.94
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8336949979966097797, guid: db053a4e34e5eb84ead1975d67c0cbab, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.33
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8336949979966097797, guid: db053a4e34e5eb84ead1975d67c0cbab, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8336949979966097797, guid: db053a4e34e5eb84ead1975d67c0cbab, type: 3}
       propertyPath: m_LocalRotation.w

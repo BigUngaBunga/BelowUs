@@ -13,7 +13,7 @@ namespace BelowUs
         [SerializeReference] private GameObject mapPrefab;
         [SerializeReference] private GameObject seaFloorPrefab;
 
-        public GameObject MapPrefab { get { return mapPrefab; } }
+        public GameObject MapPrefab => mapPrefab;
 
         private void Start()
         {

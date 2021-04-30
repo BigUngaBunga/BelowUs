@@ -131,7 +131,11 @@ namespace BelowUs
                 }
             }
             else
+            {
                 rb.gravityScale = 1;
+                verticalInput = 0;
+            }
+                
         }
 
         private void HandleJumping()

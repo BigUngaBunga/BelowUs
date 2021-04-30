@@ -15,10 +15,9 @@ namespace BelowUs
         private float angleRad, angleDeg, offset, subRotation;
         private float minimumRotation, maximumRotation;
         private bool hasFlippedCannon;
-        private Light light;
+        private new Light light;
 
         [SerializeField] private StationController cannonController;
-
         private bool IsOccupied => cannonController.StationPlayerController != null && ClientScene.localPlayer.gameObject == cannonController.StationPlayerController;
 
         private void Start()
@@ -36,6 +35,11 @@ namespace BelowUs
         //TODO change to new input system
         private void Update()
         {
+            if (IsOccupied)
+                light.intensity = 1;
+            else
+                light.intensity = 0;
+
             if(Camera.main != null)
             {
                 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -54,13 +58,6 @@ namespace BelowUs
                 subRotation += 360;
 
             FlipCannon();
-
-            /* Need new input system
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                //pos = new Vector3(pos.x, pos.y, -1);
-            }
-            */
         }
 
         private void FlipCannon()
