@@ -1,6 +1,4 @@
 using Mirror;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BelowUs
@@ -13,6 +11,7 @@ namespace BelowUs
         private float submarineRotationSpeed;
         float angularRetardation, lateralRetardation;
         public bool IsFlipped { get; private set; }
+        private bool MoveSubmarine => subController.StationPlayerController != null && ClientScene.localPlayer.gameObject == subController.StationPlayerController;
 
         [SerializeField] private StationController subController;
         
@@ -30,13 +29,18 @@ namespace BelowUs
 
         private void FixedUpdate()
         {
-            if (subController.StationPlayerController != null && ClientScene.localPlayer.gameObject == subController.StationPlayerController)
+            if (MoveSubmarine)
             {
                 HandleRotation();
                 HandleLateralMovement();
                 StopCollisionAngularMomentum();
-                FlipSubmarine();
             }
+        }
+
+        private void Update()
+        {
+            if (MoveSubmarine)
+                FlipSubmarine();
         }
 
         private void HandleRotation()

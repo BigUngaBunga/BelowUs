@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
 namespace BelowUs
 {
@@ -14,6 +15,10 @@ namespace BelowUs
         private float angleRad, angleDeg, offset, subRotation;
         private float minimumRotation, maximumRotation;
         private bool hasFlippedCannon;
+        private new Light light;
+
+        [SerializeField] private StationController cannonController;
+        private bool IsOccupied => cannonController.StationPlayerController != null && ClientScene.localPlayer.gameObject == cannonController.StationPlayerController;
 
         private void Start()
         {
@@ -22,11 +27,19 @@ namespace BelowUs
             maximumRotation = 54;
             submarineMovement = GetComponentInParent<Submarine_Movement>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            light = GetComponentInChildren<Light>();
         }
+
+        //TODO make controllable by only player in station
 
         //TODO change to new input system
         private void Update()
         {
+            if (IsOccupied)
+                light.intensity = 1;
+            else
+                light.intensity = 0;
+
             if(Camera.main != null)
             {
                 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -45,13 +58,6 @@ namespace BelowUs
                 subRotation += 360;
 
             FlipCannon();
-
-            /* Need new input system
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                //pos = new Vector3(pos.x, pos.y, -1);
-            }
-            */
         }
 
         private void FlipCannon()
@@ -61,8 +67,7 @@ namespace BelowUs
                 hasFlippedCannon = submarineMovement.IsFlipped;
                 spriteRenderer.flipX = hasFlippedCannon;
                 transform.localPosition = new Vector3(-transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
-            }
-                
+            }  
         }
     }
 

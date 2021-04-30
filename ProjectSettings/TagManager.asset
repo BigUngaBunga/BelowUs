@@ -9,6 +9,7 @@ TagManager:
   - AllyBullet
   - EnemyBullet
   - Station
+  - Resource
   layers:
   - Default
   - TransparentFX
@@ -16,11 +17,11 @@ TagManager:
   - 
   - Water
   - UI
+  - 
+  - 
   - Wall
   - Ground
   - Ceiling
-  - 
-  - 
   - Ladder
   - Station
   - 

@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 4239500959107569484}
   - component: {fileID: 4239500959107569486}
   - component: {fileID: 4239500959107569487}
+  - component: {fileID: 7605401654731769274}
   m_Layer: 0
-  m_Name: Map
+  m_Name: Reef
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,10 +52,10 @@ MonoBehaviour:
   seed: 977240781,556066
   useRandomSeed: 1
   generateExit: 1
-  maximumOpenWaterPercentage: 54
   minimumOpenWaterPercentage: 47
-  maximumEnclaveRemovalSize: 25
+  maximumOpenWaterPercentage: 54
   minimumEnclaveRemovalSize: 4
+  maximumEnclaveRemovalSize: 25
   borderThickness: 5
   timesToSmoothMap: 5
   passagewayRadius: 3
@@ -84,6 +85,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af719f7eac859743b29bf045d76f058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7605401654731769274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4239500959107569483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c35456f06beaf943a843828ce9e57dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfResourcesToGenerate: 5
+  goldPrefab: {fileID: 1966099942334214616, guid: b95dbacb7124b5541b92e3dd2a70ba2d, type: 3}
+  scrapPrefab: {fileID: 3292386035804436195, guid: 0c9feee6bd8327849bf708cb81f2913b, type: 3}
 --- !u!1 &4239500959780368494
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,6 +151,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
