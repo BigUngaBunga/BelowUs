@@ -1,54 +1,49 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Mirror;
 
 namespace BelowUs
 {
     public class StationController : MonoBehaviour
     {
-        [SerializeField] private CameraController cameraController;
+        [SerializeField] protected CameraController cameraController;
         public CameraController Controller => cameraController;
 
-        [SerializeField] private Button leaveButton;
+        [SerializeField] protected Button leaveButton;
         public Button LeaveButton => leaveButton;
 
-        [SerializeField] [TagSelector] private string playerTag;
+        [SerializeField] [TagSelector] protected string playerTag;
         [Tooltip("The tag of the object that the camera should switch to on collision. For example station or weapon.")]
-        [SerializeField] [TagSelector] private string switchTag;
+        [SerializeField] [TagSelector] protected string switchTag;
         public string PlayerTag => playerTag;
         public string SwitchTag => switchTag;
        
-        [SerializeField] private GameObject stationPlayerController = null;
+        [SerializeField] protected GameObject stationPlayerController = null;
         public GameObject StationPlayerController => stationPlayerController;
 
-        [SerializeField] private PlayerInput controllerPlayerInput = null;
-
-        [SerializeField]  private bool isOccupied;
-        [SerializeField] private bool isAGenerator;
+        [SerializeField] protected PlayerInput controllerPlayerInput = null;
+        [SerializeField] protected bool isOccupied;
 
 
         public void Enter(PlayerInput player)
         {
-            if(!isOccupied && controllerPlayerInput == null)
-            {
-                controllerPlayerInput = player;
-                stationPlayerController = player.gameObject;
-                LeaveButton.gameObject.SetActive(true);
-                controllerPlayerInput.enabled = false;
-                isOccupied = true;
-                leaveButton.onClick.AddListener(Leave);
-
-                if (!isAGenerator)
-                    cameraController.SwitchTarget(switchTag);
-                else
-                {
-                    //TODO display generator UI
-                }
-                
-            }
+            if (!isOccupied && controllerPlayerInput == null)
+                EnterStation(player);
         }
 
-        public void Leave()
+        protected virtual void EnterStation(PlayerInput player)
+        {
+            controllerPlayerInput = player;
+            stationPlayerController = player.gameObject;
+            LeaveButton.gameObject.SetActive(true);
+            controllerPlayerInput.enabled = false;
+            isOccupied = true;
+            leaveButton.onClick.AddListener(Leave);
+            cameraController.SwitchTarget(switchTag);
+        }
+
+        public virtual void Leave()
         {
             controllerPlayerInput.enabled = true;
             controllerPlayerInput = null;

@@ -45,7 +45,7 @@ namespace BelowUs
                 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
                 angleRad = Mathf.Atan2(mousePos.y - pos.y, mousePos.x - pos.x);
                 if (angleDeg + minimumRotation <= maximumRotation + subRotation && angleDeg + minimumRotation >= -maximumRotation + subRotation)
-                    transform.rotation = Quaternion.Euler(0, 0, angleDeg + 90);
+                    transform.rotation = Quaternion.Euler(0, 0, angleDeg + offset);
             }
 
             pos = transform.position;

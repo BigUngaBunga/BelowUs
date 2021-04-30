@@ -2,50 +2,37 @@ using Mirror;
 using TMPro;
 using UnityEngine;
 
-public class DisplayFloatNbr : NetworkBehaviour
+
+namespace BelowUs
 {
-    [Header("References")]
-    [SerializeField] private ShipResource Resource;
-    [SerializeField] private GameObject TextObject;
-    [SerializeField] private FloatReference StartUpdateDelay;
 
-    [Header("Options")]
-    [SerializeField] private bool EnableMaximum;
-    [SerializeField] private string Separator = "/";
-
-
-    private TextMeshProUGUI Text;
-
-    private void OnEnable()
+    public class DisplayFloatNbr : NetworkBehaviour
     {
-        Resource.EventResourceChanged += HandleResourceChanged;
-        Invoke(nameof(UpdateBarFill), StartUpdateDelay.Value);
-    }
+        [Header("References")]
+        [SerializeField] private ShipResource resource;
+        [SerializeField] private GameObject textObject;
+        [SerializeField] private FloatReference startUpdateDelay;
 
-    private void OnDisable()
-    {
-        Resource.EventResourceChanged -= HandleResourceChanged;
-    }
+        [Header("Options")]
+        [SerializeField] private bool enableMaximum;
+        [SerializeField] private string separator = "/";
 
-    private void Awake()
-    {
-        Text = (TextMeshProUGUI)TextObject.GetComponent(typeof(TextMeshProUGUI));
-    }
 
-    private void UpdateBarFill()
-    {
-        if (EnableMaximum)
-            Text.text = Resource.CurrentValue + Separator + Resource.maximumValue.Value;
-        else
-            Text.text = Resource.CurrentValue.ToString();
-    }
+        private TextMeshProUGUI text;
 
-    [ClientRpc]
-    public void HandleResourceChanged(float currentValue, float maxValue)
-    {
-        if (EnableMaximum)
-            Text.text = currentValue + Separator + maxValue;
-        else
-            Text.text = currentValue.ToString();
+        private void OnEnable()
+        {
+            resource.EventResourceChanged += HandleResourceChanged;
+            Invoke(nameof(UpdateBarFill), startUpdateDelay.Value);
+        }
+
+        private void OnDisable() => resource.EventResourceChanged -= HandleResourceChanged;
+
+        private void Awake() => text = (TextMeshProUGUI)textObject.GetComponent(typeof(TextMeshProUGUI));
+
+        private void UpdateBarFill() => text.text = enableMaximum ? resource.CurrentValue + separator + resource.maximumValue.Value : resource.CurrentValue.ToString();
+
+        [ClientRpc]
+        public void HandleResourceChanged(float currentValue, float maxValue) => text.text = enableMaximum ? currentValue + separator + maxValue : currentValue.ToString();
     }
 }
