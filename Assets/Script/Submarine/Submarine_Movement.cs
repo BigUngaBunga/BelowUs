@@ -72,7 +72,7 @@ public class Submarine_Movement : MonoBehaviour
         {
             subSpeed += subSpeedChange;
         }
-        if (Input.GetButton("DecreaseSpeed") && subSpeed >= 1)
+        else if(subSpeed >= 1)
         {
             subSpeed -= subSpeedChange;
         }
