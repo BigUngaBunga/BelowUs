@@ -644,13 +644,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  moveSpeedPatrolling: 5
-  moveSpeedChasing: 1000
-  patrolRange: 5
   chasingRange: 50
   attackingRange: 30
   health: 10000
-  collisionDamage: 10
+  collisionDamage: -5
+  moveSpeedPatrolling: 5
+  moveSpeedChasing: 1000
+  maxPatrolRange: 0
+  targetGameObject: {fileID: 0}
   submarineTag: Submarine
   timeBetweenShoots: 2
 --- !u!114 &-2898043021246271424

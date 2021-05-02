@@ -8,7 +8,8 @@ public class BubbaScript : EnemyBase
 {
     protected override void Start()
     {
-        rb = this.GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
+        
        
         CreatePatrolArea();
         SetTarget();

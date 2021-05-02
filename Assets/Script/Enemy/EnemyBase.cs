@@ -21,8 +21,6 @@ public class EnemyBase : NetworkBehaviour
     {
         get { return collisionDamage; }
     }
-
-    
     
     protected string targetName;
     
@@ -32,6 +30,7 @@ public class EnemyBase : NetworkBehaviour
 
     
     [SerializeField]protected GameObject targetGameObject;
+
     protected List<Vector3> patrolPositions = new List<Vector3>();
     protected Vector3 currentPatrolTarget;
     

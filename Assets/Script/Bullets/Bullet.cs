@@ -24,5 +24,7 @@ public class Bullet : MonoBehaviour
     {
         if(collider.gameObject.tag == "enemy")
         Destroy(gameObject);
+        if (collider.gameObject.tag == "Submarine")
+            Destroy(gameObject);
     }
 }
