@@ -31,7 +31,7 @@ public class BackupPlayerSpawner : MonoBehaviour
             }
             catch(SocketException)
             {
-                Destroy(manager);
+                Destroy(manager.gameObject);
                 SceneManager.LoadScene(0);
             }
         }

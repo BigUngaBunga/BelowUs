@@ -13,15 +13,9 @@ public class NetworkManagerHUDCustom : MonoBehaviour
     
     private NetworkManager manager = NetworkManager.singleton;
 
-    private void Start()
-    {
-        manager = NetworkManager.singleton;
-    }
+    private void Start() => manager = NetworkManager.singleton;
 
-    public void HostClicked()
-    {
-        manager.StartHost();
-    }
+    public void HostClicked() => manager.StartHost();
 
     public void Connect()
     {

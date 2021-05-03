@@ -29,7 +29,12 @@ namespace BelowUs
         {
             if(!IsOccupied)
             {
-                stationPlayerController = player;
+                if (!isServer)
+                {
+                    SetStationPlayerController();
+                }
+                else
+                    stationPlayerController = player;
                 LeaveButton.gameObject.SetActive(true);
                 leaveButton.onClick.AddListener(Leave);
 
@@ -48,6 +53,12 @@ namespace BelowUs
             cameraController.SwitchTarget(playerTag);
             LeaveButton.gameObject.SetActive(false);
             leaveButton.onClick.RemoveListener(Leave);
+        }
+
+        [Command]
+        private void SetStationPlayerController()
+        {
+
         }
     }
 }

@@ -20,20 +20,29 @@ namespace BelowUs
         private void Awake()
         {
             InvokeRepeating(nameof(FindPlayer), 0.25f, 0.25f);
-            submarine = GameObject.FindGameObjectWithTag(submarineTag).transform;
+            InvokeRepeating(nameof(FindSubmarine), 0.25f, 0.25f);
         }
 
         private void FindPlayer()
         {
-            if (player == null)
-            {
-                GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
+            GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
 
-                if (playerObj != null)
-                    player = playerObj.transform;
-            }
-            else
+            if (playerObj != null)
+            {
+                player = playerObj.transform;
                 CancelInvoke(nameof(FindPlayer));
+            }
+        }
+
+        private void FindSubmarine()
+        {
+            GameObject submarineObj = GameObject.FindGameObjectWithTag(submarineTag);
+
+            if (submarineObj != null)
+            {
+                submarine = submarineObj.transform;
+                CancelInvoke(nameof(FindSubmarine));
+            }
         }
 
         private void FixedUpdate()
