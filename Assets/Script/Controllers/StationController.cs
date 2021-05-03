@@ -1,10 +1,10 @@
+using Mirror;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace BelowUs
 {
-    public class StationController : MonoBehaviour
+    public class StationController : NetworkBehaviour
     {
         [SerializeField] private CameraController cameraController;
         public CameraController Controller => cameraController;
@@ -18,24 +18,19 @@ namespace BelowUs
         public string PlayerTag => playerTag;
         public string SwitchTag => switchTag;
        
-        [SerializeField] private GameObject stationPlayerController = null;
+        [SerializeField] [SyncVar] private GameObject stationPlayerController = null;
         public GameObject StationPlayerController => stationPlayerController;
 
-        [SerializeField] private PlayerInput controllerPlayerInput = null;
-
-        [SerializeField]  private bool isOccupied;
         [SerializeField] private bool isAGenerator;
 
+        private bool IsOccupied => stationPlayerController != null;
 
-        public void Enter(PlayerInput player)
+        public void Enter(GameObject player)
         {
-            if(!isOccupied && controllerPlayerInput == null)
+            if(!IsOccupied)
             {
-                controllerPlayerInput = player;
-                stationPlayerController = player.gameObject;
+                stationPlayerController = player;
                 LeaveButton.gameObject.SetActive(true);
-                controllerPlayerInput.enabled = false;
-                isOccupied = true;
                 leaveButton.onClick.AddListener(Leave);
 
                 if (!isAGenerator)
@@ -44,21 +39,15 @@ namespace BelowUs
                 {
                     //TODO display generator UI
                 }
-                
             }
         }
 
         public void Leave()
         {
-            controllerPlayerInput.enabled = true;
-            controllerPlayerInput = null;
             stationPlayerController = null;
             cameraController.SwitchTarget(playerTag);
             LeaveButton.gameObject.SetActive(false);
-            isOccupied = false;
             leaveButton.onClick.RemoveListener(Leave);
         }
     }
 }
-
-

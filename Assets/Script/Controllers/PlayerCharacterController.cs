@@ -1,10 +1,9 @@
-using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace BelowUs
 {
-    public class PlayerCharacterController : NetworkBehaviour
+    public class PlayerCharacterController : MonoBehaviour
     {
         [Header("References")]
         public FloatReference moveSpeed;
@@ -15,9 +14,6 @@ namespace BelowUs
 
         public LayerMask ladderMask;
         public LayerMask groundMask;
-        public LayerMask stationMask;
-
-        public StationController Station { private get; set; }
 
         private bool isClimbing;
         private readonly float groundBuffer = 0.05f;
@@ -33,24 +29,25 @@ namespace BelowUs
         private float horizontalInput;
         private float verticalInput;
 
-        private PlayerInput input;
+        public StationController Station { get; set; }
+        private bool IsInStation() => Station != null && Station.StationPlayerController == gameObject;
+
+        private readonly bool debugMovement = false;
 
         private void Awake()
         {
-            input = gameObject.GetComponent<PlayerInput>();
-
             action = new PlayerAction();
             PlayerAction.PlayerActions playerAction = action.Player;
-            playerAction.Enable();
 
             playerAction.Move.performed += OnMove;
             playerAction.JumpClimbUp.performed += OnJump;
             playerAction.ClimbDown.performed += OnClimbDown;
-            playerAction.EnterStation.performed += OnStationClick;
 
             //In order to stop climbing when the button is released
             playerAction.JumpClimbUp.canceled += OnJump;
             playerAction.ClimbDown.canceled += OnClimbDown;
+
+            playerAction.Enable();
 
             rb = GetComponent<Rigidbody2D>();
             playerSize = GetComponent<BoxCollider2D>().size;
@@ -66,7 +63,6 @@ namespace BelowUs
                 HandleJumping();
                 HandleClimbing();
             }
-            
         }
 
         private void OnEnable() => action?.Enable();
@@ -78,6 +74,9 @@ namespace BelowUs
         {
             if (!PauseMenu.IsOpen)
                 horizontalInput = value.ReadValue<float>();
+
+            if (debugMovement)
+                Debug.Log("OnMove Ran! And " + nameof(horizontalInput) + " is: " + horizontalInput);
         }
 
         public void OnJump(InputAction.CallbackContext value)
@@ -95,15 +94,6 @@ namespace BelowUs
         {
             if (isClimbing && !PauseMenu.IsOpen)
                 verticalInput = -value.ReadValue<float>();
-        }
-
-        public void OnStationClick(InputAction.CallbackContext value)
-        {
-            if (!rb.IsTouchingLayers(stationMask))
-                return;
-
-            if (!PauseMenu.IsOpen && Station != null)
-                Station.Enter(input);
         }
         #endregion
 
@@ -153,15 +143,5 @@ namespace BelowUs
                 grounded = Physics2D.OverlapBox(boxCenter, boxSize, 0f, groundMask) != null;
             }
         }
-
-        private bool IsInStation()
-        {
-            if (Station != null)
-                return Station.StationPlayerController == gameObject;
-
-            return false;
-        }
     }
-
 }
-

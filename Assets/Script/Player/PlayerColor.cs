@@ -9,10 +9,7 @@ namespace BelowUs
         [SyncVar(hook = nameof(SetColor))]
         private Color color;
 
-        public void Awake()
-        {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-        }
+        public void Awake() => spriteRenderer = GetComponent<SpriteRenderer>();
 
         public override void OnStartClient()
         {
@@ -20,15 +17,10 @@ namespace BelowUs
             RandomizeColor();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Following mirror syntax")]
-        private void SetColor(Color oldColor, Color newColor)
-        {
-            spriteRenderer.color = newColor;
-        }
+        #pragma warning disable S1172 // Unused method parameters should be removed
+        #pragma warning disable IDE0060 // Remove unused parameter
+        private void SetColor(Color oldColor, Color newColor) => spriteRenderer.color = newColor;
 
-        private void RandomizeColor()
-        {
-            color = new Color(Random.value, Random.value, Random.value);
-        }
+        private void RandomizeColor() => color = new Color(Random.value, Random.value, Random.value);
     }
 }

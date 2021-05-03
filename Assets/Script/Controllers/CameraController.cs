@@ -52,19 +52,13 @@ namespace BelowUs
             }
         }
 
-        private Vector3 CalculateTargetPosition()
-        {
-            if (followPlayer)
-                return player.position + offsetPlayer;
-            else
-                return submarine.position + offsetSubmarine;
-        }
+        private Vector3 CalculateTargetPosition() => followPlayer ? player.position + offsetPlayer : submarine.position + offsetSubmarine;
 
-        public void SwitchTarget(string TargetTag)
+        public void SwitchTarget(string targetTag)
         {
-            if (TargetTag == playerTag)
+            if (targetTag == playerTag)
                 followPlayer = true;
-            else if (TargetTag == submarineTag)
+            else if (targetTag == submarineTag)
                 followPlayer = false;
         }
     }

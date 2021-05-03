@@ -10,7 +10,7 @@ namespace BelowUs
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("Player"))
+            if (collision.gameObject.CompareTag("LocalPlayer"))
                 collision.gameObject.GetComponent<PlayerCharacterController>().Station = controller;
         }
     }
