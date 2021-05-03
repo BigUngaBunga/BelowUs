@@ -5,7 +5,7 @@ namespace BelowUs
 {
     public class CameraController : NetworkBehaviour
     {
-        private Transform player;
+        [SerializeField] private Transform player = null;
         private Transform submarine;
         [SerializeField] private Vector3 offsetPlayer;
         [SerializeField] private Vector3 offsetSubmarine;
@@ -19,27 +19,16 @@ namespace BelowUs
 
         private void Start()
         {
-            InvokeRepeating(nameof(FindPlayer), 0, 0.01f);
+            InvokeRepeating(nameof(FindPlayer), 0, 0.25f);
             submarine = GameObject.FindGameObjectWithTag(submarineTag).transform;
         }
 
         private void FindPlayer()
         {
-            GameObject[] playerGameObjects = GameObject.FindGameObjectsWithTag(playerTag);
-            GameObject playerGameObject = null;
-
-            for (int i = 0; i < playerGameObjects.Length; i++) //Iterates through all players and checks if any of them are the local player
-                if (playerGameObjects[i].GetComponent<NetworkIdentity>().isLocalPlayer)
-                {
-                    playerGameObject = playerGameObjects[i];
-                    break;
-                }
-
-            if (playerGameObject != null)
-            {
-                player = playerGameObject.transform;
+            if (player == null)
+                player = GameObject.FindGameObjectWithTag(playerTag).transform;
+            else
                 CancelInvoke(nameof(FindPlayer));
-            }
         }
 
         private void FixedUpdate()
@@ -62,5 +51,4 @@ namespace BelowUs
                 followPlayer = false;
         }
     }
-
 }

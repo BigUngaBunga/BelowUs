@@ -29,9 +29,9 @@ namespace BelowUs
 
         public override void OnStartAuthority()
         {
-            base.OnStartAuthority();
-
             tag = "LocalPlayer";
+
+            base.OnStartAuthority();
 
             AddPlayerInput();
             AddPlayerCharacterController();

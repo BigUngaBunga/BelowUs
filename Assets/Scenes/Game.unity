@@ -768,6 +768,10 @@ PrefabInstance:
       value: CannonControllerStation
       objectReference: {fileID: 0}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: playerTag
+      value: LocalPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: switchTag
       value: Submarine
       objectReference: {fileID: 0}
@@ -1255,6 +1259,10 @@ PrefabInstance:
       value: SubControllerStation
       objectReference: {fileID: 0}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: playerTag
+      value: LocalPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: switchTag
       value: Submarine
       objectReference: {fileID: 0}
@@ -1364,11 +1372,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  player: {fileID: 0}
   offsetPlayer: {x: 0, y: 0, z: -90}
   offsetSubmarine: {x: 0, y: 0, z: -10}
   followPlayer: 1
   smoothFactor: 16
-  playerTag: Player
+  playerTag: LocalPlayer
   submarineTag: Submarine
 --- !u!20 &519420031
 Camera:
@@ -2107,6 +2116,10 @@ PrefabInstance:
     - target: {fileID: 2101831433037438276, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: m_Name
       value: StationPrefab (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: playerTag
+      value: LocalPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: switchTag
@@ -3737,6 +3750,10 @@ PrefabInstance:
       value: FloodlightControllerStation
       objectReference: {fileID: 0}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: playerTag
+      value: LocalPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: switchTag
       value: Submarine
       objectReference: {fileID: 0}
@@ -4233,6 +4250,10 @@ PrefabInstance:
     - target: {fileID: 2101831433037438276, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: m_Name
       value: OxygenStation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: playerTag
+      value: LocalPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: switchTag
@@ -5422,19 +5443,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1851433525}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_TargetAssemblyTypeName: CameraController, Controllers
-        m_MethodName: SwitchTarget
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Submarine
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1851433525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5635,6 +5644,10 @@ PrefabInstance:
     - target: {fileID: 2101831433037438276, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: m_Name
       value: StationPrefab (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: playerTag
+      value: LocalPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: switchTag
@@ -6395,7 +6408,7 @@ PrefabInstance:
       objectReference: {fileID: 2119348617}
     - target: {fileID: 2460188666261443028, guid: e60ab7d62a2877147b7e6dd07613d66c, type: 3}
       propertyPath: playerTag
-      value: Player
+      value: LocalPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 2460188666261443028, guid: e60ab7d62a2877147b7e6dd07613d66c, type: 3}
       propertyPath: useHotkey
