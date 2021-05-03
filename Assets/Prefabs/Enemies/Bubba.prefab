@@ -43,6 +43,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -297,6 +298,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -556,6 +558,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -768,13 +771,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  chasingRange: 30
-  attackingRange: 50
+  chasingRange: 70
+  attackingRange: 30
   health: 100
-  collisionDamage: -5
-  moveSpeedPatrolling: 5
-  moveSpeedChasing: 1000
-  maxPatrolRange: 0
+  collisionDamage: -10
+  moveSpeedPatrolling: 10
+  moveSpeedChasing: 10
+  maxPatrolRange: 100
   targetGameObject: {fileID: 0}
   submarineTag: Submarine
 --- !u!50 &6450413785958905961

@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class SubmarineDamage : NetworkBehaviour
+namespace BelowUs
 {
-    private ShipResource hullHealth;
-
-    private void Start()
+    public class SubmarineDamage : NetworkBehaviour
     {
-        hullHealth = GameObject.Find("Hull Health").GetComponent<ShipResource>();
-    }
+        private ShipResource hullHealth;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "EnemyBullet")
+        private void Start()
+        {
+            hullHealth = GameObject.Find("Hull Health").GetComponent<ShipResource>();
+        }
 
-            hullHealth.ApplyChange(collision.gameObject.GetComponent<Bullet>().Damage);
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.tag == "EnemyBullet")
 
-        else if (collision.tag == "Enemy")
+                hullHealth.ApplyChange(collision.gameObject.GetComponent<Bullet>().Damage);
 
-            hullHealth.ApplyChange(collision.gameObject.GetComponentInParent<EnemyBase>().CollisionDamage);
+            else if (collision.tag == "Enemy")
+
+                hullHealth.ApplyChange(collision.gameObject.GetComponentInParent<EnemyBase>().CollisionDamage);
+        }
     }
 }
