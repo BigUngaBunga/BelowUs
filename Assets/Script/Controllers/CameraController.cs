@@ -17,16 +17,21 @@ namespace BelowUs
         [TagSelector] [SerializeField] private string playerTag;
         [TagSelector] [SerializeField] private string submarineTag;
 
-        private void Start()
+        private void Awake()
         {
-            InvokeRepeating(nameof(FindPlayer), 0, 0.25f);
+            InvokeRepeating(nameof(FindPlayer), 0.25f, 0.25f);
             submarine = GameObject.FindGameObjectWithTag(submarineTag).transform;
         }
 
         private void FindPlayer()
         {
             if (player == null)
-                player = GameObject.FindGameObjectWithTag(playerTag).transform;
+            {
+                GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
+
+                if (playerObj != null)
+                    player = playerObj.transform;
+            }
             else
                 CancelInvoke(nameof(FindPlayer));
         }
