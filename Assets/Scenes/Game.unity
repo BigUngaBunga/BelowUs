@@ -958,6 +958,10 @@ PrefabInstance:
       propertyPath: sceneId
       value: 286861827
       objectReference: {fileID: 0}
+    - target: {fileID: 1586461895393640356, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: sceneId
+      value: 595063782
+      objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821933, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_Name
       value: Submarine
@@ -6209,7 +6213,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.05
+  m_fontSize: 49.55
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1

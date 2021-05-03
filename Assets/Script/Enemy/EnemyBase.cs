@@ -25,8 +25,8 @@ namespace BelowUs
 
         protected string targetName;
 
-        [SerializeField] [Min(10)] protected float moveSpeedPatrolling;
-        [SerializeField] [Min(10)] protected float moveSpeedChasing;
+        [SerializeField] [Min(1)] protected float moveSpeedPatrolling;
+        [SerializeField] [Min(1)] protected float moveSpeedChasing;
         [SerializeField] [Min(1)] protected float maxPatrolRange;
 
 
@@ -34,7 +34,7 @@ namespace BelowUs
         protected List<Vector3> patrolPositions = new List<Vector3>();
         protected Vector3 currentPatrolTarget;
 
-        protected enemyState currentState;
+        [SerializeField] protected enemyState currentState;
         protected Rigidbody2D rb;
 
 
@@ -55,7 +55,7 @@ namespace BelowUs
 
         protected void SetTarget() => targetGameObject = GameObject.FindGameObjectWithTag(submarineTag);
 
-        private void AddRandomPatrolNumber() => patrolPositions.Add(new Vector3(Random.Range(-maxPatrolRange, maxPatrolRange), Random.Range(-maxPatrolRange, maxPatrolRange)));
+        private void AddRandomPatrolNumber() => patrolPositions.Add(new Vector3(Random.Range(-maxPatrolRange, maxPatrolRange), Random.Range(-maxPatrolRange, maxPatrolRange)) + transform.position);
 
         protected void CreatePatrolArea()
         {
@@ -106,6 +106,29 @@ namespace BelowUs
                 health -= collision.gameObject.GetComponent<Bullet>().Damage;
             }
             CheckIfAlive();
+        }        
+
+        protected void UpdateMovementPatrolling()
+        {
+            Vector3 direction = (currentPatrolTarget - transform.position);
+            rb.MovePosition(transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
+
+            if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
+            {
+                GetNextPatrolPosition();
+            }
+        }
+
+        protected void UpdateBasicRotation(Vector3 targetPosition)
+        {
+            //Vector till target
+            Vector2 direction = targetPosition - transform.position;
+            //vinkel till target
+            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+            //rotationen som krävs till target som en quaternion runt z axlen
+            Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+            //Mindre del av rotationen till target (slerp)
+            transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
         }
     }
 }
