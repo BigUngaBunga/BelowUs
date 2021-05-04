@@ -3,39 +3,42 @@ using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BackupPlayerSpawner : MonoBehaviour
+namespace BelowUs
 {
-    [TagSelector] [SerializeField] private string playerTag;
-    [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private GameObject networkManager;
-    public GameObject PlayerPrefab => playerPrefab;
-    public GameObject NetManager => networkManager;
-
-    private NetworkManager manager;
-
-    // Start is called before the first frame update
-    private void Start()
+    public class BackupPlayerSpawner : MonoBehaviour
     {
-        manager = NetworkManager.singleton;
-        Invoke(nameof(SpawnPlayer), 0.2f);
-    }
+        [TagSelector] [SerializeField] private string localPlayerTag;
+        [SerializeField] private GameObject playerPrefab;
+        [SerializeField] private GameObject networkManager;
+        public GameObject PlayerPrefab => playerPrefab;
+        public GameObject NetManager => networkManager;
 
-    private void SpawnPlayer()
-    {
-        if (manager == null && GameObject.FindGameObjectsWithTag(playerTag).Length == 0)
+        private NetworkManager manager;
+
+        // Start is called before the first frame update
+        private void Start()
         {
-            try
-            {
-                manager = Instantiate(networkManager).GetComponent<NetworkManager>();
-                manager.StartHost();
-            }
-            catch(SocketException)
-            {
-                Destroy(manager.gameObject);
-                SceneManager.LoadScene(0);
-            }
+            manager = NetworkManager.singleton;
+            Invoke(nameof(SpawnPlayer), 0.2f);
         }
 
-        Destroy(this);
+        private void SpawnPlayer()
+        {
+            if (manager == null && GameObject.FindGameObjectWithTag(localPlayerTag) == null)
+            {
+                try
+                {
+                    manager = Instantiate(networkManager).GetComponent<NetworkManager>();
+                    manager.StartHost();
+                }
+                catch (SocketException)
+                {
+                    Destroy(manager.gameObject);
+                    SceneManager.LoadScene(0);
+                }
+            }
+
+            Destroy(this);
+        }
     }
 }

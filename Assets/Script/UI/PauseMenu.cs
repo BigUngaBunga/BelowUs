@@ -1,64 +1,67 @@
 using Mirror;
 using UnityEngine;
 
-public class PauseMenu : MonoBehaviour
+namespace BelowUs
 {
-    [SerializeField] private GameObject pauseMenu;
-    [TagSelector] [SerializeField] private string playerTag;
-
-    public static bool IsOpen { get; private set; } = false;
-
-    private MenuAction action;
-    private NetworkManager manager = null;
-
-    private void Awake()
+    public class PauseMenu : MonoBehaviour
     {
-        action = new MenuAction();
-        action.Menu.MenuButton.performed += _ => ShowOrHideMenu();
-    }
+        [SerializeField] private GameObject pauseMenu;
+        [TagSelector] [SerializeField] private string playerTag;
 
-    private void OnEnable() => action?.Enable();
+        public static bool IsOpen { get; private set; } = false;
 
-    private void OnDisable() => action?.Disable();
+        private MenuAction action;
+        private NetworkManager manager = null;
 
-    public void ShowOrHideMenu()
-    {
-        //TODO disable if options menu (and more) is open
-        //so that pause menu is not opened when esc is pressed with the purpose of closing options
-        if (pauseMenu.activeSelf)
+        private void Awake()
+        {
+            action = new MenuAction();
+            action.Menu.MenuButton.performed += _ => ShowOrHideMenu();
+        }
+
+        private void OnEnable() => action?.Enable();
+
+        private void OnDisable() => action?.Disable();
+
+        public void ShowOrHideMenu()
+        {
+            //TODO disable if options menu (and more) is open
+            //so that pause menu is not opened when esc is pressed with the purpose of closing options
+            if (pauseMenu.activeSelf)
+                HideMenu();
+            else
+                ShowMenu();
+        }
+
+        private void ShowMenu()
+        {
+            pauseMenu.SetActive(true);
+            IsOpen = true;
+            CheckIfPause();
+        }
+
+        private void HideMenu()
+        {
+            pauseMenu.SetActive(false);
+            IsOpen = false;
+            CheckIfPause();
+        }
+
+        public void OpenOptions()
+        {
             HideMenu();
-        else
-            ShowMenu();
+            //TODO Open options
+        }
+
+        public void CheckIfPause()
+        {
+            //Only pause if you are the only player in the server and the pausemenu is open
+            if (manager == null)
+                manager = NetworkManager.singleton;
+
+            Time.timeScale = manager.numPlayers == 1 && pauseMenu.activeSelf ? 0 : 1;
+        }
+
+        public void QuitGame() => Application.Quit();
     }
-
-    private void ShowMenu()
-    {
-        pauseMenu.SetActive(true);
-        IsOpen = true;
-        CheckIfPause();
-    }
-
-    private void HideMenu()
-    {
-        pauseMenu.SetActive(false);
-        IsOpen = false;
-        CheckIfPause();
-    }
-
-    public void OpenOptions()
-    {
-        HideMenu();
-        //TODO Open options
-    }
-
-    public void CheckIfPause()
-    {
-        //Only pause if you are the only player in the server and the pausemenu is open
-        if (manager == null)
-            manager = NetworkManager.singleton;
-
-        Time.timeScale = manager.numPlayers == 1 && pauseMenu.activeSelf ? 0 : 1;
-    }
-
-    public void QuitGame() => Application.Quit();
 }

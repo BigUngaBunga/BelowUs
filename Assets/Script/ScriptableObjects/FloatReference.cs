@@ -1,37 +1,34 @@
 ﻿using System;
 
-[Serializable]
-public class FloatReference
+namespace BelowUs
 {
-    public bool UseConstant = true;
-    public float ConstantValue;
-    public FloatVariable Variable;
-
-    public FloatReference()
-    { }
-
-    public FloatReference(float value)
+    [Serializable]
+    public class FloatReference
     {
-        UseConstant = true;
-        ConstantValue = value;
-    }
+        public bool UseConstant = true;
+        public float ConstantValue;
+        public FloatVariable Variable;
 
-    public FloatReference(FloatVariable variable)
-    {
-        UseConstant = false;
-        Variable = variable;
-    }
+        public FloatReference()
+        { }
 
-    public float Value
-    {
-        get { return UseConstant ? ConstantValue : Variable.Value; }
-    }
+        public FloatReference(float value)
+        {
+            UseConstant = true;
+            ConstantValue = value;
+        }
 
-    public static implicit operator float(FloatReference reference)
-    {
-        if (reference != null)
-            return reference.Value;
-        else
-            return 0;
+        public FloatReference(FloatVariable variable)
+        {
+            UseConstant = false;
+            Variable = variable;
+        }
+
+        public float Value => UseConstant ? ConstantValue : Variable.Value;
+
+        public static implicit operator float(FloatReference reference)
+        {
+            return reference != null ? reference.Value : 0;
+        }
     }
 }

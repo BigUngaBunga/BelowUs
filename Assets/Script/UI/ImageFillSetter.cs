@@ -5,35 +5,32 @@ using UnityEngine.UI;
 /// Sets an Image component's fill amount to represent how far Variable is
 /// between Min and Max.
 /// </summary>
-public class ImageFillSetter : MonoBehaviour
+namespace BelowUs
 {
-    [Tooltip("Value to use as the current ")]
-    [SerializeField] private FloatReference Variable;
-
-    [Tooltip("Min value that Variable to have no fill on Image.")]
-    [SerializeField] private FloatReference Min;
-
-    [Tooltip("Max value that Variable can be to fill Image.")]
-    [SerializeField] private FloatReference Max;
-
-    [Tooltip("Image to set the fill amount on.")]
-    [SerializeField] private Image Image = null;
-
-    private void Start()
+    public class ImageFillSetter : MonoBehaviour
     {
-        if (Image != null)
-            UpdateImageFill();
-        else
-            Debug.Log(transform.name + " has an unassigned image!");
-    }
+        [Tooltip("Value to use as the current ")]
+        [SerializeField] private FloatReference variable;
 
-    public float GetFillAmount(FloatReference min, FloatReference max, FloatReference var)
-    {
-        return Mathf.Clamp01(Mathf.InverseLerp(min, max, var));
-    }
+        [Tooltip("Min value that Variable to have no fill on Image.")]
+        [SerializeField] private FloatReference min;
 
-    private void UpdateImageFill()
-    {
-        Image.fillAmount = GetFillAmount(Min, Max, Variable);
+        [Tooltip("Max value that Variable can be to fill Image.")]
+        [SerializeField] private FloatReference max;
+
+        [Tooltip("Image to set the fill amount on.")]
+        [SerializeField] private Image image = null;
+
+        private void Start()
+        {
+            if (image != null)
+                UpdateImageFill();
+            else
+                Debug.Log(transform.name + " has an unassigned image!");
+        }
+
+        public float GetFillAmount(FloatReference min, FloatReference max, FloatReference var) => Mathf.Clamp01(Mathf.InverseLerp(min, max, var));
+
+        private void UpdateImageFill() => image.fillAmount = GetFillAmount(min, max, variable);
     }
 }
