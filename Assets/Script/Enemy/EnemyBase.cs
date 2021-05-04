@@ -130,6 +130,7 @@ namespace BelowUs
             //Mindre del av rotationen till target (slerp)
             transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
         }
+        
     }
 }
 

@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3393246371807080721}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19.14861, y: -5.9724193, z: -367.65308}
+  m_LocalPosition: {x: -19.14861, y: -5.9724193, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -204,3 +204,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db012b09920465a499460ed3a18202cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  chasingRange: 0
+  attackingRange: 100
+  health: 10000
+  collisionDamage: 10000
+  moveSpeedPatrolling: 10
+  moveSpeedChasing: 10
+  maxPatrolRange: 10
+  targetGameObject: {fileID: 0}
+  currentState: 0
+  submarineTag: Submarine
+  chasingDistanceBeforeNewTarget: 5
+  timeBetweenCharges: 0
