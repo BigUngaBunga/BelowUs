@@ -15,11 +15,26 @@ namespace BelowUs
 
         private void OnEnable()
         {
+            if (resource == null)
+            {
+                Debug.Log(nameof(resource) + " is unassigned in " + gameObject);
+                return;
+            }
+
             resource.EventResourceChanged += HandleResourceChanged;
             Invoke(nameof(UpdateBarFill), startUpdateDelay.Value);
         }
 
-        private void OnDisable() => resource.EventResourceChanged -= HandleResourceChanged;
+        private void OnDisable()
+        {
+            if (resource == null)
+            {
+                Debug.Log(nameof(resource) + " is unassigned in " + gameObject);
+                return;
+            }
+
+            resource.EventResourceChanged -= HandleResourceChanged;
+        }
 
         private void Start()
         {

@@ -1929,7 +1929,6 @@ GameObject:
   - component: {fileID: 696916627}
   - component: {fileID: 696916630}
   - component: {fileID: 696916629}
-  - component: {fileID: 696916628}
   m_Layer: 5
   m_Name: ResourceDisplay
   m_TagString: Untagged
@@ -1960,28 +1959,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -1700, y: 120}
   m_Pivot: {x: 1, y: 1}
---- !u!114 &696916628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696916626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: badb5cb51f1c4b7439838c973a2929e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  Resource: {fileID: 552280641}
-  TextObject: {fileID: 3507648813807804898}
-  StartUpdateDelay:
-    UseConstant: 1
-    ConstantValue: 0
-    Variable: {fileID: 0}
-  EnableMaximum: 0
-  Separator: 
 --- !u!114 &696916629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2658,14 +2635,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Resource: {fileID: 820417561}
-  TextObject: {fileID: 309990491}
-  StartUpdateDelay:
+  resource: {fileID: 820417561}
+  textObject: {fileID: 309990491}
+  startUpdateDelay:
     UseConstant: 1
     ConstantValue: 0
     Variable: {fileID: 0}
-  EnableMaximum: 1
-  Separator: /
+  enableMaximum: 0
+  separator: /
 --- !u!114 &846552383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2680,10 +2657,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Resource: {fileID: 820417561}
+  resource: {fileID: 820417561}
   resourceBarImage: {fileID: 1087252109}
   testButton: {fileID: 0}
-  StartUpdateDelay:
+  startUpdateDelay:
     UseConstant: 1
     ConstantValue: 0
     Variable: {fileID: 0}
@@ -6186,7 +6163,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.7
+  m_fontSize: 49.55
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6880,14 +6857,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Resource: {fileID: 1273155452}
-  TextObject: {fileID: 2746689006891339819}
-  StartUpdateDelay:
+  resource: {fileID: 1273155452}
+  textObject: {fileID: 2746689006891339819}
+  startUpdateDelay:
     UseConstant: 1
     ConstantValue: 0
     Variable: {fileID: 0}
-  EnableMaximum: 1
-  Separator: /
+  enableMaximum: 0
+  separator: /
 --- !u!224 &5858324380795518057
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7224,10 +7201,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Resource: {fileID: 1273155452}
+  resource: {fileID: 0}
   resourceBarImage: {fileID: 1356323037786598807}
   testButton: {fileID: 1387406877185871817}
-  StartUpdateDelay:
+  startUpdateDelay:
     UseConstant: 1
     ConstantValue: 0
     Variable: {fileID: 0}
