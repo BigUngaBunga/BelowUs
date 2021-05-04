@@ -31,7 +31,7 @@ namespace BelowUs
             currentStation = collision.transform.parent;
         }
 
-        private void OnTriggerExit2D(Collider2D collision) => currentStation = null;
+        private void OnTriggerExit2D() => currentStation = null;
 
         public void OnStationClick(InputAction.CallbackContext value)
         {

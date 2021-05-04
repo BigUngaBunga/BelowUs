@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
+using BelowUs;
 using Mirror;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -17,7 +16,7 @@ public class ServerTest
     {
         var Obj = new GameObject();
         var networkMgr = Obj.AddComponent<NetworkManager>();
-        var hud = Obj.AddComponent<NetworkManagerHUDCustom>();
+        var hud = Obj.AddComponent<NetworkManagerHudCustom>();
         hud.HostClicked();
 
         yield return new WaitForSeconds(1);

@@ -5,6 +5,7 @@
 // Date:   10/04/17
 // ----------------------------------------------------------------------------
 
+using BelowUs;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,8 +27,10 @@ namespace RoboRyanTron.Unite2017.Variables
         {
             if (popupStyle == null)
             {
-                popupStyle = new GUIStyle(GUI.skin.GetStyle("PaneOptions"));
-                popupStyle.imagePosition = ImagePosition.ImageOnly;
+                popupStyle = new GUIStyle(GUI.skin.GetStyle("PaneOptions"))
+                {
+                    imagePosition = ImagePosition.ImageOnly
+                };
             }
 
             label = EditorGUI.BeginProperty(position, label, property);

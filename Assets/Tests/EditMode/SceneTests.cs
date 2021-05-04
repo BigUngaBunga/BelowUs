@@ -42,10 +42,8 @@ namespace Tests
         /**
          * Checks so that there is only one submarine tag in the scene
          */
-        [Test] public void SubmarineTests()
-        {
-            Assert.IsTrue(GameObject.FindGameObjectsWithTag("Submarine").Length == 1, "There are more or less than one Submarine tag in the scene!");
-        }
+        [Test]
+        public void SubmarineTests() => Assert.IsTrue(GameObject.FindGameObjectsWithTag("Submarine").Length == 1, "There are more or less than one Submarine tag in the scene!");
 
         /**
          * 
