@@ -1,13 +1,15 @@
 using Mirror;
+using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BackupPlayerSpawner : MonoBehaviour
 {
     [TagSelector] [SerializeField] private string playerTag;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject networkManager;
-    public GameObject PlayerPrefab { get { return playerPrefab; } }
-    public GameObject NetManager { get { return networkManager; } }
+    public GameObject PlayerPrefab => playerPrefab;
+    public GameObject NetManager => networkManager;
 
     private NetworkManager manager;
 
@@ -22,8 +24,16 @@ public class BackupPlayerSpawner : MonoBehaviour
     {
         if (manager == null && GameObject.FindGameObjectsWithTag(playerTag).Length == 0)
         {
-            manager = Instantiate(networkManager).GetComponent<NetworkManager>();
-            manager.StartHost();
+            try
+            {
+                manager = Instantiate(networkManager).GetComponent<NetworkManager>();
+                manager.StartHost();
+            }
+            catch(SocketException)
+            {
+                Destroy(manager.gameObject);
+                SceneManager.LoadScene(0);
+            }
         }
 
         Destroy(this);

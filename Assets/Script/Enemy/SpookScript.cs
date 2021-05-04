@@ -24,8 +24,16 @@ namespace BelowUs
             GetNextPatrolPosition();
         }
 
+        protected override void Update() 
+        {
+            //TODO don't even run this if it's not the server
+            //maybe use invokerepeating with a low delay or something else
+            if (isServer)
+                NewUpdate();
+        }
+
         [Server]
-        protected override void Update()
+        private void NewUpdate()
         {
             CheckDistanceToTarget();
 

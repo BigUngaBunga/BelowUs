@@ -16,7 +16,6 @@ namespace BelowUs
 
         [SerializeField] private LayerMask ladderMask;
         [SerializeField] private LayerMask groundMask;
-        [SerializeField] private LayerMask stationMask;
 
         public FloatReference MoveSpeed => moveSpeed;
         public FloatReference JumpForce => jumpForce;
@@ -30,6 +29,8 @@ namespace BelowUs
 
         public override void OnStartAuthority()
         {
+            tag = "LocalPlayer";
+
             base.OnStartAuthority();
 
             AddPlayerInput();
@@ -62,7 +63,6 @@ namespace BelowUs
 
             controller.ladderMask = ladderMask;
             controller.groundMask = groundMask;
-            controller.stationMask = stationMask;
         }
     }
 }

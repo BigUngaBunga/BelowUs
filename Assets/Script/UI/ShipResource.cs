@@ -19,7 +19,7 @@ public class ShipResource : NetworkBehaviour
 
     #region Server
     [Server]
-    private void ApplyChange(float Value)
+    public void ApplyChange(float Value)
     {
         currentValue += Value;
         EventResourceChanged?.Invoke(currentValue, maximumValue.Value);

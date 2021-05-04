@@ -5,7 +5,7 @@ namespace BelowUs
 {
     public class CameraController : NetworkBehaviour
     {
-        private Transform player;
+        [SerializeField] private Transform player = null;
         private Transform submarine;
         [SerializeField] private Vector3 offsetPlayer;
         [SerializeField] private Vector3 offsetSubmarine;
@@ -17,28 +17,31 @@ namespace BelowUs
         [TagSelector] [SerializeField] private string playerTag;
         [TagSelector] [SerializeField] private string submarineTag;
 
-        private void Start()
+        private void Awake()
         {
-            InvokeRepeating(nameof(FindPlayer), 0, 0.01f);
-            submarine = GameObject.FindGameObjectWithTag(submarineTag).transform;
+            InvokeRepeating(nameof(FindPlayer), 0.25f, 0.25f);
+            InvokeRepeating(nameof(FindSubmarine), 0.25f, 0.25f);
         }
 
         private void FindPlayer()
         {
-            GameObject[] playerGameObjects = GameObject.FindGameObjectsWithTag(playerTag);
-            GameObject playerGameObject = null;
+            GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
 
-            for (int i = 0; i < playerGameObjects.Length; i++) //Iterates through all players and checks if any of them are the local player
-                if (playerGameObjects[i].GetComponent<NetworkIdentity>().isLocalPlayer)
-                {
-                    playerGameObject = playerGameObjects[i];
-                    break;
-                }
-
-            if (playerGameObject != null)
+            if (playerObj != null)
             {
-                player = playerGameObject.transform;
+                player = playerObj.transform;
                 CancelInvoke(nameof(FindPlayer));
+            }
+        }
+
+        private void FindSubmarine()
+        {
+            GameObject submarineObj = GameObject.FindGameObjectWithTag(submarineTag);
+
+            if (submarineObj != null)
+            {
+                submarine = submarineObj.transform;
+                CancelInvoke(nameof(FindSubmarine));
             }
         }
 
@@ -52,21 +55,14 @@ namespace BelowUs
             }
         }
 
-        private Vector3 CalculateTargetPosition()
-        {
-            if (followPlayer)
-                return player.position + offsetPlayer;
-            else
-                return submarine.position + offsetSubmarine;
-        }
+        private Vector3 CalculateTargetPosition() => followPlayer ? player.position + offsetPlayer : submarine.position + offsetSubmarine;
 
-        public void SwitchTarget(string TargetTag)
+        public void SwitchTarget(string targetTag)
         {
-            if (TargetTag == playerTag)
+            if (targetTag == playerTag)
                 followPlayer = true;
-            else if (TargetTag == submarineTag)
+            else if (targetTag == submarineTag)
                 followPlayer = false;
         }
     }
-
 }
