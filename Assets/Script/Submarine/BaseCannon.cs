@@ -1,65 +1,74 @@
 using System;
 using UnityEngine;
+using Mirror;
 
-public class BaseCannon : MonoBehaviour
+namespace BelowUs
 {
-    protected bool flipped;
-
-    protected float leftRestrict, rightRestrict, whichCannon;
-
-    private float angleDeg, angleRad, subRotation;
-
-    private Vector3 mousePos;
-    protected Vector3 lastKnownMousePos;
-
-    public GameObject bullet;
-
-    void Start()
+    public class BaseCannon : MonoBehaviour
     {
-        whichCannon = 0;
-    }
+        protected bool flipped;
 
-    protected void Targeting(Vector3 pos, float offset, float rotationOffset, float res1, float res2)
-    {
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        protected float leftRestrict, rightRestrict, whichCannon;
 
-        subRotation = (float)((Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI) * 180) + 7 + offset;
+        private float angleDeg, angleRad, subRotation;
 
-        angleRad = Mathf.Atan2(mousePos.y - pos.y, mousePos.x - pos.x);
+        private Vector3 mousePos;
+        protected Vector3 lastKnownMousePos;
 
-        angleDeg = (float)((angleRad / Math.PI) * 180) + offset;
+        public GameObject bullet;
 
-        if (angleDeg < 0)
-            angleDeg += 360;
-        
-        if (subRotation < 0)
-            subRotation += 360;
+        private bool isCannonActive => ClientScene.localPlayer.gameObject == cannonController.StationPlayerController;
 
-        if (angleDeg + 7 <= res1 + subRotation && angleDeg + 7 >= res2 + subRotation)
+        [SerializeField] private StationController cannonController;
+
+        protected void Targeting(Vector3 pos, float offset, float rotationOffset, float res1, float res2)
         {
-            lastKnownMousePos = mousePos;
-            this.transform.rotation = Quaternion.Euler(0, 0, angleDeg + rotationOffset);
+            if (isCannonActive)
+            {
+                mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                subRotation = (float)((Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI) * 180) + 7 + offset;
+
+                angleRad = Mathf.Atan2(mousePos.y - pos.y, mousePos.x - pos.x);
+
+                angleDeg = (float)((angleRad / Math.PI) * 180) + offset;
+
+                if (angleDeg < 0)
+                    angleDeg += 360;
+
+                if (subRotation < 0)
+                    subRotation += 360;
+
+                if (angleDeg + 7 <= res1 + subRotation && angleDeg + 7 >= res2 + subRotation)
+                {
+                    lastKnownMousePos = mousePos;
+                    this.transform.rotation = Quaternion.Euler(0, 0, angleDeg + rotationOffset);
+                }
+            }
         }
-    }
 
-    protected void ActiveCannon()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            whichCannon = 1;
-        
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            whichCannon = 2;
-        
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-            whichCannon = 3;
-        
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-            whichCannon = 4;
-    }
+        protected void ActiveCannon()
+        {
+            if (isCannonActive)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                    whichCannon = 1;
 
-    protected void Fire()
-    {        
-        if (Input.GetMouseButtonDown(0))
-            Instantiate(bullet, this.transform.position, Quaternion.LookRotation(lastKnownMousePos - transform.position).normalized);
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                    whichCannon = 2;
+
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                    whichCannon = 3;
+
+                if (Input.GetKeyDown(KeyCode.Alpha4))
+                    whichCannon = 4;
+            }
+        }
+
+        protected void Fire()
+        {
+            if (Input.GetMouseButtonDown(0) && isCannonActive)
+                Instantiate(bullet, this.transform.position, Quaternion.LookRotation(lastKnownMousePos - transform.position).normalized);
+        }
     }
 }

@@ -1,36 +1,39 @@
 using UnityEngine;
 
-public class TopRightCannon : BaseCannon
+namespace BelowUs
 {
-    void Start()
+    public class TopRightCannon : BaseCannon
     {
-        leftRestrict = 135;
-        rightRestrict = 15;
-    }
-    
-    void Update()
-    {
-        ActiveCannon();
-
-        if (whichCannon == 4)
+        void Start()
         {
-            Targeting(this.transform.position, 90, 0, leftRestrict, rightRestrict);
-            Fire();
+            leftRestrict = 135;
+            rightRestrict = 15;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        void Update()
         {
-            if (!flipped)
+            ActiveCannon();
+
+            if (whichCannon == 4)
             {
-                flipped = true;
-                leftRestrict = -15;
-                rightRestrict = -135;
+                Targeting(this.transform.position, 90, 0, leftRestrict, rightRestrict);
+                Fire();
             }
-            else
+
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                flipped = false;
-                leftRestrict = 135;
-                rightRestrict = 15;
+                if (!flipped)
+                {
+                    flipped = true;
+                    leftRestrict = -15;
+                    rightRestrict = -135;
+                }
+                else
+                {
+                    flipped = false;
+                    leftRestrict = 135;
+                    rightRestrict = 15;
+                }
             }
         }
     }

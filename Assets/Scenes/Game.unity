@@ -962,46 +962,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -4893775870893433605, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: sceneId
-      value: 286861827
-      objectReference: {fileID: 0}
+    - target: {fileID: 329669753, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: cannonController
+      value: 
+      objectReference: {fileID: 398828546}
+    - target: {fileID: 803094637, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: cannonController
+      value: 
+      objectReference: {fileID: 398828546}
+    - target: {fileID: 1272610622, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: cannonController
+      value: 
+      objectReference: {fileID: 398828546}
+    - target: {fileID: 1300132924, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: cannonController
+      value: 
+      objectReference: {fileID: 398828546}
     - target: {fileID: 1586461895393640356, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: sceneId
       value: 222771552
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586461895393640356, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: m_AssetId
+      value: c1c240ffe4a64cd4e93bb92878ebcd89
       objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821933, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_Name
       value: Submarine
       objectReference: {fileID: 0}
-    - target: {fileID: 5089922518502821933, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5089922518502821933, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_TagString
-      value: Submarine
-      objectReference: {fileID: 0}
-    - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: subController
       value: 
       objectReference: {fileID: 1182597047}
-    - target: {fileID: 5089922518502821935, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5089922518502821935, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_SortingOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5089922518502821935, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -71414069
-      objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821936, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1046,40 +1038,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5089922518502821937, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5089922520036955165, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: cannonController
-      value: 
-      objectReference: {fileID: 398828546}
-    - target: {fileID: 5089922520036955166, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5089922520036955166, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -71414069
-      objectReference: {fileID: 0}
     - target: {fileID: 6173635692441802601, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: floodlightController
       value: 
       objectReference: {fileID: 1167164494}
-    - target: {fileID: 9026703569805877482, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9026703569805877482, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_SortingOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9026703569805877482, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -71414069
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5089922518502821938, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
 --- !u!4 &473132174 stripped
 Transform:
@@ -6186,7 +6149,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.7
+  m_fontSize: 49.55
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1

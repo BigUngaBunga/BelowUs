@@ -99,12 +99,19 @@ namespace BelowUs
             else currentState = enemyState.Patrolling;
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        //private void OnTriggerEnter2D(Collider2D collision)
+        //{
+        //    if (collision.tag == "AllyBullet")
+        //    {
+        //        health -= collision.gameObject.GetComponent<Bullet>().Damage;
+        //    }
+        //    CheckIfAlive();
+        //}
+
+        //Erik Damage test
+        public void TakeDamage(int damage)
         {
-            if (collision.tag == "AllyBullet")
-            {
-                health -= collision.gameObject.GetComponent<Bullet>().Damage;
-            }
+            health -= damage;
             CheckIfAlive();
         }
     }
