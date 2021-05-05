@@ -58,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 792117fe9a386a8489e8010bec746339, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,6 +125,9 @@ MonoBehaviour:
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
+  compressRotation: 0
+  interpolateScale: 1
+  syncScale: 1
 --- !u!50 &-2072581977278357320
 Rigidbody2D:
   serializedVersion: 4
@@ -205,9 +208,6 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 512
-  stationMask:
-    serializedVersion: 2
-    m_Bits: 4096
 --- !u!114 &-8455052746023811855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,8 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de86491ce5681d4f9ce853a40b10548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
+  currentStation: {fileID: 0}
   stationMask:
     serializedVersion: 2
     m_Bits: 4096

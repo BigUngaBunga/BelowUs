@@ -17,7 +17,7 @@ namespace BelowUs
 
         public GameObject bullet;
 
-        private bool isCannonActive => ClientScene.localPlayer.gameObject == cannonController.StationPlayerController;
+        private bool isCannonActive => IsCannonActive();
 
         [SerializeField] private StationController cannonController;
 
@@ -27,11 +27,11 @@ namespace BelowUs
             {
                 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-                subRotation = (float)((Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI) * 180) + 7 + offset;
+                subRotation = (float)(Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI * 180) + 7 + offset;
 
                 angleRad = Mathf.Atan2(mousePos.y - pos.y, mousePos.x - pos.x);
 
-                angleDeg = (float)((angleRad / Math.PI) * 180) + offset;
+                angleDeg = (float)(angleRad / Math.PI * 180) + offset;
 
                 if (angleDeg < 0)
                     angleDeg += 360;
@@ -42,9 +42,17 @@ namespace BelowUs
                 if (angleDeg + 7 <= res1 + subRotation && angleDeg + 7 >= res2 + subRotation)
                 {
                     lastKnownMousePos = mousePos;
-                    this.transform.rotation = Quaternion.Euler(0, 0, angleDeg + rotationOffset);
+                    transform.rotation = Quaternion.Euler(0, 0, angleDeg + rotationOffset);
                 }
             }
+        }
+
+        private bool IsCannonActive()
+        {
+            if (NetworkClient.localPlayer != null)
+                return NetworkClient.localPlayer.gameObject == cannonController.StationPlayerController;
+            
+            return false;
         }
 
         protected void ActiveCannon()
@@ -68,7 +76,7 @@ namespace BelowUs
         protected void Fire()
         {
             if (Input.GetMouseButtonDown(0) && isCannonActive)
-                Instantiate(bullet, this.transform.position, Quaternion.LookRotation(lastKnownMousePos - transform.position).normalized);
+                Instantiate(bullet, transform.position, Quaternion.LookRotation(lastKnownMousePos - transform.position).normalized);
         }
     }
 }

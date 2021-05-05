@@ -8,9 +8,11 @@ namespace BelowUs
     {
         private List<GameObject> maps;
         private int squareSize;
+        [SerializeField] private int mapsBeforeBossMap;
         [SerializeField] private Vector2 startPosition;
         [SerializeField] private Vector2 mapSize;
         [SerializeReference] private GameObject mapPrefab;
+        [SerializeReference] private GameObject bossRoomPrefab;
         [SerializeReference] private GameObject seaFloorPrefab;
 
         public GameObject MapPrefab => mapPrefab;
@@ -25,13 +27,28 @@ namespace BelowUs
         private IEnumerator CreateNewMap()
         {
             yield return StartCoroutine(CreateSeaFloor());
-            CreateReef();
+            GenerateNextMap();
         }
 
-        public void CreateReef()
+        public void GenerateNextMap()
+        {
+            if (maps.Count >= mapsBeforeBossMap)
+                CreateBossRoom();
+            else
+                CreateReef();
+        }
+
+        private void CreateReef()
         {
             GameObject map = Instantiate(mapPrefab, CalculateNextPosition(), Quaternion.identity);
-            StartCoroutine(map.GetComponent<MapGenerator>().GenerateMap(this, mapSize, squareSize));
+            StartCoroutine(map.GetComponent<ReefGenerator>().GenerateReef(this, mapSize, squareSize));
+            maps.Add(map);
+        }
+
+        private void CreateBossRoom()
+        {
+            GameObject map = Instantiate(bossRoomPrefab, CalculateNextPosition(), Quaternion.identity);
+            StartCoroutine(map.GetComponent<BossRoomGenerator>().GenerateBossRoom(mapSize, squareSize));
             maps.Add(map);
         }
 
@@ -39,7 +56,7 @@ namespace BelowUs
         {
             Vector3 seaFloorSize = new Vector3(mapSize.x * 2, mapSize.y / 2);
             GameObject map = Instantiate(seaFloorPrefab, CalculateNextPosition(), Quaternion.identity);
-            yield return StartCoroutine(map.GetComponent<MapGenerator>().GenerateSeaFloor(seaFloorSize, squareSize));
+            yield return StartCoroutine(map.GetComponent<SeaFloorGenerator>().GenerateSeaFloor(seaFloorSize, squareSize));
             maps.Add(map);
         }
 
@@ -49,8 +66,8 @@ namespace BelowUs
             {
                 MapGenerator mapGenerator = maps[maps.Count - 1].GetComponent<MapGenerator>();
 
-                Vector2 nextPosition = new Vector2(mapGenerator.transform.position.x + (mapGenerator.ExitLocation.x - mapGenerator.MapSize.x / 2) * squareSize,
-                                                    mapGenerator.transform.position.y - (mapGenerator.MapSize.y / 2 + mapSize.y / 2 - 1) * squareSize);
+                Vector2 nextPosition = new Vector2(x: mapGenerator.transform.position.x + ((mapGenerator.ExitLocation.x - (mapGenerator.MapSize.x / 2)) * squareSize),
+                                                    y: mapGenerator.transform.position.y - (((mapGenerator.MapSize.y / 2) + (mapSize.y / 2) - 1) * squareSize));
 
                 return new Vector3(nextPosition.x, nextPosition.y);
             }

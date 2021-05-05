@@ -10,48 +10,30 @@ namespace BelowUs
     public class MapGenerator : MonoBehaviour
     {
         [Min(50)]
-        [SerializeField] private int mapHeight;
+        [SerializeField] protected int mapHeight;
 
         [Min(50)]
-        [SerializeField] private int mapWidth;
+        [SerializeField] protected int mapWidth;
 
-        [SerializeField] private string seed;
-        [SerializeReference] private bool useRandomSeed, generateExit;
-
-        [Range(0, 99)]
-        [SerializeField] private byte minimumOpenWaterPercentage;
-
-        [Range(0, 99)]
-        [SerializeField] private byte maximumOpenWaterPercentage;
-
-        public byte MinimumOpenWaterPercentage => minimumOpenWaterPercentage;
-        public byte MaximumOpenWaterPercentage => maximumOpenWaterPercentage;
-
-        [SerializeField] private uint minimumEnclaveRemovalSize;
-        [SerializeField] private uint maximumEnclaveRemovalSize;
-
-        public uint MinimumEnclaveRemovalSize => minimumEnclaveRemovalSize;
-        public uint MaximumEnclaveRemovalSize => maximumEnclaveRemovalSize;
+        [SerializeField] protected string seed;
+        [SerializeReference] protected bool useRandomSeed, generateExit;
 
         [Range(3, 10)]
-        [SerializeField] private byte borderThickness;
-
-        [Range(1, 10)]
-        [SerializeField] private byte timesToSmoothMap;
+        [SerializeField] protected byte borderThickness;
 
         [Range(0, 5)]
-        [SerializeField] private byte passagewayRadius;
+        [SerializeField] protected byte passagewayRadius;
 
-        private int openWaterPercentage;
-        private int enclaveRemovalSize;
-        private const int waterTile = 1;
-        private const int wallTile = 0;
-        private int[,] noiseMap;
-        private Random random;
-        public Vector2 ExitLocation { get; private set; }
+        protected int openWaterPercentage;
+        protected int enclaveRemovalSize;
+        protected const int waterTile = 1;
+        protected const int wallTile = 0;
+        protected int[,] noiseMap;
+        protected Random random;
+        public Vector2 ExitLocation { get; protected set; }
         public Vector2 MapSize => new Vector2(mapWidth, mapHeight);
 
-        private struct Coordinate
+        protected struct Coordinate
         {
             public int tileX;
             public int tileY;
@@ -63,7 +45,7 @@ namespace BelowUs
             }
         }
 
-        private class Room : IComparable<Room>
+        protected class Room : IComparable<Room>
         {
             public List<Coordinate> tiles;
             public List<Coordinate> edgeTiles;
@@ -110,140 +92,37 @@ namespace BelowUs
                 }
             }
 
-            public bool IsInmapRange(int tileX, int tileY, int[,] map) => tileX >= 0 && tileX < map.GetLength(0) && tileY >= 0 && tileY < map.GetLength(1);
+            private bool IsInmapRange(int tileX, int tileY, int[,] map) => tileX >= 0 && tileX < map.GetLength(0) && tileY >= 0 && tileY < map.GetLength(1);
         }
 
         public bool IsInMapRange(int tileX, int tileY) => tileX >= 0 && tileX < mapWidth && tileY >= 0 && tileY < mapHeight;
 
-        private WaitForSeconds Wait(string text = "") => CorutineUtilities.Wait(0.005f, text);
+        protected WaitForSeconds Wait(string text = "") => CorutineUtilities.Wait(0.005f, text);
 
-        public IEnumerator GenerateMap(MapHandler mapHandler, Vector2 mapSize, int squareSize)
+        protected void InitiateMap(Vector2 mapSize)
         {
-            yield return Wait("Started counting");
-
             mapWidth = (int)mapSize.x;
             mapHeight = (int)mapSize.y;
             noiseMap = new int[mapWidth, mapHeight];
             RandomizeMapVariables();
             FillMapWithNoise();
-            AddBorderToNoiseMap(borderThickness);
-            SmoothNoiseMap(timesToSmoothMap);
-            yield return Wait("Filled noise map");
-
-            yield return StartCoroutine(RemoveTileEnclaves());
-
-            CreateEntranceAndExit();
-            yield return StartCoroutine(ClearPathways());
-
-            MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-            yield return StartCoroutine(meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile));
-
-            MapEntranceDetector entranceDetector = GetComponent<MapEntranceDetector>();
-            entranceDetector.CreateEntranceDetector(passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
-
-            ResourceGenerator resourceGenerator = GetComponent<ResourceGenerator>();
-            yield return StartCoroutine(resourceGenerator.GenerateResources(random, noiseMap, squareSize, waterTile));
         }
 
-        public IEnumerator GenerateSeaFloor(Vector2 mapSize, int squareSize)
-        {
-            yield return Wait("Started counting");
-
-            mapWidth = (int)mapSize.x;
-            mapHeight = (int)mapSize.y;
-            noiseMap = new int[mapWidth, mapHeight];
-            FillMapWithNoise(false);
-            yield return Wait("Filled noise map");
-
-            AddBoxColliders(squareSize);
-            yield return Wait("Added skybox");
-
-            CreateEntranceAndExit(false);
-            yield return StartCoroutine(ClearPathways());
-
-            MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-            yield return StartCoroutine(meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile));
-        }
-
-        private void RandomizeMapVariables()
+        protected virtual void RandomizeMapVariables()
         {
             if (useRandomSeed)
                 seed = Environment.TickCount.ToString();
             random = new Random(seed.GetHashCode());
-
-            openWaterPercentage = random.Next(minimumOpenWaterPercentage, maximumOpenWaterPercentage);
-            enclaveRemovalSize = random.Next((int)minimumEnclaveRemovalSize, (int)maximumEnclaveRemovalSize);
         }
 
-        private void FillMapWithNoise(bool isReef = true)
+        protected virtual void FillMapWithNoise()
         {
-            if (isReef)
-                for (int x = 0; x < mapWidth; x++)
-                    for (int y = 0; y < mapHeight; y++)
-                        noiseMap[x, y] = (random.Next(0, 100) >= openWaterPercentage) ? wallTile : waterTile;
-            else
-            {
-                int coneWidth = passagewayRadius;
-                int halfOfMapWidth = noiseMap.GetLength(0) / 2;
-
-                for (int x = 0; x < noiseMap.GetLength(0); x++)
-                    for (int y = 0; y < noiseMap.GetLength(1); y++)
-                    {
-                        if ((x <= halfOfMapWidth && x > halfOfMapWidth - coneWidth - y * 2) || (x > halfOfMapWidth && x < halfOfMapWidth + coneWidth + y * 2))
-                            noiseMap[x, y] = waterTile;
-                        else
-                            noiseMap[x, y] = wallTile;
-                    }
-            }
-                
+            for (int x = 0; x < mapWidth; x++)
+                for (int y = 0; y < mapHeight; y++)
+                    noiseMap[x, y] = (random.Next(0, 100) >= openWaterPercentage) ? wallTile : waterTile;
         }
 
-        //Meant to consolidate the noisemap to larger chunks
-        private void SmoothNoiseMap(int timesToRun)
-        {
-            for (int i = 0; i < timesToRun; i++)
-                for (int x = 0; x < mapWidth; x++)
-                    for (int y = 0; y < mapHeight; y++)
-                    {
-                        int neighbouringWallTiles = GetSurrondingwallTiles(x, y);
-
-                        if (neighbouringWallTiles > 4)
-                            noiseMap[x, y] = wallTile;
-                        else if (neighbouringWallTiles < 4)
-                            noiseMap[x, y] = waterTile;
-                    }
-        }
-
-        private int GetSurrondingwallTiles(int xPosition, int yPosition)
-        {
-            int adjacentWallCount = 0;
-            for (int neighbouringX = xPosition - 1; neighbouringX <= xPosition + 1; neighbouringX++)
-                for (int neighbouringY = yPosition - 1; neighbouringY <= yPosition + 1; neighbouringY++)
-                    if (IsInMapRange(neighbouringX, neighbouringY) && (neighbouringX != xPosition || neighbouringY != yPosition) && noiseMap[neighbouringX, neighbouringY] == wallTile)
-                        adjacentWallCount++;
-
-            return adjacentWallCount;
-        }
-
-        private IEnumerator RemoveTileEnclaves()
-        {
-            IEnumerator ReplaceSmallTileRegion(int tileTypeToRemove)
-            {
-                int replacingTileType = tileTypeToRemove != waterTile ? waterTile : wallTile;
-                List<List<Coordinate>> tileRegions = GetRegion(tileTypeToRemove);
-                foreach (List<Coordinate> tileRegion in tileRegions)
-                    if (tileRegion.Count < enclaveRemovalSize)
-                        foreach (Coordinate tile in tileRegion)
-                        {
-                            noiseMap[tile.tileX, tile.tileY] = replacingTileType;
-                            yield return Wait($"Replaced tiles {tile.tileX} {tile.tileY}");
-                        }
-            }
-            yield return StartCoroutine(ReplaceSmallTileRegion(waterTile));
-            yield return StartCoroutine(ReplaceSmallTileRegion(wallTile));
-        }
-
-        private void CreateEntranceAndExit(bool randomExitPlacement = true)
+        protected void CreateEntranceAndExit(bool randomExitPlacement = true)
         {
             int entranceSize = borderThickness - 2;
             int exitDistanceFromCorners = 2 + passagewayRadius;
@@ -262,15 +141,7 @@ namespace BelowUs
 
         }
 
-        private void AddBorderToNoiseMap(int borderSize)
-        {
-            for (int x = 0; x < noiseMap.GetLength(0); x++)
-                for (int y = 0; y < noiseMap.GetLength(1); y++)
-                    if (x <= borderSize || y <= borderSize || x >= noiseMap.GetLength(0) - borderSize || y >= noiseMap.GetLength(1) - borderSize)
-                        noiseMap[x, y] = wallTile;
-        }
-
-        private IEnumerator ClearPathways()
+        protected IEnumerator ClearPathways()
         {
             List<List<Coordinate>> waterTileRegions = GetRegion(waterTile);
             List<Room> rooms = new List<Room>();
@@ -285,7 +156,7 @@ namespace BelowUs
             yield return StartCoroutine(ConnectAllRooms(rooms));
         }
 
-        private List<List<Coordinate>> GetRegion(int tileType)
+        protected List<List<Coordinate>> GetRegion(int tileType)
         {
             List<List<Coordinate>> regions = new List<List<Coordinate>>();
             int[,] flaggedTiles = new int[mapWidth, mapHeight];
@@ -304,7 +175,7 @@ namespace BelowUs
             return regions;
         }
 
-        private List<Coordinate> GetRegionTiles(int startX, int startY)
+        protected List<Coordinate> GetRegionTiles(int startX, int startY)
         {
             List<Coordinate> tiles = new List<Coordinate>();
             int[,] flaggedTiles = new int[mapWidth, mapHeight];
@@ -331,7 +202,7 @@ namespace BelowUs
             return tiles;
         }
 
-        private IEnumerator ConnectAllRooms(List<Room> rooms, bool forceAccessibilityFromMainRoom = false) //IEnumerator
+        protected IEnumerator ConnectAllRooms(List<Room> rooms, bool forceAccessibilityFromMainRoom = false) //IEnumerator
         {
             List<Room> unconnectedRooms = new List<Room>();
             List<Room> connectedRooms = new List<Room>();
@@ -354,7 +225,7 @@ namespace BelowUs
                 yield return StartCoroutine(ConnectAllRooms(rooms, true));
         }
 
-        private IEnumerator ConnectRooms(List<Room> roomsA, List<Room> roomsB)
+        protected IEnumerator ConnectRooms(List<Room> roomsA, List<Room> roomsB)
         {
             bool possibleConnectionEstablished = false;
             bool isForcingStartAccesibility = !roomsA.Equals(roomsB);
@@ -411,7 +282,7 @@ namespace BelowUs
             }
         }
 
-        private void CreatePassage(Room roomA, Room roomB, Coordinate tileA, Coordinate tileB)
+        protected void CreatePassage(Room roomA, Room roomB, Coordinate tileA, Coordinate tileB)
         {
             Room.ConnectRooms(roomA, roomB);
             List<Coordinate> line = GetLine(tileA, tileB);
@@ -419,7 +290,7 @@ namespace BelowUs
                 DrawCircle(point, passagewayRadius);
         }
 
-        private void DrawCircle(Coordinate centre, int radius)
+        protected void DrawCircle(Coordinate centre, int radius)
         {
             for (int x = -radius; x < radius; x++)
                 for (int y = -radius; y < radius; y++)
@@ -433,7 +304,7 @@ namespace BelowUs
                     }
         }
 
-        private void DrawCircle(Vector2 centre, int radius)
+        protected void DrawCircle(Vector2 centre, int radius)
         {
             for (int x = -radius; x < radius; x++)
                 for (int y = -radius; y < radius; y++)
@@ -447,7 +318,7 @@ namespace BelowUs
                     }
         }
 
-        private List<Coordinate> GetLine(Coordinate from, Coordinate to)
+        protected List<Coordinate> GetLine(Coordinate from, Coordinate to)
         {
             List<Coordinate> line = new List<Coordinate>();
             int x = from.tileX;
@@ -496,22 +367,6 @@ namespace BelowUs
             }
 
             return line;
-        }
-
-        private void AddBoxColliders(int squareSize)
-        {
-            BoxCollider2D rightWall = gameObject.AddComponent<BoxCollider2D>();
-            BoxCollider2D leftWall = gameObject.AddComponent<BoxCollider2D>();
-            BoxCollider2D roof = gameObject.AddComponent<BoxCollider2D>();
-            int width = noiseMap.GetLength(0) * squareSize;
-            int height = noiseMap.GetLength(1) * squareSize;
-
-            rightWall.size = leftWall.size = new Vector2(2, height);
-            roof.size = new Vector2(width, 2);
-
-            rightWall.offset = new Vector2(width / 2, height - squareSize);
-            leftWall.offset = new Vector2(-width / 2, height - squareSize);
-            roof.offset = new Vector2(0, (height - squareSize) * 3/2f);
         }
     }
 }

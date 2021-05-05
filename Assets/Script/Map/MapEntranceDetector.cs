@@ -11,9 +11,9 @@ namespace BelowUs
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.tag.Equals("Submarine") && !hasEnteredRoom)
+            if (collision.gameObject.CompareTag("Submarine") && !hasEnteredRoom)
             {
-                mapHandler.CreateReef();
+                mapHandler.GenerateNextMap();
                 hasEnteredRoom = true;
             }
         }
@@ -28,7 +28,7 @@ namespace BelowUs
             BoxCollider2D exitDetector = gameObject.AddComponent<BoxCollider2D>();
             exitDetector.isTrigger = true;
             exitDetector.size = new Vector2(passagewayRadius * 6, passagewayRadius * 2) * squareSize;
-            exitDetector.offset = new Vector2(0, (mapSize.y * squareSize - exitDetector.size.y) / 2);
+            exitDetector.offset = new Vector2(0, ((mapSize.y * squareSize) - exitDetector.size.y) / 2);
         }
     }
 }

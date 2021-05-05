@@ -51,6 +51,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -90,7 +91,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3153103499484962130}
-  - component: {fileID: -6828615160610397993}
+  - component: {fileID: -5243830315408240346}
   - component: {fileID: 777745580}
   m_Layer: 0
   m_Name: SeaFloor
@@ -114,7 +115,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-6828615160610397993
+--- !u!114 &-5243830315408240346
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,7 +124,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4039451676226823419}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5035d83a48e416f49ab9985eb4be9e10, type: 3}
+  m_Script: {fileID: 11500000, guid: 78c3503ed641e5642b4393c1381cccbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mapHeight: 60
@@ -131,13 +132,9 @@ MonoBehaviour:
   seed: 
   useRandomSeed: 1
   generateExit: 1
-  maximumOpenWaterPercentage: 0
-  minimumOpenWaterPercentage: 0
-  maximumEnclaveRemovalSize: 0
-  minimumEnclaveRemovalSize: 0
   borderThickness: 3
-  timesToSmoothMap: 3
   passagewayRadius: 3
+  coneDesscentSharpness: 0.8
 --- !u!114 &777745580
 MonoBehaviour:
   m_ObjectHideFlags: 0

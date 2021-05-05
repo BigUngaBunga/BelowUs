@@ -870,11 +870,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821936, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -48
       objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821936, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821936, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1422,9 +1422,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc5264b868e2754290690f3880d637b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapsBeforeBossMap: 3
   startPosition: {x: 0, y: 0}
   mapSize: {x: 80, y: 60}
   mapPrefab: {fileID: 4239500959107569483, guid: 10960a618468ead42a3c14a89034b2ed, type: 3}
+  bossRoomPrefab: {fileID: 3399944966675119999, guid: bf584d7949a80584c93cc01c4102aa75, type: 3}
   seaFloorPrefab: {fileID: 4039451676226823419, guid: 3626baade102c17448cb69b874299366, type: 3}
 --- !u!4 &713738140
 Transform:
@@ -4273,7 +4275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511994682964710769, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1511994682964710781, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
       propertyPath: playerSpawnMethod
@@ -4947,7 +4949,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.1
+  m_fontSize: 34.15
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1

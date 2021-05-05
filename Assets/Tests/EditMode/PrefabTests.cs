@@ -58,7 +58,7 @@ namespace Tests
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
                 GameObject mapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
-                MapGenerator mapGen = mapPrefab.GetComponent<MapGenerator>();
+                ReefGenerator mapGen = mapPrefab.GetComponent<ReefGenerator>();
 
                 Assert.IsFalse(mapGen.MinimumOpenWaterPercentage > mapGen.MaximumOpenWaterPercentage, "The MinimumOpenWaterPercentage should not be bigger than the MaximumOpenWaterPercentage!");
                 Assert.IsFalse(mapGen.MinimumEnclaveRemovalSize > mapGen.MaximumEnclaveRemovalSize, "The MinimumEnclaveRemovalSize should not be bigger than the MaximumEnclaveRemovalSize!");
