@@ -6,7 +6,6 @@ namespace BelowUs
     public class PauseMenu : MonoBehaviour
     {
         [SerializeField] private GameObject pauseMenu;
-        [TagSelector] [SerializeField] private string playerTag;
 
         public static bool IsOpen { get; private set; } = false;
 
