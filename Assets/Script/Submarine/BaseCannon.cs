@@ -49,7 +49,7 @@ namespace BelowUs
 
         private bool IsCannonActive()
         {
-            if (NetworkClient.localPlayer != null)
+            if (NetworkClient.localPlayer != null && cannonController != null)
                 return NetworkClient.localPlayer.gameObject == cannonController.StationPlayerController;
             
             return false;
