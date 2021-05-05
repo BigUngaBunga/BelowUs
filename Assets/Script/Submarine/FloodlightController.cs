@@ -9,10 +9,11 @@ namespace BelowUs
     public class FloodlightController : MonoBehaviour
     {
         [SerializeField] private StationController floodlightController;
-        [SerializeReference] private float intensity, updateTimer;
+        [SerializeReference] private float intensity;
+        [SerializeReference] private float updateTimer;
         private Submarine_Movement submarineMovement;
         private SpriteRenderer spriteRenderer;
-        private bool IsOccupied => floodlightController.StationPlayerController != null && ClientScene.localPlayer.gameObject == floodlightController.StationPlayerController;
+        private bool IsOccupied => floodlightController.StationPlayerController != null;// && NetworkClient.localPlayer.gameObject == floodlightController.StationPlayerController;
         private Light spotLight;
         private bool hasFlippedFloodlight;
         void Start()

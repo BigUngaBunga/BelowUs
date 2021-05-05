@@ -344,9 +344,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4decdca493d3647a4fe91a41791787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   cameraController: {fileID: 0}
   leaveButton: {fileID: 0}
-  playerTag: Player
+  playerTag: LocalPlayer
   switchTag: 
   stationPlayerController: {fileID: 0}
-  controllerPlayerInput: {fileID: 0}

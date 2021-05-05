@@ -1,5 +1,6 @@
 using Mirror;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace BelowUs
@@ -35,13 +36,23 @@ namespace BelowUs
                     stationPlayerController = player;
                 LeaveButton.gameObject.SetActive(true);
                 leaveButton.onClick.AddListener(Leave);
+                EnterStation(player);
             }
+        }
+
+        protected virtual void EnterStation(GameObject player)//PlayerInput player)
+        {
+            stationPlayerController = player.gameObject;
+            LeaveButton.gameObject.SetActive(true);
+            leaveButton.onClick.AddListener(Leave);
+            cameraController.SwitchTarget(SwitchTag);
+            Debug.Log("Current tag: " + SwitchTag.ToString());
         }
 
         public virtual void Leave()
         {
             stationPlayerController = null;
-            cameraController.SwitchTarget(playerTag);
+            cameraController.SwitchTarget(PlayerTag);
             LeaveButton.gameObject.SetActive(false);
             leaveButton.onClick.RemoveListener(Leave);
         }

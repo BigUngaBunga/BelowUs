@@ -13,7 +13,6 @@ namespace BelowUs
         void Update()
         {
             ActiveCannon();
-            Debug.Log("active");
             if (whichCannon == 1)
             {
                 Targeting(this.transform.position, -90, 180, leftRestrict, rightRestrict);

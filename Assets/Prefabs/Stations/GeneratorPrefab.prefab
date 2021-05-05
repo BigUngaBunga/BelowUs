@@ -2147,11 +2147,9 @@ MonoBehaviour:
   syncInterval: 0.1
   cameraController: {fileID: 0}
   leaveButton: {fileID: 0}
-  playerTag: Player
-  switchTag: Player
+  playerTag: LocalPlayer
+  switchTag: LocalPlayer
   stationPlayerController: {fileID: 0}
-  controllerPlayerInput: {fileID: 0}
-  isOccupied: 0
 --- !u!114 &3584367204906114726
 MonoBehaviour:
   m_ObjectHideFlags: 0
