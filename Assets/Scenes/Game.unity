@@ -1729,6 +1729,7 @@ MonoBehaviour:
   syncInterval: 0.1
   oxygenProduction: {fileID: 847402536}
   consumptionReduction: 10
+  oxygenSeconds: {fileID: 0}
 --- !u!1 &824970946
 GameObject:
   m_ObjectHideFlags: 0
@@ -4918,7 +4919,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.15
+  m_fontSize: 21.4
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5624,7 +5625,7 @@ MonoBehaviour:
     ConstantValue: 0
     Variable: {fileID: 0}
   enableMaximum: 1
-  roundOffNumber: 0
+  decimals: 0
   separator: /
 --- !u!224 &5858324380795518057
 RectTransform:
@@ -5811,6 +5812,10 @@ PrefabInstance:
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 519420030}
+    - target: {fileID: 6630187596043431348, guid: a08ff082007c8814ba30119c018755e8, type: 3}
+      propertyPath: decimals
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6630187596043431348, guid: a08ff082007c8814ba30119c018755e8, type: 3}
       propertyPath: resource
       value: 

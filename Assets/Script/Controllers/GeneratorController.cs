@@ -10,13 +10,15 @@ namespace BelowUs
 
         private void Start()
         {
-            generatorUI = GetComponentInChildren<Canvas>();
+            generatorUI = GetComponentInChildren<Canvas>(true);
+
             generatorUI.gameObject.SetActive(false);
         }
 
         public override void Enter(GameObject player)
         {
             base.Enter(player);
+
             generatorUI.gameObject.SetActive(true);
         }
 

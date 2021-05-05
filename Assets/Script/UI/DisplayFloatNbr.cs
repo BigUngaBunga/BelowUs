@@ -14,7 +14,7 @@ namespace BelowUs
         [Header("Options")]
         [SerializeField] private bool enableMaximum;
 
-        [SerializeField] private bool roundOffNumber;
+        [SerializeField] private int decimals = 0;
         [SerializeField] private string separator = "/";
 		
         private TextMeshProUGUI text;
@@ -44,21 +44,11 @@ namespace BelowUs
 
         private void Awake() => text = (TextMeshProUGUI)textObject.GetComponent(typeof(TextMeshProUGUI));
 
-        private void UpdateBarFill() => text.text = enableMaximum ? DisplayOneDecimal(resource.CurrentValue) + separator + resource.maximumValue.Value : DisplayOneDecimal(resource.CurrentValue);
+        private void UpdateBarFill() => text.text = enableMaximum ? GetRounded(resource.CurrentValue) + separator + resource.maximumValue.Value : GetRounded(resource.CurrentValue).ToString();
 
-		private string DisplayOneDecimal(float number)
-        {
-            if (roundOffNumber)
-            {
-                string value = number.ToString();
-                if (value.Contains(","))
-                    return value.Substring(0, value.IndexOf(',') + 2);
-            }
-
-            return number.ToString();
-        }
+        private double GetRounded(float number) => System.Math.Round(number, decimals);
 
         [ClientRpc]
-        public void HandleResourceChanged(float currentValue, float maxValue) => text.text = enableMaximum ? DisplayOneDecimal(currentValue) + separator + maxValue : DisplayOneDecimal(currentValue);
+        public void HandleResourceChanged(float currentValue, float maxValue) => text.text = enableMaximum ? GetRounded(currentValue) + separator + maxValue : GetRounded(currentValue).ToString();
     }
 }

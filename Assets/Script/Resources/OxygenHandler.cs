@@ -7,24 +7,29 @@ namespace BelowUs
     {
         [SerializeReference] private ShipResource oxygenProduction;
         [SerializeField] private float consumptionReduction;
-        private ShipResource oxygenSeconds;
+        [SerializeField] [SyncVar] private ShipResource oxygenSeconds;
 
-        private void Awake() => oxygenSeconds = GetComponentInParent<ShipResource>();
-
-        private void Update() => DecreaseTime(GetConsumption());
-
-        [ClientRpc]
-        private void DecreaseTime(float consumption)
+        private void Start()
         {
             if (isServer)
-            {
+                oxygenSeconds = GetComponent<ShipResource>();
+        }
+
+        private void Update()
+        {
+            //TODO onödigt att köra denna if satsen om och om igen på en klient kör en invokerepeating eller nått ifall det går
+            if (isServer)
+                DecreaseTime(GetConsumption());
+        }
+
+        private void DecreaseTime(float consumption)
+        {
                 oxygenSeconds.ApplyChange(-consumption);
 
                 if (oxygenProduction.CurrentValue <= Time.deltaTime)
                     oxygenProduction.SetValue(0);
                 else
                     oxygenProduction.ApplyChange(-Time.deltaTime);
-            }
         }
 
         private float GetConsumption()
@@ -36,14 +41,12 @@ namespace BelowUs
             return consumption;
         }
 
-        [ClientRpc]
         public void IncreaseProductionTime(float increase)
         {
             if (oxygenProduction.CurrentValue + increase > oxygenProduction.maximumValue)
                 oxygenProduction.SetValue(oxygenProduction.maximumValue);
             else
                 oxygenProduction.ApplyChange(increase);
-
         }
     }
 }
