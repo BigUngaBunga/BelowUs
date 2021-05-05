@@ -14,9 +14,9 @@ namespace BelowUs
             generatorUI.gameObject.SetActive(false);
         }
 
-        protected override void EnterStation(PlayerInput player)
+        public override void Enter(GameObject player)
         {
-            base.EnterStation(player);
+            base.Enter(player);
             generatorUI.gameObject.SetActive(true);
         }
 

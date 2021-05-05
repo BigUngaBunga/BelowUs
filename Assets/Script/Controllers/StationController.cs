@@ -1,7 +1,6 @@
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
-using Mirror;
 
 namespace BelowUs
 {
@@ -24,7 +23,7 @@ namespace BelowUs
 
         protected bool IsOccupied => stationPlayerController != null;
 
-        public void Enter(GameObject player)
+        public virtual void Enter(GameObject player)
         {
             if(!IsOccupied)
             {
