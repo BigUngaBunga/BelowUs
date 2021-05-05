@@ -828,6 +828,10 @@ PrefabInstance:
       propertyPath: sceneId
       value: 286861827
       objectReference: {fileID: 0}
+    - target: {fileID: 1586461895393640356, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: sceneId
+      value: 1160108533
+      objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821933, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_Name
       value: Submarine
@@ -1110,6 +1114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  player: {fileID: 0}
   offsetPlayer: {x: 0, y: 0, z: -90}
   offsetSubmarine: {x: 0, y: 0, z: -10}
   followPlayer: 1
@@ -1317,7 +1322,6 @@ GameObject:
   - component: {fileID: 696916627}
   - component: {fileID: 696916630}
   - component: {fileID: 696916629}
-  - component: {fileID: 696916628}
   m_Layer: 5
   m_Name: ResourceDisplay
   m_TagString: Untagged
@@ -1348,29 +1352,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -1700, y: 120}
   m_Pivot: {x: 1, y: 1}
---- !u!114 &696916628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696916626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: badb5cb51f1c4b7439838c973a2929e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  resource: {fileID: 0}
-  textObject: {fileID: 0}
-  startUpdateDelay:
-    UseConstant: 1
-    ConstantValue: 0
-    Variable: {fileID: 0}
-  enableMaximum: 0
-  roundOffNumber: 0
-  separator: /
 --- !u!114 &696916629
 MonoBehaviour:
   m_ObjectHideFlags: 0
