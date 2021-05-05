@@ -16,7 +16,7 @@ namespace BelowUs
 
             if (whichCannon == 2)
             {
-                Targeting(this.transform.position, -90, 180, leftRestrict, rightRestrict);
+                Targeting(transform.position, -90, 180, leftRestrict, rightRestrict);
                 Fire();
             }
 
