@@ -54,4 +54,5 @@ namespace BelowUs
         [ClientRpc]
         private void HandleResourceChanged(float currentHealth, float maxHealth) => resourceBarImage.fillAmount = currentHealth / maxHealth;
     }
+
 }

@@ -7,7 +7,7 @@ namespace BelowUs
     {
         private Rigidbody2D rb2D;
         private SpriteRenderer spriteRenderer;
-        private float subSpeed, subSpeedChange;
+        private float subSpeed;
         private float submarineRotationSpeed;
         float angularRetardation, lateralRetardation;
         public bool IsFlipped { get; private set; }
@@ -21,7 +21,6 @@ namespace BelowUs
             rb2D = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             subSpeed = 50;
-            subSpeedChange = 0.0005f;
             submarineRotationSpeed = 0.5f;
             angularRetardation = 0.033f;
             lateralRetardation = 0.1f;

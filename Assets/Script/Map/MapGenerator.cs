@@ -145,7 +145,7 @@ namespace BelowUs
             yield return StartCoroutine(resourceGenerator.GenerateResources(random, noiseMap, squareSize, waterTile));
         }
 
-        public IEnumerator GenerateSeaFloor(MapHandler mapHandler, Vector2 mapSize, int squareSize)
+        public IEnumerator GenerateSeaFloor(Vector2 mapSize, int squareSize)
         {
             yield return Wait("Started counting");
 
@@ -253,13 +253,10 @@ namespace BelowUs
 
             if (generateExit)
             {
-                if (randomExitPlacement)
-                    ExitLocation = new Vector2(random.Next(exitDistanceFromCorners, noiseMap.GetLength(0) - exitDistanceFromCorners), 0);
-                else
-                {
-                    ExitLocation = new Vector2(noiseMap.GetLength(0) / 2, 0);
-                }
-                    
+                ExitLocation = randomExitPlacement
+                    ? new Vector2(random.Next(exitDistanceFromCorners, noiseMap.GetLength(0) - exitDistanceFromCorners), 0)
+                    : new Vector2(noiseMap.GetLength(0) / 2, 0);
+
                 DrawCircle(ExitLocation, entranceSize);
             }
 
