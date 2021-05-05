@@ -86,6 +86,9 @@ namespace BelowUs
                 case ResourceType.Scrap:
                     objectToInstantiate = scrapPrefab;
                     break;
+                case ResourceType.Gold:
+                    objectToInstantiate = goldPrefab;
+                    break;
                 default:
                     objectToInstantiate = goldPrefab;
                     break;
@@ -99,8 +102,8 @@ namespace BelowUs
             Dictionary<ResourceType, int> resourceTypes = new Dictionary<ResourceType, int>();
             int totalWeight = 0;
 
-            resourceTypes.Add(ResourceType.Gold, 50);
-            resourceTypes.Add(ResourceType.Scrap, 50);
+            resourceTypes.Add(ResourceType.Gold, 20);
+            resourceTypes.Add(ResourceType.Scrap, 10);
 
             foreach (int weight in resourceTypes.Values)
                 totalWeight += weight;

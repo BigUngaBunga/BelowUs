@@ -1,34 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 namespace BelowUs
 {
-    public class OxygenHandler : MonoBehaviour
+    public class OxygenHandler : NetworkBehaviour
     {
         [SerializeReference] private ShipResource oxygenProduction;
         [SerializeField] private float consumptionReduction;
         private ShipResource oxygenSeconds;
 
-        private void Start() => oxygenSeconds = GetComponentInParent<ShipResource>();
-
+        private void Awake() => oxygenSeconds = GetComponentInParent<ShipResource>();
 
         private void Update() => DecreaseTime(GetConsumption());
 
+        [ClientRpc]
         private void DecreaseTime(float consumption)
         {
-            oxygenSeconds.CmdChangeByValue(-consumption);
-            oxygenProduction.CmdChangeByValue(Time.deltaTime);
-            Debug.Log("Made change to oxygen " + oxygenSeconds.CurrentValue);
+            if (isServer)
+            {
+                oxygenSeconds.ApplyChange(-consumption);
+
+                if (oxygenProduction.CurrentValue <= Time.deltaTime)
+                    oxygenProduction.SetValue(0);
+                else
+                    oxygenProduction.ApplyChange(-Time.deltaTime);
+            }
         }
 
         private float GetConsumption()
         {
             float consumption = Time.deltaTime;
             if (oxygenSeconds.CurrentValue > 0)
-                consumption /= consumptionReduction;
+                return consumption / consumptionReduction;
 
             return consumption;
+        }
+
+        [ClientRpc]
+        public void IncreaseProductionTime(float increase)
+        {
+            if (oxygenProduction.CurrentValue + increase > oxygenProduction.maximumValue)
+                oxygenProduction.SetValue(oxygenProduction.maximumValue);
+            else
+                oxygenProduction.ApplyChange(increase);
+
         }
     }
 }

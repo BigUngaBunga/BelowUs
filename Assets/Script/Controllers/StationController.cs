@@ -5,7 +5,7 @@ using Mirror;
 
 namespace BelowUs
 {
-    public class StationController : MonoBehaviour
+    public class StationController : NetworkBehaviour
     {
         [SerializeField] protected CameraController cameraController;
         public CameraController Controller => cameraController;

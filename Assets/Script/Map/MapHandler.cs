@@ -39,7 +39,7 @@ namespace BelowUs
         {
             Vector3 seaFloorSize = new Vector3(mapSize.x * 2, mapSize.y / 2);
             GameObject map = Instantiate(seaFloorPrefab, CalculateNextPosition(), Quaternion.identity);
-            yield return StartCoroutine(map.GetComponent<MapGenerator>().GenerateSeaFloor(this, seaFloorSize, squareSize));
+            yield return StartCoroutine(map.GetComponent<MapGenerator>().GenerateSeaFloor(seaFloorSize, squareSize));
             maps.Add(map);
         }
 

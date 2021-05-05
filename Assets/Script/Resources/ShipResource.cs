@@ -21,9 +21,16 @@ namespace BelowUs
 
         #region Server
         [Server]
-        private void ApplyChange(float value)
+        public void ApplyChange(float value)
         {
             currentValue += value;
+            EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
+        }
+
+        [Server]
+        public void SetValue(float value)
+        {
+            currentValue = value;
             EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
         }
 
