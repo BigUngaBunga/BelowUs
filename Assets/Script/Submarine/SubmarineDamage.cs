@@ -23,6 +23,6 @@ namespace BelowUs
             else if (collision.tag == "Enemy")
 
                 hullHealth.ApplyChange(collision.gameObject.GetComponentInParent<EnemyBase>().CollisionDamage);
-        }
+        }     
     }
 }

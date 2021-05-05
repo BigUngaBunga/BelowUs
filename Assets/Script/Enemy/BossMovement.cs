@@ -32,7 +32,7 @@ namespace BelowUs
 
         private AttackPattern currentAttactPattern;
 
-
+        
         protected override void Start()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -126,10 +126,7 @@ namespace BelowUs
 
         #region chasing Attack pattern
 
-        private Vector3 ChasingNewTarget()
-        {           
-            return targetGameObject.transform.position;
-        }
+        private Vector3 ChasingNewTarget() => targetGameObject.transform.position;
 
         protected void ChasingMovement()
         {
