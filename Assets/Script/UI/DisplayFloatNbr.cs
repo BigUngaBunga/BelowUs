@@ -7,17 +7,18 @@ namespace BelowUs
     public class DisplayFloatNbr : NetworkBehaviour
     {
         [Header("References")]
-        [SerializeField] private ShipResource resource;
+        [SerializeField] protected ShipResource resource;
         [SerializeField] private GameObject textObject;
         [SerializeField] private FloatReference startUpdateDelay;
 
         [Header("Options")]
-        [SerializeField] private bool enableMaximum;
+        [SerializeField] protected bool enableMaximum;
+
 
         [SerializeField] private int decimals = 0;
-        [SerializeField] private string separator = "/";
+        [SerializeField] protected string separator = "/";
 		
-        private TextMeshProUGUI text;
+        protected TextMeshProUGUI text;
 
         private void OnEnable()
         {
@@ -44,11 +45,11 @@ namespace BelowUs
 
         private void Awake() => text = (TextMeshProUGUI)textObject.GetComponent(typeof(TextMeshProUGUI));
 
-        private void UpdateBarFill() => text.text = enableMaximum ? GetRounded(resource.CurrentValue) + separator + resource.maximumValue.Value : GetRounded(resource.CurrentValue).ToString();
+        protected virtual void UpdateBarFill() => text.text = enableMaximum ? GetRounded(resource.CurrentValue) + separator + resource.maximumValue.Value : GetRounded(resource.CurrentValue).ToString();
 
-        private double GetRounded(float number) => System.Math.Round(number, decimals);
+        protected double GetRounded(float number) => System.Math.Round(number, decimals);
 
         [ClientRpc]
-        public void HandleResourceChanged(float currentValue, float maxValue) => text.text = enableMaximum ? GetRounded(currentValue) + separator + maxValue : GetRounded(currentValue).ToString();
+        public virtual void HandleResourceChanged(float currentValue, float maxValue) => text.text = enableMaximum ? GetRounded(currentValue) + separator + maxValue : GetRounded(currentValue).ToString();
     }
 }

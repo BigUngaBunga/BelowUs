@@ -18,8 +18,17 @@ namespace BelowUs
         public GameObject bullet;
 
         private bool isCannonActive => IsCannonActive();
+        private Light spotlight;
+        private float intensity;
 
         [SerializeField] private StationController cannonController;
+
+        protected virtual void Start()
+        {
+            spotlight = GetComponentInChildren<Light>();
+            intensity = spotlight.intensity;
+            InvokeRepeating(nameof(ToggleSpotlight), 0, 0.1f);
+        }
 
         protected void Targeting(Vector3 pos, float offset, float rotationOffset, float res1, float res2)
         {
@@ -74,6 +83,8 @@ namespace BelowUs
 
 
         }
+
+        private void ToggleSpotlight() => spotlight.intensity = isCannonActive? intensity : 0;
 
         protected void Fire()
         {

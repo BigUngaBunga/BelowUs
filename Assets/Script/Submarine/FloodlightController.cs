@@ -9,15 +9,16 @@ namespace BelowUs
     public class FloodlightController : MonoBehaviour
     {
         [SerializeField] private StationController floodlightController;
-        [SerializeReference] private float intensity;
-        [SerializeReference] private float updateTimer;
+        private float intensity;
         private Submarine_Movement submarineMovement;
         private SpriteRenderer spriteRenderer;
-        private bool IsOccupied => floodlightController.StationPlayerController != null;// && NetworkClient.localPlayer.gameObject == floodlightController.StationPlayerController;
+        private bool IsOccupied => floodlightController.StationPlayerController != null;
         private Light spotLight;
         private bool hasFlippedFloodlight;
         void Start()
         {
+            intensity = 2;
+            float updateTimer = 0.2f;
             submarineMovement = GetComponentInParent<Submarine_Movement>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             spotLight = GetComponentInChildren<Light>();
@@ -45,13 +46,7 @@ namespace BelowUs
                 transform.rotation = transform.parent.rotation;
         }
 
-        private void ToggleFloodlight()
-        {
-            if (IsOccupied)
-                spotLight.intensity = intensity;
-            else
-                spotLight.intensity = 0;
-        }
+        private void ToggleFloodlight() => spotLight.intensity = IsOccupied ? intensity : 0;
 
         private void FlipFloodlight()
         {

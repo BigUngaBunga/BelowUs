@@ -4,8 +4,9 @@ namespace BelowUs
 {
     public class BotRightCannon : BaseCannon
     {
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             leftRestrict = 18;
             rightRestrict = -120;
         }

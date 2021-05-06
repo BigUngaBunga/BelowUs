@@ -4,8 +4,9 @@ namespace BelowUs
 {
     public class TopLeftCannon : BaseCannon
     {
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             leftRestrict = -15;
             rightRestrict = -135;
         }

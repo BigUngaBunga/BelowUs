@@ -586,6 +586,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1414293095610858984}
   - component: {fileID: 1512704588526693874}
+  - component: {fileID: 8735919222791543316}
   m_Layer: 0
   m_Name: Ambient Light
   m_TagString: Untagged
@@ -669,6 +670,18 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &8735919222791543316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3233474244473011438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766fcabd4cd70474b91ce2518f1b754e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5089922518502821933
 GameObject:
   m_ObjectHideFlags: 0
