@@ -10,10 +10,7 @@ namespace BelowUs
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private float velocity = 20;
         [SerializeField] private float damage;
-        public float Damage
-        {
-            get { return damage; }
-        }
+        public float Damage => damage;
 
         [Server]
         private void Start()
@@ -24,7 +21,7 @@ namespace BelowUs
 
         private void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collider.gameObject.tag == "enemy" || collider.gameObject.tag == "submarine")
+            if (collider.gameObject.CompareTag(ReferenceManager.Singleton.EnemyTag) || collider.gameObject.CompareTag(ReferenceManager.Singleton.SubmarineTag))
                 Destroy(this);
         }
     }

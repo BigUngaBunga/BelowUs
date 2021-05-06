@@ -39,17 +39,17 @@ namespace BelowUs
 
             switch (currentState)
             {
-                case enemyState.Patrolling:
+                case EnemyState.Patrolling:
                     UpdateRotationPatrolling();
                     UpdateMovementPatrolling();
                     base.CheckForFlip();
                     break;
-                case enemyState.Chasing:
+                case EnemyState.Chasing:
                     UpdateRotationChasing();
                     UpdateMovementChasing();
                     base.CheckForFlip();
                     break;
-                case enemyState.Attacking:
+                case EnemyState.Attacking:
                     UpdateRotationAttacking();
                     UpdateFirePointRotation();
                     timeElapsed += Time.deltaTime;

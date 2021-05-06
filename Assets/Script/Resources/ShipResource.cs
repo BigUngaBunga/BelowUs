@@ -5,9 +5,9 @@ namespace BelowUs
 {
     public class ShipResource : NetworkBehaviour
     {
-#if UNITY_EDITOR
-        public string ResourceName = "";
-#endif
+        #if UNITY_EDITOR
+        [SerializeField] private string resourceName = "";
+        #endif
 
         [SyncVar] private float currentValue;
         public float CurrentValue => currentValue;

@@ -23,17 +23,17 @@ namespace BelowUs
 
             switch (currentState)
             {
-                case enemyState.Patrolling:
+                case EnemyState.Patrolling:
                     UpdateRotationPatrolling();
                     UpdateMovementPatrolling();
                     CheckForFlip();
                     break;
-                case enemyState.Chasing:
+                case EnemyState.Chasing:
                     UpdateRotationChasing();
                     UpdateMovementChasing();
                     CheckForFlip();
                     break;
-                case enemyState.Attacking:
+                case EnemyState.Attacking:
                     UpdateRotationChasing();
                     UpdateMovementChasing();
                     CheckForFlip();

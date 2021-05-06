@@ -9,13 +9,12 @@ namespace BelowUs
         [SerializeField] private Transform currentStation;
         [SerializeField] private LayerMask stationMask;
         private Rigidbody2D rb;
-        private PlayerAction action;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody2D>();
 
-            action = new PlayerAction();
+            PlayerAction action = new PlayerAction();
             PlayerAction.PlayerActions playerAction = action.Player;
 
             playerAction.EnterStation.performed += OnStationClick;

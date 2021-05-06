@@ -1709,7 +1709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  ResourceName: Depth
+  resourceName: 
   resetValue: 1
   startingValue:
     UseConstant: 1
@@ -2417,7 +2417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  ResourceName: Oxygen
+  resourceName: 
   resetValue: 1
   startingValue:
     UseConstant: 0
@@ -2743,7 +2743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  ResourceName: Oxygen Production
+  resourceName: 
   resetValue: 1
   startingValue:
     UseConstant: 0
@@ -3268,6 +3268,7 @@ MonoBehaviour:
   localPlayerTag: LocalPlayer
   playerTag: Player
   submarineTag: Submarine
+  enemyTag: Enemy
   ladderMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -3611,7 +3612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  ResourceName: Hull Health
+  resourceName: 
   resetValue: 1
   startingValue:
     UseConstant: 0
@@ -5904,7 +5905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  ResourceName: Oxygen Production
+  resourceName: 
   resetValue: 1
   startingValue:
     UseConstant: 0

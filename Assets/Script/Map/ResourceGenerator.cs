@@ -49,8 +49,8 @@ namespace BelowUs
                     if (map[x, y] == openTile && SurroundedByOpenTiles(x, y))
                     {
                         Vector2 position;
-                        position.x = (x - halfMapWidth) * squareSize + transform.position.x;
-                        position.y = (y - halfMapHeight) * squareSize + transform.position.y;
+                        position.x = ((x - halfMapWidth) * squareSize) + transform.position.x;
+                        position.y = ((y - halfMapHeight) * squareSize) + transform.position.y;
                         openPositions.Add(position);
                     }
                         
@@ -80,20 +80,12 @@ namespace BelowUs
 
         private void GenerateResource(Vector2 position)
         {
-            GameObject objectToInstantiate;
-            switch (PickWeightedResourceType())
+            GameObject objectToInstantiate = PickWeightedResourceType() switch
             {
-                case ResourceType.Scrap:
-                    objectToInstantiate = scrapPrefab;
-                    break;
-                case ResourceType.Gold:
-                    objectToInstantiate = goldPrefab;
-                    break;
-                default:
-                    objectToInstantiate = goldPrefab;
-                    break;
-            }
-
+                ResourceType.Scrap => scrapPrefab,
+                ResourceType.Gold => goldPrefab,
+                _ => goldPrefab,
+            };
             Instantiate(objectToInstantiate, position, Quaternion.identity);
         }
 

@@ -7,7 +7,7 @@ namespace BelowUs
 {
     public class EnemyBase : NetworkBehaviour
     {
-        protected enum enemyState
+        protected enum EnemyState
         {
             Patrolling,
             Chasing,
@@ -34,7 +34,7 @@ namespace BelowUs
         protected List<Vector3> patrolPositions = new List<Vector3>();
         protected Vector3 currentPatrolTarget;
 
-        protected enemyState currentState;
+        protected EnemyState currentState;
         protected Rigidbody2D rb;
 
         protected virtual void Start()
@@ -75,11 +75,11 @@ namespace BelowUs
         protected void CheckForFlip()
         {
             //Checks which direction the objeckt is facing and wether it has flipped the right way thru localscale
-            if (transform.rotation.z > 0 && transform.localScale.x < 0) flip();
-            else if (transform.rotation.z < 0 && transform.localScale.x > 0) flip();
+            if (transform.rotation.z > 0 && transform.localScale.x < 0) Flip();
+            else if (transform.rotation.z < 0 && transform.localScale.x > 0) Flip();
         }
 
-        protected void flip()
+        protected void Flip()
         {
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
@@ -89,9 +89,8 @@ namespace BelowUs
         protected void CheckDistanceToTarget()
         {
             float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
-            if (distance < attackingRange) currentState = enemyState.Attacking;
-            else if (distance < chasingRange) currentState = enemyState.Chasing;
-            else currentState = enemyState.Patrolling;
+            if (distance < attackingRange) currentState = EnemyState.Attacking;
+            else currentState = distance < chasingRange ? EnemyState.Chasing : EnemyState.Patrolling;
         }
 
         //private void OnTriggerEnter2D(Collider2D collision)

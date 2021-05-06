@@ -55,7 +55,6 @@ namespace BelowUs
             controller.SetMovementSpeed(moveSpeed);
             controller.SetJumpForce(jumpForce);
             controller.SetClimbSpeed(climbSpeed);
-            controller.SetPlayerActions(playerActions);
         }
     }
 }

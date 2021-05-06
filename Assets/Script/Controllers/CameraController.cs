@@ -22,7 +22,7 @@ namespace BelowUs
 
         private void FindPlayer()
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.PlayerTag);
+            GameObject playerObj = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.LocalPlayerTag);
 
             if (playerObj != null)
             {

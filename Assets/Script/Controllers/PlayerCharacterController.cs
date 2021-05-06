@@ -10,8 +10,6 @@ namespace BelowUs
         [SerializeField] private FloatReference jumpForce;
         [SerializeField] private FloatReference climbSpeed;
 
-        [SerializeField] private InputActionAsset playerActions;
-
         private bool isClimbing;
         private readonly float groundBuffer = 0.05f;
 
@@ -71,7 +69,6 @@ namespace BelowUs
         public void SetMovementSpeed(FloatReference ms) => moveSpeed = ms;
         public void SetJumpForce(FloatReference jf) => jumpForce = jf;
         public void SetClimbSpeed(FloatReference cs) => climbSpeed = cs;
-        public void SetPlayerActions(InputActionAsset iaa) => playerActions = iaa;
         #endregion
 
         #region Events
@@ -86,7 +83,7 @@ namespace BelowUs
 
         public void OnJump(InputAction.CallbackContext value)
         {
-            if (!PauseMenu.IsOpen)
+            if (!PauseMenu.IsOpen && !IsInStation())
             {
                 if (debugJump)
                     Debug.Log(nameof(isClimbing) + " is: " + isClimbing + "\n" + nameof(grounded) + " is " + grounded);
