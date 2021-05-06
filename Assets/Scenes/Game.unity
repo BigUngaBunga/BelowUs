@@ -6456,6 +6456,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ElectricityGenerationMeter
       objectReference: {fileID: 0}
+    - target: {fileID: 6630187597703003701, guid: a08ff082007c8814ba30119c018755e8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6630187597703003720, guid: a08ff082007c8814ba30119c018755e8, type: 3}
       propertyPath: resource
       value: 
@@ -7349,7 +7353,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.15
+  m_fontSize: 24.5
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8311,6 +8315,10 @@ PrefabInstance:
     - target: {fileID: 6630187597662198927, guid: a08ff082007c8814ba30119c018755e8, type: 3}
       propertyPath: m_Name
       value: OxygenDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630187597703003701, guid: a08ff082007c8814ba30119c018755e8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6630187597703003720, guid: a08ff082007c8814ba30119c018755e8, type: 3}
       propertyPath: decimals
