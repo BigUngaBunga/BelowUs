@@ -133,6 +133,7 @@ namespace BelowUs
             // Handles jumping
             if (jumpRequest)
             {
+                Debug.Log("does it ever get here?");
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 jumpRequest = false;
                 grounded = false;
