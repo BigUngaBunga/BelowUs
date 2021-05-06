@@ -11,17 +11,20 @@ namespace BelowUs
         public CameraController Controller => cameraController;
 
         [SerializeField] protected Button leaveButton;
+        [SerializeField] protected Button controlsButton;
+
         public Button LeaveButton => leaveButton;
 
         private string playerTag;
         [Tooltip("The tag of the object that the camera should switch to on collision. For example station or weapon.")]
         [SerializeField] [TagSelector] protected string switchTag;
+
         public string SwitchTag => switchTag;
        
         [SerializeField] [SyncVar] private GameObject stationPlayerController = null;
         public GameObject StationPlayerController => stationPlayerController;
 
-        protected bool IsOccupied => stationPlayerController != null;
+        public bool IsOccupied => stationPlayerController != null;
 
         private void Start() => playerTag = TagManager.Singleton.PlayerTag;
 
@@ -46,8 +49,7 @@ namespace BelowUs
         protected virtual void EnterStation(GameObject player)//PlayerInput player)
         {
             stationPlayerController = player.gameObject;
-            LeaveButton.gameObject.SetActive(true);
-            leaveButton.onClick.AddListener(Leave);
+            SetButtonActiveStatus(true);
             cameraController.SwitchTarget(SwitchTag);
             Debug.Log("Current tag: " + SwitchTag.ToString());
         }
@@ -56,11 +58,25 @@ namespace BelowUs
         {
             stationPlayerController = null;
 
+            //TODO byt till vanliga SwitchTarget, detta är enbart för att få speltestet att fungera
             if (playerTag != null)
-                cameraController.SwitchTarget(playerTag);
+                cameraController.SwitchTarget(true);
+            //cameraController.SwitchTarget(playerTag);
 
-            LeaveButton.gameObject.SetActive(false);
-            leaveButton.onClick.RemoveListener(Leave);
+            SetButtonActiveStatus(false);
+        }
+
+        private void SetButtonActiveStatus(bool activate)
+        {
+            LeaveButton.gameObject.SetActive(activate);
+            
+            if (controlsButton != null)
+                controlsButton.gameObject.SetActive(activate);
+
+            if (activate)
+                leaveButton.onClick.AddListener(Leave);
+            else
+                leaveButton.onClick.RemoveListener(Leave);
         }
 
         [Command]

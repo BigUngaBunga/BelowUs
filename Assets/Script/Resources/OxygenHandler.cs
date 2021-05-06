@@ -8,38 +8,30 @@ namespace BelowUs
         [SerializeReference] private ShipResource oxygenProduction;
         [SerializeField] private float consumptionReduction;
         [SerializeField] [SyncVar] private ShipResource oxygenSeconds;
+        private float repeatTime;
 
         private void Start()
         {
             if (isServer)
+            {
                 oxygenSeconds = GetComponent<ShipResource>();
+                repeatTime = 0.1f;
+                InvokeRepeating(nameof(DecreaseTime), 0, repeatTime);
+            }
         }
 
-        private void Update()
+        private void DecreaseTime()
         {
-            //TODO onödigt att köra denna if satsen om och om igen på en klient kör en invokerepeating eller nått ifall det går
-            if (isServer)
-                DecreaseTime(GetConsumption());
-        }
+                
+                oxygenSeconds.ApplyChange(-GetConsumption());
 
-        private void DecreaseTime(float consumption)
-        {
-                oxygenSeconds.ApplyChange(-consumption);
-
-                if (oxygenProduction.CurrentValue <= Time.deltaTime)
+                if (oxygenProduction.CurrentValue <= repeatTime)
                     oxygenProduction.SetValue(0);
                 else
-                    oxygenProduction.ApplyChange(-Time.deltaTime);
+                    oxygenProduction.ApplyChange(-repeatTime);
         }
 
-        private float GetConsumption()
-        {
-            float consumption = Time.deltaTime;
-            if (oxygenSeconds.CurrentValue > 0)
-                return consumption / consumptionReduction;
-
-            return consumption;
-        }
+        private float GetConsumption() => oxygenProduction.CurrentValue > 0 ? repeatTime / consumptionReduction : repeatTime;
 
         public void IncreaseProductionTime(float increase)
         {

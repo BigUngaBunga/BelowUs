@@ -64,5 +64,8 @@ namespace BelowUs
             else if (targetTag == submarineTag)
                 followPlayer = false;
         }
+
+        //TODO ta bort då vanliga SwitchTarget fungerar, detta är enbart för att få speltestet att fungera
+        public void SwitchTarget(bool switchToPlayer) => followPlayer = switchToPlayer;
     }
 }
