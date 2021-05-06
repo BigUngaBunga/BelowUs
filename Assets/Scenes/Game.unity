@@ -3269,6 +3269,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localPlayerTag: LocalPlayer
   playerTag: Player
+  ladderMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!4 &1102012101
 Transform:
   m_ObjectHideFlags: 0
@@ -4579,7 +4585,7 @@ GameObject:
   - component: {fileID: 1510558471}
   - component: {fileID: 1510558472}
   - component: {fileID: 1510558473}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7353,7 +7359,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24.5
+  m_fontSize: 24.25
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1

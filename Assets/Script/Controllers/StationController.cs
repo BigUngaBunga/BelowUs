@@ -26,7 +26,7 @@ namespace BelowUs
 
         public bool IsOccupied => stationPlayerController != null;
 
-        private void Start() => playerTag = TagManager.Singleton.PlayerTag;
+        private void Start() => playerTag = ReferenceManager.Singleton.PlayerTag;
 
         public virtual void Enter(GameObject player)
         {

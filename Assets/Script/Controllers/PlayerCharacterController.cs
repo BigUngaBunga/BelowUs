@@ -6,14 +6,11 @@ namespace BelowUs
     public class PlayerCharacterController : MonoBehaviour
     {
         [Header("References")]
-        public FloatReference moveSpeed;
-        public FloatReference jumpForce;
-        public FloatReference climbSpeed;
+        [SerializeField] private FloatReference moveSpeed;
+        [SerializeField] private FloatReference jumpForce;
+        [SerializeField] private FloatReference climbSpeed;
 
-        public InputActionAsset playerActions;
-
-        public LayerMask ladderMask;
-        public LayerMask groundMask;
+        [SerializeField] private InputActionAsset playerActions;
 
         private bool isClimbing;
         private readonly float groundBuffer = 0.05f;
@@ -33,6 +30,7 @@ namespace BelowUs
         private bool IsInStation() => Station != null && Station.StationPlayerController == gameObject;
 
         private readonly bool debugMovement = false;
+        private readonly bool debugJump = false;
 
         private void Awake()
         {
@@ -69,6 +67,13 @@ namespace BelowUs
 
         private void OnDisable() => action?.Disable();
 
+        #region Setters
+        public void SetMovementSpeed(FloatReference ms) => moveSpeed = ms;
+        public void SetJumpForce(FloatReference jf) => jumpForce = jf;
+        public void SetClimbSpeed(FloatReference cs) => climbSpeed = cs;
+        public void SetPlayerActions(InputActionAsset iaa) => playerActions = iaa;
+        #endregion
+
         #region Events
         public void OnMove(InputAction.CallbackContext value)
         {
@@ -83,10 +88,16 @@ namespace BelowUs
         {
             if (!PauseMenu.IsOpen)
             {
+                if (debugJump)
+                    Debug.Log(nameof(isClimbing) + " is: " + isClimbing + "\n" + nameof(grounded) + " is " + grounded);
+
                 if (!isClimbing && grounded && value.ReadValue<float>() > 0)
                     jumpRequest = true;
                 else if (isClimbing || verticalInput > 0)
                     verticalInput = value.ReadValue<float>();
+
+                if (debugJump)
+                    Debug.Log("OnJump Ran! And " + nameof(jumpRequest) + " is " + jumpRequest);
             }
         }
 
@@ -106,7 +117,7 @@ namespace BelowUs
                 transform.rotation = horizontalMovement > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
         }
 
-        private void HandleClimbingBool() => isClimbing = rb.IsTouchingLayers(ladderMask);
+        private void HandleClimbingBool() => isClimbing = rb.IsTouchingLayers(ReferenceManager.Singleton.LadderMask);
 
         private void HandleClimbing()
         {
@@ -133,7 +144,6 @@ namespace BelowUs
             // Handles jumping
             if (jumpRequest)
             {
-                Debug.Log("does it ever get here?");
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 jumpRequest = false;
                 grounded = false;
@@ -141,7 +151,7 @@ namespace BelowUs
             else
             {
                 Vector2 boxCenter = (Vector2)transform.position + (Vector2.down * (playerSize.y + boxSize.y) * 0.5f);
-                grounded = Physics2D.OverlapBox(boxCenter, boxSize, 0f, groundMask) != null;
+                grounded = Physics2D.OverlapBox(boxCenter, boxSize, 0f, ReferenceManager.Singleton.GroundMask) != null;
             }
         }
     }

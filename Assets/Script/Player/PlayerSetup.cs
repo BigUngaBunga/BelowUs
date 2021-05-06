@@ -14,9 +14,6 @@ namespace BelowUs
 
         [SerializeField] private InputActionAsset playerActions;
 
-        [SerializeField] private LayerMask ladderMask;
-        [SerializeField] private LayerMask groundMask;
-
         public FloatReference MoveSpeed => moveSpeed;
         public FloatReference JumpForce => jumpForce;
         public FloatReference ClimbSpeed => climbSpeed;
@@ -55,14 +52,10 @@ namespace BelowUs
         private void AddPlayerCharacterController()
         {
             PlayerCharacterController controller = gameObject.AddComponent<PlayerCharacterController>();
-            controller.moveSpeed = moveSpeed;
-            controller.jumpForce = jumpForce;
-            controller.climbSpeed = climbSpeed;
-
-            controller.playerActions = playerActions;
-
-            controller.ladderMask = ladderMask;
-            controller.groundMask = groundMask;
+            controller.SetMovementSpeed(moveSpeed);
+            controller.SetJumpForce(jumpForce);
+            controller.SetClimbSpeed(climbSpeed);
+            controller.SetPlayerActions(playerActions);
         }
     }
 }
