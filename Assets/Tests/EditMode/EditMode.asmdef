@@ -11,7 +11,8 @@
         "NewAssembly",
         "Controllers",
         "MapGeneration",
-        "Player"
+        "Player",
+        "Utilities"
     ],
     "includePlatforms": [
         "Editor"

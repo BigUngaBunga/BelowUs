@@ -41,10 +41,6 @@ namespace Tests
                 Assert.IsNotNull(eBase, "The prefab " + prefab.name + " is missing an enemy script or should not be in the enemy prefab folder!");
                 scripts.Add(eBase);
             }
-
-            //Checks so that all the prefabs have the submarinetag defined
-            foreach (EnemyBase script in scripts)
-                Assert.IsFalse(script.SubmarineTag == "", script.gameObject.name + " is missing the submarine tag!");
         }
 
         [Test]

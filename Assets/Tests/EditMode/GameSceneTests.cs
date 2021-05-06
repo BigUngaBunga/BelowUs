@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 namespace Tests
 {
-    public class SceneTests : IPrebuildSetup
+    public class GameSceneTests : IPrebuildSetup
     {
         /**
          * Guarantees that the active scene is the game scene
@@ -50,8 +50,11 @@ namespace Tests
         [Test] public void PlayerTests()
         {
             //Checks so that there aren't any player tags in the scene
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameObject player = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.PlayerTag);
             Assert.IsNull(player, "There shouldn't be any players in the scene before the game has started!");
+
+            GameObject localPlayer = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.LocalPlayerTag);
+            Assert.IsNull(localPlayer, "There shouldn't be any players in the scene before the game has started!");
 
             //Checks so that there is only one BackupPlayerSpawner and that it has a player tag
             BackupPlayerSpawner[] spawners = Object.FindObjectsOfType<BackupPlayerSpawner>();
@@ -59,7 +62,6 @@ namespace Tests
             if (spawners.Length != 0)
             {
                 string spawnerName = spawners[0].gameObject.name;
-                Assert.IsNotNull(spawners[0].PlayerPrefab, spawnerName + " is missing a PlayerPrefab!");
                 Assert.IsNotNull(spawners[0].NetManager, spawnerName + " is missing a NetManagerPrefab!");
             }
         }
@@ -72,6 +74,13 @@ namespace Tests
             Assert.IsTrue(mapHandlers.Length < 2, "There are more than one map handlers in the scene!");
 
             Assert.IsNotNull(mapHandlers[0].MapPrefab, "The map handler is missing a map prefab!");
+        }
+
+        [Test] public void SubmarineInsideTests()
+        {
+            //TODO fix this so that it actually finds the submarine floor in the scene
+            //Assert.IsTrue(GameObject.Find("Floor").layer == ReferenceManager.Singleton.GroundMask, "The floor should have " + ReferenceManager.Singleton.GroundMask + "!");
+
         }
     }
 }

@@ -14,9 +14,6 @@ namespace BelowUs
         [Range(2, 16)]
         [SerializeField] private float smoothFactor;
 
-        [TagSelector] [SerializeField] private string playerTag;
-        [TagSelector] [SerializeField] private string submarineTag;
-
         private void Awake()
         {
             InvokeRepeating(nameof(FindPlayer), 0.25f, 0.25f);
@@ -25,7 +22,7 @@ namespace BelowUs
 
         private void FindPlayer()
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
+            GameObject playerObj = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.PlayerTag);
 
             if (playerObj != null)
             {
@@ -36,7 +33,7 @@ namespace BelowUs
 
         private void FindSubmarine()
         {
-            GameObject submarineObj = GameObject.FindGameObjectWithTag(submarineTag);
+            GameObject submarineObj = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.SubmarineTag);
 
             if (submarineObj != null)
             {
@@ -59,9 +56,9 @@ namespace BelowUs
 
         public void SwitchTarget(string targetTag)
         {
-            if (targetTag == playerTag)
+            if (targetTag == ReferenceManager.Singleton.PlayerTag)
                 followPlayer = true;
-            else if (targetTag == submarineTag)
+            else if (targetTag == ReferenceManager.Singleton.SubmarineTag)
                 followPlayer = false;
         }
 

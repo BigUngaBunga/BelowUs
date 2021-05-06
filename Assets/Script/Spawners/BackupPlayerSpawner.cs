@@ -7,10 +7,7 @@ namespace BelowUs
 {
     public class BackupPlayerSpawner : MonoBehaviour
     {
-        [TagSelector] [SerializeField] private string localPlayerTag;
-        [SerializeField] private GameObject playerPrefab;
         [SerializeField] private GameObject networkManager;
-        public GameObject PlayerPrefab => playerPrefab;
         public GameObject NetManager => networkManager;
 
         private NetworkManager manager;
@@ -24,7 +21,11 @@ namespace BelowUs
 
         private void SpawnPlayer()
         {
-            if (manager == null && GameObject.FindGameObjectWithTag(localPlayerTag) == null)
+            var refManager = ReferenceManager.Singleton;
+            string playerTag = refManager.PlayerTag;
+            string localPlayerTag = refManager.LocalPlayerTag;
+
+            if (manager == null && GameObject.FindGameObjectWithTag(playerTag) == null && GameObject.FindGameObjectWithTag(localPlayerTag) == null)
             {
                 try
                 {

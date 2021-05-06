@@ -37,11 +37,6 @@ namespace BelowUs
         protected enemyState currentState;
         protected Rigidbody2D rb;
 
-
-
-        [TagSelector] [SerializeField] private string submarineTag;
-        public string SubmarineTag => submarineTag;
-
         protected virtual void Start()
         {
 
@@ -53,7 +48,7 @@ namespace BelowUs
         }
 
 
-        protected void SetTarget() => targetGameObject = GameObject.FindGameObjectWithTag(submarineTag);
+        protected void SetTarget() => targetGameObject = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.SubmarineTag);
 
         private void AddRandomPatrolNumber() => patrolPositions.Add(new Vector3(Random.Range(-maxPatrolRange, maxPatrolRange), Random.Range(-maxPatrolRange, maxPatrolRange)));
 
