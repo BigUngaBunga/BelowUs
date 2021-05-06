@@ -7,9 +7,15 @@ namespace BelowUs
 {
     public class BubbaScript : EnemyBase
     {
+        protected enum EnemyState
+        {
+            Patrolling,
+            Chasing          
+        }
+        [SerializeField] protected EnemyState currentState;
         protected override void Start()
         {
-            rb = this.GetComponent<Rigidbody2D>();
+            rb = GetComponent<Rigidbody2D>();
 
             CreatePatrolArea();
             SetTarget();
@@ -23,33 +29,36 @@ namespace BelowUs
 
             switch (currentState)
             {
-                case enemyState.Patrolling:
+                case EnemyState.Patrolling:
                     UpdateBasicRotation(currentPatrolTarget);
                     UpdateMovementPatrolling();
                     CheckForFlip();
                     break;
-                case enemyState.Chasing:
+                case EnemyState.Chasing:
                     UpdateBasicRotation(targetGameObject.transform.position);
                     UpdateMovementChasing();
                     CheckForFlip();
-                    break;
-                case enemyState.Attacking:
-                    UpdateBasicRotation(targetGameObject.transform.position);
-                    UpdateMovementChasing();
-                    CheckForFlip();
-                    break;
+                    break;               
             }
         }
 
         #region chasing
 
 
-        protected void UpdateMovementChasing()
+        private void UpdateMovementChasing()
         {
             Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
             Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
             rb.AddForce(movement);
-        }        
+        }
         #endregion chasing
+
+
+        private void CheckDistanceToTarget()
+        {
+            float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);            
+            if (distance < chasingRange) currentState = EnemyState.Chasing;
+            else currentState = EnemyState.Patrolling;
+        }
     }
 }

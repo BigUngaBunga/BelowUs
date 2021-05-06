@@ -7,16 +7,25 @@ namespace BelowUs
 {
     public class SpookScript : EnemyBase
     {
+        private enum EnemyState
+        {
+            Patrolling,
+            Chasing,
+            Attacking
+        }
+
         private Weapon weapon;
         private Transform firePoint;
         private float timeElapsed = 0;
 
-        [SerializeField] private float timeBetweenShoots;
+        [SerializeField] private float timeBetweenShoots;       
+        [SerializeField] private EnemyState currentState;
+
 
         protected override void Start()
         {
-            weapon = this.GetComponent<Weapon>();
-            rb = this.GetComponent<Rigidbody2D>();
+            weapon = GetComponent<Weapon>();
+            rb = GetComponent<Rigidbody2D>();
             firePoint = gameObject.transform.Find("FirePoint");
 
             CreatePatrolArea();
@@ -31,17 +40,17 @@ namespace BelowUs
 
             switch (currentState)
             {
-                case enemyState.Patrolling:
+                case EnemyState.Patrolling:
                     UpdateBasicRotation(currentPatrolTarget);
                     UpdateMovementPatrolling();
                     CheckForFlip();
                     break;
-                case enemyState.Chasing:
+                case EnemyState.Chasing:
                     UpdateBasicRotation(targetGameObject.transform.position);
                     UpdateMovementChasing();
                     CheckForFlip();
                     break;
-                case enemyState.Attacking:
+                case EnemyState.Attacking:
                     UpdateRotationAttacking();
                     UpdateFirePointRotation();
                     timeElapsed += Time.deltaTime;
@@ -52,6 +61,14 @@ namespace BelowUs
                     }
                     break;
             }
+        }
+
+        protected void CheckDistanceToTarget()
+        {
+            float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
+            if (distance < attackingRange) currentState = EnemyState.Attacking;
+            else if (distance < chasingRange) currentState = EnemyState.Chasing;
+            else currentState = EnemyState.Patrolling;
         }
 
         protected void UpdateMovementChasing()

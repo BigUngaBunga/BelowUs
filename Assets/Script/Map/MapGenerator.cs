@@ -143,6 +143,9 @@ namespace BelowUs
 
             ResourceGenerator resourceGenerator = GetComponent<ResourceGenerator>();
             yield return StartCoroutine(resourceGenerator.GenerateResources(random, noiseMap, squareSize, waterTile));
+
+            EnemyGenerator enemyGenerator = GetComponent<EnemyGenerator>();
+            yield return StartCoroutine(enemyGenerator.GenerateResources(random, noiseMap, squareSize, waterTile));
         }
 
         public IEnumerator GenerateSeaFloor(MapHandler mapHandler, Vector2 mapSize, int squareSize)

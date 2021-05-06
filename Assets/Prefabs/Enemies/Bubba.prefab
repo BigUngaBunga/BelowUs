@@ -771,16 +771,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  chasingRange: 70
-  attackingRange: 30
+  chasingRange: 20
+  attackingRange: 20
   health: 100
   collisionDamage: -10
-  moveSpeedPatrolling: 1
-  moveSpeedChasing: 1
-  maxPatrolRange: 20
+  moveSpeedPatrolling: 2
+  moveSpeedChasing: 800
+  maxPatrolRange: 3
   targetGameObject: {fileID: 0}
-  currentState: 0
   submarineTag: Submarine
+  currentState: 0
 --- !u!50 &6450413785958905961
 Rigidbody2D:
   serializedVersion: 4

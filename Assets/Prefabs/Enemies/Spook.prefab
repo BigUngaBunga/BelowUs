@@ -650,13 +650,13 @@ MonoBehaviour:
   attackingRange: 30
   health: 100
   collisionDamage: -5
-  moveSpeedPatrolling: 2
+  moveSpeedPatrolling: 1
   moveSpeedChasing: 2
-  maxPatrolRange: 20
+  maxPatrolRange: 2
   targetGameObject: {fileID: 0}
-  currentState: 0
   submarineTag: Submarine
   timeBetweenShoots: 2
+  currentState: 0
 --- !u!114 &-2898043021246271424
 MonoBehaviour:
   m_ObjectHideFlags: 0

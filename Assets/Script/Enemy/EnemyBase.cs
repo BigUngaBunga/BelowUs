@@ -7,12 +7,7 @@ namespace BelowUs
 {
     public class EnemyBase : NetworkBehaviour
     {
-        protected enum enemyState
-        {
-            Patrolling,
-            Chasing,
-            Attacking
-        }
+        
 
 
         [SerializeField] protected float chasingRange, attackingRange;
@@ -34,7 +29,6 @@ namespace BelowUs
         protected List<Vector3> patrolPositions = new List<Vector3>();
         protected Vector3 currentPatrolTarget;
 
-        [SerializeField] protected enemyState currentState;
         protected Rigidbody2D rb;
 
 
@@ -91,14 +85,8 @@ namespace BelowUs
             transform.localScale = theScale;
         }
 
-        protected void CheckDistanceToTarget()
-        {
-            float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
-            if (distance < attackingRange) currentState = enemyState.Attacking;
-            else if (distance < chasingRange) currentState = enemyState.Chasing;
-            else currentState = enemyState.Patrolling;
-        }
-
+        
+        
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.tag == "AllyBullet")

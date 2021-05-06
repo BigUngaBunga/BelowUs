@@ -7,32 +7,34 @@ namespace BelowUs
 {
     public class BossMovement : EnemyBase
     {
-        //Attack Type "Charging" variables
-        [SerializeField] private float chasingDistanceBeforeNewTarget;
-        [SerializeField] private float chasingRotationSpeed;
-        [SerializeField] [Min(1)] private float timeBetweenCharges;
-        private Vector3 chargingTargetPosition;
+        protected enum EnemyState
+        {
+            Patrolling,
+            Attacking
+        }
         private enum ChargingState
         {
             ChargingUp,
             MovingChasing,
             Relocate,
             MovingRelocate
-
-
         }
-        private ChargingState currentChargingState;
-
-        private float timeElapsed;
-
         private enum AttackPattern
         {
             Charging
         }
 
-        private AttackPattern currentAttactPattern;
+        [SerializeField] private float chasingDistanceBeforeNewTarget;
+        [SerializeField] private float chasingRotationSpeed;
+        [SerializeField] [Min(1)] private float timeBetweenCharges;
+        [SerializeField] protected EnemyState currentState;
+        [SerializeField] [Min(10)]protected float degressToStartCharging;
 
-        
+        private Vector3 chargingTargetPosition;
+        private ChargingState currentChargingState;
+        private AttackPattern currentAttactPattern;
+        private float timeElapsed;
+
         protected override void Start()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -49,12 +51,12 @@ namespace BelowUs
 
             switch (currentState)
             {
-                case enemyState.Patrolling:
+                case EnemyState.Patrolling:
                     UpdateBasicRotation(currentPatrolTarget);
                     UpdateMovementPatrolling();
                     CheckForFlip();
                     break;
-                case enemyState.Attacking:
+                case EnemyState.Attacking:
                     UpdateAttackPattern();
                     break;
             }
@@ -115,11 +117,11 @@ namespace BelowUs
             }
         }
 
-        new protected void CheckDistanceToTarget()
+        protected void CheckDistanceToTarget()
         {
             float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
-            if (distance < attackingRange) currentState = enemyState.Attacking;
-            else currentState = enemyState.Patrolling;
+            if (distance < attackingRange) currentState = EnemyState.Attacking;
+            else currentState = EnemyState.Patrolling;
         }
 
 
@@ -141,13 +143,11 @@ namespace BelowUs
             Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
 
+            //if within 10* begin charging
             float angleDistance = Quaternion.Angle(rotation, transform.rotation);
-            if (angleDistance < 10) return true;
+            if (angleDistance < degressToStartCharging) return true;
             else return false;
         }
-
-
-
         #endregion
     }
 }

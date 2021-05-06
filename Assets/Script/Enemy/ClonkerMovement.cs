@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-namespace BelowUs {
+namespace BelowUs
+{
     public class ClonkerMovement : EnemyBase
     {
+        protected enum enemyState
+        {
+            Patrolling,
+            Chasing
+        }
+
+        [SerializeField] protected enemyState currentState;
         protected override void Start()
         {
             rb = this.GetComponent<Rigidbody2D>();
@@ -32,11 +40,6 @@ namespace BelowUs {
                     UpdateMovementChasing();
                     CheckForFlip();
                     break;
-                case enemyState.Attacking:
-                    UpdateBasicRotation(targetGameObject.transform.position);
-                    UpdateMovementChasing();
-                    CheckForFlip();
-                    break;
             }
         }
 
@@ -46,5 +49,13 @@ namespace BelowUs {
             Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
             rb.AddForce(movement);
         }
+
+        protected void CheckDistanceToTarget()
+        {
+            float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
+            if (distance < chasingRange) currentState = enemyState.Chasing;
+            else currentState = enemyState.Patrolling;
+        }
+
     }
 }

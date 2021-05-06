@@ -239,7 +239,7 @@ MonoBehaviour:
   collisionDamage: -10
   moveSpeedPatrolling: 2
   moveSpeedChasing: 500
-  maxPatrolRange: 20
+  maxPatrolRange: 4.01
   targetGameObject: {fileID: 0}
-  currentState: 0
   submarineTag: Submarine
+  currentState: 0

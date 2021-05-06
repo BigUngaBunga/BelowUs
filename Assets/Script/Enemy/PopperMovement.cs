@@ -7,7 +7,13 @@ namespace BelowUs
 {
     public class PopperMovement : EnemyBase
     {
+        protected enum EnemyState
+        {
+            Patrolling,
+            Chasing           
+        }
 
+        [SerializeField] protected EnemyState currentState;
         [SerializeField] private float explosionRange;
         [SerializeField] private float explosionForce;
         [SerializeField] private float explosionDamage;
@@ -27,21 +33,17 @@ namespace BelowUs
 
             switch (currentState)
             {
-                case enemyState.Patrolling:
+                case EnemyState.Patrolling:
                     UpdateBasicRotation(currentPatrolTarget);
                     UpdateMovementPatrolling();
                     CheckForFlip();
                     break;
-                case enemyState.Chasing:
+                case EnemyState.Chasing:
                     UpdateBasicRotation(targetGameObject.transform.position);
                     UpdateMovementChasing();
                     CheckForFlip();
                     break;
-                case enemyState.Attacking:
-                    UpdateBasicRotation(targetGameObject.transform.position);
-                    UpdateMovementChasing();
-                    CheckForFlip();
-                    break;
+               
             }
         }
 
@@ -54,7 +56,13 @@ namespace BelowUs
         }
         #endregion chasing
 
-        
+        protected void CheckDistanceToTarget()
+        {
+            float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
+            if (distance < chasingRange) currentState = EnemyState.Chasing;
+            else currentState = EnemyState.Patrolling;
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.CompareTag("Submarine"))
