@@ -1769,7 +1769,6 @@ GameObject:
   - component: {fileID: 6630187597703003721}
   - component: {fileID: 8643132618469866577}
   - component: {fileID: 6630187597703003723}
-  - component: {fileID: 7067012750780989702}
   m_Layer: 5
   m_Name: ProductionMeter
   m_TagString: Untagged
@@ -1858,29 +1857,6 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &7067012750780989702
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6630187597703003701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: badb5cb51f1c4b7439838c973a2929e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  resource: {fileID: 0}
-  textObject: {fileID: 0}
-  startUpdateDelay:
-    UseConstant: 1
-    ConstantValue: 0
-    Variable: {fileID: 0}
-  enableMaximum: 0
-  decimals: 0
-  separator: /
 --- !u!1 &6630187597720637197
 GameObject:
   m_ObjectHideFlags: 0
