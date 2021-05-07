@@ -13,4 +13,3 @@ Kontrollerna för spelarkaraktären är WASD för att röra sig, Q för att gå 
 Kontrollerna för ubåten är WS för att röra sig fram och bak A och D för att rotera ubåten och mellanslag för att vända på ubåten.
 För att lamporna skall vara aktiva så måste generatorn producera ström.
 När denna version av ReadMe skrivs så måste spelaren trycka på 1 för att kunna använda kanonen.
-Strålkastare kan ibland hindra spelaren från att gå in och spelaren måste då gå ifrån stationen och sedan gå tillbaka och trycka Q.
