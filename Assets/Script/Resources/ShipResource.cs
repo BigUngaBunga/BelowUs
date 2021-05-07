@@ -42,14 +42,14 @@ namespace BelowUs
             if (resetValue)
                 currentValue = maximumValue.Value;
         }
+        #endregion
 
-
+        #region Commands
         [Command]
         public void CmdDecreaseBy5() => ApplyChange(-5);
 
         [Command]
         public void CmdChangeByValue(float value) => ApplyChange(value);
-
         #endregion
     }
 }
