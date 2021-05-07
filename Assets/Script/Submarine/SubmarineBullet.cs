@@ -1,4 +1,5 @@
 using UnityEngine;
+using Mirror;
 
 namespace BelowUs
 {
@@ -7,6 +8,8 @@ namespace BelowUs
         private Rigidbody2D rb;
         private float speed, timer;
         private int damage;
+
+        [Server]
 
         void Start()
         {

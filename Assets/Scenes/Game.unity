@@ -1461,7 +1461,19 @@ PrefabInstance:
       propertyPath: sceneId
       value: 286861827
       objectReference: {fileID: 0}
+    - target: {fileID: 329669753, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: cannonController
+      value: 
+      objectReference: {fileID: 398828546}
     - target: {fileID: 803094637, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: cannonController
+      value: 
+      objectReference: {fileID: 398828546}
+    - target: {fileID: 1272610622, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: cannonController
+      value: 
+      objectReference: {fileID: 398828546}
+    - target: {fileID: 1300132924, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
       value: 
       objectReference: {fileID: 398828546}
@@ -7640,7 +7652,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.3
+  m_fontSize: 20.8
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
