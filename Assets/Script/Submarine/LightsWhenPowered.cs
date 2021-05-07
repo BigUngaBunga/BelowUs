@@ -9,6 +9,7 @@ namespace BelowUs
         //Place in the same component as where there is a lightsource
         private HasElectricity hasElectricity;
         private new Light light;
+        [SerializeField] bool invertToggle = false;
 
         private void Start()
         {
@@ -17,7 +18,7 @@ namespace BelowUs
             InvokeRepeating(nameof(ToggleLight), 0, 0.25f);
         }
 
-        private void ToggleLight() => light.enabled = hasElectricity.IsPowered;
+        private void ToggleLight() => light.enabled = invertToggle? !hasElectricity.IsPowered : hasElectricity.IsPowered;
     }
 }
 

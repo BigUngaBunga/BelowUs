@@ -4,49 +4,53 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Main : MonoBehaviour
+namespace BelowUs
 {
-    private VisualTreeAsset visualTree;
-
-    private void Start()
+    public class Main : MonoBehaviour
     {
-        visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/Options.uxml");
-        VisualElement labelFromUXML = visualTree.CloneTree();
+        private VisualTreeAsset visualTree;
 
-        VisualElement options = new VisualElement();
-        VisualElement buttons = new VisualElement();
-
-        for (int i = 0; i < labelFromUXML.childCount; i++)
+        private void Start()
         {
-            VisualElement child = labelFromUXML.ElementAt(i);
-            if (child.name == "Options")
-                options = child;
-            else if (child.name == "Buttons")
-                buttons = child;
+            visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/Options.uxml");
+            VisualElement labelFromUXML = visualTree.CloneTree();
+
+            VisualElement options = new VisualElement();
+            VisualElement buttons = new VisualElement();
+
+            for (int i = 0; i < labelFromUXML.childCount; i++)
+            {
+                VisualElement child = labelFromUXML.ElementAt(i);
+                if (child.name == "Options")
+                    options = child;
+                else if (child.name == "Buttons")
+                    buttons = child;
+            }
+
+            VisualElement resolution = new VisualElement();
+            VisualElement graphics = new VisualElement();
+            VisualElement volume = new VisualElement();
+            for (int i = 0; i < options.childCount; i++)
+            {
+                VisualElement child = labelFromUXML.ElementAt(i);
+                string name = child.name;
+                if (name == "Resolution")
+                    resolution = child;
+                else if (name == "Graphics")
+                    graphics = child;
+                else if (name == "Volume")
+                    volume = child;
+            }
+
+            //((DropdownField)resolution).
         }
 
-        VisualElement resolution = new VisualElement();
-        VisualElement graphics = new VisualElement();
-        VisualElement volume = new VisualElement();
-        for (int i = 0; i < options.childCount; i++)
+        private void OnEnable()
         {
-            VisualElement child = labelFromUXML.ElementAt(i);
-            string name = child.name;
-            if (name == "Resolution")
-                resolution = child;
-            else if (name == "Graphics")
-                graphics = child;
-            else if (name == "Volume")
-                volume = child;
+            //visualElement root = rootVisualElement;
         }
 
-        //((DropdownField)resolution).
-    }
 
-    private void OnEnable()
-    {
-        //visualElement root = rootVisualElement;
     }
-
 
 }

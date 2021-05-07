@@ -11,30 +11,14 @@ namespace BelowUs
             rightRestrict = -120;
         }
 
-        void Update()
+        protected override void Update()
         {
-            ActiveCannon();
+            base.Update();
 
             if (whichCannon == 2)
             {
                 Targeting(transform.position, -90, 180, leftRestrict, rightRestrict);
                 Fire();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (!flipped)
-                {
-                    flipped = true;
-                    leftRestrict = 120;
-                    rightRestrict = -18;
-                }
-                else
-                {
-                    flipped = false;
-                    leftRestrict = 18;
-                    rightRestrict = -120;
-                }
             }
         }
     }

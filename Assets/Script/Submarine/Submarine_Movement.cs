@@ -7,23 +7,25 @@ namespace BelowUs
     {
         private Rigidbody2D rb2D;
         private SpriteRenderer spriteRenderer;
+        private ShipResource enginePower;
         private float subSpeed;
         private float submarineRotationSpeed;
         float angularRetardation, lateralRetardation;
         public bool IsFlipped { get; private set; }
         private bool MoveSubmarine => subController.StationPlayerController != null && NetworkClient.localPlayer.gameObject == subController.StationPlayerController;
-
+        private bool EngineIsRunning => enginePower.CurrentValue > 0;
         [SerializeField] private StationController subController;
         
 
         private void Start()
         {
+            enginePower = GameObject.Find("EnginePower").GetComponent<ShipResource>();
             rb2D = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             subSpeed = 50;
-            submarineRotationSpeed = 0.5f;
+            submarineRotationSpeed = 0.75f;
             angularRetardation = 0.033f;
-            lateralRetardation = 0.1f;
+            lateralRetardation = 0.075f;
         }
 
         private void FixedUpdate()
@@ -38,30 +40,33 @@ namespace BelowUs
 
         private void Update()
         {
-            if (MoveSubmarine)
+            if (EngineIsRunning && MoveSubmarine)
                 FlipSubmarine();
         }
 
         private void HandleRotation()
         {
-            if ((transform.rotation.eulerAngles.z <= 90 || transform.rotation.eulerAngles.z >= 100) && (Input.GetButton("ReverseRight") || Input.GetButton("RotateRight")))
-                transform.Rotate(0, 0, submarineRotationSpeed);
+            if (EngineIsRunning)
+            {
+                if ((transform.rotation.eulerAngles.z <= 90 || transform.rotation.eulerAngles.z >= 100) && (Input.GetButton("ReverseRight") || Input.GetButton("RotateRight")))
+                    transform.Rotate(0, 0, submarineRotationSpeed);
 
-            if ((transform.rotation.eulerAngles.z <= 100 || transform.rotation.eulerAngles.z >= 270) && (Input.GetButton("ReverseLeft") || Input.GetButton("RotateLeft")))
-                transform.Rotate(0, 0, -submarineRotationSpeed);
+                if ((transform.rotation.eulerAngles.z <= 100 || transform.rotation.eulerAngles.z >= 270) && (Input.GetButton("ReverseLeft") || Input.GetButton("RotateLeft")))
+                    transform.Rotate(0, 0, -submarineRotationSpeed);
+            }
+            
         }
 
         private void HandleLateralMovement()
         {
-            if (Input.GetButton("MoveForward"))
+            if (EngineIsRunning && Input.GetButton("MoveForward"))
                 rb2D.AddForce(transform.right * subSpeed, ForceMode2D.Force);
-            if (Input.GetButton("MoveBackwards"))
+            if (EngineIsRunning && Input.GetButton("MoveBackwards"))
                 rb2D.AddForce(-transform.right * subSpeed, ForceMode2D.Force);
 
-            if (!Input.GetButton("MoveForward") && !Input.GetButton("MoveBackwards"))
-                rb2D.velocity = new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation));
-            else
-                rb2D.velocity = new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation / 10));
+            rb2D.velocity = !EngineIsRunning || (!Input.GetButton("MoveForward") && !Input.GetButton("MoveBackwards"))
+                ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation))
+                : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation / 10));
 
         }
 

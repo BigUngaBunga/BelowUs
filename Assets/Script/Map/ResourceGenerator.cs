@@ -95,7 +95,7 @@ namespace BelowUs
             int totalWeight = 0;
 
             resourceTypes.Add(ResourceType.Gold, 20);
-            resourceTypes.Add(ResourceType.Scrap, 10);
+            resourceTypes.Add(ResourceType.Scrap, 1);
 
             foreach (int weight in resourceTypes.Values)
                 totalWeight += weight;

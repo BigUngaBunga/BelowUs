@@ -8,39 +8,43 @@ namespace BelowUs
     {
         protected bool flipped;
 
-        protected float leftRestrict, rightRestrict, whichCannon;
+        [SerializeField] protected float leftRestrict, rightRestrict, whichCannon;
 
-        private float angleDeg, angleRad, subRotation;
-
-        private Vector3 mousePos;
+        private Vector3 startingRotation;
         protected Vector3 lastKnownMousePos;
 
-        public GameObject bullet;
-
-        private bool isCannonActive => IsCannonActive();
+        private SpriteRenderer spriteRenderer;
+        private Submarine_Movement submarine;
         private Light spotlight;
-        private float intensity;
+        private float intensity; 
 
+        [SerializeReference] private GameObject bullet;
         [SerializeField] private StationController cannonController;
 
         protected virtual void Start()
         {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            submarine = GetComponentInParent<Submarine_Movement>();
             spotlight = GetComponentInChildren<Light>();
             intensity = spotlight.intensity;
             InvokeRepeating(nameof(ToggleSpotlight), 0, 0.1f);
+            startingRotation = transform.eulerAngles;
         }
 
-        protected void Targeting(Vector3 pos, float offset, float rotationOffset, float res1, float res2)
+        protected virtual void Update()
         {
-            if (isCannonActive)
+            FlipCannon();
+            ActiveCannon();
+        }
+
+        protected void Targeting(Vector3 pos, float offset, float rotationOffset, float restrictionLeft, float restrictionRight)
+        {
+            if (IsCannonActive())
             {
-                mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                subRotation = (float)(Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI * 180) + 7 + offset;
-
-                angleRad = Mathf.Atan2(mousePos.y - pos.y, mousePos.x - pos.x);
-
-                angleDeg = (float)(angleRad / Math.PI * 180) + offset;
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                float subRotation = (float)(Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI * 180) + 7 + offset;
+                float angleRad = Mathf.Atan2(mousePos.y - pos.y, mousePos.x - pos.x);
+                float angleDeg = (float)(angleRad / Math.PI * 180) + offset;
 
                 if (angleDeg < 0)
                     angleDeg += 360;
@@ -48,7 +52,7 @@ namespace BelowUs
                 if (subRotation < 0)
                     subRotation += 360;
 
-                if (angleDeg + 7 <= res1 + subRotation && angleDeg + 7 >= res2 + subRotation)
+                if (angleDeg + 7 <= restrictionLeft + subRotation && angleDeg + 7 >= restrictionRight + subRotation)
                 {
                     lastKnownMousePos = mousePos;
                     transform.rotation = Quaternion.Euler(0, 0, angleDeg + rotationOffset);
@@ -56,17 +60,12 @@ namespace BelowUs
             }
         }
 
-        private bool IsCannonActive()
-        {
-            if (NetworkClient.localPlayer != null && cannonController != null)
-                return NetworkClient.localPlayer.gameObject == cannonController.StationPlayerController;
             
-            return false;
-        }
+        private bool IsCannonActive() => NetworkClient.localPlayer != null && cannonController != null && NetworkClient.localPlayer.gameObject == cannonController.StationPlayerController;
 
         protected void ActiveCannon()
         {
-            if (isCannonActive)
+            if (IsCannonActive())
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                     whichCannon = 1;
@@ -80,16 +79,30 @@ namespace BelowUs
                 if (Input.GetKeyDown(KeyCode.Alpha4))
                     whichCannon = 4;
             }
-
-
+            else
+                transform.eulerAngles = transform.parent.eulerAngles - startingRotation;
         }
 
-        private void ToggleSpotlight() => spotlight.intensity = isCannonActive? intensity : 0;
+        private void ToggleSpotlight() => spotlight.intensity = IsCannonActive()? intensity : 0;
 
         protected void Fire()
         {
-            if (Input.GetMouseButtonDown(0) && isCannonActive)
-                Instantiate(bullet, transform.position, Quaternion.LookRotation(lastKnownMousePos - transform.position).normalized);
+            if (Input.GetMouseButtonDown(0) && IsCannonActive())
+                Instantiate(bullet, transform.position, transform.rotation);
+        }
+
+        private void FlipCannon()
+        {
+            if (flipped != submarine.IsFlipped)
+            {
+                flipped = submarine.IsFlipped;
+                spriteRenderer.flipX = flipped;
+                transform.localPosition = new Vector3(-transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
+                float previousLeftRestrict = leftRestrict;
+                leftRestrict = -rightRestrict;
+                rightRestrict = -previousLeftRestrict;
+
+            }
         }
     }
 }
