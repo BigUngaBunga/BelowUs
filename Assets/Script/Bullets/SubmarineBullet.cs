@@ -10,8 +10,7 @@ namespace BelowUs
         private int damage;
 
         [Server]
-
-        void Start()
+        private void Start()
         {
             rb = GetComponent<Rigidbody2D>();
             speed = 5;
@@ -19,7 +18,7 @@ namespace BelowUs
             damage = 20;
         }
 
-        void Update() => BulletTime();
+        private void Update() => BulletTime();
         private void BulletTime()
         {
             timer += Time.deltaTime;
@@ -32,7 +31,7 @@ namespace BelowUs
             if (other.CompareTag("Enemy"))
             {
                 Destroy(gameObject);
-                other.GetComponent<EnemyBase>().TakeDamage(damage);
+                //other.GetComponent<EnemyBase>().TakeDamage(damage);
             }
         }
     }

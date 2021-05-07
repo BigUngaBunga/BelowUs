@@ -49,7 +49,7 @@ namespace BelowUs
             CancelInvoke(nameof(EnableTestButtonIfServer));
         }
 
-        private void UpdateBarFill() => resourceBarImage.fillAmount = resource.CurrentValue / resource.maximumValue.Value;
+        private void UpdateBarFill() => resourceBarImage.fillAmount = resource.CurrentValue / resource.MaximumValue.Value;
 
         [ClientRpc]
         private void HandleResourceChanged(float currentHealth, float maxHealth) => resourceBarImage.fillAmount = currentHealth / maxHealth;

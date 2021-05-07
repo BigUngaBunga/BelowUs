@@ -14,6 +14,6 @@ namespace BelowUs
             base.DecreaseTime();
         }
 
-        private float GetConsumption() => shipResource.CurrentValue > 0 ? repeatTime / consumptionReduction : repeatTime;
+        private float GetConsumption() => shipResource.CurrentValue > 0 ? decreaseFrequency / consumptionReduction : decreaseFrequency;
     }
 }

@@ -45,7 +45,7 @@ namespace BelowUs
 
         private void Awake() => text = (TextMeshProUGUI)textObject.GetComponent(typeof(TextMeshProUGUI));
 
-        protected virtual void UpdateBarFill() => text.text = enableMaximum ? GetRounded(resource.CurrentValue) + separator + resource.maximumValue.Value : GetRounded(resource.CurrentValue).ToString();
+        protected virtual void UpdateBarFill() => text.text = enableMaximum ? GetRounded(resource.CurrentValue) + separator + resource.MaximumValue.Value : GetRounded(resource.CurrentValue).ToString();
 
         protected double GetRounded(float number) => System.Math.Round(number, decimals);
 

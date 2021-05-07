@@ -5,9 +5,9 @@ using Mirror;
 
 namespace BelowUs
 {
-    public class SubmarineDamage : NetworkBehaviour
+    public class EntityDamage : NetworkBehaviour
     {
-        private ShipResource hullHealth;
+        [SerializeField] private ShipResource hullHealth;
 
         private void Start() => hullHealth = GameObject.Find("Hull Health").GetComponent<ShipResource>();
 

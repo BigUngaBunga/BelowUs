@@ -14,7 +14,8 @@ namespace BelowUs
 
         [SerializeField] private bool resetValue;
         [SerializeField] private FloatReference startingValue;
-        public FloatReference maximumValue;
+        [SerializeField] private FloatReference maximumValue;
+        public FloatReference MaximumValue => maximumValue;
 
         public delegate void ResourceChangedDelegate(float currentHealth, float maxHealth);
         public event ResourceChangedDelegate EventResourceChanged;
@@ -23,7 +24,7 @@ namespace BelowUs
         [Server]
         public void ApplyChange(float value)
         {
-            currentValue += value;
+            currentValue = Mathf.Clamp(currentValue + value, 0, maximumValue.Value);
             EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
         }
 
