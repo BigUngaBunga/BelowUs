@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BelowUs
@@ -11,7 +9,7 @@ namespace BelowUs
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("Submarine") && !hasEnteredRoom)
+            if (collision.gameObject.CompareTag(ReferenceManager.Singleton.SubmarineTag) && !hasEnteredRoom)
             {
                 mapHandler.GenerateNextMap();
                 hasEnteredRoom = true;

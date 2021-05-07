@@ -10,7 +10,7 @@ namespace BelowUs
     {
         [SerializeField] private StationController floodlightController;
         private float intensity;
-        private Submarine_Movement submarineMovement;
+        private SubmarineMovement submarineMovement;
         private SpriteRenderer spriteRenderer;
         private bool IsOccupied => floodlightController.StationPlayerController != null;
         private Light spotLight;
@@ -19,7 +19,7 @@ namespace BelowUs
         {
             intensity = 2;
             float updateTimer = 0.2f;
-            submarineMovement = GetComponentInParent<Submarine_Movement>();
+            submarineMovement = GetComponentInParent<SubmarineMovement>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             spotLight = GetComponentInChildren<Light>();
             InvokeRepeating(nameof(ToggleFloodlight), 0.1f, updateTimer);
@@ -28,7 +28,7 @@ namespace BelowUs
         void Update()
         {
             RotateFloodlight();
-            FlipFloodlight();
+            //FlipFloodlight();
         }
 
         private void RotateFloodlight()
@@ -48,15 +48,15 @@ namespace BelowUs
 
         private void ToggleFloodlight() => spotLight.intensity = IsOccupied ? intensity : 0;
 
-        private void FlipFloodlight()
-        {
-            if (hasFlippedFloodlight != submarineMovement.IsFlipped)
-            {
-                hasFlippedFloodlight = submarineMovement.IsFlipped;
-                spriteRenderer.flipX = hasFlippedFloodlight;
-                transform.localPosition = new Vector3(-transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
-            }
-        }
+        //private void FlipFloodlight()
+        //{
+        //    if (hasFlippedFloodlight != submarineMovement.IsFlipped)
+        //    {
+        //        hasFlippedFloodlight = submarineMovement.IsFlipped;
+        //        spriteRenderer.flipX = hasFlippedFloodlight;
+        //        transform.localPosition = new Vector3(-transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
+        //    }
+        //}
     }
 }
 

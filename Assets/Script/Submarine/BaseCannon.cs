@@ -14,7 +14,7 @@ namespace BelowUs
         protected Vector3 lastKnownMousePos;
 
         private SpriteRenderer spriteRenderer;
-        private Submarine_Movement submarine;
+        private SubmarineMovement submarine;
         private Light spotlight;
         private float intensity; 
 
@@ -24,7 +24,7 @@ namespace BelowUs
         protected virtual void Start()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
-            submarine = GetComponentInParent<Submarine_Movement>();
+            submarine = GetComponentInParent<SubmarineMovement>();
             spotlight = GetComponentInChildren<Light>();
             intensity = spotlight.intensity;
             InvokeRepeating(nameof(ToggleSpotlight), 0, 0.1f);
