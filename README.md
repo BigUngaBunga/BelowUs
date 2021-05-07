@@ -7,9 +7,10 @@ För att testa uppkoppling så måste två instanser av programmet startas
 Den ena instansen skall då välja "Host" knappen i huvudmenyn
 Den andra instansen skall välja "Connect"
 Därpå måste antingen en korrekt ip eller localhost skrivas, beroende på vilka datorer som kör applikationerna
+Om spelaren som håller i servern inte har portforwardat så kan exempelvis applikationer som hamachi användas för att koppla upp mellan olika nätverk.
 
-För att testa kartgenerering så måste projektet öppnas i Unity
-Sedan så väljs scenen "Map Generation"
-När programmet körs så genereras en karta
-När spelplanen klickas på igen så genereras en ny karta
-Variabler som bestämmer hur kartan genereras är åtkomliga genom att välja MapGenerator objektet
+Kontrollerna för spelarkaraktären är WASD för att röra sig, Q för att gå in i en station och det finns sedan en knapp i nedre vänstra hörnet för att lämna stationen.
+Kontrollerna för ubåten är WS för att röra sig fram och bak A och D för att rotera ubåten och mellanslag för att vända på ubåten.
+För att lamporna skall vara aktiva så måste generatorn producera ström.
+När denna version av ReadMe skrivs så måste spelaren trycka på 1 för att kunna använda kanonen.
+Strålkastare kan ibland hindra spelaren från att gå in och spelaren måste då gå ifrån stationen och sedan gå tillbaka och trycka Q.
