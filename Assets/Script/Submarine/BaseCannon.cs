@@ -21,6 +21,8 @@ namespace BelowUs
         [SerializeReference] private GameObject bullet;
         [SerializeField] private StationController cannonController;
 
+        [SerializeField] private int cannonId = 1;
+
         protected virtual void Start()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();

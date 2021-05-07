@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,7 +10,7 @@ namespace BelowUs
 
         private void Start()
         {
-            visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/Options.uxml");
+            visualTree = Resources.Load<VisualTreeAsset>("UI/Options.uxml");
             VisualElement labelFromUXML = visualTree.CloneTree();
 
             VisualElement options = new VisualElement();
