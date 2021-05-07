@@ -3,11 +3,13 @@ using UnityEngine;
 
 namespace BelowUs
 {
-    public class Submarine_Movement : MonoBehaviour
+    public class SubmarineMovement : MonoBehaviour
     {
         private Rigidbody2D rb2D;
         private SpriteRenderer spriteRenderer;
         private ShipResource enginePower;
+        private GameObject polygonCollider;
+        private FlipSubmarineComponent[] submarineComponents;
         private float subSpeed;
         private float submarineRotationSpeed;
         float angularRetardation, lateralRetardation;
@@ -16,12 +18,13 @@ namespace BelowUs
         private bool EngineIsRunning => enginePower.CurrentValue > 0;
         [SerializeField] private StationController subController;
         
-
         private void Start()
         {
             enginePower = GameObject.Find("EnginePower").GetComponent<ShipResource>();
             rb2D = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            polygonCollider = GameObject.Find("Submarine/Collider");
+            submarineComponents = GetComponentsInChildren<FlipSubmarineComponent>();
             subSpeed = 50;
             submarineRotationSpeed = 0.75f;
             angularRetardation = 0.033f;
@@ -78,6 +81,9 @@ namespace BelowUs
                 spriteRenderer.flipX = IsFlipped;
                 subSpeed *= -1;              
                 transform.rotation = Quaternion.Euler(new Vector3(0, 0, -transform.rotation.eulerAngles.z));
+                foreach (FlipSubmarineComponent component in submarineComponents)
+                    component.FlipObject(IsFlipped);
+                //polygonCollider.transform.localEulerAngles = IsFlipped? -new Vector3(0, 180, 0) : Quaternion.identity.eulerAngles;
             }
         }
 
