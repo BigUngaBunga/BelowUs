@@ -36,7 +36,5 @@ namespace BelowUs
         public int LadderMask => ladderMask;
         public int GroundMask => groundMask;
         #endregion
-
-
     }
 }

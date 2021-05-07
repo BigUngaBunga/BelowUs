@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 329669752}
   - component: {fileID: 329669754}
-  - component: {fileID: 329669753}
+  - component: {fileID: 3841500778348959935}
   m_Layer: 0
   m_Name: Top_Left_Cannon
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Children:
   - {fileID: 1780724567}
   m_Father: {fileID: 5089922518502821936}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 181.407}
 --- !u!212 &329669754
 SpriteRenderer:
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &329669753
+--- !u!114 &3841500778348959935
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,13 +94,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 329669751}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0ee3797e7701754a967af2226c0c939, type: 3}
+  m_Script: {fileID: 11500000, guid: 53b8aabe30f3cbe4d9fab1e94f1f564e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftRestrict: 0
-  rightRestrict: 0
-  whichCannon: 0
-  bullet: {fileID: 7363538046629477931, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
+  restrictionLeft: -15
+  restrictionRight: -135
+  targetingOffset: 90
+  rotationOffset: 0
+  cannonId: 2
+  bullet: {fileID: 3884182950494802533, guid: b93ebb19adc2b58458550e8757d0e30d, type: 3}
   cannonController: {fileID: 0}
 --- !u!1 &1241016693
 GameObject:
@@ -205,7 +207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1272610621}
   - component: {fileID: 1272610623}
-  - component: {fileID: 1272610622}
+  - component: {fileID: 7296826839282870405}
   m_Layer: 0
   m_Name: Top_Right_Cannon
   m_TagString: Untagged
@@ -226,7 +228,7 @@ Transform:
   m_Children:
   - {fileID: 1274189606}
   m_Father: {fileID: 5089922518502821936}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -177.917}
 --- !u!212 &1272610623
 SpriteRenderer:
@@ -280,7 +282,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1272610622
+--- !u!114 &7296826839282870405
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -289,13 +291,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1272610620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 445e18af464988e45b08840cc3ff768a, type: 3}
+  m_Script: {fileID: 11500000, guid: 53b8aabe30f3cbe4d9fab1e94f1f564e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftRestrict: 0
-  rightRestrict: 0
-  whichCannon: 0
-  bullet: {fileID: 7363538046629477931, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
+  restrictionLeft: 135
+  restrictionRight: 15
+  targetingOffset: 90
+  rotationOffset: 0
+  cannonId: 3
+  bullet: {fileID: 3884182950494802533, guid: b93ebb19adc2b58458550e8757d0e30d, type: 3}
   cannonController: {fileID: 0}
 --- !u!1 &1274189605
 GameObject:
@@ -400,7 +404,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1300132923}
   - component: {fileID: 1300132925}
-  - component: {fileID: 1300132924}
+  - component: {fileID: 4467826936683591259}
   m_Layer: 0
   m_Name: Bot_Right_Cannon
   m_TagString: Untagged
@@ -475,7 +479,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1300132924
+--- !u!114 &4467826936683591259
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -484,13 +488,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1300132922}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21eb0aee544510942b6a54dd0b11ff28, type: 3}
+  m_Script: {fileID: 11500000, guid: 53b8aabe30f3cbe4d9fab1e94f1f564e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftRestrict: 0
-  rightRestrict: 0
-  whichCannon: 0
-  bullet: {fileID: 7363538046629477931, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
+  restrictionLeft: 18
+  restrictionRight: -120
+  targetingOffset: -90
+  rotationOffset: 180
+  cannonId: 1
+  bullet: {fileID: 3884182950494802533, guid: b93ebb19adc2b58458550e8757d0e30d, type: 3}
   cannonController: {fileID: 0}
 --- !u!1 &1780724566
 GameObject:
@@ -780,9 +786,10 @@ GameObject:
   - component: {fileID: 5089922518502821936}
   - component: {fileID: 5089922518502821935}
   - component: {fileID: 5089922518502821934}
+  - component: {fileID: -2617717658170317263}
+  - component: {fileID: 9031905692841804919}
   - component: {fileID: 5089922518502821937}
   - component: {fileID: 1586461895393640356}
-  - component: {fileID: -2617717658170317263}
   - component: {fileID: -7561276552637839950}
   m_Layer: 0
   m_Name: Submarine
@@ -807,8 +814,8 @@ Transform:
   - {fileID: 983845413897003824}
   - {fileID: 5089922520036955164}
   - {fileID: 1300132923}
-  - {fileID: 1272610621}
   - {fileID: 329669752}
+  - {fileID: 1272610621}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -877,6 +884,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subController: {fileID: 0}
+--- !u!114 &-2617717658170317263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5089922518502821933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bedcc5b2d4661d94489a20740e053833, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &9031905692841804919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5089922518502821933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d62a2e18d9894240ab63acdd9839419, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  resourceName: Hull Health
+  resetValue: 1
+  maximumValue:
+    UseConstant: 0
+    ConstantValue: 0
+    Variable: {fileID: 11400000, guid: 8a5aa9e0599cafd4eb30941f03fa9c98, type: 2}
 --- !u!50 &5089922518502821937
 Rigidbody2D:
   serializedVersion: 4
@@ -915,20 +956,6 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &-2617717658170317263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5089922518502821933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bedcc5b2d4661d94489a20740e053833, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
 --- !u!114 &-7561276552637839950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -960,7 +987,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5089922520036955164}
   - component: {fileID: 5089922520036955166}
-  - component: {fileID: 803094637}
+  - component: {fileID: 2347748776137787141}
   m_Layer: 0
   m_Name: Bot_Left_Cannon
   m_TagString: Untagged
@@ -1035,7 +1062,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &803094637
+--- !u!114 &2347748776137787141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1044,13 +1071,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5089922520036955163}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06a4b9d6b6f51894bb858427dcc3ec33, type: 3}
+  m_Script: {fileID: 11500000, guid: 53b8aabe30f3cbe4d9fab1e94f1f564e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftRestrict: 0
-  rightRestrict: 0
-  whichCannon: 0
-  bullet: {fileID: 7363538046629477931, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
+  restrictionLeft: 122
+  restrictionRight: 1
+  targetingOffset: -90
+  rotationOffset: 180
+  cannonId: 0
+  bullet: {fileID: 3884182950494802533, guid: b93ebb19adc2b58458550e8757d0e30d, type: 3}
   cannonController: {fileID: 0}
 --- !u!1 &8905952242596213076
 GameObject:

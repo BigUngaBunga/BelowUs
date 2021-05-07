@@ -4,14 +4,22 @@ using Mirror;
 
 namespace BelowUs
 {
-    public class BaseCannon : MonoBehaviour
+    public class SubmarineCannon : MonoBehaviour
     {
-        protected bool flipped;
+        private readonly int submarineCannons = 4;
 
-        [SerializeField] protected float leftRestrict, rightRestrict, whichCannon;
+        private bool flipped;
+
+        [SerializeField] private int restrictionLeft;
+        [SerializeField] private int restrictionRight;
+
+        [SerializeField] private int targetingOffset;
+        [SerializeField] private int rotationOffset;
+        
+        [SerializeField] private int cannonId;
 
         private Vector3 startingRotation;
-        protected Vector3 lastKnownMousePos;
+        private Vector3 lastKnownMousePos;
 
         private SpriteRenderer spriteRenderer;
         private SubmarineMovement submarine;
@@ -21,9 +29,20 @@ namespace BelowUs
         [SerializeReference] private GameObject bullet;
         [SerializeField] private StationController cannonController;
 
-        [SerializeField] private int cannonId = 1;
+        private string logError;
 
-        protected virtual void Start()
+        private void Awake()
+        {
+            logError = gameObject.name + " in " + gameObject.transform.parent + " ";
+
+            if (cannonController == null)
+            {
+                Debug.LogError(logError + "has no cannonController!");
+                Destroy(gameObject);
+            }
+        }
+
+        private void Start()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
             submarine = GetComponentInParent<SubmarineMovement>();
@@ -31,22 +50,30 @@ namespace BelowUs
             intensity = spotlight.intensity;
             InvokeRepeating(nameof(ToggleSpotlight), 0, 0.1f);
             startingRotation = transform.eulerAngles;
+
+            if (cannonId < 0 || cannonId > submarineCannons - 1)
+                Debug.LogError(logError + "has an incorrect cannonId!");
         }
 
-        protected virtual void Update()
+        private void Update()
         {
-            FlipCannon();
-            ActiveCannon();
+            FlipCannon(); //TODO Flip when submarine flipbutton is pressed instead of checking every frame
+            Targeting();
+            Fire();
         }
 
-        protected void Targeting(Vector3 pos, float offset, float rotationOffset, float restrictionLeft, float restrictionRight)
+        //TODO lyssna efter något event som aktiverar och avaktiverar denna metoden istället för att alltid köra den och kolla IsCannonActive varje gång
+        private void Targeting()
         {
             if (IsCannonActive())
             {
+                Vector3 pos = transform.position;
+                Vector3 parentPos = transform.parent.position;
+
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                float subRotation = (float)(Mathf.Atan2(pos.y - transform.parent.position.y, pos.x - transform.parent.position.x) / Math.PI * 180) + 7 + offset;
+                double subRotation = (Mathf.Atan2(pos.y - parentPos.y, pos.x - parentPos.x) / Math.PI * 180) + 7 + targetingOffset;
                 float angleRad = Mathf.Atan2(mousePos.y - pos.y, mousePos.x - pos.x);
-                float angleDeg = (float)(angleRad / Math.PI * 180) + offset;
+                float angleDeg = (float)(angleRad / Math.PI * 180) + targetingOffset;
 
                 if (angleDeg < 0)
                     angleDeg += 360;
@@ -62,32 +89,11 @@ namespace BelowUs
             }
         }
 
-            
-        private bool IsCannonActive() => NetworkClient.localPlayer != null && cannonController != null && NetworkClient.localPlayer.gameObject == cannonController.StationPlayerController;
-
-        protected void ActiveCannon()
-        {
-            if (IsCannonActive())
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha1))
-                    whichCannon = 1;
-
-                if (Input.GetKeyDown(KeyCode.Alpha2))
-                    whichCannon = 2;
-
-                if (Input.GetKeyDown(KeyCode.Alpha3))
-                    whichCannon = 3;
-
-                if (Input.GetKeyDown(KeyCode.Alpha4))
-                    whichCannon = 4;
-            }
-            else
-                transform.eulerAngles = transform.parent.eulerAngles - startingRotation;
-        }
+        private bool IsCannonActive() => cannonController.StationPlayerController != null && NetworkClient.localPlayer.gameObject == cannonController.StationPlayerController;
 
         private void ToggleSpotlight() => spotlight.intensity = IsCannonActive()? intensity : 0;
 
-        protected void Fire()
+        private void Fire()
         {
             if (Input.GetMouseButtonDown(0) && IsCannonActive())
                 Instantiate(bullet, transform.position, transform.rotation);
@@ -100,10 +106,9 @@ namespace BelowUs
                 flipped = submarine.IsFlipped;
                 spriteRenderer.flipX = flipped;
                 transform.localPosition = new Vector3(-transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
-                float previousLeftRestrict = leftRestrict;
-                leftRestrict = -rightRestrict;
-                rightRestrict = -previousLeftRestrict;
-
+                int previousLeftRestrict = restrictionLeft;
+                restrictionLeft = -restrictionRight;
+                restrictionRight = -previousLeftRestrict;
             }
         }
     }

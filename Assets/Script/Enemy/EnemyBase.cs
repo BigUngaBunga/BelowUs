@@ -92,22 +92,6 @@ namespace BelowUs
             if (distance < attackingRange) currentState = EnemyState.Attacking;
             else currentState = distance < chasingRange ? EnemyState.Chasing : EnemyState.Patrolling;
         }
-
-        //private void OnTriggerEnter2D(Collider2D collision)
-        //{
-        //    if (collision.tag == "AllyBullet")
-        //    {
-        //        health -= collision.gameObject.GetComponent<Bullet>().Damage;
-        //    }
-        //    CheckIfAlive();
-        //}
-
-        //Erik Damage test
-        public void TakeDamage(int damage)
-        {
-            health -= damage;
-            CheckIfAlive();
-        }
     }
 }
 

@@ -13,7 +13,6 @@ namespace BelowUs
         public float CurrentValue => currentValue;
 
         [SerializeField] private bool resetValue;
-        [SerializeField] private FloatReference startingValue;
         [SerializeField] private FloatReference maximumValue;
         public FloatReference MaximumValue => maximumValue;
 

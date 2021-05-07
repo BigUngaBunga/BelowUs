@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
@@ -15,8 +13,8 @@ namespace BelowUs
 
         protected override void Start()
         {
-            weapon = this.GetComponent<Weapon>();
-            rb = this.GetComponent<Rigidbody2D>();
+            weapon = GetComponent<Weapon>();
+            rb = GetComponent<Rigidbody2D>();
             firePoint = gameObject.transform.Find("FirePoint");
 
             CreatePatrolArea();
@@ -42,12 +40,12 @@ namespace BelowUs
                 case EnemyState.Patrolling:
                     UpdateRotationPatrolling();
                     UpdateMovementPatrolling();
-                    base.CheckForFlip();
+                    CheckForFlip();
                     break;
                 case EnemyState.Chasing:
                     UpdateRotationChasing();
                     UpdateMovementChasing();
-                    base.CheckForFlip();
+                    CheckForFlip();
                     break;
                 case EnemyState.Attacking:
                     UpdateRotationAttacking();
@@ -119,5 +117,4 @@ namespace BelowUs
             firePoint.rotation = (Quaternion.Slerp(firePoint.transform.rotation, rotation, Time.deltaTime * 5f));
         }
     }
-
 }
