@@ -5,17 +5,18 @@ using Mirror;
 
 namespace BelowUs
 {
-    public class BubbaScript : EnemyBase
+    public class ClonkerMovement : EnemyBase
     {
-        protected enum EnemyState
+        protected enum enemyState
         {
             Patrolling,
-            Chasing          
+            Chasing
         }
-        [SerializeField] protected EnemyState currentState;
+
+        [SerializeField] protected enemyState currentState;
         protected override void Start()
         {
-            rb = GetComponent<Rigidbody2D>();
+            rb = this.GetComponent<Rigidbody2D>();
 
             CreatePatrolArea();
             SetTarget();
@@ -29,36 +30,32 @@ namespace BelowUs
 
             switch (currentState)
             {
-                case EnemyState.Patrolling:
+                case enemyState.Patrolling:
                     UpdateBasicRotation(currentPatrolTarget);
                     UpdateMovementPatrolling();
                     CheckForFlip();
                     break;
-                case EnemyState.Chasing:
+                case enemyState.Chasing:
                     UpdateBasicRotation(targetGameObject.transform.position);
                     UpdateMovementChasing();
                     CheckForFlip();
-                    break;               
+                    break;
             }
         }
 
-        #region chasing
-
-
-        private void UpdateMovementChasing()
+        protected void UpdateMovementChasing()
         {
             Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
             Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
             rb.AddForce(movement);
         }
-        #endregion chasing
 
-
-        private void CheckDistanceToTarget()
+        protected void CheckDistanceToTarget()
         {
-            float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);            
-            if (distance < chasingRange) currentState = EnemyState.Chasing;
-            else currentState = EnemyState.Patrolling;
+            float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
+            if (distance < chasingRange) currentState = enemyState.Chasing;
+            else currentState = enemyState.Patrolling;
         }
+
     }
 }

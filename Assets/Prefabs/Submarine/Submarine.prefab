@@ -789,16 +789,9 @@ GameObject:
   - component: {fileID: -2617717658170317263}
   - component: {fileID: 9031905692841804919}
   - component: {fileID: 5089922518502821937}
-  - component: {fileID: 1586461895393640356}
-  - component: {fileID: -7561276552637839950}
-  m_Layer: 0
-  m_Name: Submarine
-  m_TagString: Submarine
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5089922518502821936
+  - component: {fileID: 571444286333614328}
+  - component: {fileID: 6113303769077479560}
+
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
