@@ -11,25 +11,23 @@ namespace BelowUs
         [Tooltip("Image to set the fill amount on.")]
         [SerializeField] private Image resourceBarImage = null;
         [SerializeField] private GameObject testButton = null;
-        [SerializeField] private FloatReference startUpdateDelay;
 
         private void OnEnable()
         {
-            if (resource == null)
+            if (resource == null || resourceBarImage == null)
             {
-                Debug.Log(nameof(resource) + " is unassigned in " + gameObject);
+                Debug.LogError(GetType().Name + " has unassigned variables in " + gameObject.name);
                 return;
             }
 
             resource.EventResourceChanged += HandleResourceChanged;
-            Invoke(nameof(UpdateBarFill), startUpdateDelay.Value);
         }
 
         private void OnDisable()
         {
             if (resource == null)
             {
-                Debug.Log(nameof(resource) + " is unassigned in " + gameObject);
+                Debug.LogError(GetType().Name + " has unassigned variables in " + gameObject.name);
                 return;
             }
 
@@ -51,8 +49,6 @@ namespace BelowUs
 
         private void UpdateBarFill() => resourceBarImage.fillAmount = resource.CurrentValue / resource.MaximumValue.Value;
 
-        [ClientRpc]
-        private void HandleResourceChanged(float currentHealth, float maxHealth) => resourceBarImage.fillAmount = currentHealth / maxHealth;
+        [ClientRpc] private void HandleResourceChanged(float currentHealth, float maxHealth) => resourceBarImage.fillAmount = currentHealth / maxHealth;
     }
-
 }

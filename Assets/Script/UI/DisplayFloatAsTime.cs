@@ -7,7 +7,7 @@ namespace BelowUs
 {
     public class DisplayFloatAsTime : DisplayFloatNbr
     {
-        protected override void UpdateBarFill() => text.text = enableMaximum ? FormatAsTime(resource.CurrentValue) + separator + resource.MaximumValue.Value : FormatAsTime(resource.CurrentValue);
+        protected override void UpdateTextValues() => text.text = enableMaximum ? FormatAsTime(resource.CurrentValue) + separator + resource.MaximumValue.Value : FormatAsTime(resource.CurrentValue);
 
         [ClientRpc]
         public override void HandleResourceChanged(float currentValue, float maxValue) =>

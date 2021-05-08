@@ -9,6 +9,8 @@ namespace BelowUs
         [SerializeField] private string resourceName = "";
         #endif
 
+        public string ResourceName => resourceName;
+
         [SyncVar] private float currentValue;
         public float CurrentValue => currentValue;
 
@@ -19,11 +21,20 @@ namespace BelowUs
         public delegate void ResourceChangedDelegate(float currentHealth, float maxHealth);
         public event ResourceChangedDelegate EventResourceChanged;
 
+        [SerializeField] private bool debug;
+
         #region Server
         [Server]
         public void ApplyChange(float value)
         {
+            if (debug)
+                Debug.Log(resourceName + " " + nameof(currentValue) + " is " + currentValue + " before " + value + " change");
+
             currentValue = Mathf.Clamp(currentValue + value, 0, maximumValue.Value);
+
+            if (debug)
+                Debug.Log(resourceName + " " + nameof(currentValue) + " is " + currentValue + " after " + value + " change");
+
             EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
         }
 

@@ -15,16 +15,28 @@ namespace BelowUs
 
         public float Damage => damage;
 
+        private readonly bool debug = false;
+
         [Server]
         private void Start()
         {
             int invertDirectionInt = invertDirection ? -1 : 1;
-            Vector2 xVelocity = transform.right * velocity * invertDirectionInt;
+            
             Vector2 yVelocity = transform.up * velocity * invertDirectionInt;
 
-            //TODO doesn't yvelocity instantly overwrite xvelocity?
-            rb.velocity = xVelocity;
+            if (debug)
+                Debug.Log("Initial Velocity " + rb.velocity);
+
+            //TODO check and remove this and maybe the debug bool too since xVelocity is instantly overwritten by yVelocity
+            //Vector2 xVelocity = transform.right * velocity * invertDirectionInt;
+            //rb.velocity = xVelocity;
+            //if (debug)
+            //Debug.Log("Velocity after " + nameof(xVelocity) + " " + rb.velocity);
+
             rb.velocity = yVelocity;
+
+            if (debug)
+                Debug.Log("Velocity after " + nameof(yVelocity) + " " + rb.velocity);
 
             Invoke(nameof(EnableCollision), 0.25f); //This prevents the bullet from colliding with it's creator.
             Invoke(nameof(Expire), expirationTime);

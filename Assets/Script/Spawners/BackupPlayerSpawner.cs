@@ -25,12 +25,8 @@ namespace BelowUs
             string playerTag = refManager.PlayerTag;
             string localPlayerTag = refManager.LocalPlayerTag;
 
-            Debug.Log(GameObject.FindGameObjectWithTag(playerTag) == null);
-            Debug.Log(GameObject.FindGameObjectWithTag(localPlayerTag) == null);
-
             if (GameObject.FindGameObjectWithTag(playerTag) == null && GameObject.FindGameObjectWithTag(localPlayerTag) == null)
             {
-                Debug.Log("Ran!");
                 try
                 {
                     manager = Instantiate(networkManager).GetComponent<NetworkManager>();

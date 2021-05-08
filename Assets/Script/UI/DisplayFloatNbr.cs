@@ -20,32 +20,38 @@ namespace BelowUs
 		
         protected TextMeshProUGUI text;
 
+        private string errorString;
+
+        private void Awake()
+        {
+            errorString = GetType().Name + " has unassigned variables in " + gameObject.name;
+            text = (TextMeshProUGUI)textObject.GetComponent(typeof(TextMeshProUGUI));
+        }
+
         private void OnEnable()
         {
-            if (resource == null)
+            if (resource == null || textObject == null)
             {
-                Debug.Log(nameof(resource) + " is unassigned in " + gameObject);
+                Debug.LogError(errorString);
                 return;
             }
 			
             resource.EventResourceChanged += HandleResourceChanged;
-            Invoke(nameof(UpdateBarFill), startUpdateDelay.Value);
+            Invoke(nameof(UpdateTextValues), startUpdateDelay.Value);
         }
 
         private void OnDisable()
         {
-            if (resource == null)
+            if (resource == null || textObject == null)
             {
-                Debug.Log(nameof(resource) + " is unassigned in " + gameObject);
+                Debug.LogError(errorString);
                 return;
             }
 
             resource.EventResourceChanged -= HandleResourceChanged;
         }
 
-        private void Awake() => text = (TextMeshProUGUI)textObject.GetComponent(typeof(TextMeshProUGUI));
-
-        protected virtual void UpdateBarFill() => text.text = enableMaximum ? GetRounded(resource.CurrentValue) + separator + resource.MaximumValue.Value : GetRounded(resource.CurrentValue).ToString();
+        protected virtual void UpdateTextValues() => text.text = enableMaximum ? GetRounded(resource.CurrentValue) + separator + resource.MaximumValue.Value : GetRounded(resource.CurrentValue).ToString();
 
         protected double GetRounded(float number) => System.Math.Round(number, decimals);
 

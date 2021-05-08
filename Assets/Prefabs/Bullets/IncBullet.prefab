@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 8ec602745077f6e4dba0164697f9ad8f, type: 3}
-  m_Color: {r: 1, g: 0.051886797, b: 0.051886797, a: 1}
+  m_Color: {r: 1, g: 0.80763686, b: 0.6650944, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1783117779421591663}
   cd: {fileID: 2564237955503752442}
-  velocity: 20
+  velocity: 5
   damage: 10
   expirationTime: 6
   invertDirection: 0
