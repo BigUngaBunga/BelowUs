@@ -5,20 +5,11 @@ namespace BelowUs
 {
     public class SpookScript : EnemyBase
     {
-        private enum EnemyState
-        {
-            Patrolling,
-            Chasing,
-            Attacking
-        }
-
         private Weapon weapon;
         private Transform firePoint;
         private float timeElapsed = 0;
 
-        [SerializeField] private float timeBetweenShoots;       
-        [SerializeField] private EnemyState currentState;
-
+        [SerializeField] private float timeBetweenShoots;
 
         protected override void Start()
         {
@@ -47,12 +38,12 @@ namespace BelowUs
             switch (currentState)
             {
                 case EnemyState.Patrolling:
-                    UpdateBasicRotation(currentPatrolTarget);
+                    UpdateRotationPatrolling();
                     UpdateMovementPatrolling();
                     CheckForFlip();
                     break;
                 case EnemyState.Chasing:
-                    UpdateBasicRotation(targetGameObject.transform.position);
+                    UpdateRotationChasing();
                     UpdateMovementChasing();
                     CheckForFlip();
                     break;
@@ -69,21 +60,44 @@ namespace BelowUs
             }
         }
 
-        protected void CheckDistanceToTarget()
-        {
-            float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
-            if (distance < attackingRange) currentState = EnemyState.Attacking;
-            else if (distance < chasingRange) currentState = EnemyState.Chasing;
-            else currentState = EnemyState.Patrolling;
-        }
-
         protected void UpdateMovementChasing()
         {
             Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
             Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
             rb.AddForce(movement);
         }
+        protected void UpdateRotationChasing()
+        {
+            Vector2 direction = targetGameObject.transform.position - transform.position;
+            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+            transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
 
+        }
+
+        protected void UpdateRotationPatrolling()
+        {
+            //Vector till target
+            Vector2 direction = currentPatrolTarget - transform.position;
+            //vinkel till target
+            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+            //rotationen som krävs till target som en quaternion runt z axlen
+            Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+            //Mindre del av rotationen till target (slerp)
+            transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
+        }
+
+
+        protected void UpdateMovementPatrolling()
+        {
+            Vector3 direction = (currentPatrolTarget - transform.position);
+            rb.MovePosition(transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
+
+            if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
+            {
+                base.GetNextPatrolPosition();
+            }
+        }
 
         protected void UpdateRotationAttacking()
         {

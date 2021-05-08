@@ -607,12 +607,11 @@ MonoBehaviour:
   attackingRange: 30
   health: 100
   collisionDamage: -5
-  moveSpeedPatrolling: 1
-  moveSpeedChasing: 2
-  maxPatrolRange: 2
+  moveSpeedPatrolling: 10
+  moveSpeedChasing: 10
+  maxPatrolRange: 100
   targetGameObject: {fileID: 0}
   timeBetweenShoots: 2
-  currentState: 0
 --- !u!114 &-2898043021246271424
 MonoBehaviour:
   m_ObjectHideFlags: 0

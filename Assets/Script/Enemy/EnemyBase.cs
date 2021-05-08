@@ -7,7 +7,12 @@ namespace BelowUs
 {
     public class EnemyBase : NetworkBehaviour
     {
-        
+        protected enum EnemyState
+        {
+            Patrolling,
+            Chasing,
+            Attacking
+        }
 
 
         [SerializeField] protected float chasingRange, attackingRange;
@@ -20,8 +25,8 @@ namespace BelowUs
 
         protected string targetName;
 
-        [SerializeField] [Min(1)] protected float moveSpeedPatrolling;
-        [SerializeField] [Min(1)] protected float moveSpeedChasing;
+        [SerializeField] [Min(10)] protected float moveSpeedPatrolling;
+        [SerializeField] [Min(10)] protected float moveSpeedChasing;
         [SerializeField] [Min(1)] protected float maxPatrolRange;
 
 
@@ -29,6 +34,7 @@ namespace BelowUs
         protected List<Vector3> patrolPositions = new List<Vector3>();
         protected Vector3 currentPatrolTarget;
 
+        protected EnemyState currentState;
         protected Rigidbody2D rb;
 
         protected virtual void Start()
@@ -44,7 +50,7 @@ namespace BelowUs
 
         protected void SetTarget() => targetGameObject = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.SubmarineTag);
 
-        private void AddRandomPatrolNumber() => patrolPositions.Add(new Vector3(Random.Range(-maxPatrolRange, maxPatrolRange), Random.Range(-maxPatrolRange, maxPatrolRange)) + transform.position);
+        private void AddRandomPatrolNumber() => patrolPositions.Add(new Vector3(Random.Range(-maxPatrolRange, maxPatrolRange), Random.Range(-maxPatrolRange, maxPatrolRange)));
 
         protected void CreatePatrolArea()
         {
@@ -80,40 +86,12 @@ namespace BelowUs
             transform.localScale = theScale;
         }
 
-        
-        
-        private void OnTriggerEnter2D(Collider2D collision)
+        protected void CheckDistanceToTarget()
         {
-            if (collision.tag == "AllyBullet")
-            {
-                health -= collision.gameObject.GetComponent<Bullet>().Damage;
-            }
-            CheckIfAlive();
-        }        
-
-        protected void UpdateMovementPatrolling()
-        {
-            Vector3 direction = (currentPatrolTarget - transform.position);
-            rb.MovePosition(transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
-
-            if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
-            {
-                GetNextPatrolPosition();
-            }
+            float distance = Vector3.Distance(targetGameObject.transform.position, transform.position);
+            if (distance < attackingRange) currentState = EnemyState.Attacking;
+            else currentState = distance < chasingRange ? EnemyState.Chasing : EnemyState.Patrolling;
         }
-
-        protected void UpdateBasicRotation(Vector3 targetPosition)
-        {
-            //Vector till target
-            Vector2 direction = targetPosition - transform.position;
-            //vinkel till target
-            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-            //rotationen som krävs till target som en quaternion runt z axlen
-            Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
-            //Mindre del av rotationen till target (slerp)
-            transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
-        }
-        
     }
 }
 

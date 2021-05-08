@@ -1388,7 +1388,6 @@ SpriteRenderer:
 --- !u!1 &437756882 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2668134454619895889, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-
   m_PrefabInstance: {fileID: 473132173}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &437756885
@@ -4841,7 +4840,6 @@ PrefabInstance:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3371387553b842d46a2be03566c78d80, type: 3}
 --- !u!1 &1277374125
-
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4967,7 +4965,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
-
 --- !u!222 &1277374128
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9020,7 +9017,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2815545024006707017, guid: c28aa600385c3ed409c65ee590548498, type: 3}
       propertyPath: m_RootOrder
-
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2815545024006707017, guid: c28aa600385c3ed409c65ee590548498, type: 3}
