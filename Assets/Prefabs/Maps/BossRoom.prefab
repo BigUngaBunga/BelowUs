@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 6942919851656966605}
-  tileAmount: 0
+  tileAmount: 20
 --- !u!1 &4373607600849795095
 GameObject:
   m_ObjectHideFlags: 0

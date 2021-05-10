@@ -52,13 +52,13 @@ MonoBehaviour:
   seed: 0
   useRandomSeed: 1
   generateExit: 1
+  borderThickness: 5
+  passagewayRadius: 3
   minimumOpenWaterPercentage: 47
   maximumOpenWaterPercentage: 55
   minimumEnclaveRemovalSize: 4
   maximumEnclaveRemovalSize: 25
-  borderThickness: 5
   timesToSmoothMap: 5
-  passagewayRadius: 3
 --- !u!114 &4239500959107569486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 4239500959780369297}
-  tileAmount: 20
+  tileAmount: 25
 --- !u!114 &4239500959107569487
 MonoBehaviour:
   m_ObjectHideFlags: 0

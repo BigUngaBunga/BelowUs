@@ -148,4 +148,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 1453405639}
-  tileAmount: 10
+  tileAmount: 30

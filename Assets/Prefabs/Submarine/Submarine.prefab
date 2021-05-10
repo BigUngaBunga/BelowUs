@@ -102,7 +102,7 @@ MonoBehaviour:
   targetingOffset: 90
   rotationOffset: 0
   cannonId: 2
-  bullet: {fileID: 3884182950494802533, guid: b93ebb19adc2b58458550e8757d0e30d, type: 3}
+  bullet: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
   cannonController: {fileID: 0}
 --- !u!1 &1241016693
 GameObject:
@@ -299,7 +299,7 @@ MonoBehaviour:
   targetingOffset: 90
   rotationOffset: 0
   cannonId: 3
-  bullet: {fileID: 3884182950494802533, guid: b93ebb19adc2b58458550e8757d0e30d, type: 3}
+  bullet: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
   cannonController: {fileID: 0}
 --- !u!1 &1274189605
 GameObject:
@@ -496,7 +496,7 @@ MonoBehaviour:
   targetingOffset: -90
   rotationOffset: 180
   cannonId: 1
-  bullet: {fileID: 3884182950494802533, guid: b93ebb19adc2b58458550e8757d0e30d, type: 3}
+  bullet: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
   cannonController: {fileID: 0}
 --- !u!1 &1780724566
 GameObject:
@@ -898,6 +898,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  npc: 0
+  debug: 0
 --- !u!114 &9031905692841804919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -918,6 +920,7 @@ MonoBehaviour:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 8a5aa9e0599cafd4eb30941f03fa9c98, type: 2}
+  debug: 0
 --- !u!50 &5089922518502821937
 Rigidbody2D:
   serializedVersion: 4
@@ -1079,7 +1082,7 @@ MonoBehaviour:
   targetingOffset: -90
   rotationOffset: 180
   cannonId: 0
-  bullet: {fileID: 3884182950494802533, guid: b93ebb19adc2b58458550e8757d0e30d, type: 3}
+  bullet: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
   cannonController: {fileID: 0}
 --- !u!1 &8905952242596213076
 GameObject:

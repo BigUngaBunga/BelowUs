@@ -9,10 +9,10 @@ namespace BelowUs
         [SerializeField] private SquareGrid squareGrid;
         [SerializeField] private MeshFilter meshFilter;
 
-        public MeshFilter MeshFilter { get { return meshFilter; } }
+        public MeshFilter MeshFilter => meshFilter;
 
-        [Range(1, 20)]
-        [SerializeField] private int tileAmount;
+        [Range(10, 50)]
+        [SerializeField] private int tileAmount = 20;
 
         private List<Vector3> vertices;
         private List<int> triangles;
