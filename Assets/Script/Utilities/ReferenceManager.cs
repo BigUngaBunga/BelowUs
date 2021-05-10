@@ -19,6 +19,12 @@ namespace BelowUs
 
         private void Awake() => DontDestroyOnLoad(gameObject);
 
+        #region transforms
+        [SerializeField] private Transform bulletParent;
+
+        public Transform BulletParent => bulletParent;
+        #endregion
+
         #region tags
         [TagSelector] [SerializeField] private string localPlayerTag;
         [TagSelector] [SerializeField] private string playerTag;

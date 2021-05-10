@@ -54,7 +54,7 @@ namespace BelowUs
                     if (timeElapsed >= timeBetweenShoots)
                     {
                         timeElapsed -= timeBetweenShoots;
-                        weapon.shoot();
+                        weapon.Shoot();
                     }
                     break;
             }

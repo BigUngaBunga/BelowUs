@@ -13,6 +13,8 @@ namespace BelowUs
         [SerializeField] private int expirationTime;
         [SerializeField] private bool invertDirection;
 
+        [SerializeField] private float collisionDelay = 0.05f;
+
         public float Damage => damage;
 
         private readonly bool debug = false;
@@ -38,7 +40,7 @@ namespace BelowUs
             if (debug)
                 Debug.Log("Velocity after " + nameof(yVelocity) + " " + rb.velocity);
 
-            Invoke(nameof(EnableCollision), 0.25f); //This prevents the bullet from colliding with it's creator.
+            Invoke(nameof(EnableCollision), collisionDelay); //This prevents the bullet from colliding with it's creator.
             Invoke(nameof(Expire), expirationTime);
         }
 

@@ -26,18 +26,21 @@ namespace BelowUs
         private Light spotlight;
         private float intensity; 
 
-        [SerializeReference] private GameObject bullet;
         [SerializeField] private StationController cannonController;
+
+        private Weapon weapon;
 
         private string logError;
 
         private void Awake()
         {
+            weapon = GetComponent<Weapon>();
+
             logError = gameObject.name + " in " + gameObject.transform.parent + " ";
 
-            if (cannonController == null)
+            if (cannonController == null || weapon == null)
             {
-                Debug.LogError(logError + "has no cannonController!");
+                Debug.LogError(logError + "has no cannonController and/or weapon!");
                 Destroy(gameObject);
             }
         }
@@ -96,7 +99,7 @@ namespace BelowUs
         private void Fire()
         {
             if (Input.GetMouseButtonDown(0) && IsCannonActive())
-                Instantiate(bullet, transform.position, transform.rotation);
+                weapon.Shoot();
         }
 
         private void FlipCannon()
