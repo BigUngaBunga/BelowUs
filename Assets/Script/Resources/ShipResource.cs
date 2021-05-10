@@ -7,9 +7,8 @@ namespace BelowUs
     {
         #if UNITY_EDITOR
         [SerializeField] private string resourceName = "";
-        #endif
-
         public string ResourceName => resourceName;
+        #endif
 
         [SyncVar] private float currentValue;
         public float CurrentValue => currentValue;
@@ -21,6 +20,9 @@ namespace BelowUs
         public delegate void ResourceChangedDelegate(float currentHealth, float maxHealth);
         public event ResourceChangedDelegate EventResourceChanged;
 
+        public delegate void ResourceEmptyDelegate();
+        public event ResourceEmptyDelegate EventResourceEmpty;
+
         [SerializeField] private bool debug;
 
         #region Server
@@ -28,14 +30,17 @@ namespace BelowUs
         public void ApplyChange(float value)
         {
             if (debug)
-                Debug.Log(resourceName + " " + nameof(currentValue) + " is " + currentValue + " before " + value + " change");
+                Debug.Log(gameObject.name + " " + nameof(currentValue) + " is " + currentValue + " before " + value + " change");
 
             currentValue = Mathf.Clamp(currentValue + value, 0, maximumValue.Value);
 
             if (debug)
-                Debug.Log(resourceName + " " + nameof(currentValue) + " is " + currentValue + " after " + value + " change");
+                Debug.Log(gameObject.name + " " + nameof(currentValue) + " is " + currentValue + " after " + value + " change");
 
             EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
+
+            if (currentValue == 0)
+                EventResourceEmpty?.Invoke();
         }
 
         [Server]
@@ -43,6 +48,9 @@ namespace BelowUs
         {
             currentValue = value;
             EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
+
+            if (currentValue == 0)
+                EventResourceEmpty?.Invoke();
         }
 
         [Server]

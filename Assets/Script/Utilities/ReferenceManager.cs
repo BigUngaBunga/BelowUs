@@ -17,6 +17,8 @@ namespace BelowUs
             }
         }
 
+        private void Awake() => DontDestroyOnLoad(gameObject);
+
         #region tags
         [TagSelector] [SerializeField] private string localPlayerTag;
         [TagSelector] [SerializeField] private string playerTag;
