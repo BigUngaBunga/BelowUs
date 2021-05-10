@@ -21,8 +21,12 @@ namespace BelowUs
 
         #region transforms
         [SerializeField] private Transform bulletParent;
+        [SerializeField] private Transform goldParent;
+        [SerializeField] private Transform scrapParent;
 
         public Transform BulletParent => bulletParent;
+        public Transform GoldParent => goldParent;
+        public Transform ScrapParent => scrapParent;
         #endregion
 
         #region tags

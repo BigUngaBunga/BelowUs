@@ -80,13 +80,16 @@ namespace BelowUs
 
         private void GenerateResource(Vector2 position)
         {
-            GameObject objectToInstantiate = PickWeightedResourceType() switch
+            ResourceType resourceToInstantiate = PickWeightedResourceType();
+
+            GameObject objectToInstantiate = resourceToInstantiate switch
             {
-                ResourceType.Scrap => scrapPrefab,
                 ResourceType.Gold => goldPrefab,
-                _ => goldPrefab,
+                _ => scrapPrefab,
             };
-            Instantiate(objectToInstantiate, position, Quaternion.identity);
+
+            Transform parent = resourceToInstantiate == ResourceType.Gold ? ReferenceManager.Singleton.GoldParent : ReferenceManager.Singleton.ScrapParent;
+            Instantiate(objectToInstantiate, position, Quaternion.identity, parent);
         }
 
         private ResourceType PickWeightedResourceType()
