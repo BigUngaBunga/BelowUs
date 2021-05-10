@@ -8,7 +8,14 @@ namespace BelowUs
     public class DepthDisplay : Display
     {
         [SerializeReference] private Transform submarinePosition;
-        protected override void UpdateDisplay() => depthDisplay.text = ((int)-submarinePosition.position.y).ToString() + " m";
+        private float initialDepth;
+
+        protected override void Start()
+        {
+            base.Start();
+            initialDepth = submarinePosition.position.y;
+        }
+        protected override void UpdateDisplay() => depthDisplay.text = ((int)(-submarinePosition.position.y + initialDepth)).ToString() + " m";
     }
 }
 
