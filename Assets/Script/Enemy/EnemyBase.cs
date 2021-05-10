@@ -14,9 +14,7 @@ namespace BelowUs
             Attacking
         }
 
-
         [SerializeField] protected float chasingRange, attackingRange;
-        [SerializeField] protected float health;
         [SerializeField] protected float collisionDamage;
 
         public float CollisionDamage => collisionDamage;
@@ -36,10 +34,13 @@ namespace BelowUs
 
         protected EnemyState currentState;
         protected Rigidbody2D rb;
+        [SerializeField] protected ShipResource hullHP;
 
         protected virtual void Start()
         {
-
+            rb = GetComponent<Rigidbody2D>();
+            hullHP = GetComponent<ShipResource>();
+            hullHP.EventResourceEmpty += Die;
         }
 
         protected virtual void Update()
@@ -67,11 +68,6 @@ namespace BelowUs
             AddRandomPatrolNumber();
         }
 
-        protected void CheckIfAlive()
-        {
-            if (health <= 0) Destroy(gameObject);
-        }
-
         protected void CheckForFlip()
         {
             //Checks which direction the objeckt is facing and wether it has flipped the right way thru localscale
@@ -92,6 +88,8 @@ namespace BelowUs
             if (distance < attackingRange) currentState = EnemyState.Attacking;
             else currentState = distance < chasingRange ? EnemyState.Chasing : EnemyState.Patrolling;
         }
+
+        private void Die() => Destroy(gameObject);
     }
 }
 

@@ -428,7 +428,6 @@ GameObject:
   - component: {fileID: 1410107557722617158}
   - component: {fileID: -2898043021246271424}
   - component: {fileID: -5396978898668453108}
-  - component: {fileID: 254040935165111318}
   m_Layer: 0
   m_Name: Spook
   m_TagString: Enemy
@@ -605,7 +604,6 @@ MonoBehaviour:
   syncInterval: 0.1
   chasingRange: 70
   attackingRange: 30
-  health: 100
   collisionDamage: -5
   moveSpeedPatrolling: 10
   moveSpeedChasing: 10
@@ -646,20 +644,7 @@ MonoBehaviour:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: daa063248a7218a4f8eb923e8722fcbd, type: 2}
---- !u!114 &254040935165111318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3820843256020973064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bedcc5b2d4661d94489a20740e053833, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
+  debug: 0
 --- !u!1 &4320036507119805277
 GameObject:
   m_ObjectHideFlags: 0

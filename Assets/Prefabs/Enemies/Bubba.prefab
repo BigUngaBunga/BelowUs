@@ -625,7 +625,6 @@ GameObject:
   - component: {fileID: 6450413785958905961}
   - component: {fileID: 856735854212978715}
   - component: {fileID: 5172091509111440237}
-  - component: {fileID: 6692487406857263850}
   m_Layer: 0
   m_Name: Bubba
   m_TagString: Enemy
@@ -705,7 +704,6 @@ MonoBehaviour:
   syncInterval: 0.1
   chasingRange: 70
   attackingRange: 30
-  health: 100
   collisionDamage: -10
   moveSpeedPatrolling: 10
   moveSpeedChasing: 10
@@ -792,17 +790,4 @@ MonoBehaviour:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: e21fc677aa0051249959282872599a22, type: 2}
---- !u!114 &6692487406857263850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7106082335865075385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bedcc5b2d4661d94489a20740e053833, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
+  debug: 0

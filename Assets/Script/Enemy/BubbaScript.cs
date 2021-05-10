@@ -9,7 +9,7 @@ namespace BelowUs
     {
         protected override void Start()
         {
-            rb = this.GetComponent<Rigidbody2D>();
+            base.Start();
 
             CreatePatrolArea();
             SetTarget();
@@ -26,19 +26,13 @@ namespace BelowUs
                 case EnemyState.Patrolling:
                     UpdateRotationPatrolling();
                     UpdateMovementPatrolling();
-                    CheckForFlip();
                     break;
-                case EnemyState.Chasing:
+                default:
                     UpdateRotationChasing();
                     UpdateMovementChasing();
-                    CheckForFlip();
-                    break;
-                case EnemyState.Attacking:
-                    UpdateRotationChasing();
-                    UpdateMovementChasing();
-                    CheckForFlip();
                     break;
             }
+            CheckForFlip();
         }
 
         #region chasing

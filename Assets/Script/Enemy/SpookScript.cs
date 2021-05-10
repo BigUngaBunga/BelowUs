@@ -13,8 +13,9 @@ namespace BelowUs
 
         protected override void Start()
         {
+            base.Start();
+
             weapon = GetComponent<Weapon>();
-            rb = GetComponent<Rigidbody2D>();
             firePoint = gameObject.transform.Find("FirePoint");
 
             CreatePatrolArea();
