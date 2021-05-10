@@ -5,13 +5,13 @@ namespace BelowUs
 {
     public class SceneController : NetworkBehaviour
     {
-        [SerializeField] private ShipResource resource;
+        [SerializeField] private ShipResource submarineHealth;
 
         // Start is called before the first frame update
         private void Start()
         {
             if (isServer)
-                resource.EventResourceEmpty += SwitchScene;
+                submarineHealth.EventResourceEmpty += SwitchScene;
         }
 
         [Server]

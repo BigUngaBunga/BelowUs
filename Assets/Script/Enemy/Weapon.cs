@@ -4,12 +4,17 @@ namespace BelowUs
 {
     public class Weapon : MonoBehaviour
     {
-        [SerializeField] private GameObject firePoint;
         [SerializeField] private GameObject bulletPrefab;
 
-        private void Awake() => AdjustFirepoint();
+        private Transform firePoint;
 
-        public void Shoot() => Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation, ReferenceManager.Singleton.BulletParent);
+        private void Awake()
+        {
+            firePoint = transform.Find("FirePoint");
+            AdjustFirepoint();
+        }
+
+        public void Shoot() => Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, ReferenceManager.Singleton.BulletParent);
 
         /**
          * Dynamically adjusts firePoint based on bullet size
@@ -17,8 +22,8 @@ namespace BelowUs
         private void AdjustFirepoint()
         {
             var increase = bulletPrefab.GetComponent<CircleCollider2D>().radius / 2;
-            var posX = firePoint.transform.localPosition.x;
-            var posY = firePoint.transform.localPosition.y;
+            var posX = firePoint.localPosition.x;
+            var posY = firePoint.localPosition.y;
 
             var changeX = 0f;
             var changeY = 0f;
@@ -33,7 +38,7 @@ namespace BelowUs
             else if (posY < 0)
                 changeY = -increase;
 
-            firePoint.transform.localPosition = new Vector2(posX + changeX, posY + changeY);
+            firePoint.localPosition = new Vector2(posX + changeX, posY + changeY);
         }
     }
 }
