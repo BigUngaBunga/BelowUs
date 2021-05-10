@@ -25,17 +25,12 @@ namespace BelowUs
 
         public bool IsOccupied => stationPlayerController != null;
 
-        private void Start() => playerTag = ReferenceManager.Singleton.PlayerTag;
+        private void Start() => playerTag = ReferenceManager.Singleton.LocalPlayerTag;
 
         public virtual void Enter(GameObject player)
         {
             if(!IsOccupied)
             {
-                if (!isServer)
-                    SetStationPlayerController();
-                else
-                    stationPlayerController = player;
-
                 if (switchTag != null)
                     cameraController.SwitchTarget(switchTag);
 
@@ -45,23 +40,18 @@ namespace BelowUs
             }
         }
 
-        protected virtual void EnterStation(GameObject player)//PlayerInput player)
+        protected virtual void EnterStation(GameObject player)
         {
-            stationPlayerController = player.gameObject;
+            if (isServer)
+                SetStationPlayerController(player);
             SetButtonActiveStatus(true);
             cameraController.SwitchTarget(SwitchTag);
-            Debug.Log("Current tag: " + SwitchTag.ToString());
         }
 
         public virtual void Leave()
         {
             stationPlayerController = null;
-
-            //TODO byt till vanliga SwitchTarget, detta är enbart för att få speltestet att fungera
-            if (playerTag != null)
-                cameraController.SwitchTarget(true);
-            //cameraController.SwitchTarget(playerTag);
-
+            cameraController.SwitchTarget(playerTag);
             SetButtonActiveStatus(false);
         }
 
@@ -78,10 +68,7 @@ namespace BelowUs
                 leaveButton.onClick.RemoveListener(Leave);
         }
 
-        [Command]
-        private void SetStationPlayerController()
-        {
-
-        }
+        [Server]
+        public void SetStationPlayerController(GameObject player) => stationPlayerController = player;
     }
 }

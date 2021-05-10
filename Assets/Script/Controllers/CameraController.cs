@@ -56,13 +56,10 @@ namespace BelowUs
 
         public void SwitchTarget(string targetTag)
         {
-            if (targetTag == ReferenceManager.Singleton.PlayerTag)
+            if (targetTag == ReferenceManager.Singleton.LocalPlayerTag)
                 followPlayer = true;
             else if (targetTag == ReferenceManager.Singleton.SubmarineTag)
                 followPlayer = false;
         }
-
-        //TODO ta bort då vanliga SwitchTarget fungerar, detta är enbart för att få speltestet att fungera
-        public void SwitchTarget(bool switchToPlayer) => followPlayer = switchToPlayer;
     }
 }

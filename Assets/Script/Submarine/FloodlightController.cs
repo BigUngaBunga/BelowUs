@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.InputSystem;
@@ -21,7 +19,9 @@ namespace BelowUs
             submarineMovement = GetComponentInParent<SubmarineMovement>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             spotLight = GetComponentInChildren<Light>();
-            InvokeRepeating(nameof(ToggleFloodlight), 0.1f, updateTimer);
+
+            if (isServer)
+                InvokeRepeating(nameof(ToggleFloodlight), 0.1f, updateTimer);
         }
 
         void Update() => RotateFloodlight();

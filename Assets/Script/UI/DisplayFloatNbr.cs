@@ -1,10 +1,9 @@
-using Mirror;
 using TMPro;
 using UnityEngine;
 
 namespace BelowUs
 {
-    public class DisplayFloatNbr : NetworkBehaviour
+    public class DisplayFloatNbr : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] protected ShipResource resource;
@@ -55,7 +54,6 @@ namespace BelowUs
 
         protected double GetRounded(float number) => System.Math.Round(number, decimals);
 
-        [ClientRpc]
         public virtual void HandleResourceChanged(float currentValue, float maxValue) => text.text = enableMaximum ? GetRounded(currentValue) + separator + maxValue : GetRounded(currentValue).ToString();
     }
 }

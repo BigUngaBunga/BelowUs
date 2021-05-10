@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
@@ -15,9 +13,15 @@ namespace BelowUs
             SetTarget();
             GetNextPatrolPosition();
         }
+        
+        protected override void Update()
+        {
+            if (isServer)
+                ServerStuff();
+        }
 
         [Server]
-        protected override void Update()
+        private void ServerStuff()
         {
             CheckDistanceToTarget();
 

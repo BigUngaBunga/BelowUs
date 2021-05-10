@@ -3,7 +3,7 @@ using Mirror;
 
 namespace BelowUs
 {
-    public class Bullet : MonoBehaviour
+    public class Bullet : NetworkBehaviour
     {
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private CircleCollider2D cd;
@@ -21,11 +21,17 @@ namespace BelowUs
 
         private readonly bool debug = false;
 
-        [Server]
         private void Start()
         {
+            //TODO don't run this on client
+            ServerStuff();
+        }
+
+        [Server]
+        private void ServerStuff()
+        {
             int invertDirectionInt = invertDirection ? -1 : 1;
-            
+
             Vector2 yVelocity = transform.up * velocity * invertDirectionInt;
 
             if (debug)
