@@ -20,7 +20,7 @@ namespace BelowUs
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.tag == "Submarine")
+            if (collision.gameObject.CompareTag(ReferenceManager.Singleton.SubmarineTag))
             {
                 CurrentGold.Gold += value;
                 Destroy(gameObject);
