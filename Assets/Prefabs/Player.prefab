@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2569432028825394515}
   - component: {fileID: -8455052746023811855}
   - component: {fileID: -7156201737830467916}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -202,12 +202,6 @@ MonoBehaviour:
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 5770db1114ffc984591c4427a5a05d9c, type: 2}
   playerActions: {fileID: -944628639613478452, guid: 18c511f0feaa5284bb896513fc566ff1, type: 3}
-  ladderMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 512
 --- !u!114 &-8455052746023811855
 MonoBehaviour:
   m_ObjectHideFlags: 0
