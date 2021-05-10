@@ -52,7 +52,7 @@ namespace BelowUs
 
         private void FixedUpdate()
         {
-            if (!IsInStation())
+            if (!IsInStation()) //TODO event that changes isInStation and not running the if statement in that case
             {
                 HorizontalMovement();
                 HandleClimbingBool();

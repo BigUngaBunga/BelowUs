@@ -1,4 +1,3 @@
-using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +6,6 @@ namespace BelowUs
     public class Controls : MonoBehaviour
     {
         [SerializeField] private Transform currentStation;
-        [SerializeField] private LayerMask stationMask;
         private Rigidbody2D rb;
 
         private void Start()
@@ -24,7 +22,7 @@ namespace BelowUs
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (!rb.IsTouchingLayers(stationMask))
+            if (!rb.IsTouchingLayers(ReferenceManager.Singleton.StationMask))
                 return;
 
             currentStation = collision.transform.parent;
@@ -40,7 +38,10 @@ namespace BelowUs
             StationController cont = currentStation.GetComponent<StationController>();
 
             if (!PauseMenu.IsOpen && cont != null)
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
                 cont.Enter(gameObject);
+            }   
         }
     }
 }

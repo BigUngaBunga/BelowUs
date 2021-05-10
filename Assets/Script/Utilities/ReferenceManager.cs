@@ -42,11 +42,13 @@ namespace BelowUs
         #endregion
 
         #region masks
-        [SerializeField] private LayerMask ladderMask;
         [SerializeField] private LayerMask groundMask;
+        [SerializeField] private LayerMask ladderMask;
+        [SerializeField] private LayerMask stationMask;
 
-        public int LadderMask => ladderMask;
         public int GroundMask => groundMask;
+        public int LadderMask => ladderMask;
+        public int StationMask => stationMask;
         #endregion
     }
 }
