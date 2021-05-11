@@ -29,7 +29,6 @@ namespace BelowUs
                 CancelInvoke(nameof(ShouldButtonBeDisplayed));
                 buttonUI.SetActive(false);
             }
-                
         }
 
         private void ShouldButtonBeDisplayed() => buttonUI.SetActive(controller.StationPlayerController == null);
