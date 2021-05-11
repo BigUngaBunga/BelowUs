@@ -257,10 +257,7 @@ namespace BelowUs
             }
         }
 
-        private WaitForSeconds Wait(string text = "")
-        {
-            return CorutineUtilities.Wait(timeToWait, text);
-        }
+        private WaitForSeconds Wait(string text = "") => CorutineUtilities.Wait(timeToWait, text);
 
         public struct Triangle
         {
@@ -278,18 +275,9 @@ namespace BelowUs
                 vertices = new int[] { vertexIndexA, vertexIndexB, vertexIndexC };
             }
 
-            public int this[int i]
-            {
-                get
-                {
-                    return vertices[i];
-                }
-            }
+            public int this[int i] => vertices[i];
 
-            public bool ContainsVertexIndex(int vertexIndex)
-            {
-                return vertexIndex == vertexIndexA || vertexIndex == vertexIndexB || vertexIndex == vertexIndexC;
-            }
+            public bool ContainsVertexIndex(int vertexIndex) => vertexIndex == vertexIndexA || vertexIndex == vertexIndexB || vertexIndex == vertexIndexC;
         }
 
         public class SquareGrid

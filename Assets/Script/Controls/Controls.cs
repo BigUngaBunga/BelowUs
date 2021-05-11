@@ -21,44 +21,52 @@ namespace BelowUs
             playerAction.Enable();
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        private void OnTriggerEnter2D(Collider2D collider)
         {
-            if (!rb.IsTouchingLayers(ReferenceManager.Singleton.StationMask))
-                return;
-
-            currentStation = collision.transform.parent;
+            if (CollisionIsAStation(collider))
+                currentStation = collider.transform.parent;
         }
 
-        private void OnTriggerExit2D() => currentStation = null;
+        private void OnTriggerExit2D(Collider2D collider)
+        {
+            if (CollisionIsAStation(collider))
+                currentStation = null;
+        }
+
+        private bool CollisionIsAStation(Collider2D collider)
+        {
+            string colliderTag = collider.transform.parent.gameObject.tag;
+            return (colliderTag != null || colliderTag != ReferenceManager.Singleton.Untagged) && colliderTag == ReferenceManager.Singleton.StationTag;
+        }
 
         public void OnStationClick(InputAction.CallbackContext value)
         {
             if (currentStation == null)
                 return;
 
-            StationController cont = currentStation.GetComponent<StationController>();
+            StationController controller = currentStation.GetComponent<StationController>();
 
-            if (!PauseMenu.IsOpen && cont != null && cont.StationPlayerController == null)
+            if (!PauseMenu.IsOpen && controller != null && controller.StationPlayerController == null)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
-                cont.Enter(gameObject);
+                controller.Enter(gameObject);
 
                 if (isClient)
-                    SuccessfullyEnteredStation(cont);
+                    SuccessfullyEnteredStation(controller);
 
-                cont.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
+                controller.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
             }
         }
 
         [Command]
-        private void SuccessfullyEnteredStation(StationController cont) => cont.SetStationPlayerController(gameObject);
+        private void SuccessfullyEnteredStation(StationController controller) => controller.SetStationPlayerController(gameObject);
 
         [Command]
         private void SuccessfullyLeftStation()
         {
-            StationController cont = currentStation.GetComponent<StationController>();
-            cont.LeaveButton.onClick.RemoveListener(SuccessfullyLeftStation);
-            cont.SetStationPlayerController(null);
+            StationController controller = currentStation.GetComponent<StationController>();
+            controller.LeaveButton.onClick.RemoveListener(SuccessfullyLeftStation);
+            controller.SetStationPlayerController(null);
         }
     }
 }

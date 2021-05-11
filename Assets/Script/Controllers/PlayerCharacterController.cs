@@ -59,6 +59,8 @@ namespace BelowUs
                 HandleJumping();
                 HandleClimbing();
             }
+            else
+                rb.velocity = new Vector2(0, -0.1f);
         }
 
         private void OnEnable() => action?.Enable();

@@ -47,24 +47,24 @@ namespace BelowUs
 
         protected class Room : IComparable<Room>
         {
-            public List<Coordinate> tiles;
-            public List<Coordinate> edgeTiles;
-            public List<Room> connectedRooms;
-            public int tilesInRoom;
+            public List<Coordinate> Tiles { get; private set; }
+            public List<Coordinate> EdgeTiles { get; private set; }
+            public List<Room> ConnectedRooms { get; private set; }
+            public int TilesInRoom { get; private set; }
             public bool isMainRoom, isAccesibleFromMainRoom;
 
             public Room(List<Coordinate> tiles, int[,] map, int waterTile)
             {
-                this.tiles = tiles;
-                tilesInRoom = tiles.Count;
-                connectedRooms = new List<Room>();
-                edgeTiles = new List<Coordinate>();
+                this.Tiles = tiles;
+                TilesInRoom = tiles.Count;
+                ConnectedRooms = new List<Room>();
+                EdgeTiles = new List<Coordinate>();
 
                 foreach (Coordinate tile in tiles)
                     for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++)
                         for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
-                            if (x == tile.tileX || y == tile.tileY && IsInmapRange(x, y, map) && map[x, y] == waterTile)
-                                edgeTiles.Add(tile);
+                            if (x == tile.tileX || (y == tile.tileY && IsInmapRange(x, y, map) && map[x, y] == waterTile))
+                                EdgeTiles.Add(tile);
             }
 
             public static void ConnectRooms(Room roomA, Room roomB)
@@ -74,20 +74,20 @@ namespace BelowUs
                 else if (roomB.isAccesibleFromMainRoom)
                     roomA.SetAccesibleFromMainRoom();
 
-                roomA.connectedRooms.Add(roomB);
-                roomB.connectedRooms.Add(roomA);
+                roomA.ConnectedRooms.Add(roomB);
+                roomB.ConnectedRooms.Add(roomA);
             }
 
-            public bool IsConnected(Room otherRoom) => connectedRooms.Contains(otherRoom);
+            public bool IsConnected(Room otherRoom) => ConnectedRooms.Contains(otherRoom);
 
-            public int CompareTo(Room other) => other.tilesInRoom.CompareTo(tilesInRoom);
+            public int CompareTo(Room other) => other.TilesInRoom.CompareTo(TilesInRoom);
 
             public void SetAccesibleFromMainRoom()
             {
                 if (!isAccesibleFromMainRoom)
                 {
                     isAccesibleFromMainRoom = true;
-                    foreach (Room connectedRoom in connectedRooms)
+                    foreach (Room connectedRoom in ConnectedRooms)
                         connectedRoom.SetAccesibleFromMainRoom();
                 }
             }
@@ -204,19 +204,19 @@ namespace BelowUs
 
         protected IEnumerator ConnectAllRooms(List<Room> rooms, bool forceAccessibilityFromMainRoom = false) //IEnumerator
         {
-            List<Room> unconnectedRooms = new List<Room>();
-            List<Room> connectedRooms = new List<Room>();
+            List<Room> unConnectedRooms = new List<Room>();
+            List<Room> ConnectedRooms = new List<Room>();
 
             if (forceAccessibilityFromMainRoom)
             {
                 foreach (Room room in rooms)
                 {
                     if (room.isAccesibleFromMainRoom)
-                        connectedRooms.Add(room);
+                        ConnectedRooms.Add(room);
                     else
-                        unconnectedRooms.Add(room);
+                        unConnectedRooms.Add(room);
                 }
-                yield return StartCoroutine(ConnectRooms(unconnectedRooms, connectedRooms));
+                yield return StartCoroutine(ConnectRooms(unConnectedRooms, ConnectedRooms));
             }
             else
                 yield return StartCoroutine(ConnectRooms(rooms, rooms));
@@ -238,7 +238,7 @@ namespace BelowUs
                 if (!isForcingStartAccesibility)
                 {
                     possibleConnectionEstablished = false;
-                    if (roomA.connectedRooms.Count > 0)
+                    if (roomA.ConnectedRooms.Count > 0)
                         continue;
                 }
 
@@ -247,12 +247,12 @@ namespace BelowUs
                     if (roomA == roomB || roomA.IsConnected(roomB))
                         continue;
 
-                    for (int tileIndexA = 0; tileIndexA < roomA.edgeTiles.Count; tileIndexA++)
+                    for (int tileIndexA = 0; tileIndexA < roomA.EdgeTiles.Count; tileIndexA++)
                     {
-                        for (int tileIndexB = 0; tileIndexB < roomB.edgeTiles.Count; tileIndexB++)
+                        for (int tileIndexB = 0; tileIndexB < roomB.EdgeTiles.Count; tileIndexB++)
                         {
-                            Coordinate tileA = roomA.edgeTiles[tileIndexA];
-                            Coordinate tileB = roomB.edgeTiles[tileIndexB];
+                            Coordinate tileA = roomA.EdgeTiles[tileIndexA];
+                            Coordinate tileB = roomB.EdgeTiles[tileIndexB];
                             int distanceBetweenRooms = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
 
                             if (distanceBetweenRooms < closestDistance || !possibleConnectionEstablished)
@@ -266,7 +266,7 @@ namespace BelowUs
                             }
                         }
 
-                        if (CorutineUtilities.WaitAmountOfTimes(tileIndexA, roomA.edgeTiles.Count, 10))
+                        if (CorutineUtilities.WaitAmountOfTimes(tileIndexA, roomA.EdgeTiles.Count, 10))
                             yield return Wait("Finding closest tiles");
                     }
                 }
@@ -294,7 +294,7 @@ namespace BelowUs
         {
             for (int x = -radius; x < radius; x++)
                 for (int y = -radius; y < radius; y++)
-                    if (x * x + y * y <= radius * radius)
+                    if ((x * x) + (y * y) <= radius * radius)
                     {
                         int drawX = centre.tileX + x;
                         int drawY = centre.tileY + y;
@@ -308,7 +308,7 @@ namespace BelowUs
         {
             for (int x = -radius; x < radius; x++)
                 for (int y = -radius; y < radius; y++)
-                    if (x * x + y * y <= radius * radius)
+                    if ((x * x) + (y * y) <= radius * radius)
                     {
                         int drawX = (int)centre.x + x;
                         int drawY = (int)centre.y + y;

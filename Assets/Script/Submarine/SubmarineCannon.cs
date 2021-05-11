@@ -17,6 +17,7 @@ namespace BelowUs
         [SerializeField] private int rotationOffset;
         
         [SerializeField] private int cannonId;
+        [SerializeField] private float intensity = 2;
 
         private Vector3 startingRotation;
         private Vector3 lastKnownMousePos;
@@ -24,7 +25,7 @@ namespace BelowUs
         private SpriteRenderer spriteRenderer;
         private SubmarineMovement submarine;
         private Light spotlight;
-        private float intensity; 
+        
 
         [SerializeField] private StationController cannonController;
 
@@ -50,7 +51,6 @@ namespace BelowUs
             spriteRenderer = GetComponent<SpriteRenderer>();
             submarine = GetComponentInParent<SubmarineMovement>();
             spotlight = GetComponentInChildren<Light>();
-            intensity = spotlight.intensity;
             InvokeRepeating(nameof(ToggleSpotlight), 0, 0.1f);
             startingRotation = transform.eulerAngles;
 

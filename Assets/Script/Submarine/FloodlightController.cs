@@ -7,14 +7,13 @@ namespace BelowUs
     public class FloodlightController : NetworkBehaviour
     {
         [SerializeField] private StationController floodlightController;
-        private float intensity;
+        [SerializeField] private float intensity = 2;
         private SubmarineMovement submarineMovement;
         private SpriteRenderer spriteRenderer;
         private bool IsOccupied => floodlightController.StationPlayerController != null;
         private Light spotLight;
         void Start()
         {
-            intensity = 2;
             float updateTimer = 0.2f;
             submarineMovement = GetComponentInParent<SubmarineMovement>();
             spriteRenderer = GetComponent<SpriteRenderer>();

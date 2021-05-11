@@ -34,11 +34,16 @@ namespace BelowUs
         [TagSelector] [SerializeField] private string playerTag;
         [TagSelector] [SerializeField] private string submarineTag;
         [TagSelector] [SerializeField] private string enemyTag;
+        [TagSelector] [SerializeField] private string stationTag;
+        [TagSelector] [SerializeField] private string untagged;
+
 
         public string LocalPlayerTag => localPlayerTag;
         public string PlayerTag => playerTag;
         public string SubmarineTag => submarineTag;
         public string EnemyTag => enemyTag;
+        public string StationTag => stationTag;
+        public string Untagged => untagged;
         #endregion
 
         #region masks
