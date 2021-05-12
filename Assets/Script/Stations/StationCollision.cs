@@ -11,7 +11,6 @@ namespace BelowUs
         {
             controller = GetComponentInParent<StationController>();
             buttonUI = GameObject.Find("/Game/UI/EnterStationControl");
-            Debug.Log(buttonUI == null);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
