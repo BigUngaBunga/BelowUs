@@ -10,7 +10,13 @@ namespace BelowUs
 
         private void Awake()
         {
-            firePoint = transform.Find("FirePoint");
+            transform.Find("Test");
+
+            firePoint = transform.Find("FirePoint & Light");
+
+            if (firePoint == null)
+                firePoint = transform.Find("FirePoint");
+
             AdjustFirepoint();
         }
 

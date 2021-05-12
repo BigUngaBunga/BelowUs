@@ -27,9 +27,11 @@ namespace BelowUs
             ServerStuff();
         }
 
-        [Server]
         private void ServerStuff()
         {
+            if (!hasAuthority)
+                return;
+
             int invertDirectionInt = invertDirection ? -1 : 1;
 
             Vector2 yVelocity = transform.up * velocity * invertDirectionInt;

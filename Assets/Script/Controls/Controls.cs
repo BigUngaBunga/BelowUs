@@ -51,10 +51,11 @@ namespace BelowUs
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 controller.Enter(gameObject);
 
-                if (isClient)
+                if (isClient && hasAuthority)
                     SuccessfullyEnteredStation(controller);
 
-                controller.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
+                if (hasAuthority)
+                    controller.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
             }
         }
 
