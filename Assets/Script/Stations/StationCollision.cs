@@ -10,7 +10,8 @@ namespace BelowUs
         void Start()
         {
             controller = GetComponentInParent<StationController>();
-            buttonUI = GameObject.Find("Game/UI/EnterStationControl");
+            buttonUI = GameObject.Find("/Game/UI/EnterStationControl");
+            Debug.Log(buttonUI == null);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -31,6 +32,10 @@ namespace BelowUs
             }
         }
 
-        private void ShouldButtonBeDisplayed() => buttonUI.SetActive(controller.StationPlayerController == null);
+        private void ShouldButtonBeDisplayed()
+        {
+            if (buttonUI != null)
+                buttonUI.SetActive(controller.StationPlayerController == null);
+        }
     }
 }
