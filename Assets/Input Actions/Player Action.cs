@@ -22,7 +22,7 @@ public class @PlayerAction : IInputActionCollection, IDisposable
                     ""name"": ""Move"",
                     ""type"": ""PassThrough"",
                     ""id"": ""3a37bafc-cabc-4b2b-810e-c9fb30cf2e0e"",
-                    ""expectedControlType"": ""Axis"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },

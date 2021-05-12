@@ -27,6 +27,11 @@ namespace BelowUs
             base.Leave();
             generatorUI.gameObject.SetActive(false);
         }
+
+        protected override void ChangeCameraToTag(string tag)
+        {
+            // Method intentionally left empty.
+        }
     }
 }
 

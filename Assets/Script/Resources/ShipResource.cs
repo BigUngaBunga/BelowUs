@@ -24,6 +24,7 @@ namespace BelowUs
         public event ResourceEmptyDelegate EventResourceEmpty;
 
         [SerializeField] private bool debug;
+        [SerializeField] private bool nullify;
 
         #region Server
         [Server]
@@ -33,11 +34,16 @@ namespace BelowUs
                 Debug.Log(gameObject.name + " " + nameof(currentValue) + " is " + currentValue + " before " + value + " change");
 
             currentValue = Mathf.Clamp(currentValue + value, 0, maximumValue.Value);
+            if (nullify)
+                currentValue = 0;
 
             if (debug)
                 Debug.Log(gameObject.name + " " + nameof(currentValue) + " is " + currentValue + " after " + value + " change");
 
             EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
+
+            
+                
 
             if (currentValue == 0)
                 EventResourceEmpty?.Invoke();

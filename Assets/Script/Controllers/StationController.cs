@@ -14,7 +14,10 @@ namespace BelowUs
 
         public Button LeaveButton => leaveButton;
 
+        protected new Camera camera;
         private string playerTag;
+        protected float playerCameraSize;
+        private readonly float submarineCameraSize = 14;
         [Tooltip("The tag of the object that the camera should switch to on collision. For example station or weapon.")]
         [SerializeField] [TagSelector] protected string switchTag;
 
@@ -25,14 +28,19 @@ namespace BelowUs
 
         public bool IsOccupied => stationPlayerController != null;
 
-        private void Start() => playerTag = ReferenceManager.Singleton.LocalPlayerTag;
+        private void Start()
+        {
+            playerTag = ReferenceManager.Singleton.LocalPlayerTag;
+            camera = cameraController.GetComponentInParent<Camera>();
+            playerCameraSize = camera.orthographicSize;
+        }
 
         public virtual void Enter(GameObject player)
         {
             if(!IsOccupied)
             {
                 if (switchTag != null)
-                    cameraController.SwitchTarget(switchTag);
+                    ChangeCameraToTag(switchTag);
 
                 LeaveButton.gameObject.SetActive(true);
                 leaveButton.onClick.AddListener(Leave);
@@ -45,14 +53,29 @@ namespace BelowUs
             if (isServer)
                 SetStationPlayerController(player);
             SetButtonActiveStatus(true);
-            cameraController.SwitchTarget(SwitchTag);
+            ChangeCameraToTag(switchTag);
         }
 
         public virtual void Leave()
         {
             stationPlayerController = null;
-            cameraController.SwitchTarget(playerTag);
+            ChangeCameraToTag(playerTag);
             SetButtonActiveStatus(false);
+        }
+
+        protected virtual void ChangeCameraToTag(string tag)
+        {
+            if (playerTag.Equals(tag))
+            {
+                cameraController.SwitchTarget(playerTag);
+                camera.orthographicSize = playerCameraSize;
+            }
+
+            else
+            {
+                cameraController.SwitchTarget(switchTag);
+                camera.orthographicSize = submarineCameraSize;
+            }
         }
 
         private void SetButtonActiveStatus(bool activate)

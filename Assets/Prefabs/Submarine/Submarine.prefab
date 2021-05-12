@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertToggle: 0
+  electricity: {fileID: 0}
 --- !u!1 &2668134454619895889
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertToggle: 0
+  electricity: {fileID: 0}
 --- !u!1 &5089922518502821933
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,7 +315,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -71414069
   m_SortingLayer: 1
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 487c59f0a3d975241982db82ad9bfa8b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -375,6 +377,7 @@ MonoBehaviour:
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 8a5aa9e0599cafd4eb30941f03fa9c98, type: 2}
   debug: 0
+  nullify: 0
 --- !u!50 &5089922518502821937
 Rigidbody2D:
   serializedVersion: 4
@@ -469,6 +472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertToggle: 0
+  electricity: {fileID: 0}
 --- !u!114 &3630802789684219031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,6 +486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertToggle: 0
+  electricity: {fileID: 0}
 --- !u!114 &6102495039493718016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,6 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertToggle: 0
+  electricity: {fileID: 0}
 --- !u!1001 &1470446946481482571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -520,7 +526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9016041361921077841, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9016041361921077843, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_RootOrder
@@ -595,7 +601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9016041361921077841, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9016041361921077843, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_RootOrder
@@ -690,7 +696,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9016041361921077841, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9016041361921077843, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_RootOrder
@@ -785,7 +791,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9016041361921077841, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9016041361921077843, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_RootOrder
@@ -860,7 +866,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8984449297497355681, guid: db053a4e34e5eb84ead1975d67c0cbab, type: 3}
       propertyPath: m_SortingOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8984449297497355681, guid: db053a4e34e5eb84ead1975d67c0cbab, type: 3}
       propertyPath: m_SortingLayerID
@@ -872,7 +878,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2928379233096525982, guid: db053a4e34e5eb84ead1975d67c0cbab, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2928379233096525982, guid: db053a4e34e5eb84ead1975d67c0cbab, type: 3}
       propertyPath: m_LocalPosition.z

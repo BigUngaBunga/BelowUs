@@ -9,7 +9,7 @@ namespace BelowUs
         public bool IsPowered => electricity.CurrentValue > 0;
         private ShipResource electricity;
 
-        private void Start() => electricity = GetComponent<ShipResource>();
+        private void Awake() => electricity = GetComponent<ShipResource>();
     }
 }
 

@@ -25,10 +25,10 @@ namespace BelowUs
             spriteRenderer = GetComponent<SpriteRenderer>();
             polygonCollider = GameObject.Find("Submarine/Collider");
             submarineComponents = GetComponentsInChildren<FlipSubmarineComponent>();
-            subSpeed = 50;
+            subSpeed = 40;
             submarineRotationSpeed = 0.75f;
             angularRetardation = 0.033f;
-            lateralRetardation = 0.075f;
+            lateralRetardation = 0.040f;
         }
 
         private void FixedUpdate()
@@ -83,7 +83,6 @@ namespace BelowUs
                 transform.rotation = Quaternion.Euler(new Vector3(0, 0, -transform.rotation.eulerAngles.z));
                 foreach (FlipSubmarineComponent component in submarineComponents)
                     component.FlipObject(IsFlipped);
-                //polygonCollider.transform.localEulerAngles = IsFlipped? -new Vector3(0, 180, 0) : Quaternion.identity.eulerAngles;
             }
         }
 

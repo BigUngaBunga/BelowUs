@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4753118228335831664}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0.25, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8336949979966097797}
@@ -46,7 +46,7 @@ Light:
   m_Color: {r: 0.6018156, g: 0.8679245, b: 0.845883, a: 1}
   m_Intensity: 1
   m_Range: 100
-  m_SpotAngle: 110
+  m_SpotAngle: 120
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -136,7 +136,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4947234388741293451}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2928379233096525982}
@@ -210,6 +210,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   floodlightController: {fileID: 0}
+  intensity: 2
 --- !u!114 &2497593014685172933
 MonoBehaviour:
   m_ObjectHideFlags: 0

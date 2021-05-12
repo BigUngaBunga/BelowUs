@@ -24,6 +24,7 @@ namespace BelowUs
         private float horizontalInput;
         private float verticalInput;
 
+        private new SpriteRenderer spriteRendered;
         public StationController Station { get; set; }
         private bool IsInStation() => Station != null && Station.StationPlayerController == gameObject;
 
@@ -47,6 +48,7 @@ namespace BelowUs
 
             rb = GetComponent<Rigidbody2D>();
             playerSize = GetComponent<BoxCollider2D>().size;
+            spriteRendered = GetComponent<SpriteRenderer>();
             boxSize = new Vector2(playerSize.x, groundBuffer);
         }
 
@@ -113,7 +115,7 @@ namespace BelowUs
             rb.velocity = new Vector2(horizontalMovement, rb.velocity.y);
 
             if (!Mathf.Approximately(0, horizontalMovement))
-                transform.rotation = horizontalMovement > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
+                spriteRendered.flipX = horizontalMovement < 0;
         }
 
         private void HandleClimbingBool() => isClimbing = rb.IsTouchingLayers(ReferenceManager.Singleton.LadderMask);
