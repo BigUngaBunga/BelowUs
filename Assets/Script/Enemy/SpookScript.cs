@@ -18,9 +18,8 @@ namespace BelowUs
             weapon = GetComponent<Weapon>();
             firePoint = gameObject.transform.Find("FirePoint");
 
-            CreatePatrolArea();
-            SetTarget();
-            GetNextPatrolPosition();
+            //CreatePatrolArea();            
+            //GetNextPatrolPosition();
         }
 
         protected override void Update() 
@@ -34,21 +33,18 @@ namespace BelowUs
         [Server]
         private void NewUpdate()
         {
-            CheckDistanceToTarget();
+            CheckDistanceToTargetFireing();
 
             switch (currentState)
             {
-                case EnemyState.Patrolling:
-                    UpdateRotationPatrolling();
-                    UpdateMovementPatrolling();
-                    CheckForFlip();
+                case EnemyState.Idle:                    
                     break;
                 case EnemyState.Chasing:
-                    UpdateRotationChasing();
+                    UpdateBasicRotation(targetGameObject.transform.position);
                     UpdateMovementChasing();
                     CheckForFlip();
                     break;
-                case EnemyState.Attacking:
+                case EnemyState.Firing:
                     UpdateRotationAttacking();
                     UpdateFirePointRotation();
                     timeElapsed += Time.deltaTime;
@@ -67,38 +63,38 @@ namespace BelowUs
             Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
             rb.AddForce(movement);
         }
-        protected void UpdateRotationChasing()
-        {
-            Vector2 direction = targetGameObject.transform.position - transform.position;
-            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
-            transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
+        //protected void UpdateRotationChasing()
+        //{
+        //    Vector2 direction = targetGameObject.transform.position - transform.position;
+        //    float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        //    Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        //    transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
 
-        }
+        //}
 
-        protected void UpdateRotationPatrolling()
-        {
-            //Vector till target
-            Vector2 direction = currentPatrolTarget - transform.position;
-            //vinkel till target
-            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-            //rotationen som krävs till target som en quaternion runt z axlen
-            Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
-            //Mindre del av rotationen till target (slerp)
-            transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
-        }
+        //protected void UpdateRotationPatrolling()
+        //{
+        //    //Vector till target
+        //    Vector2 direction = currentPatrolTarget - transform.position;
+        //    //vinkel till target
+        //    float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        //    //rotationen som krävs till target som en quaternion runt z axlen
+        //    Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
+        //    //Mindre del av rotationen till target (slerp)
+        //    transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
+        //}
 
 
-        protected void UpdateMovementPatrolling()
-        {
-            Vector3 direction = (currentPatrolTarget - transform.position);
-            rb.MovePosition(transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
+        //protected void UpdateMovementPatrolling()
+        //{
+        //    Vector3 direction = (currentPatrolTarget - transform.position);
+        //    rb.MovePosition(transform.position + (direction * moveSpeedPatrolling * Time.deltaTime));
 
-            if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
-            {
-                base.GetNextPatrolPosition();
-            }
-        }
+        //    if (Vector3.Distance(currentPatrolTarget, transform.position) < 1f)
+        //    {
+        //        GetNextPatrolPosition();
+        //    }
+        //}
 
         protected void UpdateRotationAttacking()
         {

@@ -3,10 +3,9 @@ using Mirror;
 
 namespace BelowUs
 {
-    public class BubbaScript : EnemyBase
+    public class ClonkerMovement : EnemyBase
     {
-        
-        
+
         protected override void Update()
         {
             if (isServer)
@@ -35,7 +34,6 @@ namespace BelowUs
             Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
             Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
             rb.AddForce(movement);
-        }        
+        }
     }
-
 }
