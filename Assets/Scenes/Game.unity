@@ -3251,6 +3251,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5089922518502821936, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
   m_PrefabInstance: {fileID: 473132173}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &473132175 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3154423304073053932, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+  m_PrefabInstance: {fileID: 473132173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &473132176 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4647359653954971989, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+  m_PrefabInstance: {fileID: 473132173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &473132177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7599677502694283551, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+  m_PrefabInstance: {fileID: 473132173}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &491478474 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6630187596563656000, guid: a08ff082007c8814ba30119c018755e8, type: 3}
@@ -6716,6 +6731,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1851433524}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: controlObject
+      value: 
+      objectReference: {fileID: 473132175}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: giveAuthority
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: controlsButton
       value: 
       objectReference: {fileID: 0}
@@ -7157,6 +7180,14 @@ PrefabInstance:
       propertyPath: leaveButton
       value: 
       objectReference: {fileID: 1851433524}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: controlObject
+      value: 
+      objectReference: {fileID: 473132176}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: giveAuthority
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: controlsButton
       value: 
@@ -11227,6 +11258,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1851433524}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: controlObject
+      value: 
+      objectReference: {fileID: 473132177}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: giveAuthority
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: controlsButton
       value: 
       objectReference: {fileID: 0}
@@ -12715,7 +12754,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.25
+  m_fontSize: 18.1
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1

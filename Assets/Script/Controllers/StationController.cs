@@ -14,7 +14,8 @@ namespace BelowUs
         [SerializeField] private bool giveAuthority;
 
         [SerializeField] private GameObject controlObject;
-        [SerializeField] private NetworkIdentity controlObjNetworkIdentity;
+        
+        private NetworkIdentity controlObjNetworkIdentity;
 
         public CameraController Controller => cameraController;
         public Button LeaveButton => leaveButton;
@@ -31,7 +32,7 @@ namespace BelowUs
 
         public bool IsOccupied => stationPlayerController != null;
 
-        private readonly bool debug = true;
+        private readonly bool debug = false;
 
         private void Start()
         {
@@ -44,7 +45,7 @@ namespace BelowUs
                 if (controlObject != null)
                     controlObjNetworkIdentity = controlObject.GetComponent<NetworkIdentity>();
                 else
-                    Debug.LogError(nameof(controlObject) + " is null!");
+                    Debug.LogError(nameof(controlObject) + " on gameobject " + gameObject.name + " is null even though give authority is true!");
             }
         }
 
