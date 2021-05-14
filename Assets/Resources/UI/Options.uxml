@@ -1,12 +1,13 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="OptionsScreenManager.uss" />
-    <ui:VisualElement name="Options">
-        <ui:DropdownField label="Resolution" name="Resolution" choices="1920x1080, 800x600" />
-        <ui:DropdownField label="Graphics" name="Graphics" />
-        <ui:SliderInt picking-mode="Ignore" label="Volume" value="50" high-value="100" name="Volume" />
-    </ui:VisualElement>
-    <ui:VisualElement name="Buttons" style="flex-direction: row; justify-content: center; flex-grow: 0;">
-        <ui:Button text="Save&#10;" display-tooltip-when-elided="true" name="Save" style="flex-grow: 1;" />
-        <ui:Button text="Cancel&#10;" display-tooltip-when-elided="true" name="Cancel" style="flex-grow: 1;" />
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="left: 40%; top: 25%; right: 40%; bottom: 25%; width: 25%; height: 50%; background-color: rgb(55, 55, 55);">
+        <ui:VisualElement name="Options">
+            <ui:DropdownField label="Graphics" name="Graphics" />
+            <ui:SliderInt picking-mode="Ignore" label="Volume" value="50" high-value="100" name="Volume" />
+            <ui:Foldout text="Foldout" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Buttons" style="flex-direction: row; justify-content: center; flex-grow: 0;">
+            <ui:Button text="Save&#10;" display-tooltip-when-elided="true" name="Save" style="flex-grow: 1;" />
+            <ui:Button text="Cancel&#10;" display-tooltip-when-elided="true" name="Cancel" style="flex-grow: 1;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
