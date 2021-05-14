@@ -8,10 +8,16 @@ namespace BelowUs
     {
         [SerializeField] private Transform currentStation;
         private Rigidbody2D rb;
+        private NetworkConnection networkConnection;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody2D>();
+
+            if (isServer)
+                networkConnection = GetComponent<NetworkIdentity>().connectionToClient;
+            else
+                networkConnection = GetComponent<NetworkIdentity>().connectionToServer;
 
             PlayerAction action = new PlayerAction();
             PlayerAction.PlayerActions playerAction = action.Player;
@@ -49,7 +55,7 @@ namespace BelowUs
             if (!PauseMenu.IsOpen && controller != null && controller.StationPlayerController == null)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
-                controller.Enter(gameObject);
+                controller.Enter(networkConnection.identity);
 
                 if (isClient && hasAuthority)
                     SuccessfullyEnteredStation(controller);
@@ -60,7 +66,7 @@ namespace BelowUs
         }
 
         [Command]
-        private void SuccessfullyEnteredStation(StationController controller) => controller.SetStationPlayerController(gameObject);
+        private void SuccessfullyEnteredStation(StationController controller) => controller.SetStationPlayerController(networkConnection.identity);
 
         [Command]
         private void SuccessfullyLeftStation()

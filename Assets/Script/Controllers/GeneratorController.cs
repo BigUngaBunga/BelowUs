@@ -1,6 +1,5 @@
+using Mirror;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 namespace BelowUs
 {
@@ -15,7 +14,7 @@ namespace BelowUs
             generatorUI.gameObject.SetActive(false);
         }
 
-        public override void Enter(GameObject player)
+        public override void Enter(NetworkIdentity player)
         {
             base.Enter(player);
 
