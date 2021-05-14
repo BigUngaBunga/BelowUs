@@ -8,16 +8,12 @@ namespace BelowUs
     {
         [SerializeField] private Transform currentStation;
         private Rigidbody2D rb;
-        private NetworkConnection networkConnection;
+
+        [SyncVar] private NetworkIdentity identity;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody2D>();
-
-            if (isServer)
-                networkConnection = GetComponent<NetworkIdentity>().connectionToClient;
-            else
-                networkConnection = GetComponent<NetworkIdentity>().connectionToServer;
 
             PlayerAction action = new PlayerAction();
             PlayerAction.PlayerActions playerAction = action.Player;
@@ -55,25 +51,34 @@ namespace BelowUs
             if (!PauseMenu.IsOpen && controller != null && controller.StationPlayerController == null)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
-                controller.Enter(networkConnection.identity);
 
-                if (isClient && hasAuthority)
-                    SuccessfullyEnteredStation(controller);
+                if (identity == null)
+                    Debug.LogError(nameof(identity) + " is null!");
 
-                if (hasAuthority)
+                controller.Enter(identity);
+
+                if (isServer)
+                    controller.SetStationPlayerController(identity);
+                else if (isClient)
+                {
+                    SuccessfullyEnteredStation(controller, identity);
                     controller.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
+                }
             }
         }
 
+        public void SetIdentity(NetworkIdentity identity) => this.identity = identity;
+
         [Command]
-        private void SuccessfullyEnteredStation(StationController controller) => controller.SetStationPlayerController(networkConnection.identity);
+        private void SuccessfullyEnteredStation(StationController controller, NetworkIdentity inputIdentity) => controller.SetStationPlayerController(inputIdentity);
 
         [Command]
         private void SuccessfullyLeftStation()
         {
             StationController controller = currentStation.GetComponent<StationController>();
-            controller.LeaveButton.onClick.RemoveListener(SuccessfullyLeftStation);
+
             controller.SetStationPlayerController(null);
+            controller.LeaveButton.onClick.RemoveListener(SuccessfullyLeftStation);
         }
     }
 }

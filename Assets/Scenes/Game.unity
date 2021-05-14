@@ -1684,6 +1684,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1851433524}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: controlObject
+      value: 
+      objectReference: {fileID: 1671857214}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: giveAuthority
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: controlsButton
       value: 
       objectReference: {fileID: 0}
@@ -2435,6 +2443,14 @@ PrefabInstance:
       propertyPath: cannonController
       value: 
       objectReference: {fileID: 398828546}
+    - target: {fileID: 131896571097173011, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: clientAuthority
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 238582484544899790, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: sceneId
+      value: 1950571971
+      objectReference: {fileID: 0}
     - target: {fileID: 1099039861337459201, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
       value: 
@@ -2447,6 +2463,10 @@ PrefabInstance:
       propertyPath: sceneId
       value: 1160108533
       objectReference: {fileID: 0}
+    - target: {fileID: 1864733796403343618, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
     - target: {fileID: 2347748776137787141, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: restrictionLeft
       value: 122
@@ -3031,10 +3051,26 @@ PrefabInstance:
       propertyPath: cannonController
       value: 
       objectReference: {fileID: 969648656}
+    - target: {fileID: 3046222349990165124, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: sceneId
+      value: 3148312270
+      objectReference: {fileID: 0}
+    - target: {fileID: 3214424982086174666, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: sceneId
+      value: 1109081516
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524377960563884360, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
     - target: {fileID: 3841500778348959935, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
       value: 
       objectReference: {fileID: 969648656}
+    - target: {fileID: 3905938637082590214, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
     - target: {fileID: 4467826936683591259, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: restrictionLeft
       value: 18
@@ -3050,6 +3086,10 @@ PrefabInstance:
     - target: {fileID: 4506310937187332543, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: isSprite
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4755278551078278461, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: sceneId
+      value: 566768244
       objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821933, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_Name
@@ -3175,6 +3215,10 @@ PrefabInstance:
       propertyPath: floodlightController
       value: 
       objectReference: {fileID: 1167164494}
+    - target: {fileID: 6580151197689884401, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
     - target: {fileID: 6682394584378551920, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: sceneId
       value: 3874714627
@@ -9161,7 +9205,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1631958785}
-  - component: {fileID: 1631958784}
   - component: {fileID: 1631958783}
   m_Layer: 0
   m_Name: EnemyManager
@@ -9187,24 +9230,6 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &1631958784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1631958782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed28785d020d10945b47eb24edaf1c8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lastSyncTime: 0
-  syncMode: 0
-  syncInterval: 0.1
-  netIdentityCache: {fileID: 0}
-  EnemyList: []
-  SkeletonPrefab: {fileID: 7106082335865075385, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
 --- !u!4 &1631958785
 Transform:
   m_ObjectHideFlags: 0
@@ -9261,6 +9286,11 @@ RectTransform:
   m_AnchoredPosition: {x: 584.8539, y: 261}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1671857214 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5089922520036955163, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+  m_PrefabInstance: {fileID: 473132173}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1685114913
 GameObject:
   m_ObjectHideFlags: 0
@@ -12685,7 +12715,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
+  m_fontSize: 27.25
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1

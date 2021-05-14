@@ -33,6 +33,8 @@ namespace BelowUs
             AddPlayerInput();
             AddPlayerCharacterController();
 
+            GetComponent<Controls>().SetIdentity(GetComponent<NetworkIdentity>());
+
             Destroy(this);
         }
 

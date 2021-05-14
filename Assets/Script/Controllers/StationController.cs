@@ -14,8 +14,7 @@ namespace BelowUs
         [SerializeField] private bool giveAuthority;
 
         [SerializeField] private GameObject controlObject;
-        private NetworkIdentity controlObjNetworkIdentity;
-        [SerializeField] private GameObject controllingPlayer; //Unnecessary but useful for debugging
+        [SerializeField] private NetworkIdentity controlObjNetworkIdentity;
 
         public CameraController Controller => cameraController;
         public Button LeaveButton => leaveButton;
@@ -32,7 +31,7 @@ namespace BelowUs
 
         public bool IsOccupied => stationPlayerController != null;
 
-        private bool debug = true;
+        private readonly bool debug = true;
 
         private void Start()
         {
@@ -40,19 +39,13 @@ namespace BelowUs
             camera = cameraController.GetComponentInParent<Camera>();
             playerCameraSize = camera.orthographicSize;
 
-            if (controlObject != null)
-                controlObjNetworkIdentity = controlObject.GetComponent<NetworkIdentity>();
-
-            if (debug)
-                NetworkIdentity.clientAuthorityCallback += UpdateControllingPlayer;
-        }
-
-        /**
-         * Unnecessary but useful for debugging.
-         */
-        private void UpdateControllingPlayer(NetworkConnection conn, NetworkIdentity identity, bool authorityState)
-        {
-            
+            if (giveAuthority)
+            {
+                if (controlObject != null)
+                    controlObjNetworkIdentity = controlObject.GetComponent<NetworkIdentity>();
+                else
+                    Debug.LogError(nameof(controlObject) + " is null!");
+            }
         }
 
         public virtual void Enter(NetworkIdentity player)
@@ -63,24 +56,19 @@ namespace BelowUs
                     ChangeCameraToTag(switchTag);
 
                 LeaveButton.gameObject.SetActive(true);
-                leaveButton.onClick.AddListener(Leave);
-                EnterStation(player);
-            }
-        }
+                LeaveButton.onClick.AddListener(Leave);
 
-        protected virtual void EnterStation(NetworkIdentity player)
-        {
-            if (isServer)
-                SetStationPlayerController(player);
-            SetButtonActiveStatus(true);
-            ChangeCameraToTag(switchTag);
+                SetButtonActiveStatus(true);
+                ChangeCameraToTag(switchTag);
+            }
         }
 
         public virtual void Leave()
         {
             stationPlayerController = null;
-            ChangeCameraToTag(playerTag);
+
             SetButtonActiveStatus(false);
+            ChangeCameraToTag(playerTag);
         }
 
         protected virtual void ChangeCameraToTag(string tag)
@@ -104,11 +92,6 @@ namespace BelowUs
 
             if (controlsButton != null)
                 controlsButton.gameObject.SetActive(activate);
-
-            if (activate)
-                leaveButton.onClick.AddListener(Leave);
-            else
-                leaveButton.onClick.RemoveListener(Leave);
         }
 
         [Server]
@@ -116,10 +99,33 @@ namespace BelowUs
         {
             stationPlayerController = player;
 
-            if (player == null && !hasAuthority)
-                controlObjNetworkIdentity.RemoveClientAuthority();
-            if (player != isServer && giveAuthority)
-                controlObjNetworkIdentity.AssignClientAuthority(StationPlayerController.connectionToClient);
+            if (giveAuthority)
+            {
+                if (player != null && debug)
+                    Debug.Log(player.gameObject.name + " " + player.netId);
+
+                if (player == isServer && player.hasAuthority)
+                {
+                    if (debug)
+                        Debug.Log("Player is server and already has authority therefore nothing happens!");
+                }
+
+                else if (player == null)
+                {
+                    if (debug)
+                        Debug.Log("Removed client authority!");
+
+                    controlObjNetworkIdentity.RemoveClientAuthority();
+                }
+
+                else
+                {
+                    if (debug)
+                        Debug.Log("Assigned client authority to player: " + player.gameObject.name + "!");
+
+                    controlObjNetworkIdentity.AssignClientAuthority(StationPlayerController.connectionToClient);
+                }
+            }                
         }
     }
 }

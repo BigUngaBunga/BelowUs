@@ -19,12 +19,11 @@ namespace BelowUs
         [SerializeField] private int cannonId;
         [SerializeField] private float intensity = 2;
 
+        [SerializeField] private StationController cannonController;
+
         private SpriteRenderer spriteRenderer;
         private SubmarineMovement submarine;
         private Light spotlight;
-        
-
-        [SerializeField] private StationController cannonController;
 
         private Weapon weapon;
 
