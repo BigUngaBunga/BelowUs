@@ -24,24 +24,6 @@ namespace BelowUs
             playerAction.Enable();
         }
 
-        private void OnTriggerEnter2D(Collider2D collider)
-        {
-            if (CollisionIsAStation(collider))
-                currentStation = collider.transform.parent;
-        }
-
-        private void OnTriggerExit2D(Collider2D collider)
-        {
-            if (CollisionIsAStation(collider))
-                currentStation = null;
-        }
-
-        private bool CollisionIsAStation(Collider2D collider)
-        {
-            string colliderTag = collider.transform.parent.gameObject.tag;
-            return (colliderTag != null || colliderTag != ReferenceManager.Singleton.Untagged) && colliderTag == ReferenceManager.Singleton.StationTag;
-        }
-
         public void OnStationClick(InputAction.CallbackContext value)
         {
             if (currentStation == null)
@@ -66,7 +48,7 @@ namespace BelowUs
                 }
                 else if (isClient)
                 {
-                    SuccessfullyEnteredStation(currentStationController, identity);
+                    SuccessfullyEnteredStation(identity);
                     currentStationController.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
                 }
             }
@@ -74,8 +56,7 @@ namespace BelowUs
 
         public void SetIdentity(NetworkIdentity identity) => this.identity = identity;
 
-        [Command]
-        private void SuccessfullyEnteredStation(StationController controller, NetworkIdentity inputIdentity) => controller.SetStationPlayerController(inputIdentity);
+        [Command] private void SuccessfullyEnteredStation(NetworkIdentity inputIdentity) => currentStationController.SetStationPlayerController(inputIdentity);
 
         [Command]
         private void SuccessfullyLeftStation()
@@ -84,6 +65,24 @@ namespace BelowUs
             currentStationController.LeaveButton.onClick.RemoveListener(SuccessfullyLeftStation);
         }
 
-        private void SetPControllerToNull() => currentStationController.SetStationPlayerController(null);
+        [Server] private void SetPControllerToNull() => currentStationController.SetStationPlayerController(null);
+
+        private void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (CollisionIsAStation(collider))
+                currentStation = collider.transform.parent;
+        }
+
+        private void OnTriggerExit2D(Collider2D collider)
+        {
+            if (CollisionIsAStation(collider))
+                currentStation = null;
+        }
+
+        private bool CollisionIsAStation(Collider2D collider)
+        {
+            string colliderTag = collider.transform.parent.gameObject.tag;
+            return (colliderTag != null || colliderTag != ReferenceManager.Singleton.Untagged) && colliderTag == ReferenceManager.Singleton.StationTag;
+        }
     }
 }

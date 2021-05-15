@@ -8,11 +8,11 @@ namespace BelowUs
         private Rigidbody2D rb2D;
         private SpriteRenderer spriteRenderer;
         private ShipResource enginePower;
-        private GameObject polygonCollider;
         private FlipSubmarineComponent[] submarineComponents;
         private float subSpeed;
         private float submarineRotationSpeed;
-        float angularRetardation, lateralRetardation;
+        private float angularRetardation, lateralRetardation;
+
         public bool IsFlipped { get; private set; }
         private bool MoveSubmarine => subController.StationPlayerController != null && NetworkClient.localPlayer == subController.StationPlayerController;
         private bool EngineIsRunning => enginePower.CurrentValue > 0;
@@ -23,7 +23,6 @@ namespace BelowUs
             enginePower = GameObject.Find("EnginePower").GetComponent<ShipResource>();
             rb2D = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
-            polygonCollider = GameObject.Find("Submarine/Collider");
             submarineComponents = GetComponentsInChildren<FlipSubmarineComponent>();
             subSpeed = 40;
             submarineRotationSpeed = 0.75f;
@@ -70,7 +69,6 @@ namespace BelowUs
             rb2D.velocity = !EngineIsRunning || (!Input.GetButton("MoveForward") && !Input.GetButton("MoveBackwards"))
                 ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation))
                 : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation / 10));
-
         }
 
         private void FlipSubmarine()

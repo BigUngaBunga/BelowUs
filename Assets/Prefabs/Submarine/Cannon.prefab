@@ -208,6 +208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53b8aabe30f3cbe4d9fab1e94f1f564e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   restrictionLeft: 122
   restrictionRight: 1
   targetingOffset: -90
@@ -227,7 +229,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0747f9c353069ff4c8994c90890cf315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3884182950494802533, guid: b93ebb19adc2b58458550e8757d0e30d, type: 3}
+  syncMode: 0
+  syncInterval: 0.1
+  bulletPrefab: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
 --- !u!114 &1668458542882611589
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,5 @@
 using Mirror;
 using UnityEngine;
-using Mirror;
 
 namespace BelowUs
 {

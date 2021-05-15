@@ -20,10 +20,8 @@ namespace BelowUs
 
         private readonly bool debug = false;
 
-        [Server] private void Start() => ServerStuff();
-
         [Server]
-        private void ServerStuff()
+        private void Start()
         {
             int invertDirectionInt = invertDirection ? -1 : 1;
 
