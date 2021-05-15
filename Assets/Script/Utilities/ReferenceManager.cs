@@ -18,7 +18,11 @@ namespace BelowUs
             }
         }
 
-        private void Awake() => DontDestroyOnLoad(gameObject);
+        private void Awake() 
+        { 
+            if (instance == null)
+                DontDestroyOnLoad(gameObject); 
+        }
 
         #region transforms
         [SerializeField] [MustBeAssigned] private Transform stations;

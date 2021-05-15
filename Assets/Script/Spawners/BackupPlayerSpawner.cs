@@ -34,6 +34,7 @@ namespace BelowUs
                 }
                 catch (SocketException)
                 {
+                    Destroy(refManager.gameObject);
                     Destroy(manager.gameObject);
                     SceneManager.LoadScene(0);
                 }

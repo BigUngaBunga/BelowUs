@@ -14,7 +14,7 @@ namespace BelowUs
         [Range(2, 16)]
         [SerializeField] private float smoothFactor;
 
-        private void Awake()
+        private void Start()
         {
             InvokeRepeating(nameof(FindPlayer), 0.25f, 0.25f);
             InvokeRepeating(nameof(FindSubmarine), 0.25f, 0.25f);
