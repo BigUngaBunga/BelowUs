@@ -4368,7 +4368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc5264b868e2754290690f3880d637b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapsBeforeBossMap: 2
+  mapsBeforeBossMap: 1
   startPosition: {x: 0, y: 0}
   mapSize: {x: 80, y: 60}
   mapPrefab: {fileID: 4239500959107569483, guid: 10960a618468ead42a3c14a89034b2ed, type: 3}
