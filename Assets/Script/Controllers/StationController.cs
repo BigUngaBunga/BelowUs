@@ -1,4 +1,5 @@
 using Mirror;
+using MyBox;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,7 @@ namespace BelowUs
         [SerializeField] [TagSelector] protected string switchTag;
         [SerializeField] private bool giveAuthority;
 
-        [SerializeField] private GameObject controlObject;
+        [SerializeField] [ConditionalField(nameof(giveAuthority))] private GameObject controlObject;
         
         private NetworkIdentity controlObjNetworkIdentity;
 

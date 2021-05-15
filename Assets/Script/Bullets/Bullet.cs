@@ -46,7 +46,7 @@ namespace BelowUs
          */
         private void EnableCollision() => cd.enabled = true;
 
-        private void Expire() => Destroy(gameObject);
+        [Server] private void Expire() => NetworkServer.Destroy(gameObject);
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -77,11 +77,11 @@ namespace BelowUs
                         Debug.Log("Health after: " + hullHealth.CurrentValue);
 
                     if (npc && hullHealth.CurrentValue == 0)
-                        Destroy(collision.gameObject);
+                        NetworkServer.Destroy(collision.gameObject);
                 }
             }
 
-            Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
         }
     }
 }

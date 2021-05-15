@@ -42,9 +42,6 @@ namespace BelowUs
 
             EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
 
-            
-                
-
             if (currentValue == 0)
                 EventResourceEmpty?.Invoke();
         }
