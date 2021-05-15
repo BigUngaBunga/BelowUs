@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,9 +25,11 @@ namespace BelowUs
         private float horizontalInput;
         private float verticalInput;
 
-        private new SpriteRenderer spriteRendered;
+        private SpriteRenderer spriteRendered;
+        private NetworkIdentity identity;
+
         public StationController Station { get; set; }
-        private bool IsInStation() => Station != null && Station.StationPlayerController == gameObject;
+        private bool IsInStation() => Station != null && Station.StationPlayerController == identity;
 
         private readonly bool debugMovement = false;
         private readonly bool debugJump = false;
@@ -50,6 +53,8 @@ namespace BelowUs
             playerSize = GetComponent<BoxCollider2D>().size;
             spriteRendered = GetComponent<SpriteRenderer>();
             boxSize = new Vector2(playerSize.x, groundBuffer);
+
+            identity = GetComponent<NetworkIdentity>();
         }
 
         private void FixedUpdate()

@@ -4,7 +4,7 @@ using Mirror;
 
 namespace BelowUs
 {
-    public class SubmarineCannon : MonoBehaviour
+    public class SubmarineCannon : NetworkBehaviour
     {
         private readonly int submarineCannons = 4;
 
@@ -19,15 +19,11 @@ namespace BelowUs
         [SerializeField] private int cannonId;
         [SerializeField] private float intensity = 2;
 
-        private Vector3 startingRotation;
-        private Vector3 lastKnownMousePos;
+        [SerializeField] private StationController cannonController;
 
         private SpriteRenderer spriteRenderer;
         private SubmarineMovement submarine;
         private Light spotlight;
-        
-
-        [SerializeField] private StationController cannonController;
 
         private Weapon weapon;
 
@@ -52,7 +48,6 @@ namespace BelowUs
             submarine = GetComponentInParent<SubmarineMovement>();
             spotlight = GetComponentInChildren<Light>();
             InvokeRepeating(nameof(ToggleSpotlight), 0, 0.1f);
-            startingRotation = transform.eulerAngles;
 
             if (cannonId < 0 || cannonId > submarineCannons - 1)
                 Debug.LogError(logError + "has an incorrect cannonId!");
@@ -86,13 +81,19 @@ namespace BelowUs
 
                 if (angleDeg + 7 <= restrictionLeft + subRotation && angleDeg + 7 >= restrictionRight + subRotation)
                 {
-                    lastKnownMousePos = mousePos;
-                    transform.rotation = Quaternion.Euler(0, 0, angleDeg + rotationOffset);
+                    if (isServer)
+                        RotateCannon(angleDeg);
+                    else
+                        CallRotateCannon(angleDeg);
                 }
             }
         }
 
-        private bool IsCannonActive() => cannonController.StationPlayerController != null && NetworkClient.localPlayer.gameObject == cannonController.StationPlayerController;
+        [Command] private void CallRotateCannon(float angleDeg) => RotateCannon(angleDeg);
+
+        [Server] private void RotateCannon(float angleDeg) => transform.rotation = Quaternion.Euler(0, 0, angleDeg + rotationOffset);
+
+        private bool IsCannonActive() => cannonController.StationPlayerController != null && NetworkClient.localPlayer == cannonController.StationPlayerController;
 
         private void ToggleSpotlight() => spotlight.intensity = IsCannonActive()? intensity : 0;
 

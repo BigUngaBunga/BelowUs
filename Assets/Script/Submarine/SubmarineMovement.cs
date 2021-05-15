@@ -14,7 +14,7 @@ namespace BelowUs
         private float submarineRotationSpeed;
         float angularRetardation, lateralRetardation;
         public bool IsFlipped { get; private set; }
-        private bool MoveSubmarine => subController.StationPlayerController != null && NetworkClient.localPlayer.gameObject == subController.StationPlayerController;
+        private bool MoveSubmarine => subController.StationPlayerController != null && NetworkClient.localPlayer == subController.StationPlayerController;
         private bool EngineIsRunning => enginePower.CurrentValue > 0;
         [SerializeField] private StationController subController;
         
