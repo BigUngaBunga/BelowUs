@@ -22,13 +22,19 @@ namespace BelowUs
         private GameObject mainPnl;
         private GameObject connectPnl;
 
+        private readonly bool debug = true;
+
         private void Start()
         {
             manager = NetworkManager.singleton;
 
+            if (manager == null)
+                Debug.LogError("There is no networkmanager in the scene!");
+
             mainPnl = transform.Find("MainPnl").gameObject;
             connectPnl = transform.Find("ConnectPnl").gameObject;
 
+            mainPnl.transform.Find("HostBtn").GetComponent<Button>().onClick.AddListener(HostClicked);
             mainPnl.transform.Find("ConnectBtn").GetComponent<Button>().onClick.AddListener(SwitchPanel);
 
             ipText = connectPnl.transform.Find("IPField").GetComponent<TMP_InputField>();
