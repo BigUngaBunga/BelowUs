@@ -8,10 +8,10 @@ namespace BelowUs
     public class BossRoomGenerator : ReefGenerator
     {
         [SerializeField] private GameObject boss;
-        [SerializeField] private Transform position;
+        [SerializeField] private Vector2 position;
         public IEnumerator GenerateBossRoom(Vector2 mapSize, int squareSize)
         {
-            position = transform;
+            position = transform.position;
             yield return StartCoroutine(GenerateNoiseMap(mapSize));
 
             MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
@@ -21,7 +21,7 @@ namespace BelowUs
         
         private void SpawnBoss()
         {
-            GameObject enemy = Instantiate(boss, transform);
+            GameObject enemy = Instantiate(boss, position, Quaternion.identity);
             NetworkServer.Spawn(enemy, connectionToServer);
         }
     }

@@ -36,10 +36,10 @@ namespace BelowUs
         protected override void Start()
         {
             centerPosition = transform;
+            
             base.Start();
-        }
+        }        
 
-        [Server]
         protected override void Update()
         {
             if (isServer)
