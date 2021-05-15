@@ -16,17 +16,13 @@ namespace BelowUs
         [SerializeField] private float collisionDelay = 0.05f;
         [SerializeField] private bool npc;
 
-
         public float Damage => damage;
 
         private readonly bool debug = false;
 
-        private void Start()
-        {
-            //TODO don't run this on client
-            ServerStuff();
-        }
+        [Server] private void Start() => ServerStuff();
 
+        [Server]
         private void ServerStuff()
         {
             int invertDirectionInt = invertDirection ? -1 : 1;
@@ -35,12 +31,6 @@ namespace BelowUs
 
             if (debug)
                 Debug.Log("Initial Velocity " + rb.velocity);
-
-            //TODO check and remove this and maybe the debug bool too since xVelocity is instantly overwritten by yVelocity
-            //Vector2 xVelocity = transform.right * velocity * invertDirectionInt;
-            //rb.velocity = xVelocity;
-            //if (debug)
-            //Debug.Log("Velocity after " + nameof(xVelocity) + " " + rb.velocity);
 
             rb.velocity = yVelocity;
 

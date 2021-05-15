@@ -102,7 +102,7 @@ namespace BelowUs
 
             if (giveAuthority)
             {
-                if (player != null && debug)
+                if (debug && player != null)
                     Debug.Log(player.gameObject.name + " " + player.netId);
 
                 if (player == isServer && player.hasAuthority)

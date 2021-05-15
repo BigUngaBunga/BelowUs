@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 using Mirror;
 
@@ -21,10 +22,11 @@ namespace BelowUs
             AdjustFirepoint();
         }
 
+        [Server]
         public void Shoot() {
-
-             NetworkServer.Spawn(Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, ReferenceManager.Singleton.BulletParent));
-        } 
+            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, ReferenceManager.Singleton.BulletParent);
+            NetworkServer.Spawn(bulletClone);
+        }
 
         /**
          * Dynamically adjusts firePoint based on bullet size

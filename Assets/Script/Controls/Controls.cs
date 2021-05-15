@@ -10,6 +10,7 @@ namespace BelowUs
         private Rigidbody2D rb;
 
         [SyncVar] private NetworkIdentity identity;
+        private StationController currentStationController;
 
         private void Start()
         {
@@ -55,14 +56,18 @@ namespace BelowUs
                 if (identity == null)
                     Debug.LogError(nameof(identity) + " is null!");
 
-                controller.Enter(identity);
+                currentStationController = controller;
+                currentStationController.Enter(identity);
 
                 if (isServer)
-                    controller.SetStationPlayerController(identity);
+                {
+                    currentStationController.SetStationPlayerController(identity);
+                    currentStationController.LeaveButton.onClick.AddListener(SetPControllerToNull);
+                }
                 else if (isClient)
                 {
-                    SuccessfullyEnteredStation(controller, identity);
-                    controller.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
+                    SuccessfullyEnteredStation(currentStationController, identity);
+                    currentStationController.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
                 }
             }
         }
@@ -75,10 +80,10 @@ namespace BelowUs
         [Command]
         private void SuccessfullyLeftStation()
         {
-            StationController controller = currentStation.GetComponent<StationController>();
-
-            controller.SetStationPlayerController(null);
-            controller.LeaveButton.onClick.RemoveListener(SuccessfullyLeftStation);
+            SetPControllerToNull();
+            currentStationController.LeaveButton.onClick.RemoveListener(SuccessfullyLeftStation);
         }
+
+        private void SetPControllerToNull() => currentStationController.SetStationPlayerController(null);
     }
 }

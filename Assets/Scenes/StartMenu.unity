@@ -2134,8 +2134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c290a86c1654c4a924b903596d2135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ipText: {fileID: 2402239325006071777}
-  statusText: {fileID: 3883927348823174108}
 --- !u!114 &2402239325695173922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3058,12 +3056,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1511994682964710781, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
       propertyPath: spawnPrefabs.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1511994682964710781, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
       propertyPath: spawnPrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 7106082335865075385, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
+    - target: {fileID: 1511994682964710781, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
+      propertyPath: spawnPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb68bd9d3c2d6c944b3f2aeda82dee56, type: 3}
 --- !u!114 &8694520055643492824
