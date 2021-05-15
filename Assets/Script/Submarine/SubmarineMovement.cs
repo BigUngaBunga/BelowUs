@@ -20,6 +20,7 @@ namespace BelowUs
         
         private void Start()
         {
+            subController = ReferenceManager.Singleton.Stations.GetComponentInChildren<SubController>();
             enginePower = GameObject.Find("EnginePower").GetComponent<ShipResource>();
             rb2D = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();

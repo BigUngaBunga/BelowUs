@@ -1,3 +1,4 @@
+using MyBox;
 using UnityEngine;
 
 namespace BelowUs
@@ -20,22 +21,24 @@ namespace BelowUs
         private void Awake() => DontDestroyOnLoad(gameObject);
 
         #region transforms
-        [SerializeField] private Transform bulletParent;
-        [SerializeField] private Transform goldParent;
-        [SerializeField] private Transform scrapParent;
+        [SerializeField] [MustBeAssigned] private Transform stations;
+        [SerializeField] [MustBeAssigned] private Transform bulletParent;
+        [SerializeField] [MustBeAssigned] private Transform goldParent;
+        [SerializeField] [MustBeAssigned] private Transform scrapParent;
 
+        public Transform Stations => stations;
         public Transform BulletParent => bulletParent;
         public Transform GoldParent => goldParent;
         public Transform ScrapParent => scrapParent;
         #endregion
 
         #region tags
-        [TagSelector] [SerializeField] private string localPlayerTag;
-        [TagSelector] [SerializeField] private string playerTag;
-        [TagSelector] [SerializeField] private string submarineTag;
-        [TagSelector] [SerializeField] private string enemyTag;
-        [TagSelector] [SerializeField] private string stationTag;
-        [TagSelector] [SerializeField] private string untagged;
+        [Tag] [SerializeField] private string localPlayerTag;
+        [Tag] [SerializeField] private string playerTag;
+        [Tag] [SerializeField] private string submarineTag;
+        [Tag] [SerializeField] private string enemyTag;
+        [Tag] [SerializeField] private string stationTag;
+        [Tag] [SerializeField] private string untagged;
 
 
         public string LocalPlayerTag => localPlayerTag;

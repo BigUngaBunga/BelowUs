@@ -1,4 +1,5 @@
 using Mirror;
+using MyBox;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,7 @@ namespace BelowUs
 {
     public class Controls : NetworkBehaviour
     {
-        [SerializeField] private Transform currentStation;
+        [ReadOnly] [SerializeField] private Transform currentStation;
         private Rigidbody2D rb;
 
         [SyncVar] private NetworkIdentity identity;

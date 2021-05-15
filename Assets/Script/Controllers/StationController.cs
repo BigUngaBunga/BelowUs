@@ -8,13 +8,12 @@ namespace BelowUs
     public class StationController : NetworkBehaviour
     {
         [SerializeField] protected CameraController cameraController;
-        [SerializeField] protected Button leaveButton;
-        [SerializeField] protected Button controlsButton;
+        [SerializeField] [MustBeAssigned] protected Button leaveButton;
         [Tooltip("The tag of the object that the camera should switch to on collision. For example station or weapon.")]
-        [SerializeField] [TagSelector] protected string switchTag;
+        [SerializeField] [Tag] protected string switchTag;
         [SerializeField] private bool giveAuthority;
 
-        [SerializeField] [ConditionalField(nameof(giveAuthority))] private GameObject controlObject;
+        [SerializeField] [ConditionalField(nameof(giveAuthority))] [MustBeAssigned] private GameObject controlObject;
         
         private NetworkIdentity controlObjNetworkIdentity;
 
@@ -41,12 +40,9 @@ namespace BelowUs
             camera = cameraController.GetComponentInParent<Camera>();
             playerCameraSize = camera.orthographicSize;
 
-            if (giveAuthority)
+            if (giveAuthority && controlObject != null)
             {
-                if (controlObject != null)
-                    controlObjNetworkIdentity = controlObject.GetComponent<NetworkIdentity>();
-                else
-                    Debug.LogError(nameof(controlObject) + " on gameobject " + gameObject.name + " is null even though give authority is true!");
+                controlObjNetworkIdentity = controlObject.GetComponent<NetworkIdentity>();
             }
         }
 
@@ -88,13 +84,7 @@ namespace BelowUs
             }
         }
 
-        private void SetButtonActiveStatus(bool activate)
-        {
-            LeaveButton.gameObject.SetActive(activate);
-
-            if (controlsButton != null)
-                controlsButton.gameObject.SetActive(activate);
-        }
+        protected virtual void SetButtonActiveStatus(bool activate) => LeaveButton.gameObject.SetActive(activate);
 
         [Server]
         public void SetStationPlayerController(NetworkIdentity player)
