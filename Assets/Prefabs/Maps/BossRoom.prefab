@@ -57,6 +57,8 @@ MonoBehaviour:
   minimumEnclaveRemovalSize: 6
   maximumEnclaveRemovalSize: 8
   timesToSmoothMap: 5
+  boss: {fileID: 1361819374005715653, guid: 39ac5326834dc594f96b467868b1e150, type: 3}
+  position: {fileID: 0}
 --- !u!114 &7376225745135848222
 MonoBehaviour:
   m_ObjectHideFlags: 0

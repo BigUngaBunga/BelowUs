@@ -37,6 +37,9 @@ namespace BelowUs
 
             ResourceGenerator resourceGenerator = GetComponent<ResourceGenerator>();
             yield return StartCoroutine(resourceGenerator.GenerateResources(random, noiseMap, squareSize, waterTile));
+
+            EnemyGenerator enemyGenerator = GetComponent<EnemyGenerator>();
+            yield return StartCoroutine(enemyGenerator.GenerateEnemies(random, noiseMap, squareSize, waterTile));
         }
 
         protected IEnumerator GenerateNoiseMap(Vector2 mapSize)

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6933202871032369738}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -216,6 +216,7 @@ MonoBehaviour:
   chasingRotationSpeed: 1
   timeBetweenCharges: 2
   degressToStartCharging: 10
+  centerPosition: {fileID: 0}
 --- !u!114 &6933202871032369738
 MonoBehaviour:
   m_ObjectHideFlags: 0

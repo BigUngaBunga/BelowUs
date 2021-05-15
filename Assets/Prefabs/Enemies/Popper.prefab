@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: -963853530724014666}
   m_Layer: 0
   m_Name: Popper
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,7 +243,6 @@ MonoBehaviour:
   FiringRange: 0
   collisionDamage: -10
   moveSpeedChasing: 1000
-  targetGameObject: {fileID: 0}
   hullHP: {fileID: 0}
   explosionRange: 15
   explosionForce: 10

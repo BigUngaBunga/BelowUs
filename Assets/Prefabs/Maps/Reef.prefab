@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4239500959107569486}
   - component: {fileID: 4239500959107569487}
   - component: {fileID: 7605401654731769274}
+  - component: {fileID: -1031548025592324451}
+  - component: {fileID: 5827780178426052178}
   m_Layer: 0
   m_Name: Reef
   m_TagString: Untagged
@@ -47,6 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a71ba3451ff8f4c8d55bcbd4f6b6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   mapHeight: 60
   mapWidth: 80
   seed: 0
@@ -100,6 +104,46 @@ MonoBehaviour:
   numberOfResourcesToGenerate: 5
   goldPrefab: {fileID: 1966099942334214616, guid: b95dbacb7124b5541b92e3dd2a70ba2d, type: 3}
   scrapPrefab: {fileID: 3292386035804436195, guid: 0c9feee6bd8327849bf708cb81f2913b, type: 3}
+--- !u!114 &-1031548025592324451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4239500959107569483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 624415990323b8f4eac9b71623a28d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  numberOfEnemiesToGenerate: 20
+  bobbaPrefab: {fileID: 7106082335865075385, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
+  spookPrefab: {fileID: 3820843256020973064, guid: 0268277da6aa72d47b17151dfadf2e3c, type: 3}
+  clonkerPrefab: {fileID: 6922125981263108976, guid: 7a4ed83494a7b1640a88463e571976d7, type: 3}
+  popperPrefab: {fileID: 5703744100832063845, guid: 05ba39cf790c9074c828728e7499d7b2, type: 3}
+  spawnRateBobba: 20
+  spawnRateSpook: 100
+  spawnRateClonker: 10
+  spawnRatePopper: 10
+--- !u!114 &5827780178426052178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4239500959107569483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &4239500959780368494
 GameObject:
   m_ObjectHideFlags: 0

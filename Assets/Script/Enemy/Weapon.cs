@@ -1,8 +1,9 @@
 using UnityEngine;
+using Mirror;
 
 namespace BelowUs
 {
-    public class Weapon : MonoBehaviour
+    public class Weapon : NetworkBehaviour
     {
         [SerializeField] private GameObject bulletPrefab;
 
@@ -20,7 +21,10 @@ namespace BelowUs
             AdjustFirepoint();
         }
 
-        public void Shoot() => Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, ReferenceManager.Singleton.BulletParent);
+        public void Shoot() {
+
+             NetworkServer.Spawn(Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, ReferenceManager.Singleton.BulletParent));
+        } 
 
         /**
          * Dynamically adjusts firePoint based on bullet size

@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Mirror;
 using Random = System.Random;
 
 namespace BelowUs
 {
-    public class MapGenerator : MonoBehaviour
+    public class MapGenerator : NetworkBehaviour
     {
         [Min(50)]
         [SerializeField] protected int mapHeight;

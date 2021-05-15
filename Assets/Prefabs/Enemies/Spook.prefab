@@ -420,7 +420,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8620791235366004392}
-  - component: {fileID: 8516379643747497037}
   - component: {fileID: 9073243902447456325}
   - component: {fileID: 2380497402004433974}
   - component: {fileID: 2075641956583834902}
@@ -428,6 +427,7 @@ GameObject:
   - component: {fileID: 1410107557722617158}
   - component: {fileID: -2898043021246271424}
   - component: {fileID: -5396978898668453108}
+  - component: {fileID: 3826154045977040133}
   m_Layer: 0
   m_Name: Spook
   m_TagString: Enemy
@@ -465,25 +465,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &8516379643747497037
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3820843256020973064}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f668f59742ed7734eaea86983a5dea23, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!50 &9073243902447456325
 Rigidbody2D:
   serializedVersion: 4
@@ -606,7 +587,6 @@ MonoBehaviour:
   FiringRange: 40
   collisionDamage: -5
   moveSpeedChasing: 10
-  targetGameObject: {fileID: 0}
   hullHP: {fileID: 0}
   timeBetweenShoots: 2
 --- !u!114 &-2898043021246271424
@@ -644,6 +624,25 @@ MonoBehaviour:
     Variable: {fileID: 11400000, guid: daa063248a7218a4f8eb923e8722fcbd, type: 2}
   debug: 0
   nullify: 0
+--- !u!95 &3826154045977040133
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3820843256020973064}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f668f59742ed7734eaea86983a5dea23, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4320036507119805277
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,19 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 using Random = System.Random;
 
 namespace BelowUs
 {
-    public class EnemyGenerator : MonoBehaviour
+    public class EnemyGenerator : NetworkBehaviour
     {
-        private enum ResourceType
+        
+        private enum EnemyType
         {
-            Gold, Scrap
+            Booba,
+            Spook,
+            Clonker,
+            Popper
         }
 
-        [SerializeField] int numberOfResourcesToGenerate;
+        [SerializeField][Min(5)] int numberOfEnemiesToGenerate;
         [SerializeReference] GameObject bobbaPrefab, spookPrefab, clonkerPrefab, popperPrefab;
+
+        private Dictionary<EnemyType, int> enemyTypes = new Dictionary<EnemyType, int>();
+        [SerializeField][Min (1)] private int spawnRateBobba, spawnRateSpook, spawnRateClonker, spawnRatePopper;
+
 
         private Random random;
 
@@ -24,7 +33,7 @@ namespace BelowUs
         private int[,] map;
         private int openTile, squareSize;
 
-        public IEnumerator GenerateResources(Random random, int[,] map, int squareSize, int openTile)
+        public IEnumerator GenerateEnemies(Random random, int[,] map, int squareSize, int openTile)
         {
             this.random = random;
             this.map = map;
@@ -32,16 +41,22 @@ namespace BelowUs
             this.squareSize = squareSize;
             enemyPositions = new List<Vector2>();
 
+            enemyTypes.Add(EnemyType.Booba, spawnRateBobba);
+            enemyTypes.Add(EnemyType.Clonker, spawnRateClonker);
+            enemyTypes.Add(EnemyType.Popper, spawnRatePopper);
+            enemyTypes.Add(EnemyType.Spook, spawnRateSpook);
+
+
             yield return CorutineUtilities.Wait(0.01f, "Started resource generation");
-            RandomizeResourcePlacements();
+            RandomizeEnemyPlacements();
             yield return CorutineUtilities.Wait(0.01f, "Randomized resource positions");
 
             foreach (Vector2 position in enemyPositions)
-                GenerateResource(position);
+                GenerateEnemies(position);
             yield return CorutineUtilities.Wait(0.01f, "Generated resources");
         }
 
-        private void RandomizeResourcePlacements()
+        private void RandomizeEnemyPlacements()
         {
             int halfMapWidth = map.GetLength(0) / 2;
             int halfMapHeight = map.GetLength(1) / 2;
@@ -58,7 +73,7 @@ namespace BelowUs
                     }
 
 
-            for (int i = 0; i < numberOfResourcesToGenerate; i++)
+            for (int i = 0; i < numberOfEnemiesToGenerate; i++)
             {
                 int randomIndex = random.Next(openPositions.Count - 1);
                 enemyPositions.Add(openPositions[randomIndex]);
@@ -81,45 +96,50 @@ namespace BelowUs
             return true;
         }
 
-        private void GenerateResource(Vector2 position)
+        private void GenerateEnemies(Vector2 position)
         {
             GameObject objectToInstantiate;
-            switch (PickWeightedResourceType())
+            switch (PickWeightedEnemyType())
             {
-                case ResourceType.Scrap:
+                case EnemyType.Booba:
                     objectToInstantiate = bobbaPrefab;
                     break;
-                default:
+                case EnemyType.Spook:
                     objectToInstantiate = spookPrefab;
+                    break;
+                case EnemyType.Clonker:
+                    objectToInstantiate = clonkerPrefab;
+                    break;
+                case EnemyType.Popper:
+                    objectToInstantiate = popperPrefab;
+                    break;
+                default:
+                    objectToInstantiate = bobbaPrefab;
                     break;
 
             }
 
-            Instantiate(objectToInstantiate, position, Quaternion.identity);
+            objectToInstantiate = Instantiate(objectToInstantiate, position, Quaternion.identity);
+            NetworkServer.Spawn(objectToInstantiate);
+
         }
 
-        private ResourceType PickWeightedResourceType()
+        private EnemyType PickWeightedEnemyType()
         {
-            //Dictionary<ResourceType, int> resourceTypes = new Dictionary<ResourceType, int>();
-            //int totalWeight = 0;
+            int totalWeight = 0;            
 
-            //resourceTypes.Add(ResourceType.Gold, 50);
-            //resourceTypes.Add(ResourceType.Scrap, 50);
+            foreach (int weight in enemyTypes.Values)
+                totalWeight += weight;
 
-            //foreach (int weight in resourceTypes.Values)
-            //    totalWeight += weight;
-
-            //int randomNumber = random.Next(totalWeight);
-            //foreach (KeyValuePair<ResourceType, int> weightedResourceTypes in resourceTypes)
-            //{
-            //    if (weightedResourceTypes.Value > randomNumber)
-            //        return weightedResourceTypes.Key;
-            //    else
-            //        randomNumber -= weightedResourceTypes.Value;
-            //}
-
-            return ResourceType.Scrap;
-           
+            int randomNumber = random.Next(totalWeight);
+            foreach (KeyValuePair<EnemyType, int> weightedEnemyTypes in enemyTypes)
+            {
+                if (weightedEnemyTypes.Value > randomNumber)
+                    return weightedEnemyTypes.Key;
+                else
+                    randomNumber -= weightedEnemyTypes.Value;
+            }
+             return EnemyType.Booba;         
         }
     }
 }

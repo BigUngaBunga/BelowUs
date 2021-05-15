@@ -4336,7 +4336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc5264b868e2754290690f3880d637b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapsBeforeBossMap: 4
+  mapsBeforeBossMap: 1
   startPosition: {x: 0, y: 0}
   mapSize: {x: 80, y: 60}
   mapPrefab: {fileID: 4239500959107569483, guid: 10960a618468ead42a3c14a89034b2ed, type: 3}
@@ -9199,12 +9199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed28785d020d10945b47eb24edaf1c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastSyncTime: 0
-  syncMode: 0
-  syncInterval: 0.1
-  netIdentityCache: {fileID: 0}
-  EnemyList: []
-  SkeletonPrefab: {fileID: 7106082335865075385, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
 --- !u!4 &1631958785
 Transform:
   m_ObjectHideFlags: 0
@@ -12685,7 +12679,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
+  m_fontSize: 27.5
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -16,29 +16,45 @@ namespace BelowUs
         }
         private enum AttackPattern
         {
-            Charging
+            Charging,
+            BasicChasing
         }
 
         [SerializeField] private float chasingDistanceBeforeNewTarget;
         [SerializeField] private float chasingRotationSpeed;
         [SerializeField] [Min(1)] private float timeBetweenCharges;
-        [SerializeField] [Min(10)]protected float degressToStartCharging;
+        [SerializeField] [Min(10)] protected float degressToStartCharging;
+        [SerializeField] private Transform centerPosition;
 
         private Vector3 chargingTargetPosition;
         private ChargingState currentChargingState;
-        private AttackPattern currentAttactPattern;
+
+        //Behöver lägga till flera patterns och ett sätt att bestämma dom, Nedan ska ej hardcodas
+        private AttackPattern currentAttactPattern = AttackPattern.BasicChasing;
         private float timeElapsed;
 
-        
+        protected override void Start()
+        {
+            centerPosition = transform;
+            base.Start();
+        }
 
         [Server]
         protected override void Update()
+        {
+            if (isServer)
+                UpdateStates();
+
+        }
+
+        [Server]
+        private void UpdateStates()
         {
             CheckDistanceToTargetChasing();
 
             switch (currentState)
             {
-                case EnemyState.Idle:                    
+                case EnemyState.Idle:
                     break;
                 case EnemyState.Chasing:
                     UpdateAttackPattern();
@@ -54,7 +70,16 @@ namespace BelowUs
                 case AttackPattern.Charging:
                     UpdateChasingPattern();
                     break;
+                case AttackPattern.BasicChasing:
+                    BasicChasing();
+                    break;
             }
+        }
+
+        private void BasicChasing()
+        {
+            UpdateBasicRotation(targetGameObject.transform.position);
+            UpdateMovementChasing();
         }
 
         private void UpdateChasingPattern()
@@ -100,7 +125,7 @@ namespace BelowUs
                     break;
 
             }
-        }      
+        }
         #region chasing Attack pattern
 
         private Vector3 ChasingNewTarget() => targetGameObject.transform.position;
@@ -124,5 +149,13 @@ namespace BelowUs
             else return false;
         }
         #endregion
+
+        protected void UpdateMovementChasing()
+        {
+            Vector2 direction = (targetGameObject.transform.position - transform.position).normalized;
+            Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
+            rb.AddForce(movement);
+        }
+
     }
 }
