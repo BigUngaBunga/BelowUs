@@ -137,6 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1be6d5806fcf5714b9c4b7979b47f53d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   rb: {fileID: 1783117779421591663}
   cd: {fileID: 2564237955503752442}
   velocity: 5
@@ -158,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 0
-  serverOnly: 0
+  serverOnly: 1
   visible: 0
   m_AssetId: 
   hasSpawned: 0

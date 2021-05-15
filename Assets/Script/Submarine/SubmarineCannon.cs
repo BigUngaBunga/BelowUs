@@ -100,8 +100,18 @@ namespace BelowUs
         private void Fire()
         {
             if (Input.GetMouseButtonDown(0) && IsCannonActive())
-                weapon.Shoot();
+            {
+                NetworkBehaviour LocalPlayerNetworkBehaviour = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.LocalPlayerTag).GetComponent<NetworkBehaviour>();
+
+                if (LocalPlayerNetworkBehaviour == isServer)
+                    weapon.Shoot();
+                else
+                    SendWeaponShootToServer();
+            }
+                
         }
+
+        [Command] private void SendWeaponShootToServer() => weapon.Shoot();
 
         private void FlipCannon()
         {
