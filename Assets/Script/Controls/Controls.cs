@@ -10,7 +10,7 @@ namespace BelowUs
         [ReadOnly] [SerializeField] private Transform currentStation;
         private Rigidbody2D rb;
 
-        [SyncVar] private NetworkIdentity identity;
+        [SyncVar] [SerializeField] private NetworkIdentity identity;
         private StationController currentStationController;
 
         private void Start()
@@ -39,6 +39,9 @@ namespace BelowUs
                 if (identity == null)
                     Debug.LogError(nameof(identity) + " is null!");
 
+                if (controller.debug)
+                    Debug.Log(identity);
+
                 currentStationController = controller;
                 currentStationController.Enter(identity);
 
@@ -49,15 +52,16 @@ namespace BelowUs
                 }
                 else if (isClient)
                 {
-                    SuccessfullyEnteredStation(identity);
+                    SuccessfullyEnteredStation();
                     currentStationController.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
                 }
             }
         }
 
-        public void SetIdentity(NetworkIdentity identity) => this.identity = identity;
+        [Command] public void SetIdentityCommand(NetworkIdentity identity) => SetIdentity(identity);
+        [Server] public void SetIdentity(NetworkIdentity identity) => this.identity = identity;
 
-        [Command] private void SuccessfullyEnteredStation(NetworkIdentity inputIdentity) => currentStationController.SetStationPlayerController(inputIdentity);
+        [Command] private void SuccessfullyEnteredStation() => currentStationController.SetStationPlayerController(identity);
 
         [Command]
         private void SuccessfullyLeftStation()

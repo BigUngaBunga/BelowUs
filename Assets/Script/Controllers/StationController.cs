@@ -31,8 +31,8 @@ namespace BelowUs
         public NetworkIdentity StationPlayerController => stationPlayerController;
 
         public bool IsOccupied => stationPlayerController != null;
-
-        private readonly bool debug = false;
+        
+        public bool debug = false;
 
         private void Start()
         {
