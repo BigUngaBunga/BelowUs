@@ -8,6 +8,7 @@ namespace BelowUs
         [SerializeField] private GameObject pauseMenu;
 
         public static bool IsOpen { get; private set; } = false;
+        public static bool IsEnabled { get; set; } = true;
 
         private MenuAction action;
         private NetworkManager manager = null;
@@ -26,6 +27,9 @@ namespace BelowUs
         {
             //TODO disable if options menu (and more) is open
             //so that pause menu is not opened when esc is pressed with the purpose of closing options
+            if (!IsEnabled)
+                return;
+
             if (pauseMenu.activeSelf)
                 HideMenu();
             else

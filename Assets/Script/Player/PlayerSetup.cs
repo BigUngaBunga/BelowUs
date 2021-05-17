@@ -32,6 +32,7 @@ namespace BelowUs
 
             AddPlayerInput();
             AddPlayerCharacterController();
+            gameObject.AddComponent<Controls>();
 
             Destroy(this);
         }

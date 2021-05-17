@@ -49,6 +49,14 @@ public class @PlayerAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Leave Station"",
+                    ""type"": ""Button"",
+                    ""id"": ""eeec9967-84fe-439e-bf2d-cc52051968db"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -150,6 +158,17 @@ public class @PlayerAction : IInputActionCollection, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a49586b-7e4c-4d04-8d7d-58294662396b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Leave Station"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -748,6 +767,7 @@ public class @PlayerAction : IInputActionCollection, IDisposable
         m_Player_JumpClimbUp = m_Player.FindAction("Jump / Climb Up", throwIfNotFound: true);
         m_Player_ClimbDown = m_Player.FindAction("Climb Down", throwIfNotFound: true);
         m_Player_EnterStation = m_Player.FindAction("Enter Station", throwIfNotFound: true);
+        m_Player_LeaveStation = m_Player.FindAction("Leave Station", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -814,6 +834,7 @@ public class @PlayerAction : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_JumpClimbUp;
     private readonly InputAction m_Player_ClimbDown;
     private readonly InputAction m_Player_EnterStation;
+    private readonly InputAction m_Player_LeaveStation;
     public struct PlayerActions
     {
         private @PlayerAction m_Wrapper;
@@ -822,6 +843,7 @@ public class @PlayerAction : IInputActionCollection, IDisposable
         public InputAction @JumpClimbUp => m_Wrapper.m_Player_JumpClimbUp;
         public InputAction @ClimbDown => m_Wrapper.m_Player_ClimbDown;
         public InputAction @EnterStation => m_Wrapper.m_Player_EnterStation;
+        public InputAction @LeaveStation => m_Wrapper.m_Player_LeaveStation;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -843,6 +865,9 @@ public class @PlayerAction : IInputActionCollection, IDisposable
                 @EnterStation.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnterStation;
                 @EnterStation.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnterStation;
                 @EnterStation.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnterStation;
+                @LeaveStation.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeaveStation;
+                @LeaveStation.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeaveStation;
+                @LeaveStation.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLeaveStation;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -859,6 +884,9 @@ public class @PlayerAction : IInputActionCollection, IDisposable
                 @EnterStation.started += instance.OnEnterStation;
                 @EnterStation.performed += instance.OnEnterStation;
                 @EnterStation.canceled += instance.OnEnterStation;
+                @LeaveStation.started += instance.OnLeaveStation;
+                @LeaveStation.performed += instance.OnLeaveStation;
+                @LeaveStation.canceled += instance.OnLeaveStation;
             }
         }
     }
@@ -1027,6 +1055,7 @@ public class @PlayerAction : IInputActionCollection, IDisposable
         void OnJumpClimbUp(InputAction.CallbackContext context);
         void OnClimbDown(InputAction.CallbackContext context);
         void OnEnterStation(InputAction.CallbackContext context);
+        void OnLeaveStation(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -11,11 +11,14 @@ namespace BelowUs
         [ReadOnly] [SerializeField] private Transform currentStation;
         private Rigidbody2D rb;
         private Button leaveButton;
+        private PlayerAction.PlayerActions playerAction;
 
         private NetworkIdentity identity;
 
         [SerializeField] private StationController currentStationController;
         [SerializeField] private CameraController cameraController;
+
+        private bool debug = true;
 
         private void Start()
         {
@@ -26,7 +29,7 @@ namespace BelowUs
             leaveButton.onClick.AddListener(LeftStation);
                 
             PlayerAction action = new PlayerAction();
-            PlayerAction.PlayerActions playerAction = action.Player;
+            playerAction = action.Player;
 
             playerAction.EnterStation.performed += OnStationClick;
 
@@ -35,10 +38,22 @@ namespace BelowUs
 
         public void OnStationClick(InputAction.CallbackContext value)
         {
-            if (currentStation == null)
+            if (currentStation == null) 
+            {
+                if (debug)
+                    Debug.Log(nameof(OnStationClick) + " returned because " + nameof(currentStation) + " is null!");
+
                 return;
+            }
 
             StationController controller = currentStation.GetComponent<StationController>();
+
+            if (debug && PauseMenu.IsOpen)
+                Debug.Log(nameof(OnStationClick) + " returned because of " + nameof(PauseMenu.IsOpen) + " is open!");
+            else if (debug && controller == null)
+                Debug.Log(nameof(OnStationClick) + " returned because " + nameof(controller) + " is null");
+            else if (debug && controller.StationPlayerController != null)
+                Debug.Log(nameof(OnStationClick) + " returned because " + nameof(controller.StationPlayerController) + " is not null");
 
             if (!PauseMenu.IsOpen && controller != null && controller.StationPlayerController == null)
             {
@@ -54,12 +69,17 @@ namespace BelowUs
                 leaveButton.gameObject.SetActive(true);
                 cameraController.SwitchTarget();
 
+                playerAction.LeaveStation.performed += LeftStationButton;
+                PauseMenu.IsEnabled = false;
+
                 if (isServer)
                     currentStationController.SetStationPlayerController(identity);
                 else if (isClient)
                     currentStationController.SetStationPlayerControllerCMD(identity);
             }
         }
+
+        private void LeftStationButton(InputAction.CallbackContext value) => LeftStation();
 
         private void LeftStation()
         {
@@ -68,6 +88,9 @@ namespace BelowUs
 
             leaveButton.gameObject.SetActive(false);
             cameraController.SwitchTarget();
+
+            playerAction.LeaveStation.performed -= LeftStationButton;
+            PauseMenu.IsEnabled = true;
 
             if (!isServer)
                 currentStationController.SetStationPlayerControllerCMD(null);
