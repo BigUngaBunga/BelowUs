@@ -2379,6 +2379,10 @@ PrefabInstance:
       value: 1160108533
       objectReference: {fileID: 0}
     - target: {fileID: 1864733796403343618, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: bulletParent
+      value: 
+      objectReference: {fileID: 1734421289}
+    - target: {fileID: 1864733796403343618, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: bulletPrefab
       value: 
       objectReference: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
@@ -2975,6 +2979,10 @@ PrefabInstance:
       value: 1395724576
       objectReference: {fileID: 0}
     - target: {fileID: 3524377960563884360, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: bulletParent
+      value: 
+      objectReference: {fileID: 1734421289}
+    - target: {fileID: 3524377960563884360, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: bulletPrefab
       value: 
       objectReference: {fileID: 3884182950494802533, guid: 94f9c12b9b8427f49ab6a4fe401ec701, type: 3}
@@ -2982,6 +2990,10 @@ PrefabInstance:
       propertyPath: cannonController
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3905938637082590214, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: bulletParent
+      value: 
+      objectReference: {fileID: 1734421289}
     - target: {fileID: 3905938637082590214, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: bulletPrefab
       value: 
@@ -3018,6 +3030,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Submarine
       objectReference: {fileID: 0}
+    - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: stations
+      value: 
+      objectReference: {fileID: 379049496}
     - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -3130,6 +3146,10 @@ PrefabInstance:
       propertyPath: floodlightController
       value: 
       objectReference: {fileID: 1167164494}
+    - target: {fileID: 6580151197689884401, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: bulletParent
+      value: 
+      objectReference: {fileID: 1734421289}
     - target: {fileID: 6580151197689884401, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: bulletPrefab
       value: 
@@ -5806,10 +5826,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6c95ec0f6e1574a9cdd727cbb9d047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stations: {fileID: 379049496}
-  bulletParent: {fileID: 1734421289}
-  goldParent: {fileID: 112938799}
-  scrapParent: {fileID: 2097931745}
   localPlayerTag: LocalPlayer
   playerTag: Player
   submarineTag: Submarine

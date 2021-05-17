@@ -1,7 +1,6 @@
 using Mirror;
 using MyBox;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace BelowUs
 {

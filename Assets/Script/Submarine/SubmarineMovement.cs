@@ -5,6 +5,9 @@ namespace BelowUs
 {
     public class SubmarineMovement : MonoBehaviour
     {
+        [SerializeField] private StationController subController;
+        [SerializeField] private GameObject stations;
+
         private Rigidbody2D rb2D;
         private SpriteRenderer spriteRenderer;
         private ShipResource enginePower;
@@ -16,11 +19,10 @@ namespace BelowUs
         public bool IsFlipped { get; private set; }
         private bool MoveSubmarine => subController.StationPlayerController != null && NetworkClient.localPlayer == subController.StationPlayerController;
         private bool EngineIsRunning => enginePower.CurrentValue > 0;
-        [SerializeField] private StationController subController;
         
         private void Start()
         {
-            subController = ReferenceManager.Singleton.Stations.GetComponentInChildren<SubController>();
+            subController = stations.GetComponentInChildren<SubController>();
             enginePower = GameObject.Find("EnginePower").GetComponent<ShipResource>();
             rb2D = GetComponent<Rigidbody2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();

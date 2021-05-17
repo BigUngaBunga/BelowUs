@@ -24,18 +24,6 @@ namespace BelowUs
                 DontDestroyOnLoad(gameObject); 
         }
 
-        #region transforms
-        [SerializeField] [MustBeAssigned] private GameObject stations;
-        [SerializeField] [MustBeAssigned] private Transform bulletParent;
-        [SerializeField] [MustBeAssigned] private Transform goldParent;
-        [SerializeField] [MustBeAssigned] private Transform scrapParent;
-
-        public GameObject Stations => stations;
-        public Transform BulletParent => bulletParent;
-        public Transform GoldParent => goldParent;
-        public Transform ScrapParent => scrapParent;
-        #endregion
-
         #region tags
         [Tag] [SerializeField] private string localPlayerTag;
         [Tag] [SerializeField] private string playerTag;

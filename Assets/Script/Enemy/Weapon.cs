@@ -1,11 +1,13 @@
 using Mirror;
+using MyBox;
 using UnityEngine;
 
 namespace BelowUs
 {
     public class Weapon : NetworkBehaviour
     {
-        [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] [MustBeAssigned] private GameObject bulletPrefab;
+        [SerializeField] [MustBeAssigned] private Transform bulletParent;
 
         private Transform firePoint;
 
@@ -18,12 +20,15 @@ namespace BelowUs
             if (firePoint == null)
                 firePoint = transform.Find("FirePoint");
 
+            if (bulletParent == null)
+                bulletParent = transform; //Todo refer to the real bullet parent instead
+
             AdjustFirepoint();
         }
 
         [Server]
         public void Shoot() {
-            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, ReferenceManager.Singleton.BulletParent);
+            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, bulletParent);
             NetworkServer.Spawn(bulletClone);
         }
 

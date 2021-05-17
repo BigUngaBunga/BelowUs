@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyBox;
 using Random = System.Random;
 
 namespace BelowUs
@@ -15,6 +16,9 @@ namespace BelowUs
 
         [SerializeField] int numberOfResourcesToGenerate;
         [SerializeReference] GameObject goldPrefab, scrapPrefab;
+
+        [SerializeField] [MustBeAssigned] private Transform goldParent;
+        [SerializeField] [MustBeAssigned] private Transform scrapParent;
 
         private Random random;
         private List<Vector2> resourcePositions;
@@ -88,7 +92,7 @@ namespace BelowUs
                 _ => scrapPrefab,
             };
 
-            Transform parent = resourceToInstantiate == ResourceType.Gold ? ReferenceManager.Singleton.GoldParent : ReferenceManager.Singleton.ScrapParent;
+            Transform parent = resourceToInstantiate == ResourceType.Gold ? goldParent : scrapParent;
             Instantiate(objectToInstantiate, position, Quaternion.identity, parent);
         }
 
