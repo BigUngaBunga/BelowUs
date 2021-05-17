@@ -3156,7 +3156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9031905692841804919, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: debug
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9031905692841804919, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: resetValue
@@ -4215,7 +4215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc5264b868e2754290690f3880d637b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapsBeforeBossMap: 1
+  mapsBeforeBossMap: 2
   startPosition: {x: 0, y: 0}
   mapSize: {x: 80, y: 60}
   mapPrefab: {fileID: 4239500959107569483, guid: 10960a618468ead42a3c14a89034b2ed, type: 3}
@@ -12232,7 +12232,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.35
+  m_fontSize: 28.7
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
