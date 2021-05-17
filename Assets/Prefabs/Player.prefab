@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7975207837187763287}
   - component: {fileID: 2569432028825394515}
   - component: {fileID: -8455052746023811855}
-  - component: {fileID: -7156201737830467916}
+  - component: {fileID: 7143439563897437832}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
---- !u!114 &-7156201737830467916
+--- !u!114 &7143439563897437832
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

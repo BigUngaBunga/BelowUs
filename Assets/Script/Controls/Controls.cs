@@ -2,6 +2,7 @@ using Mirror;
 using MyBox;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace BelowUs
 {
@@ -9,14 +10,21 @@ namespace BelowUs
     {
         [ReadOnly] [SerializeField] private Transform currentStation;
         private Rigidbody2D rb;
+        private Button leaveButton;
 
-        [SyncVar] [SerializeField] private NetworkIdentity identity;
-        private StationController currentStationController;
+        private NetworkIdentity identity;
+
+        [SerializeField] private StationController currentStationController;
+        [SerializeField] private CameraController cameraController;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody2D>();
-
+            identity = GetComponent<NetworkIdentity>();
+            cameraController = FindObjectOfType<CameraController>();
+            leaveButton = GameObject.Find("UI").transform.Find("LeaveButton").GetComponent<Button>();
+            leaveButton.onClick.AddListener(LeftStation);
+                
             PlayerAction action = new PlayerAction();
             PlayerAction.PlayerActions playerAction = action.Player;
 
@@ -43,34 +51,31 @@ namespace BelowUs
                     Debug.Log(identity);
 
                 currentStationController = controller;
-                currentStationController.Enter(identity);
+                leaveButton.gameObject.SetActive(true);
+                cameraController.SwitchTarget();
 
                 if (isServer)
-                {
                     currentStationController.SetStationPlayerController(identity);
-                    currentStationController.LeaveButton.onClick.AddListener(SetPControllerToNull);
-                }
                 else if (isClient)
-                {
-                    SuccessfullyEnteredStation();
-                    currentStationController.LeaveButton.onClick.AddListener(SuccessfullyLeftStation);
-                }
+                    currentStationController.SetStationPlayerControllerCMD(identity);
             }
         }
 
-        [Command] public void SetIdentityCommand(NetworkIdentity identity) => SetIdentity(identity);
-        [Server] public void SetIdentity(NetworkIdentity identity) => this.identity = identity;
-
-        [Command] private void SuccessfullyEnteredStation() => currentStationController.SetStationPlayerController(identity);
-
-        [Command]
-        private void SuccessfullyLeftStation()
+        private void LeftStation()
         {
-            SetPControllerToNull();
-            currentStationController.LeaveButton.onClick.RemoveListener(SuccessfullyLeftStation);
-        }
+            if (currentStationController == null)
+                return;
 
-        [Server] private void SetPControllerToNull() => currentStationController.SetStationPlayerController(null);
+            leaveButton.gameObject.SetActive(false);
+            cameraController.SwitchTarget();
+
+            if (!isServer)
+                currentStationController.SetStationPlayerControllerCMD(null);
+            else
+                currentStationController.SetStationPlayerController(null);
+
+            currentStationController = null;
+        }
 
         private void OnTriggerEnter2D(Collider2D collider)
         {

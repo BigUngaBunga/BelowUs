@@ -29,12 +29,14 @@ namespace Tests
             {
                 string stationName = station.gameObject.name;
                 string errorMsg = stationName + " is missing a ";
+                /*
                 Assert.IsNotNull(station.Controller, errorMsg + "Camera Controller!");
-                Assert.IsNotNull(station.LeaveButton, errorMsg + "Leave Button!");
+                //Assert.IsNotNull(station.LeaveButton, errorMsg + "Leave Button!");
 
                 Assert.IsFalse(station.SwitchTag == "", errorMsg + "SwitchTag!");
 
                 Assert.IsTrue(station.CompareTag("Station"), stationName + " does not have a station tag!");
+                */
             }
         }
 

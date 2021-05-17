@@ -10,14 +10,20 @@ namespace BelowUs
         [SerializeField] private Vector3 offsetPlayer;
         [SerializeField] private Vector3 offsetSubmarine;
         [SerializeField] private bool followPlayer;
+        private Camera cameraa;
 
         [Range(2, 16)]
         [SerializeField] private float smoothFactor;
+
+        [SerializeField] float submarineCameraSize = 14;
+        protected float playerCameraSize;
 
         private void Start()
         {
             InvokeRepeating(nameof(FindPlayer), 0.25f, 0.25f);
             InvokeRepeating(nameof(FindSubmarine), 0.25f, 0.25f);
+            cameraa = GetComponentInParent<Camera>();
+            playerCameraSize = cameraa.orthographicSize;
         }
 
         private void FindPlayer()
@@ -54,12 +60,10 @@ namespace BelowUs
 
         private Vector3 CalculateTargetPosition() => followPlayer ? player.position + offsetPlayer : submarine.position + offsetSubmarine;
 
-        public void SwitchTarget(string targetTag)
+        public void SwitchTarget()
         {
-            if (targetTag == ReferenceManager.Singleton.LocalPlayerTag)
-                followPlayer = true;
-            else if (targetTag == ReferenceManager.Singleton.SubmarineTag)
-                followPlayer = false;
+            followPlayer = !followPlayer;
+            cameraa.orthographicSize = followPlayer ? playerCameraSize : submarineCameraSize;
         }
     }
 }

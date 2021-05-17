@@ -8,11 +8,12 @@ namespace BelowUs
     {
         [SerializeField] [MustBeAssigned] protected Button controlsButton;
 
-        protected override void SetButtonActiveStatus(bool activate)
-        {
-            base.SetButtonActiveStatus(activate);
+        
+        //protected override void SetButtonActiveStatus(bool activate)
+        //{
+        //    base.SetButtonActiveStatus(activate);
 
-            controlsButton.gameObject.SetActive(activate);
-        }
+        //    controlsButton.gameObject.SetActive(activate);
+        //}
     }
 }

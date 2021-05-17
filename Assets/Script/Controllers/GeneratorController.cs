@@ -14,6 +14,7 @@ namespace BelowUs
             generatorUI.gameObject.SetActive(false);
         }
 
+        /*
         public override void Enter(NetworkIdentity player)
         {
             base.Enter(player);
@@ -31,6 +32,7 @@ namespace BelowUs
         {
             // Method intentionally left empty.
         }
+        */
     }
 }
 
