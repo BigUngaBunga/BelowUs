@@ -8,15 +8,19 @@ namespace BelowUs
         [SerializeField] private StationController subController;
         [SerializeField] private GameObject stations;
 
+        [SyncVar] private float subSpeed;
+        [SyncVar] private bool isFlipped;
+
+
         private Rigidbody2D rb2D;
         private SpriteRenderer spriteRenderer;
         private ShipResource enginePower;
         private FlipSubmarineComponent[] submarineComponents;
-        private float subSpeed;
+        
         private float submarineRotationSpeed;
         private float angularRetardation, lateralRetardation;
 
-        public bool IsFlipped { get; private set; }
+        public bool IsFlipped => isFlipped;
         private bool MoveSubmarine => subController.StationPlayerController != null && NetworkClient.localPlayer == subController.StationPlayerController;
         private bool EngineIsRunning => enginePower.CurrentValue > 0;
         
@@ -38,78 +42,97 @@ namespace BelowUs
             float rotation = Rotate();
             float speed = Move();
 
-            if (isServer)
-                HandleMovementAndRotation(rotation, speed);
-            else
-                CommandHandleMovementAndRotation(rotation, speed);
+            if (MoveSubmarine && EngineIsRunning)
+            {
+                if (isServer)
+                    HandleMovementAndRotation(rotation, speed);
+                else
+                    CommandHandleMovementAndRotation(rotation, speed);
+            }
+
+            if ((isServer && subController.StationPlayerController == null) || (isServer && MoveSubmarine))
+                MovementAndRotationRetardation(speed);
+            else if (MoveSubmarine)
+                CommandMovementAndRotationRetardation(speed);
         }
 
         private void Update()
         {
             if (EngineIsRunning && MoveSubmarine)
-                FlipSubmarine();
+            {
+                if (isServer)
+                    FlipSubmarine();
+                else
+                    CommandFlipSubmarine();
+            }
+                
         }
 
         private float Rotate()
         {
-            if (MoveSubmarine && EngineIsRunning)
-            {
-                if ((transform.rotation.eulerAngles.z <= 90 || transform.rotation.eulerAngles.z >= 100) && (Input.GetButton("ReverseRight") || Input.GetButton("RotateRight")))
-                    return submarineRotationSpeed;
-                    //transform.Rotate(0, 0, submarineRotationSpeed);
+            if ((transform.rotation.eulerAngles.z <= 90 || transform.rotation.eulerAngles.z >= 100) && (Input.GetButton("ReverseRight") || Input.GetButton("RotateRight")))
+                return submarineRotationSpeed;
 
-                if ((transform.rotation.eulerAngles.z <= 100 || transform.rotation.eulerAngles.z >= 270) && (Input.GetButton("ReverseLeft") || Input.GetButton("RotateLeft")))
-                    return -submarineRotationSpeed;
-                    //transform.Rotate(0, 0, -submarineRotationSpeed);
-            }
+            if ((transform.rotation.eulerAngles.z <= 100 || transform.rotation.eulerAngles.z >= 270) && (Input.GetButton("ReverseLeft") || Input.GetButton("RotateLeft")))
+                return -submarineRotationSpeed;
             return 0;
         }
 
         private float Move()
         {
-            if (MoveSubmarine)
-            {
-                if (EngineIsRunning && Input.GetButton("MoveForward"))
-                    return subSpeed;
-                //rb2D.AddForce(transform.right * subSpeed, ForceMode2D.Force);
-                if (EngineIsRunning && Input.GetButton("MoveBackwards"))
-                    return -subSpeed;
-                    //rb2D.AddForce(-transform.right * subSpeed, ForceMode2D.Force);
-            }
+            if (EngineIsRunning && Input.GetButton("MoveForward"))
+                return subSpeed;
+            if (EngineIsRunning && Input.GetButton("MoveBackwards"))
+                return -subSpeed;
             return 0;
         }
-
-        [Command]
-        private void CommandHandleMovementAndRotation(float rotation, float speed) => HandleMovementAndRotation(rotation, speed);
 
         [Server] 
         private void HandleMovementAndRotation(float rotation, float speed)
         {
-            transform.Rotate(0, 0, rotation);
-            rb2D.AddForce(transform.right * speed, ForceMode2D.Force);
-            MovementAndRotationRetardation();
+            if (rotation != 0)
+                transform.Rotate(0, 0, rotation);
+                
+            if (speed != 0)
+                rb2D.AddForce(transform.right * speed, ForceMode2D.Force);
         }
+        
+        [Command]
+        private void CommandHandleMovementAndRotation(float rotation, float speed) => HandleMovementAndRotation(rotation, speed);
 
+        //TODO synchronize submarine flip
+        [Server]
         private void FlipSubmarine()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                IsFlipped = !IsFlipped;
-                spriteRenderer.flipX = IsFlipped;
-                subSpeed *= -1;              
-                transform.rotation = Quaternion.Euler(new Vector3(0, 0, -transform.rotation.eulerAngles.z));
-                foreach (FlipSubmarineComponent component in submarineComponents)
-                    component.FlipObject(IsFlipped);
+                isFlipped = !IsFlipped;
+                subSpeed *= -1;
+                FlipSubmarineOnAllClients();
             }
         }
 
-        //TODO Try calculating before Server and Command methods
-        private void MovementAndRotationRetardation()
+        [ClientRpc]
+        private void FlipSubmarineOnAllClients()
         {
-            rb2D.velocity = !EngineIsRunning || (!Input.GetButton("MoveForward") && !Input.GetButton("MoveBackwards"))
-                ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation))
-                : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation / 10));
+            spriteRenderer.flipX = IsFlipped;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, -transform.rotation.eulerAngles.z));
+            //foreach (FlipSubmarineComponent component in submarineComponents)
+            //    component.FlipObject(IsFlipped);
+        }
+
+        [Command]
+        private void CommandFlipSubmarine() => FlipSubmarine();
+
+        [Server]
+        private void MovementAndRotationRetardation(float speed)
+        {
+            rb2D.velocity = EngineIsRunning && speed != 0
+                ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation / 10))
+                : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation));
             rb2D.angularVelocity = Mathf.Lerp(rb2D.angularVelocity, 0, angularRetardation);
         }
+        [Command]
+        private void CommandMovementAndRotationRetardation(float speed) => MovementAndRotationRetardation(speed);
     }
 }
