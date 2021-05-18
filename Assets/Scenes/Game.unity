@@ -2322,6 +2322,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7561276552637839950, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: syncInterval
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4893775870893433605, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: sceneId
       value: 286861827
@@ -2366,6 +2370,10 @@ PrefabInstance:
       propertyPath: sceneId
       value: 357924518
       objectReference: {fileID: 0}
+    - target: {fileID: 842402647960424385, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1099039861337459201, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
       value: 
@@ -2397,6 +2405,10 @@ PrefabInstance:
     - target: {fileID: 2347748776137787141, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: restrictionRight
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2620596892406471355, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2668134454619895889, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_TagString
@@ -2970,6 +2982,10 @@ PrefabInstance:
       propertyPath: cannonController
       value: 
       objectReference: {fileID: 490275432}
+    - target: {fileID: 2957942844893930968, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3046222349990165124, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: sceneId
       value: 2406843056
@@ -3138,6 +3154,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5533310383823751582, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5616318360865232370, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
       value: 
@@ -3161,6 +3181,10 @@ PrefabInstance:
     - target: {fileID: 7296826839282870405, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7618074956497171743, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9026703569805877482, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_SortingLayer
@@ -3193,6 +3217,16 @@ Transform:
 --- !u!1 &473132175 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5089922520036955163, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+  m_PrefabInstance: {fileID: 473132173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &473132176 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4232682788419776318, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+  m_PrefabInstance: {fileID: 473132173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &473132177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5089922518502821933, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
   m_PrefabInstance: {fileID: 473132173}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &490275432 stripped
@@ -4411,7 +4445,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9031905692841804919, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
   m_PrefabInstance: {fileID: 473132173}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 473132177}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d62a2e18d9894240ab63acdd9839419, type: 3}
@@ -7431,6 +7465,10 @@ PrefabInstance:
       value: FloodlightControllerStation
       objectReference: {fileID: 0}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: debug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: playerTag
       value: LocalPlayer
       objectReference: {fileID: 0}
@@ -7443,8 +7481,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1851433524}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
+      propertyPath: controlObject
+      value: 
+      objectReference: {fileID: 473132176}
+    - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: giveAuthority
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2101831433037438278, guid: 3371387553b842d46a2be03566c78d80, type: 3}
       propertyPath: controlsButton
@@ -12248,7 +12290,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.35
+  m_fontSize: 22.05
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -13560,6 +13602,14 @@ PrefabInstance:
       propertyPath: leaveButton
       value: 
       objectReference: {fileID: 1851433524}
+    - target: {fileID: 9015820732172522023, guid: 01eb0f14aca58f849b439f1cde6689e2, type: 3}
+      propertyPath: controlObject
+      value: 
+      objectReference: {fileID: 473132177}
+    - target: {fileID: 9015820732172522023, guid: 01eb0f14aca58f849b439f1cde6689e2, type: 3}
+      propertyPath: giveAuthority
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9015820732172522023, guid: 01eb0f14aca58f849b439f1cde6689e2, type: 3}
       propertyPath: controlsButton
       value: 

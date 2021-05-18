@@ -23,19 +23,29 @@ namespace BelowUs
                 InvokeRepeating(nameof(ToggleFloodlight), 0.1f, updateTimer);
         }
 
-        void Update() => RotateFloodlight();
-
-        private void RotateFloodlight()
+        void Update()
         {
-            if (IsOccupied && NetworkClient.localPlayer.gameObject == floodlightController.StationPlayerController)
+            if (IsOccupied && NetworkClient.localPlayer == floodlightController.StationPlayerController)
             {
-                Vector2 mousePosition;
-                float angle;
-                mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                angle = Mathf.Atan2(mousePosition.y - transform.position.y, mousePosition.x - transform.position.x);
-                transform.rotation = Quaternion.Euler(0, 0, (Mathf.Rad2Deg * angle) + 90);
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                float angle = Mathf.Atan2(mousePosition.y - transform.position.y, mousePosition.x - transform.position.x);
+                Quaternion rotation = Quaternion.Euler(0, 0, (Mathf.Rad2Deg * angle) + 90);
+
+                if (isServer)
+                    RotateFloodlight(rotation);
+                else
+                {
+                    CommandRotateFloodlight(rotation);
+                    Debug.Log(rotation.ToString());
+                }
             }
         }
+
+        [Command] 
+        private void CommandRotateFloodlight(Quaternion rotation) => RotateFloodlight(rotation);
+
+        [Server] 
+        private void RotateFloodlight(Quaternion rotation) => transform.rotation = rotation;
 
         [Server]
         private void ToggleFloodlight() => spotLight.intensity = IsOccupied ? intensity : 0;

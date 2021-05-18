@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BelowUs
 {
-    public class SubmarineMovement : MonoBehaviour
+    public class SubmarineMovement : NetworkBehaviour
     {
         [SerializeField] private StationController subController;
         [SerializeField] private GameObject stations;
@@ -35,12 +35,13 @@ namespace BelowUs
 
         private void FixedUpdate()
         {
-            if (MoveSubmarine)
-            {
-                HandleRotation();
-                HandleLateralMovement();
-                StopCollisionAngularMomentum();
-            }
+            float rotation = Rotate();
+            float speed = Move();
+
+            if (isServer)
+                HandleMovementAndRotation(rotation, speed);
+            else
+                CommandHandleMovementAndRotation(rotation, speed);
         }
 
         private void Update()
@@ -49,29 +50,44 @@ namespace BelowUs
                 FlipSubmarine();
         }
 
-        private void HandleRotation()
+        private float Rotate()
         {
-            if (EngineIsRunning)
+            if (MoveSubmarine && EngineIsRunning)
             {
                 if ((transform.rotation.eulerAngles.z <= 90 || transform.rotation.eulerAngles.z >= 100) && (Input.GetButton("ReverseRight") || Input.GetButton("RotateRight")))
-                    transform.Rotate(0, 0, submarineRotationSpeed);
+                    return submarineRotationSpeed;
+                    //transform.Rotate(0, 0, submarineRotationSpeed);
 
                 if ((transform.rotation.eulerAngles.z <= 100 || transform.rotation.eulerAngles.z >= 270) && (Input.GetButton("ReverseLeft") || Input.GetButton("RotateLeft")))
-                    transform.Rotate(0, 0, -submarineRotationSpeed);
+                    return -submarineRotationSpeed;
+                    //transform.Rotate(0, 0, -submarineRotationSpeed);
             }
-            
+            return 0;
         }
 
-        private void HandleLateralMovement()
+        private float Move()
         {
-            if (EngineIsRunning && Input.GetButton("MoveForward"))
-                rb2D.AddForce(transform.right * subSpeed, ForceMode2D.Force);
-            if (EngineIsRunning && Input.GetButton("MoveBackwards"))
-                rb2D.AddForce(-transform.right * subSpeed, ForceMode2D.Force);
+            if (MoveSubmarine)
+            {
+                if (EngineIsRunning && Input.GetButton("MoveForward"))
+                    return subSpeed;
+                //rb2D.AddForce(transform.right * subSpeed, ForceMode2D.Force);
+                if (EngineIsRunning && Input.GetButton("MoveBackwards"))
+                    return -subSpeed;
+                    //rb2D.AddForce(-transform.right * subSpeed, ForceMode2D.Force);
+            }
+            return 0;
+        }
 
-            rb2D.velocity = !EngineIsRunning || (!Input.GetButton("MoveForward") && !Input.GetButton("MoveBackwards"))
-                ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation))
-                : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation / 10));
+        [Command]
+        private void CommandHandleMovementAndRotation(float rotation, float speed) => HandleMovementAndRotation(rotation, speed);
+
+        [Server] 
+        private void HandleMovementAndRotation(float rotation, float speed)
+        {
+            transform.Rotate(0, 0, rotation);
+            rb2D.AddForce(transform.right * speed, ForceMode2D.Force);
+            MovementAndRotationRetardation();
         }
 
         private void FlipSubmarine()
@@ -87,6 +103,13 @@ namespace BelowUs
             }
         }
 
-        private void StopCollisionAngularMomentum() => rb2D.angularVelocity = Mathf.Lerp(rb2D.angularVelocity, 0, angularRetardation);
+        //TODO Try calculating before Server and Command methods
+        private void MovementAndRotationRetardation()
+        {
+            rb2D.velocity = !EngineIsRunning || (!Input.GetButton("MoveForward") && !Input.GetButton("MoveBackwards"))
+                ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation))
+                : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation / 10));
+            rb2D.angularVelocity = Mathf.Lerp(rb2D.angularVelocity, 0, angularRetardation);
+        }
     }
 }
