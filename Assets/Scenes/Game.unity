@@ -2353,8 +2353,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -7561276552637839950, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: syncInterval
+      propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7561276552637839950, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: syncInterval
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: -4893775870893433605, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: sceneId
@@ -2400,9 +2404,9 @@ PrefabInstance:
       propertyPath: sceneId
       value: 357924518
       objectReference: {fileID: 0}
-    - target: {fileID: 842402647960424385, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+    - target: {fileID: 403457489280485301, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1099039861337459201, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
@@ -2434,10 +2438,6 @@ PrefabInstance:
       objectReference: {fileID: 1677299212}
     - target: {fileID: 2347748776137787141, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: restrictionRight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2620596892406471355, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2668134454619895889, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
@@ -3012,10 +3012,6 @@ PrefabInstance:
       propertyPath: cannonController
       value: 
       objectReference: {fileID: 490275432}
-    - target: {fileID: 2957942844893930968, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3046222349990165124, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: sceneId
       value: 2406843056
@@ -3150,7 +3146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821937, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_AngularDrag
-      value: 0.1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5089922520036955164, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3184,10 +3180,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5533310383823751582, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5616318360865232370, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
       value: 
@@ -3212,9 +3204,9 @@ PrefabInstance:
       propertyPath: cannonController
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 7618074956497171743, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
-      propertyPath: m_Enabled
-      value: 1
+    - target: {fileID: 7748217223699142366, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: syncInterval
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9026703569805877482, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_SortingLayer
@@ -12281,7 +12273,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.05
+  m_fontSize: 21.5
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1

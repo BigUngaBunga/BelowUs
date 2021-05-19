@@ -28,7 +28,7 @@ namespace BelowUs
             spriteRenderer = GetComponent<SpriteRenderer>();
             submarineComponents = GetComponentsInChildren<FlipSubmarineComponent>();
             subSpeed = 40;
-            submarineRotationSpeed = 0.75f;
+            submarineRotationSpeed = 2f;
             angularRetardation = 0.033f;
             lateralRetardation = 0.040f;
         }
@@ -47,13 +47,14 @@ namespace BelowUs
             }
 
             if ((isServer && subController.StationPlayerController == null) || (isServer && MoveSubmarine))
-                MovementAndRotationRetardation(speed);
+                MovementRetardation(speed);
             else if (MoveSubmarine)
-                CommandMovementAndRotationRetardation(speed);
+                CommandMovementRetardation(speed);
         }
 
         private void Update() => HandleSubmarineFlip();
 
+        //TODO fixa rotationsproblem för klienter
         private float Rotate()
         {
             if ((transform.rotation.eulerAngles.z <= 90 || transform.rotation.eulerAngles.z >= 100) && (Input.GetButton("ReverseRight") || Input.GetButton("RotateRight")))
@@ -77,8 +78,8 @@ namespace BelowUs
         private void HandleMovementAndRotation(float rotation, float speed)
         {
             if (rotation != 0)
-                transform.Rotate(0, 0, rotation);
-                
+                rb2D.angularVelocity += rotation;
+
             if (speed != 0)
                 rb2D.AddForce(transform.right * speed, ForceMode2D.Force);
         }
@@ -115,14 +116,13 @@ namespace BelowUs
         private void CommandFlipSubmarine() => FlipSubmarine();
 
         [Server]
-        private void MovementAndRotationRetardation(float speed)
+        private void MovementRetardation(float speed)
         {
             rb2D.velocity = EngineIsRunning && speed != 0
                 ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation / 10))
                 : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation));
-            rb2D.angularVelocity = Mathf.Lerp(rb2D.angularVelocity, 0, angularRetardation);
         }
         [Command]
-        private void CommandMovementAndRotationRetardation(float speed) => MovementAndRotationRetardation(speed);
+        private void CommandMovementRetardation(float speed) => MovementRetardation(speed);
     }
 }
