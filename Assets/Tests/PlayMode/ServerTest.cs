@@ -16,7 +16,7 @@ public class ServerTest
     {
         var Obj = new GameObject();
         var networkMgr = Obj.AddComponent<NetworkManager>();
-        var hud = Obj.AddComponent<NetworkManagerHudCustom>();
+        var hud = Obj.AddComponent<NetworkManagerHudCustom2>();
         hud.HostClicked();
 
         yield return new WaitForSeconds(1);

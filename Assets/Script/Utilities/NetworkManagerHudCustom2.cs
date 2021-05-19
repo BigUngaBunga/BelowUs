@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace BelowUs
 {
-    public class NetworkManagerHudCustom : MonoBehaviour
+    public class NetworkManagerHudCustom2 : MonoBehaviour
     {
         [Header("References")]
         private TMP_InputField ipText;
