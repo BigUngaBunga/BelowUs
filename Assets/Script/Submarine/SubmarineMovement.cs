@@ -7,11 +7,7 @@ namespace BelowUs
     {
         [SerializeField] private StationController subController;
         [SerializeField] private GameObject stations;
-
-        [SyncVar] private float subSpeed;
-        [SyncVar] private bool isFlipped;
-
-
+        private float subSpeed;
         private Rigidbody2D rb2D;
         private SpriteRenderer spriteRenderer;
         private ShipResource enginePower;
@@ -20,7 +16,7 @@ namespace BelowUs
         private float submarineRotationSpeed;
         private float angularRetardation, lateralRetardation;
 
-        public bool IsFlipped => isFlipped;
+        public bool IsFlipped { get; private set; }
         private bool MoveSubmarine => subController.StationPlayerController != null && NetworkClient.localPlayer == subController.StationPlayerController;
         private bool EngineIsRunning => enginePower.CurrentValue > 0;
         
@@ -56,17 +52,7 @@ namespace BelowUs
                 CommandMovementAndRotationRetardation(speed);
         }
 
-        private void Update()
-        {
-            if (EngineIsRunning && MoveSubmarine)
-            {
-                if (isServer)
-                    FlipSubmarine();
-                else
-                    CommandFlipSubmarine();
-            }
-                
-        }
+        private void Update() => HandleSubmarineFlip();
 
         private float Rotate()
         {
@@ -100,25 +86,29 @@ namespace BelowUs
         [Command]
         private void CommandHandleMovementAndRotation(float rotation, float speed) => HandleMovementAndRotation(rotation, speed);
 
-        //TODO synchronize submarine flip
-        [Server]
-        private void FlipSubmarine()
+        private void HandleSubmarineFlip()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (EngineIsRunning && MoveSubmarine && Input.GetKeyDown(KeyCode.Space))
             {
-                isFlipped = !IsFlipped;
-                subSpeed *= -1;
-                FlipSubmarineOnAllClients();
+                if (isServer)
+                    FlipSubmarine();
+                else
+                    CommandFlipSubmarine();
             }
         }
+
+        [Server]
+        private void FlipSubmarine() => FlipSubmarineOnAllClients();
 
         [ClientRpc]
         private void FlipSubmarineOnAllClients()
         {
+            IsFlipped = !IsFlipped;
+            subSpeed *= -1;
             spriteRenderer.flipX = IsFlipped;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, -transform.rotation.eulerAngles.z));
-            //foreach (FlipSubmarineComponent component in submarineComponents)
-            //    component.FlipObject(IsFlipped);
+            foreach (FlipSubmarineComponent component in submarineComponents)
+                component.FlipObject(IsFlipped);
         }
 
         [Command]

@@ -20,6 +20,7 @@ namespace BelowUs
 
         [SerializeField][Min(5)] int numberOfEnemiesToGenerate;
         [SerializeReference] GameObject bobbaPrefab, spookPrefab, clonkerPrefab, popperPrefab;
+        private Transform parentMap;
 
         private Dictionary<EnemyType, int> enemyTypes = new Dictionary<EnemyType, int>();
         [SerializeField][Min (1)] private int spawnRateBobba, spawnRateSpook, spawnRateClonker, spawnRatePopper;
@@ -35,6 +36,8 @@ namespace BelowUs
 
         public IEnumerator GenerateEnemies(Random random, int[,] map, int squareSize, int openTile)
         {
+            parentMap = GameObject.Find("Enemies").transform;
+
             this.random = random;
             this.map = map;
             this.openTile = openTile;
@@ -98,30 +101,16 @@ namespace BelowUs
 
         private void GenerateEnemies(Vector2 position)
         {
-            GameObject objectToInstantiate;
-            switch (PickWeightedEnemyType())
+            GameObject objectToInstantiate = PickWeightedEnemyType() switch
             {
-                case EnemyType.Booba:
-                    objectToInstantiate = bobbaPrefab;
-                    break;
-                case EnemyType.Spook:
-                    objectToInstantiate = spookPrefab;
-                    break;
-                case EnemyType.Clonker:
-                    objectToInstantiate = clonkerPrefab;
-                    break;
-                case EnemyType.Popper:
-                    objectToInstantiate = popperPrefab;
-                    break;
-                default:
-                    objectToInstantiate = bobbaPrefab;
-                    break;
-
-            }
-
-            objectToInstantiate = Instantiate(objectToInstantiate, position, Quaternion.identity);
+                EnemyType.Booba => bobbaPrefab,
+                EnemyType.Spook => spookPrefab,
+                EnemyType.Clonker => clonkerPrefab,
+                EnemyType.Popper => popperPrefab,
+                _ => bobbaPrefab,
+            };
+            objectToInstantiate = Instantiate(objectToInstantiate, position, Quaternion.identity, parentMap);
             NetworkServer.Spawn(objectToInstantiate);
-
         }
 
         private EnemyType PickWeightedEnemyType()

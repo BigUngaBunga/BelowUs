@@ -74,8 +74,7 @@ namespace Tests
             MapHandler[] mapHandlers = Object.FindObjectsOfType<MapHandler>();
             Assert.IsTrue(mapHandlers.Length > 0, "There is no map handler in the scene!");
             Assert.IsTrue(mapHandlers.Length < 2, "There are more than one map handlers in the scene!");
-
-            Assert.IsNotNull(mapHandlers[0].MapPrefab, "The map handler is missing a map prefab!");
+            Assert.IsNotNull(mapHandlers[0].ReefPrefab, "The map handler is missing a map prefab!");
         }
 
         [Test] public void SubmarineInsideTests()

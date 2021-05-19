@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 namespace BelowUs
 {
@@ -25,8 +26,10 @@ namespace BelowUs
         [Range(1, 10)]
         [SerializeField] protected byte timesToSmoothMap;
 
-        public IEnumerator GenerateReef(MapHandler mapHandler, Vector2 mapSize, int squareSize)
+        public IEnumerator GenerateReef(MapHandler mapHandler, Vector2 mapSize, int squareSize, Random random)
         {
+            this.random = random;
+
             yield return StartCoroutine(GenerateNoiseMap(mapSize));
 
             MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
@@ -45,6 +48,7 @@ namespace BelowUs
         protected IEnumerator GenerateNoiseMap(Vector2 mapSize)
         {
             yield return Wait("Started counting");
+            RandomizeMapVariables();
             InitiateMap(mapSize);
             AddBorderToNoiseMap(borderThickness);
             SmoothNoiseMap(timesToSmoothMap);
@@ -56,9 +60,8 @@ namespace BelowUs
             yield return StartCoroutine(ClearPathways());
         }
 
-        protected override void RandomizeMapVariables()
+        protected void RandomizeMapVariables()
         {
-            base.RandomizeMapVariables();
             openWaterPercentage = random.Next(minimumOpenWaterPercentage, maximumOpenWaterPercentage);
             enclaveRemovalSize = random.Next((int)minimumEnclaveRemovalSize, (int)maximumEnclaveRemovalSize);
         }

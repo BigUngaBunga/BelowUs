@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
+using Mirror;
 using Random = System.Random;
 
 namespace BelowUs
 {
-    public class ResourceGenerator : MonoBehaviour
+    public class ResourceGenerator : NetworkBehaviour
     {
         private enum ResourceType
         {
@@ -27,6 +28,9 @@ namespace BelowUs
 
         public IEnumerator GenerateResources(Random random, int[,] map, int squareSize, int openTile)
         {
+            goldParent = GameObject.Find("Gold").transform;
+            scrapParent = GameObject.Find("Scrap").transform;
+
             this.random = random;
             this.map = map;
             this.openTile = openTile;
@@ -93,7 +97,8 @@ namespace BelowUs
             };
 
             Transform parent = resourceToInstantiate == ResourceType.Gold ? goldParent : scrapParent;
-            Instantiate(objectToInstantiate, position, Quaternion.identity, parent);
+            GameObject resource = Instantiate(objectToInstantiate, position, Quaternion.identity, parent);
+            NetworkServer.Spawn(resource);
         }
 
         private ResourceType PickWeightedResourceType()

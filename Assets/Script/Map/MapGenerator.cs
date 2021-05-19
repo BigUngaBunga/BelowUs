@@ -105,15 +105,7 @@ namespace BelowUs
             mapWidth = (int)mapSize.x;
             mapHeight = (int)mapSize.y;
             noiseMap = new int[mapWidth, mapHeight];
-            RandomizeMapVariables();
             FillMapWithNoise();
-        }
-
-        protected virtual void RandomizeMapVariables()
-        {
-            if (useRandomSeed)
-                seed = Environment.TickCount.ToString();
-            random = new Random(seed.GetHashCode());
         }
 
         protected virtual void FillMapWithNoise()
