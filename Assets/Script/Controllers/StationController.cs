@@ -65,7 +65,7 @@ namespace BelowUs
                     if (debug)
                         Debug.Log("Assigned client authority to player: " + player.gameObject.name + "!");
 
-                    controlObjNetworkIdentity.AssignClientAuthority(StationPlayerController.connectionToClient);
+                    controlObjNetworkIdentity.AssignClientAuthority(stationPlayerController.connectionToClient);
                 }
             }                
         }

@@ -17,7 +17,7 @@ namespace BelowUs
         private float angularRetardation, lateralRetardation;
 
         public bool IsFlipped { get; private set; }
-        private bool MoveSubmarine => subController.StationPlayerController != null && NetworkClient.localPlayer == subController.StationPlayerController;
+        private bool MoveSubmarine => subController.IsOccupied && NetworkClient.localPlayer == subController.StationPlayerController;
         private bool EngineIsRunning => enginePower.CurrentValue > 0;
         
         private void Start()
@@ -46,7 +46,7 @@ namespace BelowUs
                     CommandHandleMovementAndRotation(rotation, speed);
             }
 
-            if ((isServer && subController.StationPlayerController == null) || (isServer && MoveSubmarine))
+            if ((isServer && !subController.IsOccupied) || (isServer && MoveSubmarine))
                 MovementRetardation(speed);
             else if (MoveSubmarine)
                 CommandMovementRetardation(speed);

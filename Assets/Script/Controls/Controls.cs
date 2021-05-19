@@ -15,7 +15,7 @@ namespace BelowUs
 
         private NetworkIdentity identity;
 
-        [SerializeField] private StationController currentStationController;
+        [SerializeField] private NetworkBehaviour currentStationController;
         [SerializeField] private CameraController cameraController;
 
         private bool debug = true;
@@ -26,8 +26,8 @@ namespace BelowUs
             identity = GetComponent<NetworkIdentity>();
             cameraController = FindObjectOfType<CameraController>();
             leaveButton = GameObject.Find("UI").transform.Find("LeaveButton").GetComponent<Button>();
-            leaveButton.onClick.AddListener(LeftStation);
-                
+            leaveButton.onClick.AddListener(LeftController);
+
             PlayerAction action = new PlayerAction();
             playerAction = action.Player;
 
@@ -38,7 +38,7 @@ namespace BelowUs
 
         public void OnStationClick(InputAction.CallbackContext value)
         {
-            if (currentStation == null) 
+            if (currentStation == null)
             {
                 if (debug)
                     Debug.Log(nameof(OnStationClick) + " returned because " + nameof(currentStation) + " is null!");
@@ -48,14 +48,20 @@ namespace BelowUs
 
             StationController controller = currentStation.GetComponent<StationController>();
 
+            if (controller != null)
+                HandleStationController(controller);
+            else
+                HandleGeneratorController(currentStation.GetComponent<GeneratorController>());
+        }
+
+        private void HandleStationController(StationController controller)
+        {
             if (debug && PauseMenu.IsOpen)
                 Debug.Log(nameof(OnStationClick) + " returned because of " + nameof(PauseMenu.IsOpen) + " is open!");
-            else if (debug && controller == null)
-                Debug.Log(nameof(OnStationClick) + " returned because " + nameof(controller) + " is null");
-            else if (debug && controller.StationPlayerController != null)
+            else if (debug && controller.IsOccupied)
                 Debug.Log(nameof(OnStationClick) + " returned because " + nameof(controller.StationPlayerController) + " is not null");
 
-            if (!PauseMenu.IsOpen && controller != null && controller.StationPlayerController == null)
+            if (!PauseMenu.IsOpen && !controller.IsOccupied)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
 
@@ -69,19 +75,49 @@ namespace BelowUs
                 leaveButton.gameObject.SetActive(true);
                 cameraController.SwitchTarget();
 
-                playerAction.LeaveStation.performed += LeftStationButton;
+                playerAction.LeaveStation.performed += LeftStationControllerBtn;
                 PauseMenu.IsEnabled = false;
 
                 if (isServer)
-                    currentStationController.SetStationPlayerController(identity);
+                    controller.SetStationPlayerController(identity);
                 else if (isClient)
-                    currentStationController.SetStationPlayerControllerCMD(identity);
+                    controller.SetStationPlayerControllerCMD(identity);
             }
         }
 
-        private void LeftStationButton(InputAction.CallbackContext value) => LeftStation();
+        private void HandleGeneratorController(GeneratorController controller)
+        {
+            if (!PauseMenu.IsOpen && !controller.IsOccupied)
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
 
-        private void LeftStation()
+                if (identity == null)
+                    Debug.LogError(nameof(identity) + " is null!");
+
+                currentStationController = controller;
+                leaveButton.gameObject.SetActive(true);
+
+                playerAction.LeaveStation.performed += LeftGeneratorControllerBtn;
+                PauseMenu.IsEnabled = false;
+
+                controller.Enter(identity);
+            }
+        }
+
+        private void LeftController()
+        {
+            if (currentStationController == null)
+                return;
+
+            if (currentStationController.GetType() == typeof(StationController))
+                LeftStationController();
+            else
+                LeftGeneratorController();
+        }
+
+        private void LeftStationControllerBtn(InputAction.CallbackContext value) => LeftStationController();
+
+        private void LeftStationController()
         {
             if (currentStationController == null)
                 return;
@@ -89,14 +125,30 @@ namespace BelowUs
             leaveButton.gameObject.SetActive(false);
             cameraController.SwitchTarget();
 
-            playerAction.LeaveStation.performed -= LeftStationButton;
+            playerAction.LeaveStation.performed -= LeftStationControllerBtn;
             PauseMenu.IsEnabled = true;
 
-            if (!isServer)
-                currentStationController.SetStationPlayerControllerCMD(null);
-            else
-                currentStationController.SetStationPlayerController(null);
+            StationController station = (StationController)currentStationController;
 
+            if (!isServer)
+                station.SetStationPlayerControllerCMD(null);
+            else
+                station.SetStationPlayerController(null);
+        }
+
+        private void LeftGeneratorControllerBtn(InputAction.CallbackContext value) => LeftGeneratorController();
+
+        private void LeftGeneratorController()
+        {
+            if (currentStationController == null)
+                return;
+
+            leaveButton.gameObject.SetActive(false);
+
+            playerAction.LeaveStation.performed -= LeftGeneratorControllerBtn;
+            PauseMenu.IsEnabled = true;
+
+            ((GeneratorController)currentStationController).Leave();
             currentStationController = null;
         }
 

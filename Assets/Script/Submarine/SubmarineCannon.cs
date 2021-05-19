@@ -93,7 +93,7 @@ namespace BelowUs
 
         [Server] private void RotateCannon(float angleDeg) => transform.rotation = Quaternion.Euler(0, 0, angleDeg + rotationOffset);
 
-        private bool IsCannonActive() => cannonController.StationPlayerController != null && NetworkClient.localPlayer == cannonController.StationPlayerController;
+        private bool IsCannonActive() => cannonController.IsOccupied && NetworkClient.localPlayer == cannonController.StationPlayerController;
 
         private void ToggleSpotlight() => spotlight.intensity = IsCannonActive()? intensity : 0;
 

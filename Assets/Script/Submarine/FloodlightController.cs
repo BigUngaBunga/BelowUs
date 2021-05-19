@@ -10,7 +10,7 @@ namespace BelowUs
         [SerializeField] private float intensity = 2;
         private SubmarineMovement submarineMovement;
         private SpriteRenderer spriteRenderer;
-        private bool IsOccupied => floodlightController.StationPlayerController != null;
+        private bool IsOccupied => floodlightController.IsOccupied;
         private Light spotLight;
         void Start()
         {
