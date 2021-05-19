@@ -80,7 +80,7 @@ SpriteRenderer:
   m_Size: {x: 0.39, y: 0.29}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &546363066215909921
@@ -313,7 +313,7 @@ SpriteRenderer:
   m_Size: {x: 0.45, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1795884474268203599
@@ -546,7 +546,7 @@ SpriteRenderer:
   m_Size: {x: 0.49, y: 0.46}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5527722108883158522
@@ -703,12 +703,10 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   chasingRange: 70
-  attackingRange: 30
+  FiringRange: 0
   collisionDamage: -10
-  moveSpeedPatrolling: 10
   moveSpeedChasing: 10
-  maxPatrolRange: 100
-  targetGameObject: {fileID: 0}
+  hullHP: {fileID: 0}
 --- !u!50 &6450413785958905961
 Rigidbody2D:
   serializedVersion: 4
@@ -791,3 +789,4 @@ MonoBehaviour:
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: e21fc677aa0051249959282872599a22, type: 2}
   debug: 0
+  nullify: 0
