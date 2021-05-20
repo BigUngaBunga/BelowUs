@@ -7,10 +7,10 @@ namespace BelowUs
     {
         private Canvas generatorUI;
 
-        [SerializeField] [SyncVar] private NetworkIdentity stationPlayerController = null;
+        [SerializeField] [SyncVar] protected NetworkIdentity stationPlayerController = null;
         [SerializeField] public bool IsOccupied => stationPlayerController != null;
 
-        private void Start()
+        protected virtual void Start()
         {
             generatorUI = GetComponentInChildren<Canvas>(true);
 
@@ -24,7 +24,7 @@ namespace BelowUs
         
         public void Enter(NetworkIdentity player)
         {
-            generatorUI.gameObject.SetActive(true);
+            SetUIActive(true);
 
             if (isServer)
                 SetStationPlayerController(player);
@@ -34,13 +34,15 @@ namespace BelowUs
 
         public void Leave()
         {
-            generatorUI.gameObject.SetActive(false);
+            SetUIActive(false);
 
             if (isServer)
                 SetStationPlayerController(null);
             else
                 SetStationPlayerControllerCMD(null);
         }
+
+        protected virtual void SetUIActive(bool setActive) => generatorUI.gameObject.SetActive(setActive);
     }
 }
 

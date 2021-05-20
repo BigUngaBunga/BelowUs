@@ -36,6 +36,9 @@ namespace BelowUs
             subSpeed = 40;
             submarineRotationSpeed = 2f;
             lateralRetardation = 0.040f;
+            submarineRotation = rb2D.rotation;
+            submarinePosition = rb2D.position;
+
             if (isServer)
                 InvokeRepeating(nameof(CheckIfNeedSynchronization), 1, syncInterval);
         }

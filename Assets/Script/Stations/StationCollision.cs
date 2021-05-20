@@ -17,6 +17,9 @@ namespace BelowUs
             if (controller == null)
                 controller = GetComponentInParent<GeneratorController>();
 
+            if (controller == null)
+                controller = GetComponentInParent<VillageController>();
+
             type = controller.GetType();
 
             buttonUI = GameObject.Find("/Game/UI/EnterStationControl");
@@ -44,8 +47,11 @@ namespace BelowUs
 
             if (type == typeof(StationController) || type == typeof(SubController))
                 buttonUI.SetActive(!((StationController)controller).IsOccupied);
-            else
+            else if (type == typeof(GeneratorController))
                 buttonUI.SetActive(!((GeneratorController)controller).IsOccupied);
+            else if (type == typeof(VillageController))
+                buttonUI.SetActive(true);
+
         }
     }
 }

@@ -5647,6 +5647,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   submarineHealth: {fileID: 750661961}
+  submarineOxygen: {fileID: 820417561}
 --- !u!114 &1075289818
 MonoBehaviour:
   m_ObjectHideFlags: 0
