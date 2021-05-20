@@ -8,7 +8,7 @@ namespace BelowUs
     {
         private NetworkBehaviour controller;
         private GameObject buttonUI;
-        private Type t;
+        private Type type;
 
         void Start()
         {
@@ -17,7 +17,7 @@ namespace BelowUs
             if (controller == null)
                 controller = GetComponentInParent<GeneratorController>();
 
-            t = controller.GetType();
+            type = controller.GetType();
 
             buttonUI = GameObject.Find("/Game/UI/EnterStationControl");
         }
@@ -42,7 +42,7 @@ namespace BelowUs
             if (buttonUI == null)
                 return;
 
-            if (t == typeof(StationController))
+            if (type == typeof(StationController) || type == typeof(SubController))
                 buttonUI.SetActive(!((StationController)controller).IsOccupied);
             else
                 buttonUI.SetActive(!((GeneratorController)controller).IsOccupied);

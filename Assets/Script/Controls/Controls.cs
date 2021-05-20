@@ -109,7 +109,7 @@ namespace BelowUs
             if (currentStationController == null)
                 return;
 
-            if (currentStationController.GetType() == typeof(StationController))
+            if (currentStationController.GetType() == typeof(StationController) || currentStationController.GetType() == typeof(SubController))
                 LeftStationController();
             else
                 LeftGeneratorController();
