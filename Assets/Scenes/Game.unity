@@ -2408,6 +2408,30 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 403457489280485301, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: syncScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 403457489280485301, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: syncInterval
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 403457489280485301, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: interpolateScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 403457489280485301, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: excludeOwnerUpdate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 403457489280485301, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: interpolatePosition
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 403457489280485301, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: interpolateRotation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1099039861337459201, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
       value: 
@@ -3084,6 +3108,10 @@ PrefabInstance:
       propertyPath: subController
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: rotationSyncTolerance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821935, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_FlipX
       value: 0
@@ -3208,6 +3236,22 @@ PrefabInstance:
       propertyPath: syncInterval
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7748217223699142366, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: syncVelocity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748217223699142366, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: syncAngularVelocity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748217223699142366, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: velocitySensitivity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7748217223699142366, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: angularVelocitySensitivity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9026703569805877482, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: m_SortingLayer
       value: 1
@@ -3230,6 +3274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5089922518502821938, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+    - {fileID: 403457489280485301, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
 --- !u!4 &473132174 stripped
 Transform:

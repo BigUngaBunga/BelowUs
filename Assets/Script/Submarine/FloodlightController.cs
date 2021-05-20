@@ -34,10 +34,7 @@ namespace BelowUs
                 if (isServer)
                     RotateFloodlight(rotation);
                 else
-                {
                     CommandRotateFloodlight(rotation);
-                    Debug.Log(rotation.ToString());
-                }
             }
         }
 
@@ -47,7 +44,7 @@ namespace BelowUs
         [Server] 
         private void RotateFloodlight(Quaternion rotation) => transform.rotation = rotation;
 
-        [Server]
+        [ClientRpc]
         private void ToggleFloodlight() => spotLight.intensity = IsOccupied ? intensity : 0;
     }
 }
