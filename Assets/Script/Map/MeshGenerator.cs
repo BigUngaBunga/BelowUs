@@ -20,25 +20,23 @@ namespace BelowUs
         private HashSet<int> checkedVertices;
         private float timeToWait;
 
-        //DEBUG
-        private float time, lastMeasured;
-
         private Dictionary<int, List<Triangle>> triangleDictionary;
 
-
-        public IEnumerator GenerateMesh(int[,] Map, float SquareSize, int WallTile)
+#pragma warning disable S2368 // Public methods should not have multidimensional array parameters
+        public IEnumerator GenerateMesh(int[,] map, float squareSize, int wallTile)
+#pragma warning restore S2368 // Public methods should not have multidimensional array parameters
         {
             timeToWait = 0.01f;
-            squareGrid = new SquareGrid(Map, SquareSize, WallTile);
+            squareGrid = new SquareGrid(map, squareSize, wallTile);
             vertices = new List<Vector3>();
             triangles = new List<int>();
             checkedVertices = new HashSet<int>();
             triangleDictionary = new Dictionary<int, List<Triangle>>();
             outlines = new List<List<int>>();
 
-            for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
-                for (int y = 0; y < squareGrid.squares.GetLength(1); y++)
-                    TriangulateSquare(squareGrid.squares[x, y]);
+            for (int x = 0; x < squareGrid.Squares.GetLength(0); x++)
+                for (int y = 0; y < squareGrid.Squares.GetLength(1); y++)
+                    TriangulateSquare(squareGrid.Squares[x, y]);
 
             Mesh mesh = new Mesh();
             meshFilter.mesh = mesh;
@@ -46,7 +44,7 @@ namespace BelowUs
             mesh.vertices = vertices.ToArray();
             mesh.triangles = triangles.ToArray();
             mesh.RecalculateNormals();
-            mesh.uv = CreateUV(Map, SquareSize);
+            mesh.uv = CreateUV(map, squareSize);
             yield return Wait("Created mesh");
 
             yield return StartCoroutine(Generate2DCollider());
@@ -54,57 +52,57 @@ namespace BelowUs
 
         private void TriangulateSquare(Square square)
         {
-            switch (square.configuration)
+            switch (square.Configuration)
             {
                 //TODO Simplify this
                 //One point active
                 case 1:
-                    MeshFromPoints(square.centreLeft, square.centreBottom, square.bottomLeft); //BottomLeft
+                    MeshFromPoints(square.CentreLeft, square.CentreBottom, square.BottomLeft); //BottomLeft
                     break;
                 case 2:
-                    MeshFromPoints(square.bottomRight, square.centreBottom, square.centreRight); //BottomRight
+                    MeshFromPoints(square.BottomRight, square.CentreBottom, square.CentreRight); //BottomRight
                     break;
                 case 4:
-                    MeshFromPoints(square.topRight, square.centreRight, square.centreTop); //TopRight
+                    MeshFromPoints(square.TopRight, square.CentreRight, square.CentreTop); //TopRight
                     break;
                 case 8:
-                    MeshFromPoints(square.topLeft, square.centreTop, square.centreLeft); //TopLeft
+                    MeshFromPoints(square.TopLeft, square.CentreTop, square.CentreLeft); //TopLeft
                     break;
                 //Two points active
                 case 3:
-                    MeshFromPoints(square.centreRight, square.bottomRight, square.bottomLeft, square.centreLeft); //BottomLeft & BottomRight
+                    MeshFromPoints(square.CentreRight, square.BottomRight, square.BottomLeft, square.CentreLeft); //BottomLeft & BottomRight
                     break;
                 case 6:
-                    MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.centreBottom); //BottomRight & TopRight
+                    MeshFromPoints(square.CentreTop, square.TopRight, square.BottomRight, square.CentreBottom); //BottomRight & TopRight
                     break;
                 case 9:
-                    MeshFromPoints(square.topLeft, square.centreTop, square.centreBottom, square.bottomLeft); //BottomLeft & TopLeft
+                    MeshFromPoints(square.TopLeft, square.CentreTop, square.CentreBottom, square.BottomLeft); //BottomLeft & TopLeft
                     break;
                 case 12:
-                    MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreLeft); //TopRight & TopLeft
+                    MeshFromPoints(square.TopLeft, square.TopRight, square.CentreRight, square.CentreLeft); //TopRight & TopLeft
                     break;
                 case 5:
-                    MeshFromPoints(square.centreTop, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft, square.centreLeft); //BottomLeft & TopRight
+                    MeshFromPoints(square.CentreTop, square.TopRight, square.CentreRight, square.CentreBottom, square.BottomLeft, square.CentreLeft); //BottomLeft & TopRight
                     break;
                 case 10:
-                    MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.centreBottom, square.centreLeft); //BottomRight & TopLeft
+                    MeshFromPoints(square.TopLeft, square.CentreTop, square.CentreRight, square.BottomRight, square.CentreBottom, square.CentreLeft); //BottomRight & TopLeft
                     break;
                 //Three points active
                 case 7:
-                    MeshFromPoints(square.centreTop, square.topRight, square.bottomRight, square.bottomLeft, square.centreLeft); //TopRight & BottomLeft & BottomRight
+                    MeshFromPoints(square.CentreTop, square.TopRight, square.BottomRight, square.BottomLeft, square.CentreLeft); //TopRight & BottomLeft & BottomRight
                     break;
                 case 11:
-                    MeshFromPoints(square.topLeft, square.centreTop, square.centreRight, square.bottomRight, square.bottomLeft); //BottomLeft & BottomRight & TopLeft
+                    MeshFromPoints(square.TopLeft, square.CentreTop, square.CentreRight, square.BottomRight, square.BottomLeft); //BottomLeft & BottomRight & TopLeft
                     break;
                 case 13:
-                    MeshFromPoints(square.topLeft, square.topRight, square.centreRight, square.centreBottom, square.bottomLeft); //BottomLeft & TopRight & TopLeft
+                    MeshFromPoints(square.TopLeft, square.TopRight, square.CentreRight, square.CentreBottom, square.BottomLeft); //BottomLeft & TopRight & TopLeft
                     break;
                 case 14:
-                    MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.centreBottom, square.centreLeft); //BottomRight & TopRight & TopLeft
+                    MeshFromPoints(square.TopLeft, square.TopRight, square.BottomRight, square.CentreBottom, square.CentreLeft); //BottomRight & TopRight & TopLeft
                     break;
                 //All points active
                 case 15:
-                    MeshFromPoints(square.topLeft, square.topRight, square.bottomRight, square.bottomLeft);
+                    MeshFromPoints(square.TopLeft, square.TopRight, square.BottomRight, square.BottomLeft);
                     break;
                 default:
                     break;
@@ -122,24 +120,24 @@ namespace BelowUs
         {
             for (int i = 0; i < points.Length; i++)
             {
-                if (points[i].vertexIndex == -1)
+                if (points[i].VertexIndex == -1)
                 {
-                    points[i].vertexIndex = vertices.Count;
-                    vertices.Add(points[i].position);
+                    points[i].VertexIndex = vertices.Count;
+                    vertices.Add(points[i].Position);
                 }
             }
         }
 
         public void CreateTriangle(Node a, Node b, Node c)
         {
-            triangles.Add(a.vertexIndex);
-            triangles.Add(b.vertexIndex);
-            triangles.Add(c.vertexIndex);
+            triangles.Add(a.VertexIndex);
+            triangles.Add(b.VertexIndex);
+            triangles.Add(c.VertexIndex);
 
-            Triangle triangle = new Triangle(a.vertexIndex, b.vertexIndex, c.vertexIndex);
-            AddTriangleToDictionary(triangle.vertexIndexA, triangle);
-            AddTriangleToDictionary(triangle.vertexIndexB, triangle);
-            AddTriangleToDictionary(triangle.vertexIndexC, triangle);
+            Triangle triangle = new Triangle(a.VertexIndex, b.VertexIndex, c.VertexIndex);
+            AddTriangleToDictionary(triangle.VertexIndexA, triangle);
+            AddTriangleToDictionary(triangle.VertexIndexB, triangle);
+            AddTriangleToDictionary(triangle.VertexIndexC, triangle);
         }
 
         private void AddTriangleToDictionary(int vertexIndexKey, Triangle triangle)
@@ -178,8 +176,7 @@ namespace BelowUs
                     {
                         checkedVertices.Add(vertexIndex);
 
-                        List<int> newOutline = new List<int>();
-                        newOutline.Add(vertexIndex);
+                        List<int> newOutline = new List<int>{vertexIndex};
                         outlines.Add(newOutline);
 
                         FollowOutline(newOutlineVertex, outlines.Count - 1);
@@ -261,101 +258,105 @@ namespace BelowUs
 
         public struct Triangle
         {
-            public int vertexIndexA;
-            public int vertexIndexB;
-            public int vertexIndexC;
+            public int VertexIndexA { get; set; }
+            public int VertexIndexB { get; set; }
+            public int VertexIndexC { get; set; }
             readonly int[] vertices;
 
             public Triangle(int vertexIndexA, int vertexIndexB, int vertexIndexC)
             {
-                this.vertexIndexA = vertexIndexA;
-                this.vertexIndexB = vertexIndexB;
-                this.vertexIndexC = vertexIndexC;
+                VertexIndexA = vertexIndexA;
+                VertexIndexB = vertexIndexB;
+                VertexIndexC = vertexIndexC;
 
                 vertices = new int[] { vertexIndexA, vertexIndexB, vertexIndexC };
             }
 
             public int this[int i] => vertices[i];
 
-            public bool ContainsVertexIndex(int vertexIndex) => vertexIndex == vertexIndexA || vertexIndex == vertexIndexB || vertexIndex == vertexIndexC;
+            public bool ContainsVertexIndex(int vertexIndex) => vertexIndex == VertexIndexA || vertexIndex == VertexIndexB || vertexIndex == VertexIndexC;
         }
 
         public class SquareGrid
         {
-            public Square[,] squares;
-            public SquareGrid(int[,] Map, float SquareSize, int WallTile)
+            public Square[,] Squares { get; set; }
+            public SquareGrid(int[,] map, float squareSize, int wallTile)
             {
-                int nodeCountX = Map.GetLength(0);
-                int nodeCountY = Map.GetLength(1);
-                float mapWidth = nodeCountX * SquareSize;
-                float mapHeight = nodeCountY * SquareSize;
+                int nodeCountX = map.GetLength(0);
+                int nodeCountY = map.GetLength(1);
+                float mapWidth = nodeCountX * squareSize;
+                float mapHeight = nodeCountY * squareSize;
 
                 ControlNode[,] controlNodes = new ControlNode[nodeCountX, nodeCountY];
 
                 for (int x = 0; x < nodeCountX; x++)
                     for (int y = 0; y < nodeCountY; y++)
                     {
-                        Vector3 position = new Vector3(-mapWidth / 2 + x * SquareSize + SquareSize / 2, -mapHeight / 2 + y * SquareSize + SquareSize / 2, 0);
-                        controlNodes[x, y] = new ControlNode(position, Map[x, y] == WallTile, SquareSize);
+                        Vector3 position = new Vector3(x: (-mapWidth / 2) + (x * squareSize) + (squareSize / 2), y: (-mapHeight / 2) + (y * squareSize) + (squareSize / 2), z: 0);
+                        controlNodes[x, y] = new ControlNode(position, map[x, y] == wallTile, squareSize);
                     }
 
-                squares = new Square[nodeCountX - 1, nodeCountY - 1];
+                Squares = new Square[nodeCountX - 1, nodeCountY - 1];
                 for (int x = 0; x < nodeCountX - 1; x++)
                     for (int y = 0; y < nodeCountY - 1; y++)
-                        squares[x, y] = new Square(controlNodes[x, y + 1], controlNodes[x + 1, y + 1], controlNodes[x, y], controlNodes[x + 1, y]);
+                        Squares[x, y] = new Square(controlNodes[x, y + 1], controlNodes[x + 1, y + 1], controlNodes[x, y], controlNodes[x + 1, y]);
             }
         }
 
         public class Square
         {
-            public ControlNode topLeft, topRight, bottomLeft, bottomRight;
-            public Node centreTop, centreRight, centreBottom, centreLeft;
-            public int configuration;
+            public ControlNode TopLeft { get; set; }
+            public ControlNode TopRight { get; set; }
+            public ControlNode BottomLeft { get; set; }
+            public ControlNode BottomRight { get; set; }
+
+            public Node CentreTop { get; set; }
+            public Node CentreRight { get; set; }
+            public Node CentreBottom { get; set; }
+            public Node CentreLeft { get; set; }
+            public int Configuration { get; set; }
 
             public Square(ControlNode topLeft, ControlNode topRight, ControlNode bottomLeft, ControlNode bottomRight)
             {
-                this.topLeft = topLeft;
-                this.topRight = topRight;
-                this.bottomLeft = bottomLeft;
-                this.bottomRight = bottomRight;
+                TopLeft = topLeft;
+                TopRight = topRight;
+                BottomLeft = bottomLeft;
+                BottomRight = bottomRight;
 
-                centreTop = topLeft.right;
-                centreBottom = bottomLeft.right;
-                centreLeft = bottomLeft.above;
-                centreRight = bottomRight.above;
+                CentreTop = topLeft.Right;
+                CentreBottom = bottomLeft.Right;
+                CentreLeft = bottomLeft.Above;
+                CentreRight = bottomRight.Above;
 
-                if (topLeft.isActive)
-                    configuration += 8;
-                if (topRight.isActive)
-                    configuration += 4;
-                if (bottomLeft.isActive)
-                    configuration += 1;
-                if (bottomRight.isActive)
-                    configuration += 2;
+                if (topLeft.IsActive)
+                    Configuration += 8;
+                if (topRight.IsActive)
+                    Configuration += 4;
+                if (bottomLeft.IsActive)
+                    Configuration += 1;
+                if (bottomRight.IsActive)
+                    Configuration += 2;
             }
         }
 
         public class Node
         {
-            public Vector3 position;
-            public int vertexIndex = -1;
-
-            public Node(Vector3 position)
-            {
-                this.position = position;
-            }
+            public Vector3 Position { get; set; }
+            public int VertexIndex { get; set; } = -1;
+            public Node(Vector3 position) => Position = position;
         }
 
         public class ControlNode : Node
         {
-            public bool isActive;
-            public Node above, right;
+            public bool IsActive { get; set; }
+            public Node Above { get; set; }
+            public Node Right { get; set; }
 
             public ControlNode(Vector3 position, bool isActive, float squareSize) : base(position)
             {
-                this.isActive = isActive;
-                above = new Node(position + Vector3.up * squareSize / 2f);
-                right = new Node(position + Vector3.right * squareSize / 2f);
+                IsActive = isActive;
+                Above = new Node(position + (Vector3.up * squareSize / 2f));
+                Right = new Node(position + (Vector3.right * squareSize / 2f));
             }
         }
     }

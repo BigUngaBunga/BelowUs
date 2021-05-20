@@ -27,13 +27,7 @@ namespace BelowUs
             return new WaitForSeconds(timeToWait);
         }
 
-        public static bool WaitAmountOfTimes(int counter, int total, int timesToPass)
-        {
-            if (total / timesToPass > 0)
-                return counter % (total / timesToPass) <= 1;
-
-            return false;
-        }
+        public static bool WaitAmountOfTimes(int counter, int total, int timesToPass) => total / timesToPass > 0 && counter % (total / timesToPass) <= 1;
     }
 }
 

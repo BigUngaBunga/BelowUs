@@ -103,8 +103,8 @@ namespace BelowUs
                     if (tileRegion.Count < enclaveRemovalSize)
                         foreach (Coordinate tile in tileRegion)
                         {
-                            noiseMap[tile.tileX, tile.tileY] = replacingTileType;
-                            yield return Wait($"Replaced tiles {tile.tileX} {tile.tileY}");
+                            noiseMap[tile.TileX, tile.TileY] = replacingTileType;
+                            yield return Wait($"Replaced tiles {tile.TileX} {tile.TileY}");
                         }
             }
             yield return StartCoroutine(ReplaceSmallTileRegion(waterTile));

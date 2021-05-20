@@ -36,43 +36,45 @@ namespace BelowUs
 
         protected struct Coordinate
         {
-            public int tileX;
-            public int tileY;
+            public int TileX { get; }
+            public int TileY { get; }
 
             public Coordinate(int tileX, int tileY)
             {
-                this.tileX = tileX;
-                this.tileY = tileY;
+                TileX = tileX;
+                TileY = tileY;
             }
         }
 
+#pragma warning disable S1210 // "Equals" and the comparison operators should be overridden when implementing "IComparable"
         protected class Room : IComparable<Room>
+#pragma warning restore S1210 // "Equals" and the comparison operators should be overridden when implementing "IComparable"
         {
             public List<Coordinate> Tiles { get; private set; }
             public List<Coordinate> EdgeTiles { get; private set; }
             public List<Room> ConnectedRooms { get; private set; }
             public int TilesInRoom { get; private set; }
-            public bool isMainRoom, isAccesibleFromMainRoom;
-
+            public bool IsAccesibleFromMainRoom { get; set; }
+            public bool IsMainRoom { get; set; }
             public Room(List<Coordinate> tiles, int[,] map, int waterTile)
             {
-                this.Tiles = tiles;
+                Tiles = tiles;
                 TilesInRoom = tiles.Count;
                 ConnectedRooms = new List<Room>();
                 EdgeTiles = new List<Coordinate>();
 
                 foreach (Coordinate tile in tiles)
-                    for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++)
-                        for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
-                            if (x == tile.tileX || (y == tile.tileY && IsInmapRange(x, y, map) && map[x, y] == waterTile))
+                    for (int x = tile.TileX - 1; x <= tile.TileX + 1; x++)
+                        for (int y = tile.TileY - 1; y <= tile.TileY + 1; y++)
+                            if (x == tile.TileX || (y == tile.TileY && IsInmapRange(x, y, map) && map[x, y] == waterTile))
                                 EdgeTiles.Add(tile);
             }
 
             public static void ConnectRooms(Room roomA, Room roomB)
             {
-                if (roomA.isAccesibleFromMainRoom)
+                if (roomA.IsAccesibleFromMainRoom)
                     roomB.SetAccesibleFromMainRoom();
-                else if (roomB.isAccesibleFromMainRoom)
+                else if (roomB.IsAccesibleFromMainRoom)
                     roomA.SetAccesibleFromMainRoom();
 
                 roomA.ConnectedRooms.Add(roomB);
@@ -85,9 +87,9 @@ namespace BelowUs
 
             public void SetAccesibleFromMainRoom()
             {
-                if (!isAccesibleFromMainRoom)
+                if (!IsAccesibleFromMainRoom)
                 {
-                    isAccesibleFromMainRoom = true;
+                    IsAccesibleFromMainRoom = true;
                     foreach (Room connectedRoom in ConnectedRooms)
                         connectedRoom.SetAccesibleFromMainRoom();
                 }
@@ -143,8 +145,8 @@ namespace BelowUs
                 rooms.Add(new Room(region, noiseMap, waterTile));
 
             rooms.Sort();
-            rooms[0].isMainRoom = true;
-            rooms[0].isAccesibleFromMainRoom = true;
+            rooms[0].IsMainRoom = true;
+            rooms[0].IsAccesibleFromMainRoom = true;
 
             yield return StartCoroutine(ConnectAllRooms(rooms));
         }
@@ -162,7 +164,7 @@ namespace BelowUs
                         regions.Add(newRegion);
 
                         foreach (Coordinate tile in newRegion)
-                            flaggedTiles[tile.tileX, tile.tileY] = 1;
+                            flaggedTiles[tile.TileX, tile.TileY] = 1;
                     }
 
             return regions;
@@ -183,9 +185,9 @@ namespace BelowUs
                 Coordinate tile = queue.Dequeue();
                 tiles.Add(tile);
 
-                for (int x = tile.tileX - 1; x <= tile.tileX + 1; x++)
-                    for (int y = tile.tileY - 1; y <= tile.tileY + 1; y++)
-                        if (IsInMapRange(x, y) && (x == tile.tileX || y == tile.tileY) && flaggedTiles[x, y] == 0 && noiseMap[x, y] == tileType)
+                for (int x = tile.TileX - 1; x <= tile.TileX + 1; x++)
+                    for (int y = tile.TileY - 1; y <= tile.TileY + 1; y++)
+                        if (IsInMapRange(x, y) && (x == tile.TileX || y == tile.TileY) && flaggedTiles[x, y] == 0 && noiseMap[x, y] == tileType)
                         {
                             flaggedTiles[x, y] = 1;
                             queue.Enqueue(new Coordinate(x, y));
@@ -204,7 +206,7 @@ namespace BelowUs
             {
                 foreach (Room room in rooms)
                 {
-                    if (room.isAccesibleFromMainRoom)
+                    if (room.IsAccesibleFromMainRoom)
                         ConnectedRooms.Add(room);
                     else
                         unConnectedRooms.Add(room);
@@ -246,7 +248,7 @@ namespace BelowUs
                         {
                             Coordinate tileA = roomA.EdgeTiles[tileIndexA];
                             Coordinate tileB = roomB.EdgeTiles[tileIndexB];
-                            int distanceBetweenRooms = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
+                            int distanceBetweenRooms = (int)(Mathf.Pow(tileA.TileX - tileB.TileX, 2) + Mathf.Pow(tileA.TileY - tileB.TileY, 2));
 
                             if (distanceBetweenRooms < closestDistance || !possibleConnectionEstablished)
                             {
@@ -289,8 +291,8 @@ namespace BelowUs
                 for (int y = -radius; y < radius; y++)
                     if ((x * x) + (y * y) <= radius * radius)
                     {
-                        int drawX = centre.tileX + x;
-                        int drawY = centre.tileY + y;
+                        int drawX = centre.TileX + x;
+                        int drawY = centre.TileY + y;
 
                         if (IsInMapRange(drawX, drawY))
                             noiseMap[drawX, drawY] = waterTile;
@@ -314,11 +316,11 @@ namespace BelowUs
         protected List<Coordinate> GetLine(Coordinate from, Coordinate to)
         {
             List<Coordinate> line = new List<Coordinate>();
-            int x = from.tileX;
-            int y = from.tileY;
+            int x = from.TileX;
+            int y = from.TileY;
 
-            int deltaX = to.tileX - from.tileX;
-            int deltaY = to.tileY - from.tileY;
+            int deltaX = to.TileX - from.TileX;
+            int deltaY = to.TileY - from.TileY;
 
             int step = Math.Sign(deltaX);
             int gradientStep = Math.Sign(deltaY);
