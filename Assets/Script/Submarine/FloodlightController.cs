@@ -7,6 +7,7 @@ namespace BelowUs
     public class FloodlightController : NetworkBehaviour
     {
         [SerializeField] private StationController floodlightController;
+        [SerializeField] private FloatVariable spotAngle;
         [SerializeField] private float intensity = 2;
         private SubmarineMovement submarineMovement;
         private SpriteRenderer spriteRenderer;
@@ -18,6 +19,7 @@ namespace BelowUs
             submarineMovement = GetComponentInParent<SubmarineMovement>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             spotLight = GetComponentInChildren<Light>();
+            spotLight.spotAngle = spotAngle.Value;
 
             if (isServer)
                 InvokeRepeating(nameof(ToggleFloodlight), 0.1f, updateTimer);

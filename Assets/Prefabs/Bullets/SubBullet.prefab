@@ -142,6 +142,7 @@ MonoBehaviour:
   rb: {fileID: -6539020469161520198}
   cd: {fileID: 8731852600570453640}
   velocity: 20
+  cannonDamage: {fileID: 11400000, guid: 7727848ad3f5d434c9ff556a97608e55, type: 2}
   damage: 10
   expirationTime: 6
   invertDirection: 1

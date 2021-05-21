@@ -9,6 +9,7 @@ namespace BelowUs
         [SerializeField] private CircleCollider2D cd;
 
         [SerializeField] private float velocity = 20;
+        [SerializeField] private FloatVariable cannonDamage;
         [SerializeField] private float damage;
         [SerializeField] private int expirationTime;
         [SerializeField] private bool invertDirection;
@@ -16,7 +17,7 @@ namespace BelowUs
         [SerializeField] private float collisionDelay = 0.05f;
         [SerializeField] private bool npc;
 
-        public float Damage => damage;
+        public float Damage => cannonDamage == null ? damage : cannonDamage.Value;
 
         private readonly bool debug = false;
 
@@ -71,7 +72,7 @@ namespace BelowUs
                     if (debug)
                         Debug.Log("Damage is: " + damage + "\nHealth before: " + hullHealth.CurrentValue);
 
-                    hullHealth.ApplyChange(-damage);
+                    hullHealth.ApplyChange(-Damage);
 
                     if (debug)
                         Debug.Log("Health after: " + hullHealth.CurrentValue);

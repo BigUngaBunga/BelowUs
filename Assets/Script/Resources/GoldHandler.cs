@@ -10,14 +10,15 @@ namespace BelowUs
         [SerializeField] private int minimumGoldValue;
         [SerializeField] private int maximumGoldValue;
         [SerializeField] private int value;
+        [SerializeField] FloatVariable goldMultiplier;
         private ShipResource gold;
 
         [Server]
         private void Start()
         {
             gold = GameObject.Find("CurrentGold").GetComponent<ShipResource>();
-            minimumGoldValue += (int)(-transform.position.y / 100);
-            maximumGoldValue = (int)(-transform.position.y / 40) + minimumGoldValue;
+            minimumGoldValue += (int)(-transform.position.y * goldMultiplier.Value / 100);
+            maximumGoldValue = (int)(-transform.position.y * goldMultiplier.Value / 40) + minimumGoldValue;
             Random random = new Random(transform.position.y.ToString().GetHashCode() + Environment.TickCount.ToString().GetHashCode());
             value = random.Next(minimumGoldValue, maximumGoldValue);
         }
@@ -29,7 +30,6 @@ namespace BelowUs
             {
                 gold.ApplyChange(value);
                 RemoveGold();
-                Destroy(gameObject);
             }
         }
 

@@ -54,7 +54,7 @@ namespace BelowUs
             else if (posY < 0)
                 changeY = -increase;
 
-            firePoint.localPosition = new Vector2(posX + changeX, posY + changeY);
+            firePoint.localPosition = new Vector3(posX + changeX, posY + changeY, -1);
         }
     }
 }

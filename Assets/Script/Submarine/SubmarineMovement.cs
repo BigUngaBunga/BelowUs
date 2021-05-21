@@ -9,10 +9,13 @@ namespace BelowUs
     {
         [SerializeField] private StationController subController;
         [SerializeField] private GameObject stations;
-        [SerializeReference] private float rotationSyncTolerance;
-        [SerializeReference] private float positionSyncTolerance;
+        [SerializeField] private float rotationSyncTolerance;
+        [SerializeField] private float positionSyncTolerance;
+        [Range(10, 30)]
+        [SerializeField] private int syncStepAmount;
         [SyncVar] private float submarineRotation;
         [SyncVar] private Vector2 submarinePosition;
+        [SerializeField] private FloatVariable movementRetardation;
         private float subSpeed;
         private Rigidbody2D rb2D;
         private SpriteRenderer spriteRenderer;
@@ -21,7 +24,7 @@ namespace BelowUs
         private bool isSynchronizingRotation, isSynchronizingPosition;
         
         private float submarineRotationSpeed;
-        private float lateralRetardation;
+        private float MovementRetardation => movementRetardation.Value;
         public bool IsFlipped => spriteRenderer.flipX;
         private bool MoveSubmarine => subController.IsOccupied && NetworkClient.localPlayer == subController.StationPlayerController;
         private bool EngineIsRunning => enginePower.CurrentValue > 0;
@@ -35,7 +38,6 @@ namespace BelowUs
             submarineComponents = GetComponentsInChildren<FlipSubmarineComponent>();
             subSpeed = 40;
             submarineRotationSpeed = 2f;
-            lateralRetardation = 0.040f;
             submarineRotation = rb2D.rotation;
             submarinePosition = rb2D.position;
 
@@ -57,7 +59,7 @@ namespace BelowUs
             }
 
             if ((isServer && !subController.IsOccupied) || (isServer && MoveSubmarine))
-                MovementRetardation(speed);
+                RetardMovement(speed);
             else if (MoveSubmarine)
                 CommandMovementRetardation(speed);
         }
@@ -112,20 +114,22 @@ namespace BelowUs
         [ClientRpc]
         private void CheckIfNeedSynchronization()
         {
-            float rotationDifference = submarineRotation - rb2D.rotation;
-            float positionDistance = submarinePosition.magnitude - rb2D.position.magnitude;
-            if (!isSynchronizingRotation && (rotationDifference > rotationSyncTolerance || rotationDifference < rotationSyncTolerance))
-                StartCoroutine(SynchronizeRotation());
-            if (!isSynchronizingPosition && (positionDistance > positionSyncTolerance || positionDistance < positionSyncTolerance))
-                StartCoroutine(SynchronizePosition());
+            if (!isServer)
+            {
+                float rotationDifference = submarineRotation - rb2D.rotation;
+                float positionDistance = submarinePosition.magnitude - rb2D.position.magnitude;
+                if (!isSynchronizingRotation && (rotationDifference > rotationSyncTolerance || rotationDifference < rotationSyncTolerance))
+                    StartCoroutine(SynchronizeRotation());
+                if (!isSynchronizingPosition && (positionDistance > positionSyncTolerance || positionDistance < positionSyncTolerance))
+                    StartCoroutine(SynchronizePosition());
+            }
         }
 
         private IEnumerator SynchronizeRotation()
         {
             isSynchronizingRotation = true;
-            int stepsToSynchronize = 20;
-            float synchronizationRate = 1 / (float)stepsToSynchronize;
-            for (int i = 0; i < stepsToSynchronize; i++)
+            float synchronizationRate = 1 / (float)syncStepAmount;
+            for (int i = 0; i < syncStepAmount; i++)
             {
                 rb2D.rotation = Mathf.Lerp(rb2D.rotation, submarineRotation, synchronizationRate);
                 yield return null;
@@ -136,9 +140,8 @@ namespace BelowUs
         private IEnumerator SynchronizePosition()
         {
             isSynchronizingPosition = true;
-            int stepsToSynchronize = 20;
-            float synchronizationRate = 1 / (float)stepsToSynchronize;
-            for (int i = 0; i < stepsToSynchronize; i++)
+            float synchronizationRate = 1 / (float)syncStepAmount;
+            for (int i = 0; i < syncStepAmount; i++)
             {
                 rb2D.position = new Vector2(x: Mathf.Lerp(rb2D.position.x, submarinePosition.x, synchronizationRate), 
                                             y: Mathf.Lerp(rb2D.position.y, submarinePosition.y, synchronizationRate));
@@ -175,13 +178,13 @@ namespace BelowUs
         private void CommandFlipSubmarine() => FlipSubmarine();
 
         [Server]
-        private void MovementRetardation(float speed)
+        private void RetardMovement(float speed)
         {
             rb2D.velocity = EngineIsRunning && speed != 0
-                ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation / 10))
-                : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, lateralRetardation), Mathf.Lerp(rb2D.velocity.y, 0, lateralRetardation));
+                ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, MovementRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, MovementRetardation / 10))
+                : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, MovementRetardation), Mathf.Lerp(rb2D.velocity.y, 0, MovementRetardation));
         }
         [Command]
-        private void CommandMovementRetardation(float speed) => MovementRetardation(speed);
+        private void CommandMovementRetardation(float speed) => RetardMovement(speed);
     }
 }

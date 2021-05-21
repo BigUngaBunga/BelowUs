@@ -1,10 +1,14 @@
 {
-    "name": "Stations",
+    "name": "Submarine",
     "rootNamespace": "",
     "references": [
         "GUID:13734da6be915c54bb7f452a2fe717e8",
         "GUID:30817c1a0e6d646d99c048fc403f5979",
-        "GUID:25a9a66553417024b84a7f7e8629c16e"
+        "GUID:25a9a66553417024b84a7f7e8629c16e",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:7c5a894323451434bac1c3c243a76b28",
+        "GUID:8c31acbd60ad07a4c8e5d13eabd95606",
+        "GUID:a37891b8f7c139a42a19f35963ebab35"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

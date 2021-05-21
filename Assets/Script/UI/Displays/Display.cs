@@ -7,10 +7,10 @@ namespace BelowUs
 {
     public abstract class Display : MonoBehaviour
     {
-        protected TMP_Text depthDisplay;
+        protected TMP_Text textDisplay;
         protected virtual void Start()
         {
-            depthDisplay = GetComponentInParent<TMP_Text>();
+            textDisplay = GetComponentInParent<TMP_Text>();
             InvokeRepeating(nameof(UpdateDisplay), 0.1f, 0.3f);
         }
         protected abstract void UpdateDisplay();

@@ -17,7 +17,8 @@ namespace BelowUs
         [SerializeField] private int rotationOffset;
         
         [SerializeField] private int cannonId;
-        [SerializeField] private float intensity = 2;
+        [SerializeField] private float intensity;
+        [SerializeField] private FloatVariable spotAngle;
 
         [SerializeField] private StationController cannonController;
 
@@ -47,6 +48,7 @@ namespace BelowUs
             spriteRenderer = GetComponent<SpriteRenderer>();
             submarine = GetComponentInParent<SubmarineMovement>();
             spotlight = GetComponentInChildren<Light>();
+            spotlight.spotAngle = spotAngle.Value;
             InvokeRepeating(nameof(ToggleSpotlight), 0, 0.1f);
 
             if (cannonId < 0 || cannonId > submarineCannons - 1)

@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 1414293095610858984}
   - component: {fileID: 1512704588526693874}
   - component: {fileID: 8735919222791543316}
+  - component: {fileID: 5755074940035711015}
   m_Layer: 0
   m_Name: Ambient Light
   m_TagString: Untagged
@@ -219,6 +220,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invertToggle: 0
   electricity: {fileID: 0}
+--- !u!114 &5755074940035711015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3233474244473011438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9455ca595def1d4c9f8ce0222808217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: {fileID: 11400000, guid: fb8c3dacd8d12e84bad5968ad00bc71f, type: 2}
 --- !u!1 &5089922518502821933
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +344,8 @@ MonoBehaviour:
   stations: {fileID: 0}
   rotationSyncTolerance: 2
   positionSyncTolerance: 3
+  syncStepAmount: 0
+  movementRetardation: {fileID: 11400000, guid: f791420ce3f95bd499e1cf742eedd2cd, type: 2}
 --- !u!114 &-2617717658170317263
 MonoBehaviour:
   m_ObjectHideFlags: 0

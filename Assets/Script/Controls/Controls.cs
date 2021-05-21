@@ -18,7 +18,7 @@ namespace BelowUs
         [SerializeField] private NetworkBehaviour currentStationController;
         [SerializeField] private CameraController cameraController;
 
-        private bool debug = true;
+        private readonly bool debug = true;
 
         private void Start()
         {

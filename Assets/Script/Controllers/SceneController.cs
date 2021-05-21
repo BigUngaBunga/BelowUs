@@ -8,6 +8,7 @@ namespace BelowUs
     {
         [SerializeField] private ShipResource submarineHealth;
         [SerializeField] private ShipResource submarineOxygen;
+        [SerializeField] private FloatVariable gold;
 
         // Start is called before the first frame update
         private void Start()
@@ -19,16 +20,21 @@ namespace BelowUs
                 submarineHealth.EventResourceEmpty += SwitchToVillageScene;
                 submarineOxygen.EventResourceEmpty += SwitchToVillageScene;
             }
-                
         }
 
         [Server]
-        private void SwitchToVillageScene() => NetworkManager.singleton.ServerChangeScene("Village");
+        private void SwitchToVillageScene()
+        {
+            SaveSessionGold();
+            NetworkManager.singleton.ServerChangeScene("Village");
+        }
 
         [Command(requiresAuthority = false)]
         public void CommandSwitchToGameScene() => SwitchToGameScene();
 
         [Server]
         private void SwitchToGameScene() => NetworkManager.singleton.ServerChangeScene("Game");
+
+        private void SaveSessionGold() => gold.ApplyChange(GameObject.Find("CurrentGold").GetComponent<ShipResource>().CurrentValue);
     }
 }

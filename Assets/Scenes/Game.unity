@@ -2440,6 +2440,10 @@ PrefabInstance:
       propertyPath: m_Range
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 1512704588526693874, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: m_Intensity
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1586461895393640356, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: sceneId
       value: 1160108533
@@ -3033,6 +3037,10 @@ PrefabInstance:
       value: -0.96
       objectReference: {fileID: 0}
     - target: {fileID: 2758829126883916363, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: intensity
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2758829126883916363, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: cannonController
       value: 
       objectReference: {fileID: 490275432}
@@ -3107,6 +3115,18 @@ PrefabInstance:
     - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: subController
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: syncStepAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: movementRetardation
+      value: 
+      objectReference: {fileID: 11400000, guid: f791420ce3f95bd499e1cf742eedd2cd, type: 2}
+    - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
+      propertyPath: positionSyncTolerance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5089922518502821934, guid: c1c240ffe4a64cd4e93bb92878ebcd89, type: 3}
       propertyPath: rotationSyncTolerance
@@ -5648,6 +5668,7 @@ MonoBehaviour:
   syncInterval: 0.1
   submarineHealth: {fileID: 750661961}
   submarineOxygen: {fileID: 820417561}
+  gold: {fileID: 11400000, guid: 81c1e532d498fbd4c9101c13c949d9a0, type: 2}
 --- !u!114 &1075289818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9370,6 +9391,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gold: {fileID: 1812078634}
+  goldTotal: {fileID: 11400000, guid: 81c1e532d498fbd4c9101c13c949d9a0, type: 2}
+  displayShipResource: 1
 --- !u!114 &1757064313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12319,7 +12342,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.5
+  m_fontSize: 22.1
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1

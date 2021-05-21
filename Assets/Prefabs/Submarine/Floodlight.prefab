@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invertToggle: 0
+  electricity: {fileID: 0}
 --- !u!1 &4947234388741293451
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,6 +211,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   floodlightController: {fileID: 0}
+  spotAngle: {fileID: 11400000, guid: e32eece3d2d388247a5508f0f7ccd3f0, type: 2}
   intensity: 2
 --- !u!114 &2497593014685172933
 MonoBehaviour:

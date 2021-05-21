@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 405cbd1a7d22eee48871e7c4c60eadc1, type: 3}
+  m_Name: CannonLight
+  m_EditorClassIdentifier: 
+  DeveloperDescription: Upgrade for the cannon spotlight
+  Value: {fileID: 11400000, guid: 0c40d34cc9f24c24ebd57e4322b796b3, type: 2}
+  price: 0
+  upgradeIncrease: 0
+  priceIncrease: 0
