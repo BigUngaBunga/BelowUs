@@ -15,7 +15,7 @@ namespace BelowUs
             base.Start();
             initialDepth = submarinePosition.position.y;
         }
-        protected override void UpdateDisplay() => depthDisplay.text = ((int)(-submarinePosition.position.y + initialDepth)).ToString() + " m";
+        protected override void UpdateDisplay() => textDisplay.text = ((int)(-submarinePosition.position.y + initialDepth)).ToString() + " m";
     }
 }
 

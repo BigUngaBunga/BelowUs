@@ -5,10 +5,11 @@ namespace BelowUs
 {
     public class GoldDisplay : Display
     {
-        //[SerializeReference] private Transform gold;
         [SerializeReference] private ShipResource gold;
-        //protected override void UpdateDisplay() => depthDisplay.text = ((int)gold.position.y).ToString();
-        protected override void UpdateDisplay() => depthDisplay.text = ((int)gold.CurrentValue).ToString();
+        [SerializeReference] private FloatVariable goldTotal;
+        [SerializeField] private bool displayShipResource;
+        protected override void UpdateDisplay() => textDisplay.text = (displayShipResource ? (int)gold.CurrentValue : (int)goldTotal.Value).ToString();
+
     }
 }
 
