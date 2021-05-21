@@ -31,7 +31,7 @@ namespace BelowUs
         private void Start()
         {
             random = isServer ? GetSeededRandom(useRandomSeed) : GetSeededRandom(false);
-            mapGenerators = new List<MapGenerator> ();
+            mapGenerators = new List<MapGenerator>();
             squareSize = 2;
             StartCoroutine(CreateNewMap());
         }
@@ -68,7 +68,7 @@ namespace BelowUs
                 case MapType.BossRoom:
                     BossRoomGenerator bossRoomGenerator = map.GetComponent<BossRoomGenerator>();
                     mapGenerator = bossRoomGenerator;
-                    yield return StartCoroutine(bossRoomGenerator.GenerateBossRoom(mapSize, squareSize, random));
+                    yield return StartCoroutine(bossRoomGenerator.GenerateBossRoom(mapSize, squareSize));
                     break;
                 default: //Reef
                     ReefGenerator reefGenerator = map.GetComponent<ReefGenerator>();

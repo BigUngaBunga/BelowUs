@@ -14,25 +14,20 @@ namespace BelowUs
         [Range(10, 50)]
         [SerializeField] private int tileAmount = 20;
 
-        private List<Vector3> vertices;
-        private List<int> triangles;
-        private List<List<int>> outlines;
-        private HashSet<int> checkedVertices;
-        private float timeToWait;
+        private readonly List<Vector3> vertices = new List<Vector3>();
+        private readonly List<int> triangles = new List<int>();
+        private readonly List<List<int>> outlines = new List<List<int>>();
+        private readonly HashSet<int> checkedVertices = new HashSet<int>();
+        [SerializeField] private float timeToWait = 0.01f;
 
         private Dictionary<int, List<Triangle>> triangleDictionary;
 
-#pragma warning disable S2368 // Public methods should not have multidimensional array parameters
+        #pragma warning disable S2368 // Public methods should not have multidimensional array parameters
         public IEnumerator GenerateMesh(int[,] map, float squareSize, int wallTile)
-#pragma warning restore S2368 // Public methods should not have multidimensional array parameters
+        #pragma warning restore S2368 // Public methods should not have multidimensional array parameters
         {
-            timeToWait = 0.01f;
             squareGrid = new SquareGrid(map, squareSize, wallTile);
-            vertices = new List<Vector3>();
-            triangles = new List<int>();
-            checkedVertices = new HashSet<int>();
             triangleDictionary = new Dictionary<int, List<Triangle>>();
-            outlines = new List<List<int>>();
 
             for (int x = 0; x < squareGrid.Squares.GetLength(0); x++)
                 for (int y = 0; y < squareGrid.Squares.GetLength(1); y++)

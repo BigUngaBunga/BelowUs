@@ -28,10 +28,10 @@ namespace BelowUs
         protected override void FillMapWithNoise()
         {
             int coneWidth = passagewayRadius;
-            int halfOfMapWidth = noiseMap.GetLength(0) / 2;
+            int halfOfMapWidth = mapWidth / 2;
 
-            for (int x = 0; x < noiseMap.GetLength(0); x++)
-                for (int y = 0; y < noiseMap.GetLength(1); y++)
+            for (int x = 0; x < mapWidth; x++)
+                for (int y = 0; y < mapHeight; y++)
                 {
                     if ((x <= halfOfMapWidth && x > halfOfMapWidth - coneWidth - (y * coneDesscentSharpness)) || (x > halfOfMapWidth && x < halfOfMapWidth + coneWidth + (y * coneDesscentSharpness)))
                         noiseMap[x, y] = waterTile;
@@ -46,8 +46,8 @@ namespace BelowUs
             BoxCollider2D rightWall = gameObject.AddComponent<BoxCollider2D>();
             BoxCollider2D leftWall = gameObject.AddComponent<BoxCollider2D>();
             BoxCollider2D roof = gameObject.AddComponent<BoxCollider2D>();
-            int width = noiseMap.GetLength(0) * squareSize;
-            int height = noiseMap.GetLength(1) * squareSize;
+            int width = mapWidth * squareSize;
+            int height = mapHeight * squareSize;
 
             rightWall.size = leftWall.size = new Vector2(2, height);
             roof.size = new Vector2(width, 2);

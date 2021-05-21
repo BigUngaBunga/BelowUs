@@ -11,10 +11,10 @@ namespace BelowUs
     public class MapGenerator : NetworkBehaviour
     {
         [Min(50)]
-        [SerializeField] protected int mapHeight;
+        [SerializeField] protected int mapWidth;
 
         [Min(50)]
-        [SerializeField] protected int mapWidth;
+        [SerializeField] protected int mapHeight;
 
         [SerializeField] protected string seed;
         [SerializeReference] protected bool useRandomSeed, generateExit;
@@ -46,9 +46,9 @@ namespace BelowUs
             }
         }
 
-#pragma warning disable S1210 // "Equals" and the comparison operators should be overridden when implementing "IComparable"
+        #pragma warning disable S1210 // "Equals" and the comparison operators should be overridden when implementing "IComparable"
         protected class Room : IComparable<Room>
-#pragma warning restore S1210 // "Equals" and the comparison operators should be overridden when implementing "IComparable"
+        #pragma warning restore S1210 // "Equals" and the comparison operators should be overridden when implementing "IComparable"
         {
             public List<Coordinate> Tiles { get; private set; }
             public List<Coordinate> EdgeTiles { get; private set; }
@@ -122,14 +122,14 @@ namespace BelowUs
             int entranceSize = borderThickness - 2;
             int exitDistanceFromCorners = 2 + passagewayRadius;
 
-            Vector2 entranceLocation = new Vector2(noiseMap.GetLength(0) / 2, noiseMap.GetLength(1) - 1);
+            Vector2 entranceLocation = new Vector2(mapWidth / 2, mapHeight - 1);
             DrawCircle(entranceLocation, entranceSize);
 
             if (generateExit)
             {
                 ExitLocation = randomExitPlacement
-                    ? new Vector2(random.Next(exitDistanceFromCorners, noiseMap.GetLength(0) - exitDistanceFromCorners), 0)
-                    : new Vector2(noiseMap.GetLength(0) / 2, 0);
+                    ? new Vector2(random.Next(exitDistanceFromCorners, mapWidth - exitDistanceFromCorners), 0)
+                    : new Vector2(mapWidth / 2, 0);
 
                 DrawCircle(ExitLocation, entranceSize);
             }
@@ -322,21 +322,16 @@ namespace BelowUs
             int deltaX = to.TileX - from.TileX;
             int deltaY = to.TileY - from.TileY;
 
-            int step = Math.Sign(deltaX);
-            int gradientStep = Math.Sign(deltaY);
+            int absDeltaX = Mathf.Abs(deltaX);
+            int absDeltaY = Mathf.Abs(deltaY);
 
-            bool inverted = false;
-            int longest = Mathf.Abs(deltaX);
-            int shortest = Mathf.Abs(deltaY);
+            bool inverted = absDeltaX > absDeltaY;
 
-            if (longest < shortest)
-            {
-                inverted = true;
-                longest = Mathf.Abs(deltaY);
-                shortest = Mathf.Abs(deltaX);
-                step = Math.Sign(deltaY);
-                gradientStep = Math.Sign(deltaX);
-            }
+            int longest = Math.Max(absDeltaX, absDeltaY);
+            int shortest = Math.Min(absDeltaX, absDeltaY);
+
+            int step = inverted ? Math.Sign(deltaX) : Math.Sign(deltaY);
+            int gradientStep = inverted ? Math.Sign(deltaY) : Math.Sign(deltaX);
 
             int gradientAccumulation = longest / 2;
             for (int i = 0; i < longest; i++)
@@ -344,18 +339,17 @@ namespace BelowUs
                 line.Add(new Coordinate(x, y));
 
                 if (inverted)
-                    y += step;
-
-                else
                     x += step;
+                else
+                    y += step;
 
                 gradientAccumulation += shortest;
                 if (gradientAccumulation >= longest)
                 {
                     if (inverted)
-                        x += gradientStep;
-                    else
                         y += gradientStep;
+                    else
+                        x += gradientStep;
 
                     gradientAccumulation -= longest;
                 }

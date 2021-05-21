@@ -113,9 +113,9 @@ namespace BelowUs
 
         protected void AddBorderToNoiseMap(int borderSize)
         {
-            for (int x = 0; x < noiseMap.GetLength(0); x++)
-                for (int y = 0; y < noiseMap.GetLength(1); y++)
-                    if (x <= borderSize || y <= borderSize || x >= noiseMap.GetLength(0) - borderSize || y >= noiseMap.GetLength(1) - borderSize)
+            for (int x = 0; x < mapWidth; x++)
+                for (int y = 0; y < mapHeight; y++)
+                    if (x <= borderSize || y <= borderSize || x >= mapWidth - borderSize || y >= mapHeight - borderSize)
                         noiseMap[x, y] = wallTile;
         }
     }
