@@ -142,7 +142,7 @@ MonoBehaviour:
   minimumGoldValue: 10
   maximumGoldValue: 0
   value: 0
-  gold: {fileID: 11400000, guid: 81c1e532d498fbd4c9101c13c949d9a0, type: 2}
+  goldMultiplier: {fileID: 11400000, guid: ca4714c1335503e47b4f9c938347d03f, type: 2}
 --- !u!114 &7000032129198475301
 MonoBehaviour:
   m_ObjectHideFlags: 0
