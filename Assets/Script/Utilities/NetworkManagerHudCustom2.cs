@@ -1,4 +1,5 @@
 using Mirror;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,6 +37,7 @@ namespace BelowUs
 
             mainPnl.transform.Find("HostBtn").GetComponent<Button>().onClick.AddListener(HostClicked);
             mainPnl.transform.Find("ConnectBtn").GetComponent<Button>().onClick.AddListener(SwitchPanel);
+            connectPnl.transform.Find("Buttons").Find("ConnectBtn").GetComponent<Button>().onClick.AddListener(Connect);
 
             ipText = connectPnl.transform.Find("IPField").GetComponent<TMP_InputField>();
             statusText = connectPnl.transform.Find("Status").GetComponent<TextMeshProUGUI>();
@@ -45,7 +47,7 @@ namespace BelowUs
             cancelBtnGameObj = btnTransform.Find("CancelBtn").gameObject;
             cancelConnBtnGameObj = btnTransform.Find("CancelConnBtn").gameObject;
 
-            connectBtnGameObj.GetComponent<Button>().onClick.AddListener(Connect);
+            connectBtnGameObj.GetComponent<Button>().onClick.AddListener(SwitchPanel);
             cancelBtnGameObj.GetComponent<Button>().onClick.AddListener(SwitchPanel);
             cancelConnBtnGameObj.GetComponent<Button>().onClick.AddListener(CancelConnect);
         }
@@ -87,6 +89,9 @@ namespace BelowUs
 
         private void SwitchPanel()
         {
+            if (debug)
+                Console.WriteLine(nameof(SwitchPanel) + " was called!");
+
             mainPnl.gameObject.SetActive(!mainPnl.activeSelf);
             connectPnl.gameObject.SetActive(!connectPnl.activeSelf);
         }
