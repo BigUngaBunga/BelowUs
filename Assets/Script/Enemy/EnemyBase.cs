@@ -85,7 +85,7 @@ namespace BelowUs
             Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
             //Mindre del av rotationen till target (slerp)
             transform.rotation = (Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f));
-        }      
+        }        
     }
 }
 

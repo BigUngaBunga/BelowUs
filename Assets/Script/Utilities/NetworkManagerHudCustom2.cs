@@ -12,9 +12,15 @@ namespace BelowUs
         private TMP_InputField ipText;
         private TextMeshProUGUI statusText;
         
+        //Connection Buttons
         private GameObject connectBtnGameObj;
         private GameObject cancelBtnGameObj;
         private GameObject cancelConnBtnGameObj;
+        private GameObject optionsBtnGameObj;
+
+        //Options Buttons
+        private GameObject optionsBackButtonObj;
+        private GameObject optionsApplyButtonObj;
 
         private NetworkManager manager = NetworkManager.singleton;
 
@@ -22,6 +28,7 @@ namespace BelowUs
 
         private GameObject mainPnl;
         private GameObject connectPnl;
+        private GameObject optionsPnl;
 
         private readonly bool debug = true;
 
@@ -32,24 +39,38 @@ namespace BelowUs
             if (manager == null)
                 Debug.LogError("There is no networkmanager in the scene!");
 
+            //Panels
             mainPnl = transform.Find("MainPnl").gameObject;
             connectPnl = transform.Find("ConnectPnl").gameObject;
+            optionsPnl = transform.Find("OptionsPnl").gameObject;
 
+            //Main Buttons Listeners
             mainPnl.transform.Find("HostBtn").GetComponent<Button>().onClick.AddListener(HostClicked);
-            mainPnl.transform.Find("ConnectBtn").GetComponent<Button>().onClick.AddListener(SwitchPanel);
-            connectPnl.transform.Find("Buttons").Find("ConnectBtn").GetComponent<Button>().onClick.AddListener(Connect);
 
+            mainPnl.transform.Find("ConnectBtn").GetComponent<Button>().onClick.AddListener(SwitchPanelConnection);
+            mainPnl.transform.Find("OptionsBtn").GetComponent<Button>().onClick.AddListener(SwitchPanelOptions);
+
+            //Connection Misc
             ipText = connectPnl.transform.Find("IPField").GetComponent<TMP_InputField>();
             statusText = connectPnl.transform.Find("Status").GetComponent<TextMeshProUGUI>();
 
-            Transform btnTransform = connectPnl.transform.Find("Buttons");
-            connectBtnGameObj = btnTransform.Find("ConnectBtn").gameObject;
-            cancelBtnGameObj = btnTransform.Find("CancelBtn").gameObject;
-            cancelConnBtnGameObj = btnTransform.Find("CancelConnBtn").gameObject;
+            //Connection Buttons
+            Transform connectBtnTransform = connectPnl.transform.Find("Buttons");
+            connectBtnGameObj = connectBtnTransform.Find("ConnectBtn").gameObject;
+            cancelBtnGameObj = connectBtnTransform.Find("CancelBtn").gameObject;
+            cancelConnBtnGameObj = connectBtnTransform.Find("CancelConnBtn").gameObject;
 
-            connectBtnGameObj.GetComponent<Button>().onClick.AddListener(SwitchPanel);
-            cancelBtnGameObj.GetComponent<Button>().onClick.AddListener(SwitchPanel);
+
+            connectBtnGameObj.GetComponent<Button>().onClick.AddListener(Connect);
+            cancelBtnGameObj.GetComponent<Button>().onClick.AddListener(SwitchPanelConnection);
             cancelConnBtnGameObj.GetComponent<Button>().onClick.AddListener(CancelConnect);
+
+            //Options Buttons
+            Transform optionsBtnTransForm = optionsPnl.transform.Find("Buttons");
+            optionsBackButtonObj = optionsBtnTransForm.Find("BackBtn").gameObject;
+            optionsApplyButtonObj = optionsBtnTransForm.Find("ApplyBtn").gameObject;
+
+            optionsBackButtonObj.GetComponent<Button>().onClick.AddListener(SwitchPanelOptions);
         }
 
         public void HostClicked() => manager.StartHost();
@@ -87,13 +108,18 @@ namespace BelowUs
                 CancelConnect();
         }
 
-        private void SwitchPanel()
+        private void SwitchPanelConnection()
         {
             if (debug)
                 Console.WriteLine(nameof(SwitchPanel) + " was called!");
 
             mainPnl.gameObject.SetActive(!mainPnl.activeSelf);
             connectPnl.gameObject.SetActive(!connectPnl.activeSelf);
+        }
+        private void SwitchPanelOptions()
+        {
+            mainPnl.gameObject.SetActive(!mainPnl.activeSelf);
+            optionsPnl.gameObject.SetActive(!optionsPnl.activeSelf);
         }
     }
 }

@@ -72,12 +72,11 @@ namespace BelowUs
                     Rigidbody2D rb = collider.gameObject.GetComponentInParent<Rigidbody2D>();
                     AddExplosionForce(rb);
 
-                    //behöver fixas
-                    //AddExplosionDamage();
+                    AddExplosionDamage(collider);
                 }
             }
 
-            Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
         }
 
         private void AddExplosionForce(Rigidbody2D rb)
@@ -85,7 +84,7 @@ namespace BelowUs
             Vector2 explosionDir = rb.position - (Vector2)transform.position;
             rb.AddForce(explosionDir * explosionForce);
         }
-
-        private void AddExplosionDamage() => GameObject.Find("Hull Health").GetComponent<ShipResource>().ApplyChange(explosionDamage);
+       
+        private void AddExplosionDamage(Collider2D collider) => collider.gameObject.GetComponentInParent<ShipResource>().ApplyChange(explosionDamage);
     }
 }

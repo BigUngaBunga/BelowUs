@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9bed7f8af93bc14fb009b0b15fb74dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   mapHeight: 80
   mapWidth: 80
   seed: 
@@ -52,13 +54,13 @@ MonoBehaviour:
   generateExit: 0
   borderThickness: 6
   passagewayRadius: 3
-  minimumOpenWaterPercentage: 61
-  maximumOpenWaterPercentage: 64
+  minimumOpenWaterPercentage: 76
+  maximumOpenWaterPercentage: 85
   minimumEnclaveRemovalSize: 6
   maximumEnclaveRemovalSize: 8
   timesToSmoothMap: 5
   boss: {fileID: 1361819374005715653, guid: 39ac5326834dc594f96b467868b1e150, type: 3}
-  position: {fileID: 0}
+  position: {x: 0, y: 0}
 --- !u!114 &7376225745135848222
 MonoBehaviour:
   m_ObjectHideFlags: 0

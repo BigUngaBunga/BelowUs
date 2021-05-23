@@ -108,12 +108,9 @@ namespace BelowUs
                 if (LocalPlayerNetworkBehaviour == isServer)
                     weapon.Shoot();
                 else
-                    SendWeaponShootToServer();
-            }
-                
+                    weapon.CmdShoot();
+            }               
         }
-
-        [Command] private void SendWeaponShootToServer() => weapon.Shoot();
 
         private void FlipCannon()
         {

@@ -32,6 +32,13 @@ namespace BelowUs
             NetworkServer.Spawn(bulletClone);
         }
 
+        [Command]
+        public void CmdShoot()
+        {
+            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, ReferenceManager.Singleton.BulletParent);
+            NetworkServer.Spawn(bulletClone);
+        }
+
         /**
          * Dynamically adjusts firePoint based on bullet size
          */
