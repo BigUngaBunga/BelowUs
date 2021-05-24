@@ -1050,7 +1050,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2402239325695173921}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BelowUs.NetworkManagerHudCustom, Utilities
         m_MethodName: SetFullscreen
         m_Mode: 0
@@ -1373,7 +1373,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2402239325695173921}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BelowUs.NetworkManagerHudCustom, Utilities
         m_MethodName: SetResolution
         m_Mode: 0
@@ -5338,9 +5338,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2402239325695173920}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23c290a86c1654c4a924b903596d2135, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b2d25311f207c043acd27060cc8abec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainPnl: {fileID: 0}
+  debug: 1
   resolutionsDropdown: {fileID: 922333561}
 --- !u!114 &2402239325695173922
 MonoBehaviour:

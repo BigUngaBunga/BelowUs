@@ -50,7 +50,7 @@ namespace BelowUs
             //Panels
             mainPnl = transform.Find("MainPnl").gameObject;
             connectPnl = transform.Find("ConnectPnl").gameObject;
-            //optionsPnl = transform.Find("OptionsPnl").gameObject; //TODO uncomment this when it exists
+            optionsPnl = transform.Find("OptionsPnl").gameObject; //TODO uncomment this when it exists
 
             //Main Buttons Listeners
             mainPnl.transform.Find("HostBtn").GetComponent<Button>().onClick.AddListener(HostClicked);
