@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Mirror;
 using MyBox;
 using System;
@@ -18,6 +20,10 @@ namespace BelowUs
         private GameObject cancelBtnGameObj;
         private GameObject cancelConnBtnGameObj;
 
+        private GameObject optionsBtnGameObj;
+
+        //Options Buttons
+        private GameObject optionsBackButtonObj;
         private NetworkManager manager = NetworkManager.singleton;
 
         private bool inConnectPnl = false;
@@ -27,6 +33,12 @@ namespace BelowUs
         private GameObject optionsPnl;
 
         [SerializeField] private bool debug = true;
+
+        //options - resolutions
+        private Resolution[] resolutions;
+        [SerializeField] private Dropdown resolutionsDropdown;
+
+        
 
         private void Start()
         {
@@ -62,6 +74,23 @@ namespace BelowUs
 
             //Options Buttons
             //optionsPnl.transform.Find("Buttons").Find("BackBtn").gameObject.GetComponent<Button>().onClick.AddListener(SwitchPanelOptions); //TODO uncomment this when it exists
+            Transform optionsBtnTransForm = optionsPnl.transform.Find("Buttons");
+            optionsBackButtonObj = optionsBtnTransForm.Find("BackBtn").gameObject;
+
+            optionsBackButtonObj.GetComponent<Button>().onClick.AddListener(SwitchPanelOptions);
+
+
+            //Options Resolution
+            resolutions = Screen.resolutions;
+            resolutionsDropdown.ClearOptions();
+            List<string> options = new List<string>();
+            for (int i = 0; i < resolutions.Length; i++)
+            {
+                string option = resolutions[i].width + " x " + resolutions[i].height + "@" + resolutions[i].refreshRate;
+                options.Add(option);
+            }
+
+            resolutionsDropdown.AddOptions(options);
         }
 
         public void HostClicked()
@@ -118,6 +147,17 @@ namespace BelowUs
         {
             mainPnl.gameObject.SetActive(!mainPnl.activeSelf);
             optionsPnl.gameObject.SetActive(!optionsPnl.activeSelf);
+        }
+
+        public void SetFullscreen(bool isFullscreen)
+        {
+            Screen.fullScreen = isFullscreen;
+        }
+
+        public void SetResolution(int resolutionIndex)
+        {
+            Resolution resolution = resolutions[resolutionIndex];
+            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         }
     }
 }
