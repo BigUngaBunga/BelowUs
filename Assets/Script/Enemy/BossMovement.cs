@@ -18,14 +18,12 @@ namespace BelowUs
         private enum ChargingState
         {
             Entry,
-            Charge,
-            TargetReached
+            Charge          
         }
 
 
         private enum AttackPattern
         {
-            OldCharging,
             Charging,
             BasicChasing,
         }
@@ -36,32 +34,19 @@ namespace BelowUs
         [SerializeField] [Min(10)] protected float degressToStartCharging;
         [SerializeField] private Vector2 centerPosition;
 
-
-
-
-        //Debug
-        private float debugRotate = 0;
-        private float debugTimeElapsed = 0;
-        [SerializeField] private float debugTimeBetween = 0.2f;
+        //Debug        
         [SerializeField] private bool debug;
 
-
-
-        //Old Charge
-        private Vector3 oldChargingTargetPosition;
-        private OldChargingState oldCurrentChargingState;
-
-        //New Charge
+        
+        //Charge
         [SerializeField] private ChargingState currentChargingState;
-        [SerializeField] [Min(40)] private int distanceFromCenterPointCharging;
-        private Vector2 chargingTargetPosition;
-        float angle;
+        [SerializeField] [Min(40)] private int distanceFromCenterPointCharging;        
+        private Vector2 normalizedDirection;
 
         //Behöver lägga till flera patterns och ett sätt att bestämma dom, Nedan ska ej hardcodas
-        private AttackPattern currentAttactPattern = AttackPattern.Charging;
+        private AttackPattern currentAttactPattern = AttackPattern.BasicChasing;
 
 
-        private float timeElapsed;
 
         protected override void Start()
         {
@@ -74,7 +59,6 @@ namespace BelowUs
         {
             if (isServer)
                 UpdateStates();
-
         }
 
         [Server]
@@ -90,21 +74,20 @@ namespace BelowUs
                     UpdateAttackPattern();
                     break;
             }
+
             CheckForFlip();
         }
 
         private void UpdateAttackPattern()
         {
+            CheckIfSubIsPastChargingArea();
+
             switch (currentAttactPattern)
             {
                 case AttackPattern.BasicChasing:
                     BasicChasing();
-                    break;
-                case AttackPattern.OldCharging:
-                    UpdateOldChasingPattern();
-                    break;
+                    break;                
                 case AttackPattern.Charging:
-                    //SetFirstPosition();
                     UpdateCharging();
                     break;
             }
@@ -114,62 +97,48 @@ namespace BelowUs
 
         private void UpdateCharging()
         {
-            DebugPositining();
-
             switch (currentChargingState)
             {                
                 case ChargingState.Entry: //Sets first location
-                    chargingTargetPosition = new Vector2(centerPosition.x + distanceFromCenterPointCharging, centerPosition.y);
                     currentChargingState = ChargingState.Charge;
+                    FindNextTargetPosition();
                     break;               
                 case ChargingState.Charge:
                     UpdateMovementCharging();
-
-                    if (Vector3.Distance(transform.position, chargingTargetPosition) < chasingDistanceBeforeNewTarget)
-                    {
-                        currentChargingState = ChargingState.TargetReached;
-                        rb.MovePosition(chargingTargetPosition);
-                    }
-                    break;
-                case ChargingState.TargetReached:
-                    FindNextTargetPosition();
-                    currentChargingState = ChargingState.Charge;
-                    break;
+                    CheckifBossIsPassCircle();                    
+                    break;                
             }
         }
 
         protected void UpdateMovementCharging()
         {
-            Vector2 direction = (chargingTargetPosition - (Vector2)transform.position).normalized;
-            Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
+            Vector2 movement = normalizedDirection * moveSpeedChasing * Time.deltaTime;
             rb.AddForce(movement);
         }
+        
         private void FindNextTargetPosition()
         {
-            Vector2 normalizedDirection = ((Vector2)targetGameObject.transform.position - (Vector2)transform.position).normalized;
-            float angle = Vector2.Angle(targetGameObject.transform.position - transform.position, centerPosition - (Vector2)transform.position);
-            float distance = Mathf.Cos(Mathf.Deg2Rad * angle) * Vector2.Distance((Vector2)transform.position, centerPosition) * 2;
-
-            chargingTargetPosition = ((Vector2)transform.position + normalizedDirection * distance);
+            Vector2 unnormalizedDirection = ((Vector2)targetGameObject.transform.position - (Vector2)transform.position);
+            normalizedDirection = new Vector2(unnormalizedDirection.x / unnormalizedDirection.magnitude, unnormalizedDirection.y / unnormalizedDirection.magnitude);                       
         }
 
-        private void DebugPositining()
+        private void CheckIfSubIsPastChargingArea()
         {
-            if (debug)
+            if(Vector2.Distance(targetGameObject.transform.position, centerPosition) > distanceFromCenterPointCharging)
             {
-                Debug.DrawLine(transform.position, chargingTargetPosition, Color.red);
-                Debug.DrawLine(transform.position, targetGameObject.transform.position);
-                Debug.DrawLine(centerPosition, targetGameObject.transform.position);
+                currentAttactPattern = AttackPattern.BasicChasing;
             }
-            if (false) // extra debug
+            else if(Vector2.Distance(targetGameObject.transform.position, centerPosition) < distanceFromCenterPointCharging)
             {
-                debugTimeElapsed += Time.deltaTime;
-                if (debugTimeElapsed > debugTimeBetween)
-                {
-                    debugTimeElapsed -= debugTimeBetween;
-                    debugRotate += 0.01f;
-                    rb.MovePosition(new Vector2(centerPosition.x + Mathf.Cos(debugRotate) * 40, centerPosition.y + Mathf.Sin(debugRotate) * 40));
-                }
+                currentAttactPattern = AttackPattern.Charging;
+            }
+        }
+
+        private void CheckifBossIsPassCircle()
+        {
+            if(Vector2.Distance(transform.position, centerPosition )> distanceFromCenterPointCharging)
+            {
+                FindNextTargetPosition();
             }
         }
 
@@ -190,80 +159,15 @@ namespace BelowUs
             rb.AddForce(movement);
         }
 
-        #endregion
-
-        #region Old Chasing       
-
-        private void UpdateOldChasingPattern()
+        #endregion              
+        
+        private void OnDrawGizmos()
         {
-            switch (oldCurrentChargingState)
+            if (debug)
             {
-                case OldChargingState.ChargingUp:
-                    if (ChasingRotation(oldChargingTargetPosition, chasingRotationSpeed))
-                    {
-                        timeElapsed += Time.deltaTime;
-                        if (timeElapsed >= timeBetweenCharges)
-                        {
-                            timeElapsed = 0;
-                            oldCurrentChargingState = OldChargingState.MovingChasing;
-                        }
-                    }
-                    break;
-
-                case OldChargingState.MovingChasing:
-                    ChasingMovement();
-                    if (Vector3.Distance(transform.position, oldChargingTargetPosition) < chasingDistanceBeforeNewTarget)
-                    {
-                        oldChargingTargetPosition = ChasingNewTarget();
-                        oldCurrentChargingState = OldChargingState.Relocate;
-                    }
-                    break;
-
-                case OldChargingState.Relocate:
-                    oldChargingTargetPosition = transform.position + new Vector3(Random.Range(-20, 20), Random.Range(-20, 20));
-                    oldCurrentChargingState = OldChargingState.MovingRelocate;
-                    break;
-
-                case OldChargingState.MovingRelocate:
-                    ChasingMovement();
-                    if (Vector3.Distance(transform.position, oldChargingTargetPosition) < chasingDistanceBeforeNewTarget)
-                    {
-                        rb.velocity = new Vector2(0, 0);
-                        rb.angularVelocity = 0f;
-                        oldChargingTargetPosition = ChasingNewTarget();
-                        oldCurrentChargingState = OldChargingState.ChargingUp;
-                    }
-                    break;
-
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(centerPosition, distanceFromCenterPointCharging);
             }
         }
-
-        private Vector3 ChasingNewTarget() => targetGameObject.transform.position;
-
-        protected void ChasingMovement()
-        {
-            Vector2 direction = (oldChargingTargetPosition - transform.position).normalized;
-            Vector2 movement = direction * moveSpeedChasing * Time.deltaTime;
-            rb.AddForce(movement);
-        }
-        protected bool ChasingRotation(Vector3 targetPosition, float rotationSpeed)
-        {
-            Vector2 direction = targetPosition - transform.position;
-            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.forward);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
-
-            //if within x degress begin charging
-            float angleDistance = Quaternion.Angle(rotation, transform.rotation);
-            if (angleDistance < degressToStartCharging) return true;
-            else return false;
-        }
-        #endregion
-
-        private void CheckDistanceToTargetBossMovement()
-        {
-
-        }
-
     }
 }

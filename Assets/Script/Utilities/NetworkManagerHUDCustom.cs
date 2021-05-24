@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Mirror;
 using TMPro;
 using UnityEngine;
@@ -19,7 +21,6 @@ namespace BelowUs
 
         //Options Buttons
         private GameObject optionsBackButtonObj;
-        private GameObject optionsApplyButtonObj;
 
         private NetworkManager manager = NetworkManager.singleton;
 
@@ -28,6 +29,10 @@ namespace BelowUs
         private GameObject mainPnl;
         private GameObject connectPnl;
         private GameObject optionsPnl;
+
+        //options - resolutions
+        private Resolution[] resolutions;
+        [SerializeField] private Dropdown resolutionsDropdown;
 
         private readonly bool debug = true;
 
@@ -65,9 +70,21 @@ namespace BelowUs
             //Options Buttons
             Transform optionsBtnTransForm = optionsPnl.transform.Find("Buttons");
             optionsBackButtonObj = optionsBtnTransForm.Find("BackBtn").gameObject;
-            optionsApplyButtonObj = optionsBtnTransForm.Find("ApplyBtn").gameObject;
 
             optionsBackButtonObj.GetComponent<Button>().onClick.AddListener(SwitchPanelOptions);
+
+
+            //Options Resolution
+            resolutions = Screen.resolutions;
+            resolutionsDropdown.ClearOptions();
+            List<string> options = new List<string>();
+            for (int i = 0; i < resolutions.Length; i++)
+            {
+                string option = resolutions[i].width + " x " + resolutions[i].height + "@" + resolutions[i].refreshRate;
+                options.Add(option);
+            }
+
+            resolutionsDropdown.AddOptions(options);
         }
 
         public void HostClicked() => manager.StartHost();
@@ -114,6 +131,17 @@ namespace BelowUs
         {
             mainPnl.gameObject.SetActive(!mainPnl.activeSelf);
             optionsPnl.gameObject.SetActive(!optionsPnl.activeSelf);
+        }
+
+        public void SetFullscreen(bool isFullscreen)
+        {
+            Screen.fullScreen = isFullscreen;
+        }
+
+        public void SetResolution(int resolutionIndex)
+        {
+            Resolution resolution = resolutions[resolutionIndex];
+            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         }
     }
 }
