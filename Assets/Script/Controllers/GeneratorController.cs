@@ -8,7 +8,7 @@ namespace BelowUs
         private Canvas generatorUI;
 
         [SerializeField] [SyncVar] protected NetworkIdentity stationPlayerController = null;
-        [SerializeField] public bool IsOccupied => stationPlayerController != null;
+        public bool IsOccupied => stationPlayerController != null;
 
         protected virtual void Start()
         {

@@ -16,7 +16,7 @@ namespace BelowUs
         private void Start()
         {
             manager = NetworkManager.singleton;
-            Invoke(nameof(SpawnPlayer), 0.2f);
+            Invoke(nameof(SpawnPlayer), 0.4f);
         }
 
         private void SpawnPlayer()

@@ -11,7 +11,7 @@ namespace BelowUs
         {
             light = GetComponentInParent<Light>();
             startingIntensity = light.intensity;
-            InvokeRepeating("DimmLight", 0.1f, 0.1f);
+            InvokeRepeating(nameof(DimmLight), 0.1f, 0.1f);
         }
 
         private void DimmLight()
@@ -20,9 +20,6 @@ namespace BelowUs
             light.intensity = newIntensity > 1 ? 1 : newIntensity;
         }
 
-        private float LogarithmOfDepth()
-        {
-            return Mathf.Log10(-target.position.y / 10) > 0 ? Mathf.Log10(-target.position.y / 10) : 0;
-        }
+        private float LogarithmOfDepth() => Mathf.Log10(-target.position.y / 10) > 0 ? Mathf.Log10(-target.position.y / 10) : 0;
     }
 }

@@ -35,7 +35,7 @@ namespace BelowUs
         [Command]
         public void CmdShoot()
         {
-            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, ReferenceManager.Singleton.BulletParent);
+            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, bulletParent);
             NetworkServer.Spawn(bulletClone);
         }
 

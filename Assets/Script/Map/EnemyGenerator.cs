@@ -22,7 +22,7 @@ namespace BelowUs
         [SerializeReference] GameObject bobbaPrefab, spookPrefab, clonkerPrefab, popperPrefab;
         private Transform parentMap;
 
-        private Dictionary<EnemyType, int> enemyTypes = new Dictionary<EnemyType, int>();
+        private readonly Dictionary<EnemyType, int> enemyTypes = new Dictionary<EnemyType, int>();
         [SerializeField][Min (1)] private int spawnRateBobba, spawnRateSpook, spawnRateClonker, spawnRatePopper;
 
 
@@ -54,8 +54,9 @@ namespace BelowUs
             RandomizeEnemyPlacements();
             yield return CorutineUtilities.Wait(0.01f, "Randomized resource positions");
 
-            foreach (Vector2 position in enemyPositions)
-                GenerateEnemies(position);
+            if (GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.LocalPlayerTag).GetComponent<NetworkBehaviour>().isServer)
+                foreach (Vector2 position in enemyPositions)
+                    GenerateEnemies(position);
             yield return CorutineUtilities.Wait(0.01f, "Generated resources");
         }
 
@@ -99,6 +100,7 @@ namespace BelowUs
             return true;
         }
 
+        [Server]
         private void GenerateEnemies(Vector2 position)
         {
             GameObject objectToInstantiate = PickWeightedEnemyType() switch

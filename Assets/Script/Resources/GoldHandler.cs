@@ -13,8 +13,14 @@ namespace BelowUs
         [SerializeField] FloatVariable goldMultiplier;
         private ShipResource gold;
 
-        [Server]
         private void Start()
+        {
+            if (isServer) //TODO consider if this script should be server only or if it should be handled this way (if server only click it in networkidentity)
+                ServerStartupStuff();
+        }
+
+        [Server]
+        private void ServerStartupStuff()
         {
             gold = GameObject.Find("CurrentGold").GetComponent<ShipResource>();
             minimumGoldValue += (int)(-transform.position.y * goldMultiplier.Value / 100);
@@ -23,8 +29,14 @@ namespace BelowUs
             value = random.Next(minimumGoldValue, maximumGoldValue);
         }
 
-        [Server]
         private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (isServer) //TODO consider if this script should be server only or if it should be handled this way
+                ServerCollisionHandler(collision);
+        }
+
+        [Server]
+        private void ServerCollisionHandler(Collision2D collision)
         {
             if (collision.gameObject.CompareTag(ReferenceManager.Singleton.SubmarineTag))
             {

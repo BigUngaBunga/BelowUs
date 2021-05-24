@@ -47,7 +47,11 @@ namespace BelowUs
         private void RotateFloodlight(Quaternion rotation) => transform.rotation = rotation;
 
         [ClientRpc]
-        private void ToggleFloodlight() => spotLight.intensity = IsOccupied ? intensity : 0;
+        private void ToggleFloodlight()
+        {
+            if (spotLight != null)
+                spotLight.intensity = IsOccupied ? intensity : 0;
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 using Mirror;
+using MyBox;
 using System;
 using TMPro;
 using UnityEngine;
@@ -16,21 +17,16 @@ namespace BelowUs
         private GameObject connectBtnGameObj;
         private GameObject cancelBtnGameObj;
         private GameObject cancelConnBtnGameObj;
-        private GameObject optionsBtnGameObj;
-
-        //Options Buttons
-        private GameObject optionsBackButtonObj;
-        private GameObject optionsApplyButtonObj;
 
         private NetworkManager manager = NetworkManager.singleton;
 
         private bool inConnectPnl = false;
 
-        private GameObject mainPnl;
+        [SerializeField] [ReadOnly] private GameObject mainPnl;
         private GameObject connectPnl;
         private GameObject optionsPnl;
 
-        private readonly bool debug = true;
+        [SerializeField] private bool debug = true;
 
         private void Start()
         {
@@ -42,11 +38,10 @@ namespace BelowUs
             //Panels
             mainPnl = transform.Find("MainPnl").gameObject;
             connectPnl = transform.Find("ConnectPnl").gameObject;
-            optionsPnl = transform.Find("OptionsPnl").gameObject;
+            //optionsPnl = transform.Find("OptionsPnl").gameObject; //TODO uncomment this when it exists
 
             //Main Buttons Listeners
             mainPnl.transform.Find("HostBtn").GetComponent<Button>().onClick.AddListener(HostClicked);
-
             mainPnl.transform.Find("ConnectBtn").GetComponent<Button>().onClick.AddListener(SwitchPanelConnection);
             mainPnl.transform.Find("OptionsBtn").GetComponent<Button>().onClick.AddListener(SwitchPanelOptions);
 
@@ -66,17 +61,20 @@ namespace BelowUs
             cancelConnBtnGameObj.GetComponent<Button>().onClick.AddListener(CancelConnect);
 
             //Options Buttons
-            Transform optionsBtnTransForm = optionsPnl.transform.Find("Buttons");
-            optionsBackButtonObj = optionsBtnTransForm.Find("BackBtn").gameObject;
-            optionsApplyButtonObj = optionsBtnTransForm.Find("ApplyBtn").gameObject;
-
-            optionsBackButtonObj.GetComponent<Button>().onClick.AddListener(SwitchPanelOptions);
+            //optionsPnl.transform.Find("Buttons").Find("BackBtn").gameObject.GetComponent<Button>().onClick.AddListener(SwitchPanelOptions); //TODO uncomment this when it exists
         }
 
-        public void HostClicked() => manager.StartHost();
+        public void HostClicked()
+        {
+            if (!NetworkServer.active && !NetworkClient.active)
+                manager.StartHost();
+        }
 
         private void Connect()
         {
+            if (NetworkServer.active || NetworkClient.active)
+                return;
+
             string txt = ipText.text;
             manager.StartClient();
             manager.networkAddress = txt;
@@ -111,7 +109,7 @@ namespace BelowUs
         private void SwitchPanelConnection()
         {
             if (debug)
-                Console.WriteLine(nameof(SwitchPanel) + " was called!");
+                Console.WriteLine(nameof(SwitchPanelConnection) + " was called!");
 
             mainPnl.gameObject.SetActive(!mainPnl.activeSelf);
             connectPnl.gameObject.SetActive(!connectPnl.activeSelf);

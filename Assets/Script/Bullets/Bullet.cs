@@ -21,25 +21,27 @@ namespace BelowUs
 
         private readonly bool debug = false;
 
-        [Server]
         private void Start()
         {
-            int invertDirectionInt = invertDirection ? -1 : 1;
+            if (isServer)
+            {
+                int invertDirectionInt = invertDirection ? -1 : 1;
 
-            Vector2 yVelocity = transform.up * velocity * invertDirectionInt;
+                Vector2 yVelocity = transform.up * velocity * invertDirectionInt;
 
-            if (debug)
-                Debug.Log("Initial Velocity " + rb.velocity);
+                if (debug)
+                    Debug.Log("Initial Velocity " + rb.velocity);
 
-            rb.velocity = yVelocity;
+                rb.velocity = yVelocity;
 
-            if (debug)
-                Debug.Log("Velocity after " + nameof(yVelocity) + " " + rb.velocity);
+                if (debug)
+                    Debug.Log("Velocity after " + nameof(yVelocity) + " " + rb.velocity);
 
-            npc = CompareTag("EnemyBullet");
+                npc = CompareTag("EnemyBullet");
 
-            Invoke(nameof(EnableCollision), collisionDelay); //This prevents the bullet from colliding with it's creator.
-            Invoke(nameof(Expire), expirationTime);
+                Invoke(nameof(EnableCollision), collisionDelay); //This prevents the bullet from colliding with it's creator.
+                Invoke(nameof(Expire), expirationTime);
+            }
         }
 
         /**

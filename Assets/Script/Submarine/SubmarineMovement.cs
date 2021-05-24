@@ -109,12 +109,16 @@ namespace BelowUs
         private void CommandHandleMovementAndRotation(float rotation, float speed) => HandleMovementAndRotation(rotation, speed);
 
         [ClientRpc]
-        private void UpdateAngularVelocity(float rotation) => rb2D.angularVelocity += rotation;
+        private void UpdateAngularVelocity(float rotation)
+        {
+            if (rb2D != null)
+                rb2D.angularVelocity += rotation;
+        }
 
         [ClientRpc]
         private void CheckIfNeedSynchronization()
         {
-            if (!isServer)
+            if (!isServer && rb2D != null)
             {
                 float rotationDifference = submarineRotation - rb2D.rotation;
                 float positionDistance = submarinePosition.magnitude - rb2D.position.magnitude;

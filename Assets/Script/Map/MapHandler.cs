@@ -78,7 +78,9 @@ namespace BelowUs
             }
 
             mapGenerators.Add(mapGenerator);
-            NetworkServer.Spawn(map);
+
+            if (isServer)
+                NetworkServer.Spawn(map);
         }
 
         private Random GetSeededRandom(bool randomize)

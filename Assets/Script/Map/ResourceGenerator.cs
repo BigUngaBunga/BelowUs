@@ -41,8 +41,9 @@ namespace BelowUs
             RandomizeResourcePlacements();
             yield return CorutineUtilities.Wait(0.01f, "Randomized resource positions");
 
-            foreach (Vector2 position in resourcePositions)
-                GenerateResource(position);
+            if (GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.LocalPlayerTag).GetComponent<NetworkBehaviour>().isServer)
+                foreach (Vector2 position in resourcePositions)
+                    GenerateResource(position);
             yield return CorutineUtilities.Wait(0.01f, "Generated resources");
         }
 
@@ -86,6 +87,7 @@ namespace BelowUs
             return true;
         }
 
+        [Server]
         private void GenerateResource(Vector2 position)
         {
             ResourceType resourceToInstantiate = PickWeightedResourceType();
