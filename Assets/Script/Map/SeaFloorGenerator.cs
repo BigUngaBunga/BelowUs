@@ -21,8 +21,7 @@ namespace BelowUs
             CreateEntranceAndExit(false);
             yield return StartCoroutine(ClearPathways());
 
-            MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-            yield return StartCoroutine(meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile));
+            yield return StartCoroutine(GetComponent<MeshGenerator>().GenerateMesh(noiseMap, squareSize, wallTile));
         }
 
         protected override void FillMapWithNoise()

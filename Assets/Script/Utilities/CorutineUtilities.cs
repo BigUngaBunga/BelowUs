@@ -16,7 +16,7 @@ namespace BelowUs
         {
             //Disabled debugging measure
             //remove "&& textToWrite == "" to reactivate
-            if (textToWrite != "" && textToWrite == "")
+            if (textToWrite != "" )//&& textToWrite == "")
             {
                 float time = TimeInSeconds - timeSinceLastCall;
                 UpdateTimeSinceLastCall();

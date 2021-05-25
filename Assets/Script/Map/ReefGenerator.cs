@@ -8,10 +8,10 @@ namespace BelowUs
     public class ReefGenerator : MapGenerator
     {
 
-        [Range(0, 99)]
+        [Range(40, 60)]
         [SerializeField] protected byte minimumOpenWaterPercentage;
 
-        [Range(0, 99)]
+        [Range(40, 60)]
         [SerializeField] protected byte maximumOpenWaterPercentage;
 
         public byte MinimumOpenWaterPercentage => minimumOpenWaterPercentage;
@@ -32,17 +32,13 @@ namespace BelowUs
 
             yield return StartCoroutine(GenerateNoiseMap(mapSize));
 
-            MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-            yield return StartCoroutine(meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile));
+            yield return StartCoroutine(GetComponent<MeshGenerator>().GenerateMesh(noiseMap, squareSize, wallTile));
 
-            MapEntranceDetector entranceDetector = GetComponent<MapEntranceDetector>();
-            entranceDetector.CreateEntranceDetector(passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
+            GetComponent<MapEntranceDetector>().CreateEntranceDetector(passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
 
-            ResourceGenerator resourceGenerator = GetComponent<ResourceGenerator>();
-            yield return StartCoroutine(resourceGenerator.GenerateResources(random, noiseMap, squareSize, waterTile));
+            yield return StartCoroutine(GetComponent<ResourceGenerator>().GenerateResources(random, noiseMap, squareSize, waterTile));
 
-            EnemyGenerator enemyGenerator = GetComponent<EnemyGenerator>();
-            yield return StartCoroutine(enemyGenerator.GenerateEnemies(random, noiseMap, squareSize, waterTile));
+            yield return StartCoroutine(GetComponent<EnemyGenerator>().GenerateEnemies(random, noiseMap, squareSize, waterTile));
         }
 
         protected IEnumerator GenerateNoiseMap(Vector2 mapSize)
@@ -51,7 +47,7 @@ namespace BelowUs
             RandomizeMapVariables();
             InitiateMap(mapSize);
             AddBorderToNoiseMap(borderThickness);
-            SmoothNoiseMap(timesToSmoothMap);
+            SmoothNoiseMap();
             yield return Wait("Filled noise map");
 
             yield return StartCoroutine(RemoveTileEnclaves());
@@ -67,9 +63,9 @@ namespace BelowUs
         }
 
         //Meant to consolidate the noisemap to larger chunks
-        protected void SmoothNoiseMap(int timesToRun)
+        protected void SmoothNoiseMap()
         {
-            for (int i = 0; i < timesToRun; i++)
+            for (int i = 0; i < timesToSmoothMap; i++)
                 for (int x = 0; x < mapWidth; x++)
                     for (int y = 0; y < mapHeight; y++)
                     {
@@ -101,11 +97,12 @@ namespace BelowUs
                 List<List<Coordinate>> tileRegions = GetRegion(tileTypeToRemove);
                 foreach (List<Coordinate> tileRegion in tileRegions)
                     if (tileRegion.Count < enclaveRemovalSize)
+                    {
                         foreach (Coordinate tile in tileRegion)
-                        {
                             noiseMap[tile.TileX, tile.TileY] = replacingTileType;
-                            yield return Wait($"Replaced tiles {tile.TileX} {tile.TileY}");
-                        }
+
+                        yield return Wait($"Replaced tile region");
+                    }
             }
             yield return StartCoroutine(ReplaceSmallTileRegion(waterTile));
             yield return StartCoroutine(ReplaceSmallTileRegion(wallTile));

@@ -17,11 +17,11 @@ namespace BelowUs
         private List<MapGenerator> mapGenerators;
         private int squareSize;
         private Random random;
+        [SyncVar] [SerializeField] private string seed;
         [SerializeField] private int mapsBeforeBossMap;
         [SerializeField] private Vector2 startPosition;
         [SerializeField] private Vector2 mapSize;
         [SerializeField] private bool useRandomSeed;
-        [SyncVar] [SerializeField] private string seed;
         [SerializeReference] private GameObject reefPrefab;
         [SerializeReference] private GameObject bossRoomPrefab;
         [SerializeReference] private GameObject seaFloorPrefab;
@@ -30,18 +30,23 @@ namespace BelowUs
 
         private void Start()
         {
-            random = isServer ? GetSeededRandom(useRandomSeed) : GetSeededRandom(false);
-            mapGenerators = new List<MapGenerator>();
-            squareSize = 2;
-            StartCoroutine(CreateNewMap());
+            if (isServer)
+            {
+                random = isServer ? GetSeededRandom(useRandomSeed) : GetSeededRandom(false);
+                mapGenerators = new List<MapGenerator>();
+                squareSize = 2;
+                StartCoroutine(CreateNewMap());
+            }
         }
 
+        [Server]
         private IEnumerator CreateNewMap()
         {
             yield return StartCoroutine(GenerateNextMap(true));
             StartCoroutine(GenerateNextMap());
         }
 
+        [Server]
         public IEnumerator GenerateNextMap(bool firstMap = false)
         {
             if (firstMap)
@@ -52,6 +57,7 @@ namespace BelowUs
                 yield return StartCoroutine(GenerateMap(reefPrefab, MapType.Reef));
         }
 
+        [Server]
         private IEnumerator GenerateMap(GameObject prefab, MapType mapType)
         {
             GameObject map = Instantiate(prefab, CalculateNextPosition(), Quaternion.identity);
@@ -68,7 +74,7 @@ namespace BelowUs
                 case MapType.BossRoom:
                     BossRoomGenerator bossRoomGenerator = map.GetComponent<BossRoomGenerator>();
                     mapGenerator = bossRoomGenerator;
-                    yield return StartCoroutine(bossRoomGenerator.GenerateBossRoom(mapSize, squareSize));
+                    yield return StartCoroutine(bossRoomGenerator.GenerateBossRoom(mapSize, squareSize, random));
                     break;
                 default: //Reef
                     ReefGenerator reefGenerator = map.GetComponent<ReefGenerator>();
@@ -78,10 +84,11 @@ namespace BelowUs
             }
 
             mapGenerators.Add(mapGenerator);
-
-            if (isServer)
-                NetworkServer.Spawn(map);
+            NetworkServer.Spawn(map);
         }
+
+        [Command (requiresAuthority = false)]
+        public void CommandGenerateNextMap() => StartCoroutine(GenerateNextMap());
 
         private Random GetSeededRandom(bool randomize)
         {

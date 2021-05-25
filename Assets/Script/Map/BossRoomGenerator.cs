@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Mirror;
+using Random = System.Random;
 
 namespace BelowUs
 {
@@ -8,13 +9,13 @@ namespace BelowUs
     {
         [SerializeField] private GameObject boss;
         [SerializeField] private Vector2 position;
-        public IEnumerator GenerateBossRoom(Vector2 mapSize, int squareSize)
+        public IEnumerator GenerateBossRoom(Vector2 mapSize, int squareSize, Random random)
         {
+            this.random = random;
             position = transform.position;
             yield return StartCoroutine(GenerateNoiseMap(mapSize));
 
-            MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
-            yield return StartCoroutine(meshGenerator.GenerateMesh(noiseMap, squareSize, wallTile));
+            yield return StartCoroutine(GetComponent<MeshGenerator>().GenerateMesh(noiseMap, squareSize, wallTile));
             SpawnBoss();            
         }  
         
