@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using MyBox;
@@ -20,10 +19,7 @@ namespace BelowUs
         private GameObject cancelBtnGameObj;
         private GameObject cancelConnBtnGameObj;
 
-        private GameObject optionsBtnGameObj;
-
         //Options Buttons
-        private GameObject optionsBackButtonObj;
         private NetworkManager manager = NetworkManager.singleton;
 
         private bool inConnectPnl = false;
@@ -50,7 +46,7 @@ namespace BelowUs
             //Panels
             mainPnl = transform.Find("MainPnl").gameObject;
             connectPnl = transform.Find("ConnectPnl").gameObject;
-            optionsPnl = transform.Find("OptionsPnl").gameObject; //TODO uncomment this when it exists
+            optionsPnl = transform.Find("OptionsPnl").gameObject;
 
             //Main Buttons Listeners
             mainPnl.transform.Find("HostBtn").GetComponent<Button>().onClick.AddListener(HostClicked);
@@ -73,12 +69,7 @@ namespace BelowUs
             cancelConnBtnGameObj.GetComponent<Button>().onClick.AddListener(CancelConnect);
 
             //Options Buttons
-            //optionsPnl.transform.Find("Buttons").Find("BackBtn").gameObject.GetComponent<Button>().onClick.AddListener(SwitchPanelOptions); //TODO uncomment this when it exists
-            Transform optionsBtnTransForm = optionsPnl.transform.Find("Buttons");
-            optionsBackButtonObj = optionsBtnTransForm.Find("BackBtn").gameObject;
-
-            optionsBackButtonObj.GetComponent<Button>().onClick.AddListener(SwitchPanelOptions);
-
+            optionsPnl.transform.Find("Buttons").Find("BackBtn").gameObject.GetComponent<Button>().onClick.AddListener(SwitchPanelOptions);
 
             //Options Resolution
             resolutions = Screen.resolutions;
@@ -140,19 +131,16 @@ namespace BelowUs
             if (debug)
                 Console.WriteLine(nameof(SwitchPanelConnection) + " was called!");
 
-            mainPnl.gameObject.SetActive(!mainPnl.activeSelf);
-            connectPnl.gameObject.SetActive(!connectPnl.activeSelf);
+            mainPnl.SetActive(!mainPnl.activeSelf);
+            connectPnl.SetActive(!connectPnl.activeSelf);
         }
         private void SwitchPanelOptions()
         {
-            mainPnl.gameObject.SetActive(!mainPnl.activeSelf);
-            optionsPnl.gameObject.SetActive(!optionsPnl.activeSelf);
+            mainPnl.SetActive(!mainPnl.activeSelf);
+            optionsPnl.SetActive(!optionsPnl.activeSelf);
         }
 
-        public void SetFullscreen(bool isFullscreen)
-        {
-            Screen.fullScreen = isFullscreen;
-        }
+        public void SetFullscreen(bool isFullscreen) => Screen.fullScreen = isFullscreen;
 
         public void SetResolution(int resolutionIndex)
         {

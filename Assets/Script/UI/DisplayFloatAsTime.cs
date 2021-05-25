@@ -1,10 +1,12 @@
+using Mirror;
+
 namespace BelowUs
 {
     public class DisplayFloatAsTime : DisplayFloatNbr
     {
-        protected override void UpdateTextValues() => text.text = enableMaximum ? FormatAsTime(resource.CurrentValue) + separator + resource.MaximumValue.Value : FormatAsTime(resource.CurrentValue);
+        //protected override void UpdateTextValues() => text.text = enableMaximum ? FormatAsTime(resource.CurrentValue) + separator + resource.MaximumValue.Value : FormatAsTime(resource.CurrentValue);
 
-        public override void HandleResourceChanged(float currentValue, float maxValue) =>
+        [ClientRpc] public override void HandleResourceChanged(float currentValue, float maxValue) =>
              text.text = enableMaximum ? FormatAsTime(currentValue) + separator + FormatAsTime(maxValue) : FormatAsTime(currentValue).ToString();
 
         private string FormatAsTime(float time)

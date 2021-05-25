@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Mirror;
 
 namespace BelowUs
@@ -22,9 +19,15 @@ namespace BelowUs
             }
         }
 
-        protected virtual void DecreaseTime() => shipResource.ApplyChange(-decreaseFrequency);
+        [Server] protected virtual void DecreaseTime() => shipResource.ApplyChange(-decreaseFrequency);
 
-        public void IncreaseProductionTime() => shipResource.ApplyChange(increase);
+        public void IncreaseProductionTime()
+        {
+            if (isServer)
+                shipResource.ApplyChange(increase);
+            else
+                shipResource.CmdChangeByValue(increase);
+        }
     }
 }
 

@@ -10,7 +10,7 @@ namespace BelowUs
         //#endif
         public string ResourceName => resourceName;
 
-        [SyncVar] private float currentValue;
+        [SerializeField] [SyncVar] private float currentValue;
         public float CurrentValue => currentValue;
 
         [SerializeField] private bool resetValue;
@@ -41,7 +41,7 @@ namespace BelowUs
                 Debug.Log(gameObject.name + " " + nameof(currentValue) + " is " + currentValue + " after " + value + " change");
 
             EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
-
+            
             if (currentValue == 0)
                 EventResourceEmpty?.Invoke();
         }
@@ -50,7 +50,6 @@ namespace BelowUs
         public void SetValue(float value)
         {
             currentValue = value;
-            EventResourceChanged?.Invoke(currentValue, maximumValue.Value);
 
             if (currentValue == 0)
                 EventResourceEmpty?.Invoke();
@@ -66,11 +65,7 @@ namespace BelowUs
         #endregion
 
         #region Commands
-        [Command]
-        public void CmdDecreaseBy5() => ApplyChange(-5);
-
-        [Command]
-        public void CmdChangeByValue(float value) => ApplyChange(value);
+        [Command(requiresAuthority = false)] public void CmdChangeByValue(float value) => ApplyChange(value);
         #endregion
     }
 }

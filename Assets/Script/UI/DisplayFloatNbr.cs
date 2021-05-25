@@ -1,9 +1,10 @@
+using Mirror;
 using TMPro;
 using UnityEngine;
 
 namespace BelowUs
 {
-    public class DisplayFloatNbr : MonoBehaviour
+    public class DisplayFloatNbr : NetworkBehaviour
     {
         [Header("References")]
         [SerializeField] protected ShipResource resource;
@@ -21,6 +22,8 @@ namespace BelowUs
 
         private string errorString;
 
+        private bool debug = true;
+
         private void Awake()
         {
             errorString = GetType().Name + " has unassigned variables in " + gameObject.name;
@@ -35,8 +38,11 @@ namespace BelowUs
                 return;
             }
 			
-            resource.EventResourceChanged += HandleResourceChanged;
-            Invoke(nameof(UpdateTextValues), startUpdateDelay.Value);
+            if (isServer)
+            {
+                resource.EventResourceChanged += HandleResourceChanged;
+                resource.ApplyChange(0);
+            }
         }
 
         private void OnDisable()
@@ -47,13 +53,12 @@ namespace BelowUs
                 return;
             }
 
-            resource.EventResourceChanged -= HandleResourceChanged;
+            if (isServer)
+                resource.EventResourceChanged -= HandleResourceChanged;
         }
-
-        protected virtual void UpdateTextValues() => text.text = enableMaximum ? GetRounded(resource.CurrentValue) + separator + resource.MaximumValue.Value : GetRounded(resource.CurrentValue).ToString();
 
         protected double GetRounded(float number) => System.Math.Round(number, decimals);
 
-        public virtual void HandleResourceChanged(float currentValue, float maxValue) => text.text = enableMaximum ? GetRounded(currentValue) + separator + maxValue : GetRounded(currentValue).ToString();
+        [ClientRpc] public virtual void HandleResourceChanged(float curValue, float maxValue) => text.text = enableMaximum ? GetRounded(curValue) + separator + maxValue : GetRounded(curValue).ToString();
     }
 }

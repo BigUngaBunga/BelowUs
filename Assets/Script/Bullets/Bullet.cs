@@ -27,7 +27,7 @@ namespace BelowUs
             {
                 int invertDirectionInt = invertDirection ? -1 : 1;
 
-                Vector2 yVelocity = transform.up * velocity * invertDirectionInt;
+                Vector2 yVelocity = invertDirectionInt * velocity * transform.up;
 
                 if (debug)
                     Debug.Log("Initial Velocity " + rb.velocity);

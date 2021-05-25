@@ -91,9 +91,7 @@ namespace BelowUs
         {
             if (EngineIsRunning && Input.GetButton("MoveForward"))
                 return subSpeed;
-            if (EngineIsRunning && Input.GetButton("MoveBackwards"))
-                return -subSpeed;
-            return 0;
+            return EngineIsRunning && Input.GetButton("MoveBackwards") ? -subSpeed : 0;
         }
 
         [Server]
@@ -105,8 +103,7 @@ namespace BelowUs
             submarinePosition = rb2D.position;
         }
 
-        [Command]
-        private void CommandHandleMovementAndRotation(float rotation, float speed) => HandleMovementAndRotation(rotation, speed);
+        [Command] private void CommandHandleMovementAndRotation(float rotation, float speed) => HandleMovementAndRotation(rotation, speed);
 
         [ClientRpc]
         private void UpdateAngularVelocity(float rotation)
@@ -158,15 +155,16 @@ namespace BelowUs
         {
             if (EngineIsRunning && MoveSubmarine && Input.GetKeyDown(KeyCode.Space))
             {
-                if (isServer)
-                    FlipSubmarine();
-                else
+                if (!isServer)
                     CommandFlipSubmarine();
+                else
+                    FlipSubmarine();
             }
         }
 
-        [Server]
-        private void FlipSubmarine() => FlipSubmarineOnAllClients();
+        [Command] private void CommandFlipSubmarine() => FlipSubmarine();
+
+        [Server] private void FlipSubmarine() => FlipSubmarineOnAllClients();
 
         [ClientRpc]
         private void FlipSubmarineOnAllClients()
@@ -178,9 +176,6 @@ namespace BelowUs
                 component.FlipObject(IsFlipped);
         }
 
-        [Command]
-        private void CommandFlipSubmarine() => FlipSubmarine();
-
         [Server]
         private void RetardMovement(float speed)
         {
@@ -188,7 +183,7 @@ namespace BelowUs
                 ? new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, MovementRetardation / 10), Mathf.Lerp(rb2D.velocity.y, 0, MovementRetardation / 10))
                 : new Vector2(Mathf.Lerp(rb2D.velocity.x, 0, MovementRetardation), Mathf.Lerp(rb2D.velocity.y, 0, MovementRetardation));
         }
-        [Command]
-        private void CommandMovementRetardation(float speed) => RetardMovement(speed);
+
+        [Command] private void CommandMovementRetardation(float speed) => RetardMovement(speed);
     }
 }
