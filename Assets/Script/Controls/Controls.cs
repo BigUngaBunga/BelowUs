@@ -46,21 +46,11 @@ namespace BelowUs
                 return;
             }
 
-            StationController controller = currentStation.GetComponent<StationController>();
-
-            if (controller != null)
-                HandleStationController(controller);
-            else
-                HandleGeneratorController(currentStation.GetComponent<GeneratorController>());
+            HandleBaseStationController(currentStation.GetComponent<BaseStationController>());
         }
 
-        private void HandleStationController(StationController controller)
+        private void HandleBaseStationController(BaseStationController controller)
         {
-            if (debug && PauseMenu.IsOpen)
-                Debug.Log(nameof(OnStationClick) + " returned because of " + nameof(PauseMenu.IsOpen) + " is open!");
-            else if (debug && controller.IsOccupied)
-                Debug.Log(nameof(OnStationClick) + " returned because " + nameof(controller.StationPlayerController) + " is not null");
-
             if (!PauseMenu.IsOpen && !controller.IsOccupied)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
@@ -68,39 +58,23 @@ namespace BelowUs
                 if (identity == null)
                     Debug.LogError(nameof(identity) + " is null!");
 
-                if (controller.debug)
-                    Debug.Log(identity);
-
                 currentStationController = controller;
                 leaveButton.gameObject.SetActive(true);
-                cameraController.SwitchTarget();
 
                 playerAction.LeaveStation.performed += LeftStationControllerBtn;
                 PauseMenu.IsEnabled = false;
 
-                if (isServer)
-                    controller.SetStationPlayerController(identity);
-                else if (isClient)
-                    controller.SetStationPlayerControllerCMD(identity);
-            }
-        }
+                if (controller.GetType() == typeof(StationController))
+                {
+                    cameraController.SwitchTarget();
 
-        private void HandleGeneratorController(GeneratorController controller)
-        {
-            if (!PauseMenu.IsOpen && !controller.IsOccupied)
-            {
-                rb.velocity = new Vector2(0, rb.velocity.y);
-
-                if (identity == null)
-                    Debug.LogError(nameof(identity) + " is null!");
-
-                currentStationController = controller;
-                leaveButton.gameObject.SetActive(true);
-
-                playerAction.LeaveStation.performed += LeftGeneratorControllerBtn;
-                PauseMenu.IsEnabled = false;
-
-                controller.Enter(identity);
+                    if (isServer)
+                        ((StationController)controller).SetStationPlayerController(identity);
+                    else if (isClient)
+                        ((StationController)controller).SetStationPlayerControllerCMD(identity);
+                }
+                else if (controller.GetType() == typeof(GeneratorController))
+                    ((GeneratorController)controller).Enter(identity);
             }
         }
 

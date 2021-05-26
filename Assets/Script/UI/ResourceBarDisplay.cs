@@ -12,27 +12,17 @@ namespace BelowUs
         [SerializeField] private Image resourceBarImage = null;
         [SerializeField] private GameObject testButton = null;
 
+        private readonly float updateFrequency = 0.1f;
+
         private void OnEnable()
         {
             if (resource == null || resourceBarImage == null)
-            {
                 Debug.LogError(GetType().Name + " has unassigned variables in " + gameObject.name);
-                return;
-            }
 
-            resource.EventResourceChanged += HandleResourceChanged;
+            InvokeRepeating(nameof(UpdateBarFill), 0, updateFrequency);
         }
 
-        private void OnDisable()
-        {
-            if (resource == null)
-            {
-                Debug.LogError(GetType().Name + " has unassigned variables in " + gameObject.name);
-                return;
-            }
-
-            resource.EventResourceChanged -= HandleResourceChanged;
-        }
+        private void OnDisable() => CancelInvoke(nameof(UpdateBarFill));
 
         private void Start()
         {
@@ -48,7 +38,5 @@ namespace BelowUs
         }
 
         private void UpdateBarFill() => resourceBarImage.fillAmount = resource.CurrentValue / resource.MaximumValue.Value;
-
-        [ClientRpc] private void HandleResourceChanged(float currentHealth, float maxHealth) => resourceBarImage.fillAmount = currentHealth / maxHealth;
     }
 }

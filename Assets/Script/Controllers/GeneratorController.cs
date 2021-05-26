@@ -3,12 +3,9 @@ using UnityEngine;
 
 namespace BelowUs
 {
-    public class GeneratorController : NetworkBehaviour
+    public class GeneratorController : BaseStationController
     {
         private Canvas generatorUI;
-
-        [SerializeField] [SyncVar] protected NetworkIdentity stationPlayerController = null;
-        public bool IsOccupied => stationPlayerController != null;
 
         protected virtual void Start()
         {

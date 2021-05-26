@@ -31,17 +31,15 @@ namespace BelowUs
         private List<Vector2> enemyPositions;
         //positioner
 
-        private int[,] map;
-        private int openTile, squareSize;
+        public int[,] Map { private get; set; }
+        public int OpenTile { private get; set; }
+        public int SquareSize { private get; set; }
 
-        public IEnumerator GenerateEnemies(Random random, int[,] map, int squareSize, int openTile)
+        public IEnumerator GenerateEnemies(Random random)
         {
             parentMap = GameObject.Find("Enemies").transform;
 
             this.random = random;
-            this.map = map;
-            this.openTile = openTile;
-            this.squareSize = squareSize;
             enemyPositions = new List<Vector2>();
 
             enemyTypes.Add(EnemyType.Booba, spawnRateBobba);
@@ -62,17 +60,17 @@ namespace BelowUs
 
         private void RandomizeEnemyPlacements()
         {
-            int halfMapWidth = map.GetLength(0) / 2;
-            int halfMapHeight = map.GetLength(1) / 2;
+            int halfMapWidth = Map.GetLength(0) / 2;
+            int halfMapHeight = Map.GetLength(1) / 2;
 
             List<Vector2> openPositions = new List<Vector2>();
-            for (int x = 0; x < map.GetLength(0); x++)
-                for (int y = 0; y < map.GetLength(1); y++)
-                    if (map[x, y] == openTile && SurroundedByOpenTiles(x, y))
+            for (int x = 0; x < Map.GetLength(0); x++)
+                for (int y = 0; y < Map.GetLength(1); y++)
+                    if (Map[x, y] == OpenTile && SurroundedByOpenTiles(x, y))
                     {
                         Vector2 position;
-                        position.x = (x - halfMapWidth) * squareSize + transform.position.x;
-                        position.y = (y - halfMapHeight) * squareSize + transform.position.y;
+                        position.x = (x - halfMapWidth) * SquareSize + transform.position.x;
+                        position.y = (y - halfMapHeight) * SquareSize + transform.position.y;
                         openPositions.Add(position);
                     }
 
@@ -89,12 +87,12 @@ namespace BelowUs
         {
             int startX = Math.Max(xPosition - 1, 0);
             int startY = Math.Max(yPosition - 1, 0);
-            int stopX = Math.Min(xPosition + 1, map.GetLength(0) - 1);
-            int stopY = Math.Min(yPosition + 1, map.GetLength(1) - 1);
+            int stopX = Math.Min(xPosition + 1, Map.GetLength(0) - 1);
+            int stopY = Math.Min(yPosition + 1, Map.GetLength(1) - 1);
 
             for (int x = startX; x < stopX; x++)
                 for (int y = startY; y < stopY; y++)
-                    if (map[x, y] != openTile)
+                    if (Map[x, y] != OpenTile)
                         return false;
 
             return true;

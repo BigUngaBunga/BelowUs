@@ -42,7 +42,11 @@ namespace BelowUs
             yield return StartCoroutine(resourceGenerator.GenerateResources(random, noiseMap, squareSize, waterTile));
 
             EnemyGenerator enemyGenerator = GetComponent<EnemyGenerator>();
-            yield return StartCoroutine(enemyGenerator.GenerateEnemies(random, noiseMap, squareSize, waterTile));
+            enemyGenerator.Map = noiseMap;
+            enemyGenerator.SquareSize = squareSize;
+            enemyGenerator.OpenTile = waterTile;
+
+            yield return StartCoroutine(enemyGenerator.GenerateEnemies(random));
         }
 
         protected IEnumerator GenerateNoiseMap(Vector2 mapSize)

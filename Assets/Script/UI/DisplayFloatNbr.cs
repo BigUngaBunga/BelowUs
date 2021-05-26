@@ -17,12 +17,12 @@ namespace BelowUs
 
         [SerializeField] private int decimals = 0;
         [SerializeField] protected string separator = "/";
-		
+
+        protected readonly float updateFrequency = 0.1f;
+
         protected TextMeshProUGUI text;
 
         private string errorString;
-
-        private bool debug = true;
 
         private void Awake()
         {
@@ -30,35 +30,24 @@ namespace BelowUs
             text = (TextMeshProUGUI)textObject.GetComponent(typeof(TextMeshProUGUI));
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             if (resource == null || textObject == null)
             {
                 Debug.LogError(errorString);
                 return;
             }
-			
+
+            InvokeRepeating(nameof(UpdateTextValue), 0, updateFrequency);
+
             if (isServer)
-            {
-                resource.EventResourceChanged += HandleResourceChanged;
                 resource.ApplyChange(0);
-            }
         }
 
-        private void OnDisable()
-        {
-            if (resource == null || textObject == null)
-            {
-                Debug.LogError(errorString);
-                return;
-            }
-
-            if (isServer)
-                resource.EventResourceChanged -= HandleResourceChanged;
-        }
+        protected virtual void OnDisable() => CancelInvoke(nameof(UpdateTextValue));
 
         protected double GetRounded(float number) => System.Math.Round(number, decimals);
 
-        [ClientRpc] public virtual void HandleResourceChanged(float curValue, float maxValue) => text.text = enableMaximum ? GetRounded(curValue) + separator + maxValue : GetRounded(curValue).ToString();
+        public virtual void UpdateTextValue() => text.text = enableMaximum ? GetRounded(resource.CurrentValue) + separator + resource.MaximumValue.Value : GetRounded(resource.CurrentValue).ToString();
     }
 }

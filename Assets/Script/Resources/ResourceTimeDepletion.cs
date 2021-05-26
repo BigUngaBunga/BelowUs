@@ -1,25 +1,25 @@
 using Mirror;
+using UnityEngine;
 
 namespace BelowUs
 {
     public class ResourceTimeDepletion : NetworkBehaviour
     {
         [SyncVar] protected ShipResource shipResource;
-        protected float decreaseFrequency;
-        protected float increase;
+        [SerializeField] protected float decreaseFrequency;
+        [SerializeField] protected float decreaseAmount;
+        [SerializeField] protected float increase;
 
         protected virtual void Start()
         {
             if (isServer)
             {
-                increase = 10;
                 shipResource = GetComponent<ShipResource>();
-                decreaseFrequency = 0.1f;
                 InvokeRepeating(nameof(DecreaseTime), 0, decreaseFrequency);
             }
         }
 
-        [Server] protected virtual void DecreaseTime() => shipResource.ApplyChange(-decreaseFrequency);
+        [Server] protected virtual void DecreaseTime() => shipResource.ApplyChange(-decreaseAmount);
 
         public void IncreaseProductionTime()
         {

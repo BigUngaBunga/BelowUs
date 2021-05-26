@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BelowUs
 {
-    public class StationController : NetworkBehaviour
+    public class StationController : BaseStationController
     {
         [SerializeField] protected CameraController cameraController;
 
@@ -21,12 +21,9 @@ namespace BelowUs
 
         protected new Camera camera;
 
-        [SerializeField] [SyncVar] private NetworkIdentity stationPlayerController = null;
         public NetworkIdentity StationPlayerController => stationPlayerController;
-
-        [SerializeField] public bool IsOccupied => stationPlayerController != null;
         
-        public bool debug = false;
+        [SerializeField] protected bool debug = false;
 
         private void Start()
         {
