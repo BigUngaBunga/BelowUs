@@ -9,6 +9,7 @@ namespace BelowUs
     {
         [SerializeField] private GameObject boss;
         [SerializeField] private Vector2 position;
+        
         public IEnumerator GenerateBossRoom(Vector2 mapSize, int squareSize, Random random)
         {
             this.random = random;
@@ -17,8 +18,8 @@ namespace BelowUs
 
             yield return StartCoroutine(GetComponent<MeshGenerator>().GenerateMesh(noiseMap, squareSize, wallTile));
             SpawnBoss();            
-        }  
-        
+        }
+
         private void SpawnBoss()
         {
             GameObject enemy = Instantiate(boss, position, Quaternion.identity);

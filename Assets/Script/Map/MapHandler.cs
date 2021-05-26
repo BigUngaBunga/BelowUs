@@ -14,10 +14,11 @@ namespace BelowUs
             Reef, SeaFloor, BossRoom
         }
 
-        private List<MapGenerator> mapGenerators;
         private int squareSize;
+        //private bool hasGeneratedFirstMap;
         private Random random;
-        [SyncVar] [SerializeField] private string seed;
+        private List<MapGenerator> mapGenerators;
+        [SerializeField] private string seed;
         [SerializeField] private int mapsBeforeBossMap;
         [SerializeField] private Vector2 startPosition;
         [SerializeField] private Vector2 mapSize;
@@ -30,23 +31,20 @@ namespace BelowUs
 
         private void Start()
         {
-            if (isServer)
-            {
-                random = isServer ? GetSeededRandom(useRandomSeed) : GetSeededRandom(false);
-                mapGenerators = new List<MapGenerator>();
-                squareSize = 2;
-                StartCoroutine(CreateNewMap());
-            }
+            random = isServer ? GetSeededRandom(useRandomSeed) : GetSeededRandom(false);
+            mapGenerators = new List<MapGenerator>();
+            //hasGeneratedFirstMap = false;
+            squareSize = 2;
+            StartCoroutine(CreateNewMap());
         }
 
-        [Server]
         private IEnumerator CreateNewMap()
         {
             yield return StartCoroutine(GenerateNextMap(true));
             StartCoroutine(GenerateNextMap());
         }
 
-        [Server]
+        
         public IEnumerator GenerateNextMap(bool firstMap = false)
         {
             if (firstMap)
@@ -57,11 +55,13 @@ namespace BelowUs
                 yield return StartCoroutine(GenerateMap(reefPrefab, MapType.Reef));
         }
 
-        [Server]
         private IEnumerator GenerateMap(GameObject prefab, MapType mapType)
         {
             GameObject map = Instantiate(prefab, CalculateNextPosition(), Quaternion.identity);
             MapGenerator mapGenerator;
+
+            if (!isServer)
+                Debug.Log("Before creating");
 
             switch (mapType)
             {
@@ -83,12 +83,19 @@ namespace BelowUs
                     break;
             }
 
-            mapGenerators.Add(mapGenerator);
-            NetworkServer.Spawn(map);
-        }
+            if (!isServer)
+                Debug.Log("After creating");
 
-        [Command (requiresAuthority = false)]
-        public void CommandGenerateNextMap() => StartCoroutine(GenerateNextMap());
+            if (!isServer)
+                Debug.Log("Nr of maps: " + mapGenerators.Count);
+
+            mapGenerators.Add(mapGenerator);
+            if (!isServer)
+                Debug.Log("Added a mapGenerator, now Nr of maps: " + mapGenerators.Count);
+
+            if (isServer)
+                NetworkServer.Spawn(map);
+        }
 
         private Random GetSeededRandom(bool randomize)
         {
@@ -99,11 +106,14 @@ namespace BelowUs
 
         private Vector3 CalculateNextPosition()
         {
+
             if (mapGenerators.Count > 0)
             {
                 MapGenerator mapGenerator = mapGenerators[mapGenerators.Count - 1];
                 Vector2 nextPosition = new Vector2(x: mapGenerator.transform.position.x + ((mapGenerator.ExitLocation.x - (mapGenerator.MapSize.x / 2)) * squareSize),
                                                     y: mapGenerator.transform.position.y - (((mapGenerator.MapSize.y / 2) + (mapSize.y / 2) - 1) * squareSize));
+
+                Debug.Log("Nr of maps: " + mapGenerators.Count + " Next position: " + nextPosition + " isServer: " + isServer.ToString());
 
                 return new Vector3(nextPosition.x, nextPosition.y);
             }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 using Random = System.Random;
 
 namespace BelowUs
@@ -36,9 +37,12 @@ namespace BelowUs
 
             GetComponent<MapEntranceDetector>().CreateEntranceDetector(passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
 
-            yield return StartCoroutine(GetComponent<ResourceGenerator>().GenerateResources(random, noiseMap, squareSize, waterTile));
-
-            yield return StartCoroutine(GetComponent<EnemyGenerator>().GenerateEnemies(random, noiseMap, squareSize, waterTile));
+            if (isServer)
+            {
+                yield return StartCoroutine(GetComponent<ResourceGenerator>().GenerateResources(random, noiseMap, squareSize, waterTile));
+                yield return StartCoroutine(GetComponent<EnemyGenerator>().GenerateEnemies(random, noiseMap, squareSize, waterTile));
+            }
+            
         }
 
         protected IEnumerator GenerateNoiseMap(Vector2 mapSize)
