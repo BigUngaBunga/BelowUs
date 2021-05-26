@@ -25,6 +25,7 @@ namespace BelowUs
         [Range(0, 5)]
         [SerializeField] protected byte passagewayRadius;
 
+        protected const float timeToWait = 0.005f;
         protected int openWaterPercentage;
         protected int enclaveRemovalSize;
         protected const int waterTile = 1;
@@ -44,6 +45,8 @@ namespace BelowUs
                 TileX = tileX;
                 TileY = tileY;
             }
+
+            public Vector2 ToVector2() => new Vector2(TileX, TileY);
         }
 
         #pragma warning disable S1210 // "Equals" and the comparison operators should be overridden when implementing "IComparable"
@@ -100,7 +103,7 @@ namespace BelowUs
 
         public bool IsInMapRange(int tileX, int tileY) => tileX >= 0 && tileX < mapWidth && tileY >= 0 && tileY < mapHeight;
 
-        protected WaitForSeconds Wait(string text = "") => CorutineUtilities.Wait(0.005f, text);
+        protected WaitForSeconds Wait(string text = "") => CorutineUtilities.Wait(timeToWait, text);
 
         protected void InitiateMap(Vector2 mapSize)
         {
@@ -119,8 +122,8 @@ namespace BelowUs
 
         protected void CreateEntranceAndExit(bool randomExitPlacement = true)
         {
-            int entranceSize = borderThickness - 2;
-            int exitDistanceFromCorners = 2 + passagewayRadius;
+            int entranceSize = 1;
+            int exitDistanceFromCorners = entranceSize + passagewayRadius;
 
             Vector2 entranceLocation = new Vector2(mapWidth / 2, mapHeight - 1);
             DrawCircle(entranceLocation, entranceSize);
@@ -226,7 +229,7 @@ namespace BelowUs
             bool isForcingStartAccesibility = !roomsA.Equals(roomsB);
             Room bestRoomA = null, bestRoomB = null;
             Coordinate bestTileA = new Coordinate(), bestTileB = new Coordinate();
-            int closestDistance = 0;
+            int closestDistance = 0, roomCheckFrequency = 4;
 
             foreach (Room roomA in roomsA)
             {
@@ -244,8 +247,14 @@ namespace BelowUs
 
                     for (int tileIndexA = 0; tileIndexA < roomA.EdgeTiles.Count; tileIndexA++)
                     {
+                        if (tileIndexA % roomCheckFrequency != 0)
+                            continue;
+
                         for (int tileIndexB = 0; tileIndexB < roomB.EdgeTiles.Count; tileIndexB++)
                         {
+                            if (tileIndexB % roomCheckFrequency != 0)
+                                continue;
+
                             Coordinate tileA = roomA.EdgeTiles[tileIndexA];
                             Coordinate tileB = roomB.EdgeTiles[tileIndexB];
                             int distanceBetweenRooms = (int)(Mathf.Pow(tileA.TileX - tileB.TileX, 2) + Mathf.Pow(tileA.TileY - tileB.TileY, 2));
@@ -282,21 +291,7 @@ namespace BelowUs
             Room.ConnectRooms(roomA, roomB);
             List<Coordinate> line = GetLine(tileA, tileB);
             foreach (Coordinate point in line)
-                DrawCircle(point, passagewayRadius);
-        }
-
-        protected void DrawCircle(Coordinate centre, int radius)
-        {
-            for (int x = -radius; x < radius; x++)
-                for (int y = -radius; y < radius; y++)
-                    if ((x * x) + (y * y) <= radius * radius)
-                    {
-                        int drawX = centre.TileX + x;
-                        int drawY = centre.TileY + y;
-
-                        if (IsInMapRange(drawX, drawY))
-                            noiseMap[drawX, drawY] = waterTile;
-                    }
+                DrawCircle(point.ToVector2(), passagewayRadius);
         }
 
         protected void DrawCircle(Vector2 centre, int radius)

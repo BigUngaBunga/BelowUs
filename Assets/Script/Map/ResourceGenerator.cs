@@ -28,6 +28,7 @@ namespace BelowUs
 
         public IEnumerator GenerateResources(Random random, int[,] map, int squareSize, int openTile)
         {
+            yield return CorutineUtilities.Wait(0.01f, "Started resource generation");
             goldParent = GameObject.Find("Gold").transform;
             scrapParent = GameObject.Find("Scrap").transform;
 
@@ -37,7 +38,6 @@ namespace BelowUs
             this.squareSize = squareSize;
             resourcePositions = new List<Vector2>();
 
-            yield return CorutineUtilities.Wait(0.01f, "Started resource generation");
             RandomizeResourcePlacements();
             yield return CorutineUtilities.Wait(0.01f, "Randomized resource positions");
 

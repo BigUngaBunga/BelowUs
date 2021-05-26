@@ -27,6 +27,7 @@ namespace BelowUs
             maximumGoldValue = (int)(-transform.position.y * goldMultiplier.Value / 40) + minimumGoldValue;
             Random random = new Random(transform.position.y.ToString().GetHashCode() + Environment.TickCount.ToString().GetHashCode());
             value = random.Next(minimumGoldValue, maximumGoldValue);
+            UpdatePosition(transform.position);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -47,6 +48,9 @@ namespace BelowUs
 
         [ClientRpc]
         private void RemoveGold() => Destroy(gameObject);
+
+        [ClientRpc]
+        private void UpdatePosition(Vector3 serverPosition) => transform.position = serverPosition; 
     }
 }
 

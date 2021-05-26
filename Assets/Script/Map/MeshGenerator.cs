@@ -14,21 +14,22 @@ namespace BelowUs
         [Range(10, 50)]
         [SerializeField] private int tileAmount = 20;
 
+        private Vector2 mapSize;
         private readonly List<Vector3> vertices = new List<Vector3>();
         private readonly List<int> triangles = new List<int>();
         private readonly List<List<int>> outlines = new List<List<int>>();
         private readonly HashSet<int> checkedVertices = new HashSet<int>();
         [SerializeField] private float timeToWait = 0.01f;
 
-        private Dictionary<int, List<Triangle>> triangleDictionary;
+        private readonly Dictionary<int, List<Triangle>> triangleDictionary = new Dictionary<int, List<Triangle>>();
 
         #pragma warning disable S2368 // Public methods should not have multidimensional array parameters
         public IEnumerator GenerateMesh(int[,] map, float squareSize, int wallTile)
         #pragma warning restore S2368 // Public methods should not have multidimensional array parameters
         {
-            squareGrid = new SquareGrid(map, squareSize, wallTile);
-            triangleDictionary = new Dictionary<int, List<Triangle>>();
+            mapSize = new Vector2(map.GetLength(0), map.GetLength(1));
 
+            squareGrid = new SquareGrid(map, squareSize, wallTile);
             for (int x = 0; x < squareGrid.Squares.GetLength(0); x++)
                 for (int y = 0; y < squareGrid.Squares.GetLength(1); y++)
                     TriangulateSquare(squareGrid.Squares[x, y]);
@@ -39,7 +40,7 @@ namespace BelowUs
             mesh.vertices = vertices.ToArray();
             mesh.triangles = triangles.ToArray();
             mesh.RecalculateNormals();
-            mesh.uv = CreateUV(map, squareSize);
+            mesh.uv = CreateUV(squareSize);
             yield return Wait("Created mesh");
 
             yield return StartCoroutine(Generate2DCollider());
@@ -146,14 +147,14 @@ namespace BelowUs
             }
         }
 
-        private Vector2[] CreateUV(int[,] map, float squareSize)
+        private Vector2[] CreateUV(float squareSize)
         {
             Vector2[] uvs = new Vector2[vertices.Count];
             int divideMapSize = 2;
             for (int i = 0; i < vertices.Count; i++)
             {
-                float fillPercentX = Mathf.InverseLerp(map.GetLength(0) / divideMapSize * squareSize, -map.GetLength(0) / divideMapSize * squareSize, vertices[i].x);
-                float fillPercentY = Mathf.InverseLerp(map.GetLength(1) / divideMapSize * squareSize, -map.GetLength(1) / divideMapSize * squareSize, vertices[i].y);
+                float fillPercentX = Mathf.InverseLerp(mapSize.x / divideMapSize * squareSize, -mapSize.x / divideMapSize * squareSize, vertices[i].x);
+                float fillPercentY = Mathf.InverseLerp(mapSize.y / divideMapSize * squareSize, -mapSize.y / divideMapSize * squareSize, vertices[i].y);
                 uvs[i] = new Vector2(fillPercentX, fillPercentY) * tileAmount;
             }
 

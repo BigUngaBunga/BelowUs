@@ -37,6 +37,7 @@ namespace BelowUs
 
         public IEnumerator GenerateEnemies(Random random)
         {
+            yield return CorutineUtilities.Wait(0.01f, "Started enemy generation");
             parentMap = GameObject.Find("Enemies").transform;
 
             this.random = random;
@@ -47,15 +48,13 @@ namespace BelowUs
             enemyTypes.Add(EnemyType.Popper, spawnRatePopper);
             enemyTypes.Add(EnemyType.Spook, spawnRateSpook);
 
-
-            yield return CorutineUtilities.Wait(0.01f, "Started resource generation");
             RandomizeEnemyPlacements();
-            yield return CorutineUtilities.Wait(0.01f, "Randomized resource positions");
+            yield return CorutineUtilities.Wait(0.01f, "Randomized enemy positions");
 
             if (GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.LocalPlayerTag).GetComponent<NetworkBehaviour>().isServer)
                 foreach (Vector2 position in enemyPositions)
                     GenerateEnemies(position);
-            yield return CorutineUtilities.Wait(0.01f, "Generated resources");
+            yield return CorutineUtilities.Wait(0.01f, "Generated enemies");
         }
 
         private void RandomizeEnemyPlacements()
@@ -111,6 +110,7 @@ namespace BelowUs
             };
             objectToInstantiate = Instantiate(objectToInstantiate, position, Quaternion.identity, parentMap);
             NetworkServer.Spawn(objectToInstantiate);
+            
         }
 
         private EnemyType PickWeightedEnemyType()
