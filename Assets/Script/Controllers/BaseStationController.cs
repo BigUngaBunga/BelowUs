@@ -1,20 +1,17 @@
 using Mirror;
 using UnityEngine;
 
-public class BaseStationController : NetworkBehaviour
+namespace BelowUs
 {
-    [SerializeField] [SyncVar] protected NetworkIdentity stationPlayerController = null;
-    public bool IsOccupied => stationPlayerController != null;
-
-    // Start is called before the first frame update
-    void Start()
+    public class BaseStationController : NetworkBehaviour
     {
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        [SerializeField] [SyncVar] protected NetworkIdentity stationPlayerController = null;
+        public NetworkIdentity StationPlayerController => stationPlayerController;
+        public bool IsOccupied => stationPlayerController != null;
     }
 }
+
+
+
+

@@ -45,13 +45,12 @@ namespace BelowUs
             if (buttonUI == null)
                 return;
 
-            if (type == typeof(StationController) || type == typeof(SubController))
-                buttonUI.SetActive(!((StationController)controller).IsOccupied);
-            else if (type == typeof(GeneratorController))
-                buttonUI.SetActive(!((GeneratorController)controller).IsOccupied);
-            else if (type == typeof(VillageController))
-                buttonUI.SetActive(true);
+            buttonUI.SetActive(!((BaseStationController)controller).IsOccupied);
 
+            //if (type == typeof(StationController) || type == typeof(SubController))
+            //    buttonUI.SetActive(!((StationController)controller).IsOccupied);
+            //else if (type == typeof(GeneratorController) || type == typeof(VillageController))
+            //    buttonUI.SetActive(!((GeneratorController)controller).IsOccupied);
         }
     }
 }

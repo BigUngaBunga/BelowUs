@@ -15,10 +15,9 @@ namespace BelowUs
         }
 
         private int squareSize;
-        //private bool hasGeneratedFirstMap;
         private Random random;
         private List<MapGenerator> mapGenerators;
-        [SerializeField] private string seed;
+        [SyncVar]private string seed;
         [SerializeField] private int mapsBeforeBossMap;
         [SerializeField] private Vector2 startPosition;
         [SerializeField] private Vector2 mapSize;
@@ -29,11 +28,20 @@ namespace BelowUs
 
         public GameObject ReefPrefab => reefPrefab;
 
+        [Server]
+        private void Awake()
+        {
+            if (useRandomSeed)
+                seed = GetSeed();
+        }
+
         private void Start()
         {
-            random = isServer ? GetSeededRandom(useRandomSeed) : GetSeededRandom(false);
+            if (seed == null)
+                seed = GetSeed();
+
+            random = GetRandom();
             mapGenerators = new List<MapGenerator>();
-            //hasGeneratedFirstMap = false;
             squareSize = 2;
             StartCoroutine(CreateNewMap());
         }
@@ -97,12 +105,9 @@ namespace BelowUs
                 NetworkServer.Spawn(map);
         }
 
-        private Random GetSeededRandom(bool randomize)
-        {
-            if (randomize)
-                seed = Environment.TickCount.ToString();
-            return new Random(seed.GetHashCode());
-        }
+        private string GetSeed() => Environment.TickCount.ToString();
+
+        private Random GetRandom() => new Random(seed.GetHashCode());
 
         private Vector3 CalculateNextPosition()
         {

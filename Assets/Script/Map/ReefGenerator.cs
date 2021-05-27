@@ -37,17 +37,14 @@ namespace BelowUs
 
             GetComponent<MapEntranceDetector>().CreateEntranceDetector(passagewayRadius, new Vector2(mapWidth, mapHeight), squareSize, mapHandler);
 
-            if (isServer)
-            {
-                yield return StartCoroutine(GetComponent<ResourceGenerator>().GenerateResources(random, noiseMap, squareSize, waterTile));
-                
-				EnemyGenerator enemyGenerator = GetComponent<EnemyGenerator>();
-				enemyGenerator.Map = noiseMap;
-				enemyGenerator.SquareSize = squareSize;
-				enemyGenerator.OpenTile = waterTile;
-				yield return StartCoroutine(enemyGenerator.GenerateEnemies(random));
-            }
-            
+
+            yield return StartCoroutine(GetComponent<ResourceGenerator>().GenerateResources(random, noiseMap, squareSize, waterTile));
+            EnemyGenerator enemyGenerator = GetComponent<EnemyGenerator>();
+            enemyGenerator.Map = noiseMap;
+            enemyGenerator.SquareSize = squareSize;
+            enemyGenerator.OpenTile = waterTile;
+            yield return StartCoroutine(enemyGenerator.GenerateEnemies(random));
+
         }
 
         protected IEnumerator GenerateNoiseMap(Vector2 mapSize)

@@ -20,8 +20,6 @@ namespace BelowUs
         public CameraController Controller => cameraController;
 
         protected new Camera camera;
-
-        public NetworkIdentity StationPlayerController => stationPlayerController;
         
         [SerializeField] protected bool debug = false;
 

@@ -241,6 +241,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   resourceName: Hull Health
+  currentValue: 0
   resetValue: 1
   maximumValue:
     UseConstant: 0
@@ -264,7 +265,7 @@ MonoBehaviour:
   syncInterval: 0.1
   chasingRange: 100
   FiringRange: 0
-  collisionDamage: -10
+  collisionDamage: 1
   moveSpeedChasing: 700
   hullHP: {fileID: 0}
 --- !u!114 &3087279406320648073

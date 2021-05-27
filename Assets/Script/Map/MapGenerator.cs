@@ -122,7 +122,7 @@ namespace BelowUs
 
         protected void CreateEntranceAndExit(bool randomExitPlacement = true)
         {
-            int entranceSize = 1;
+            int entranceSize = 2;
             int exitDistanceFromCorners = entranceSize + passagewayRadius;
 
             Vector2 entranceLocation = new Vector2(mapWidth / 2, mapHeight - 1);

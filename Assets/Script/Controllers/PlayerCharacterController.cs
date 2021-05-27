@@ -28,11 +28,10 @@ namespace BelowUs
         private SpriteRenderer spriteRendered;
         private NetworkIdentity identity;
 
-        public StationController Station { get; set; }
-        private bool IsInStation() => Station != null && Station.StationPlayerController == identity;
-
         private readonly bool debugMovement = false;
         private readonly bool debugJump = false;
+
+        public bool IsInStation { get; set; }
 
         private void Awake()
         {
@@ -59,7 +58,8 @@ namespace BelowUs
 
         private void FixedUpdate()
         {
-            if (!IsInStation()) //TODO event that changes isInStation and not running the if statement in that case
+
+            if (!IsInStation) //TODO event that changes isInStation and not running the if statement in that case
             {
                 HorizontalMovement();
                 HandleClimbingBool();
@@ -92,7 +92,7 @@ namespace BelowUs
 
         public void OnJump(InputAction.CallbackContext value)
         {
-            if (!PauseMenu.IsOpen && !IsInStation())
+            if (!PauseMenu.IsOpen && !IsInStation)
             {
                 if (debugJump)
                     Debug.Log(nameof(isClimbing) + " is: " + isClimbing + "\n" + nameof(grounded) + " is " + grounded);
