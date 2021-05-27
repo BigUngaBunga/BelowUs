@@ -1,11 +1,16 @@
 using Mirror;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace BelowUs
 {
     public class PauseMenu : MonoBehaviour
     {
         [SerializeField] private GameObject pauseMenu;
+        [SerializeField] private GameObject optionsPnl;
+        [SerializeField] private GameObject pausePnl;
+        [SerializeField] private Dropdown resolutionsDropdown;
 
         public static bool IsOpen { get; private set; } = false;
         public static bool IsEnabled { get; set; } = true;
@@ -13,10 +18,23 @@ namespace BelowUs
         private MenuAction action;
         private NetworkManager manager = null;
 
+
+        private List<string> resolutions;
+
         private void Awake()
         {
             action = new MenuAction();
             action.Menu.MenuButton.performed += _ => ShowOrHideMenu();
+
+            //Resolutions
+            resolutionsDropdown.ClearOptions();
+            resolutions = new List<string>();
+            for (int i = 0; i < Screen.resolutions.Length; i++)
+            {
+                string option = Screen.resolutions[i].width + " x " + Screen.resolutions[i].height + "@" + Screen.resolutions[i].refreshRate;
+                resolutions.Add(option);
+            }
+            resolutionsDropdown.AddOptions(resolutions);
         }
 
         private void OnEnable() => action?.Enable();
@@ -39,6 +57,7 @@ namespace BelowUs
         private void ShowMenu()
         {
             pauseMenu.SetActive(true);
+            optionsPnl.SetActive(false);
             IsOpen = true;
             CheckIfPause();
         }
@@ -52,8 +71,15 @@ namespace BelowUs
 
         public void OpenOptions()
         {
-            HideMenu();
             //TODO Open options
+            pausePnl.SetActive(false);
+            optionsPnl.SetActive(true);
+        }
+
+        public void BackOptions()
+        {
+            pausePnl.SetActive(true);
+            optionsPnl.SetActive(false);
         }
 
         public void CheckIfPause()
@@ -66,5 +92,13 @@ namespace BelowUs
         }
 
         public void QuitGame() => Application.Quit();
+
+        public void SetFullscreen(bool isFullscreen) => Screen.fullScreen = isFullscreen;
+
+        public void SetResolution(int resolutionIndex)
+        {
+            Resolution resolution = Screen.resolutions[resolutionIndex];
+            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        }
     }
 }
