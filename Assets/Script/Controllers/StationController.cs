@@ -32,7 +32,7 @@ namespace BelowUs
         [Command(requiresAuthority = false)] public void SetStationPlayerControllerCMD(NetworkIdentity player) => SetStationPlayerController(player);
 
         [Server]
-        public void SetStationPlayerController(NetworkIdentity player)
+        public virtual void SetStationPlayerController(NetworkIdentity player)
         {
             stationPlayerController = player;
 

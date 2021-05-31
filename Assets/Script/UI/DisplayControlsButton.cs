@@ -10,15 +10,13 @@ namespace BelowUs
         [SerializeReference] private GameObject controlUI;
         [SerializeReference] private TMP_Text buttonText;
 
-        //private void Start() => buttonText = GetComponent<TMP_Text>();
+        public bool ControlViewIsActive => controlUI.activeSelf;
 
         public void ChangeVisibility()
         {
             buttonText.text = controlUI.activeSelf ? "Show Controls" : "Hide Controls";
             controlUI.SetActive(!controlUI.activeSelf);
         }
-
-
     }
 }
 

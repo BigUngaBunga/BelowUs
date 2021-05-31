@@ -11,6 +11,7 @@ namespace BelowUs
         [ReadOnly] [SerializeField] private Transform currentStation;
         private Rigidbody2D rb;
         private Button leaveButton;
+        private GameObject controlsButton;
         private PlayerAction.PlayerActions playerAction;
 
         private NetworkIdentity identity;
@@ -32,6 +33,8 @@ namespace BelowUs
             playerController = GetComponent<PlayerCharacterController>();
             leaveButton = GameObject.Find("UI").transform.Find("LeaveButton").GetComponent<Button>();
             leaveButton.onClick.AddListener(LeftController);
+
+            controlsButton = GameObject.Find("Game/UI/SubmarineControlsButton");
 
             PlayerAction action = new PlayerAction();
             playerAction = action.Player;
@@ -72,7 +75,7 @@ namespace BelowUs
                 if (controller is StationController stationController)
                 {
                     cameraController.SwitchTarget();
-
+                    HadleControlsButton(true);
                     if (isServer)
                         stationController.SetStationPlayerController(identity);
                     else if (isClient)
@@ -93,6 +96,8 @@ namespace BelowUs
                 return;
 
             leaveButton.gameObject.SetActive(false);
+            HadleControlsButton(false);
+
 
             playerAction.LeaveStation.performed -= LeftStationControllerBtn;
             PauseMenu.IsEnabled = true;
@@ -136,6 +141,13 @@ namespace BelowUs
         {
             string colliderTag = collider.transform.parent.gameObject.tag;
             return (colliderTag != null || colliderTag != ReferenceManager.Singleton.Untagged) && colliderTag == ReferenceManager.Singleton.StationTag;
+        }
+
+        private void HadleControlsButton(bool setActive)
+        {
+            if (!setActive && controlsButton.GetComponent<DisplayControlsButton>().ControlViewIsActive)
+                controlsButton.GetComponent<Button>().onClick.Invoke();
+            controlsButton.SetActive(setActive);   
         }
     }
 }
