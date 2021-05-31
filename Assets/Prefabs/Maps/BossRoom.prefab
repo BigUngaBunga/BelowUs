@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6785229714457502302}
   - component: {fileID: -4815605720432014210}
   - component: {fileID: 7376225745135848222}
+  - component: {fileID: 1357391678256394493}
   m_Layer: 0
   m_Name: BossRoom
   m_TagString: Untagged
@@ -47,8 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  mapHeight: 80
   mapWidth: 80
+  mapHeight: 80
   seed: 
   useRandomSeed: 1
   generateExit: 0
@@ -59,7 +60,7 @@ MonoBehaviour:
   minimumEnclaveRemovalSize: 6
   maximumEnclaveRemovalSize: 8
   timesToSmoothMap: 5
-  boss: {fileID: 1361819374005715653, guid: 39ac5326834dc594f96b467868b1e150, type: 3}
+  boss: {fileID: 2326536614811435902, guid: 40ee7c48a6f0ee54aa653b0614f51f71, type: 3}
   position: {x: 0, y: 0}
 --- !u!114 &7376225745135848222
 MonoBehaviour:
@@ -75,6 +76,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 6942919851656966605}
   tileAmount: 20
+  timeToWait: 0.01
+--- !u!114 &1357391678256394493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3399944966675119999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &4373607600849795095
 GameObject:
   m_ObjectHideFlags: 0

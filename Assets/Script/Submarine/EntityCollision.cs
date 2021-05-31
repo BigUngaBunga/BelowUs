@@ -17,6 +17,7 @@ namespace BelowUs
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            //Add timer and modife to OnTrigger2D
             if (isServer && !npc && collision.CompareTag(ReferenceManager.Singleton.EnemyTag)) //If i'm not an npc and i collide with an enemy ship
                 hullHealth.ApplyChange(-collision.gameObject.GetComponentInParent<EnemyBase>().CollisionDamage);
         }

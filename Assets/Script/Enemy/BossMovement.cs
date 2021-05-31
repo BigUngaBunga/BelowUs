@@ -34,6 +34,9 @@ namespace BelowUs
         [SerializeField] [Min(10)] protected float degressToStartCharging;
         [SerializeField] private Vector2 centerPosition;
 
+        //targeting wont be longer than the size of the room - offsetDistanceChasingRange
+        [SerializeField] private int offsetDistanceChasingRange;
+
         //Debug        
         [SerializeField] private bool debug;
 
@@ -44,9 +47,7 @@ namespace BelowUs
         private Vector2 normalizedDirection;
 
         //Behöver lägga till flera patterns och ett sätt att bestämma dom, Nedan ska ej hardcodas
-        private AttackPattern currentAttactPattern = AttackPattern.BasicChasing;
-
-
+        private AttackPattern currentAttactPattern = AttackPattern.BasicChasing;       
 
         protected override void Start()
         {
@@ -65,6 +66,7 @@ namespace BelowUs
         private void UpdateStates()
         {
             CheckDistanceToTargetChasing();
+            UpdateBasicRotation(targetGameObject.transform.position);
 
             switch (currentState)
             {
@@ -136,7 +138,7 @@ namespace BelowUs
 
         private void CheckifBossIsPassCircle()
         {
-            if(Vector2.Distance(transform.position, centerPosition )> distanceFromCenterPointCharging)
+            if(Vector2.Distance(transform.position, centerPosition ) > distanceFromCenterPointCharging)
             {
                 FindNextTargetPosition();
             }
@@ -169,5 +171,9 @@ namespace BelowUs
                 Gizmos.DrawSphere(centerPosition, distanceFromCenterPointCharging);
             }
         }
+
+        public void SetTargetingOffsetRange(float widthOfRoom) => chasingRange = widthOfRoom - offsetDistanceChasingRange;
+        //targeting wont be longer than the size of the room - offsetDistanceChasingRange
+
     }
 }

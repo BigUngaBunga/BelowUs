@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 6117186238284873544}
   m_Layer: 0
   m_Name: Trigger
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -618,7 +618,7 @@ MonoBehaviour:
   syncInterval: 0.1
   chasingRange: 70
   FiringRange: 40
-  collisionDamage: -5
+  collisionDamage: 5
   moveSpeedChasing: 10
   hullHP: {fileID: 0}
   timeBetweenShoots: 2
@@ -669,7 +669,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3820843256020973064}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: f668f59742ed7734eaea86983a5dea23, type: 2}
   m_CullingMode: 0
@@ -915,7 +915,7 @@ GameObject:
   - component: {fileID: 5802805289932466193}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
