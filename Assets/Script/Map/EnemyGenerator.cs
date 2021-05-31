@@ -38,6 +38,8 @@ namespace BelowUs
         public IEnumerator GenerateEnemies(Random random)
         {
             yield return CorutineUtilities.Wait(0.01f, "Started enemy generation");
+
+            //Todo parentmap spawns all Enemies at 0,0,0. Must be insstaniated right (world position)
             parentMap = GameObject.Find("Enemies").transform;
 
             this.random = random;
@@ -100,16 +102,17 @@ namespace BelowUs
         [Server]
         private void GenerateEnemies(Vector2 position)
         {
-            GameObject objectToInstantiate = PickWeightedEnemyType() switch
-            {
-                EnemyType.Booba => bobbaPrefab,
-                EnemyType.Spook => spookPrefab,
-                EnemyType.Clonker => clonkerPrefab,
-                EnemyType.Popper => popperPrefab,
-                _ => bobbaPrefab,
-            };
-            objectToInstantiate = Instantiate(objectToInstantiate, position, Quaternion.identity, parentMap);
-            NetworkServer.Spawn(objectToInstantiate);
+            
+                GameObject objectToInstantiate = PickWeightedEnemyType() switch
+                {
+                    EnemyType.Booba => bobbaPrefab,
+                    EnemyType.Spook => spookPrefab,
+                    EnemyType.Clonker => clonkerPrefab,
+                    EnemyType.Popper => popperPrefab,
+                    _ => bobbaPrefab,
+                };
+                objectToInstantiate = Instantiate(objectToInstantiate, position, Quaternion.identity);
+                NetworkServer.Spawn(objectToInstantiate);
             
         }
 

@@ -7,6 +7,8 @@ namespace BelowUs
     public class Weapon : NetworkBehaviour
     {
         [SerializeField] [MustBeAssigned] private GameObject bulletPrefab;
+
+        //Todo bullet parent spawns all bullets at 0,0,0. Must be insstaniated right (world position)
         [SerializeField] [MustBeAssigned] private Transform bulletParent;
 
         private Transform firePoint;
@@ -28,14 +30,14 @@ namespace BelowUs
 
         [Server]
         public void Shoot() {
-            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, bulletParent);
+            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             NetworkServer.Spawn(bulletClone);
         }
 
         [Command]
         public void CmdShoot()
         {
-            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, bulletParent);
+            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             NetworkServer.Spawn(bulletClone);
         }
 

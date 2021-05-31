@@ -704,7 +704,7 @@ MonoBehaviour:
   syncInterval: 0.1
   chasingRange: 70
   FiringRange: 0
-  collisionDamage: 1
+  collisionDamage: 5
   moveSpeedChasing: 10
   hullHP: {fileID: 0}
 --- !u!50 &6450413785958905961

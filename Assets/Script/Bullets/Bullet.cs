@@ -19,7 +19,7 @@ namespace BelowUs
 
         public float Damage => cannonDamage == null ? damage : cannonDamage.Value;
 
-        private readonly bool debug = false;
+        [SerializeField] private bool debug = true;
 
         private void Start()
         {
@@ -53,8 +53,15 @@ namespace BelowUs
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag(ReferenceManager.Singleton.SubmarineTag) || collision.CompareTag(ReferenceManager.Singleton.EnemyTag))
+            if (debug)
             {
+                Debug.Log("collided with " + collision.gameObject.name);
+            }
+
+           if (collision.CompareTag(ReferenceManager.Singleton.SubmarineTag) || collision.CompareTag(ReferenceManager.Singleton.EnemyTag))
+           {
+                
+
                 bool alliedShip = (npc && collision.CompareTag(ReferenceManager.Singleton.EnemyTag)) || (!npc && collision.CompareTag(ReferenceManager.Singleton.SubmarineTag));
 
                 if (debug)
@@ -69,7 +76,10 @@ namespace BelowUs
                 if (!alliedShip)
                 {
                     //Todo change this if collider position is standardized
-                    ShipResource hullHealth = npc ? collision.gameObject.GetComponentInParent<ShipResource>() : collision.gameObject.GetComponent<ShipResource>();
+
+                   
+                    ShipResource hullHealth = collision.gameObject.GetComponentInParent<ShipResource>() ;
+
 
                     if (debug)
                         Debug.Log("Damage is: " + damage + "\nHealth before: " + hullHealth.CurrentValue);

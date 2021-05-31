@@ -126,8 +126,8 @@ MonoBehaviour:
   numberOfEnemiesToGenerate: 10
   bobbaPrefab: {fileID: 7106082335865075385, guid: 01c96adad4a18c24dabb34c1c5e3b21b, type: 3}
   spookPrefab: {fileID: 3820843256020973064, guid: 0268277da6aa72d47b17151dfadf2e3c, type: 3}
-  clonkerPrefab: {fileID: 6922125981263108976, guid: 7a4ed83494a7b1640a88463e571976d7, type: 3}
-  popperPrefab: {fileID: 5703744100832063845, guid: 05ba39cf790c9074c828728e7499d7b2, type: 3}
+  clonkerPrefab: {fileID: 5604223050413616110, guid: 1f18d07ff32cc2244b3de39cb6ebda66, type: 3}
+  popperPrefab: {fileID: 6081711948439046630, guid: 76f37f21628374a41940f749f3ecd80c, type: 3}
   spawnRateBobba: 20
   spawnRateSpook: 20
   spawnRateClonker: 20

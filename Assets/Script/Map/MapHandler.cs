@@ -17,7 +17,7 @@ namespace BelowUs
         private int squareSize;
         private Random random;
         private List<MapGenerator> mapGenerators;
-        [SyncVar]private string seed;
+        [SyncVar] private string seed;
         [SerializeField] private int mapsBeforeBossMap;
         [SerializeField] private Vector2 startPosition;
         [SerializeField] private Vector2 mapSize;
@@ -34,6 +34,7 @@ namespace BelowUs
             if (useRandomSeed)
                 seed = GetSeed();
         }
+
 
         private void Start()
         {
@@ -52,7 +53,7 @@ namespace BelowUs
             StartCoroutine(GenerateNextMap());
         }
 
-        
+
         public IEnumerator GenerateNextMap(bool firstMap = false)
         {
             if (firstMap)
@@ -63,6 +64,7 @@ namespace BelowUs
                 yield return StartCoroutine(GenerateMap(reefPrefab, MapType.Reef));
         }
 
+
         private IEnumerator GenerateMap(GameObject prefab, MapType mapType)
         {
             GameObject map = Instantiate(prefab, CalculateNextPosition(), Quaternion.identity);
@@ -70,6 +72,8 @@ namespace BelowUs
 
             if (!isServer)
                 Debug.Log("Before creating");
+
+
 
             switch (mapType)
             {
@@ -90,6 +94,7 @@ namespace BelowUs
                     yield return StartCoroutine(reefGenerator.GenerateReef(this, mapSize, squareSize, random));
                     break;
             }
+
 
             if (!isServer)
                 Debug.Log("After creating");
