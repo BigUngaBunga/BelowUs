@@ -20,6 +20,11 @@ namespace BelowUs
         [SerializeField] private float intensity;
         [SerializeField] private FloatVariable spotAngle;
 
+        [SerializeField] private float fireRate;
+        [SerializeField] private float ammunition;
+        [SerializeField] private float reloadTimer = 3;
+        private bool reloading;
+
         [SerializeField] private StationController cannonController;
 
         private SpriteRenderer spriteRenderer;
@@ -60,6 +65,7 @@ namespace BelowUs
             FlipCannon(); //TODO Flip when submarine flipbutton is pressed instead of checking every frame
             Targeting();
             Fire();
+            Reload();
         }
 
         //TODO lyssna efter något event som aktiverar och avaktiverar denna metoden istället för att alltid köra den och kolla IsCannonActive varje gång
@@ -98,10 +104,11 @@ namespace BelowUs
         private bool IsCannonActive() => cannonController.IsOccupied && NetworkClient.localPlayer == cannonController.StationPlayerController;
 
         private void ToggleSpotlight() => spotlight.intensity = IsCannonActive()? intensity : 0;
-
+        
         private void Fire()
         {
-            if (Input.GetMouseButtonDown(0) && IsCannonActive())
+            fireRate -= Time.deltaTime;
+            if (Input.GetMouseButtonDown(0) && IsCannonActive() && fireRate <= 0 && ammunition > 0 && !reloading)
             {
                 NetworkBehaviour LocalPlayerNetworkBehaviour = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.LocalPlayerTag).GetComponent<NetworkBehaviour>();
 
@@ -109,7 +116,28 @@ namespace BelowUs
                     weapon.Shoot();
                 else
                     weapon.CmdShoot();
+
+                fireRate = 0.2f;
+                ammunition -= 1;
             }               
+        }
+        
+        private void Reload()
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                reloading = true;
+            }
+            if (reloading)
+            {
+                reloadTimer -= Time.deltaTime;
+                if (reloadTimer <= 0 && IsCannonActive())
+                {
+                    ammunition = 20;
+                    reloadTimer = 3;
+                    reloading = false;
+                }
+            }
         }
 
         private void FlipCannon()
