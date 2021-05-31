@@ -118,8 +118,6 @@ namespace BelowUs
                 Vector2 nextPosition = new Vector2(x: mapGenerator.transform.position.x + ((mapGenerator.ExitLocation.x - (mapGenerator.MapSize.x / 2)) * squareSize),
                                                     y: mapGenerator.transform.position.y - (((mapGenerator.MapSize.y / 2) + (mapSize.y / 2) - 1) * squareSize));
 
-                Debug.Log("Nr of maps: " + mapGenerators.Count + " Next position: " + nextPosition + " isServer: " + isServer.ToString());
-
                 return new Vector3(nextPosition.x, nextPosition.y);
             }
 

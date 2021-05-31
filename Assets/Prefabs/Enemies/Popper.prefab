@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: -5743669615090069999}
   - component: {fileID: 3547926269592136297}
   - component: {fileID: -963853530724014666}
+  - component: {fileID: -6402206986952856822}
   m_Layer: 0
   m_Name: Popper
   m_TagString: Enemy
@@ -262,6 +263,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   resourceName: Hull Health
+  currentValue: 0
   resetValue: 0
   maximumValue:
     UseConstant: 0
@@ -269,6 +271,32 @@ MonoBehaviour:
     Variable: {fileID: 11400000, guid: ba8ec4ed2bebbad4595f8d652b1fc8d7, type: 2}
   debug: 0
   nullify: 0
+--- !u!61 &-6402206986952856822
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703744100832063845}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.044517994, y: 0.020404115}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.821928, y: 0.7885395}
+  m_EdgeRadius: 0
 --- !u!1 &7344787487074779478
 GameObject:
   m_ObjectHideFlags: 0

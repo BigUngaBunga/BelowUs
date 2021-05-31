@@ -21,6 +21,9 @@ namespace BelowUs
         [SerializeField] [MustBeAssigned] private Transform goldParent;
         [SerializeField] [MustBeAssigned] private Transform scrapParent;
 
+        [SerializeField] private int goldWeight;
+        [SerializeField] private int scrapWeight;
+
         private Random random;
         private List<Vector2> resourcePositions;
         private int[,] map;
@@ -108,8 +111,8 @@ namespace BelowUs
             Dictionary<ResourceType, int> resourceTypes = new Dictionary<ResourceType, int>();
             int totalWeight = 0;
 
-            resourceTypes.Add(ResourceType.Gold, 20);
-            resourceTypes.Add(ResourceType.Scrap, 1);
+            resourceTypes.Add(ResourceType.Gold, goldWeight);
+            resourceTypes.Add(ResourceType.Scrap, scrapWeight);
 
             foreach (int weight in resourceTypes.Values)
                 totalWeight += weight;

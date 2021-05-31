@@ -484,6 +484,7 @@ GameObject:
   - component: {fileID: -2898043021246271424}
   - component: {fileID: -5396978898668453108}
   - component: {fileID: 3826154045977040133}
+  - component: {fileID: -7412086060185334905}
   m_Layer: 0
   m_Name: Spook
   m_TagString: Enemy
@@ -636,6 +637,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   bulletPrefab: {fileID: 3134091550239981154, guid: f53c0df6f8559174eb1b533eef05e073, type: 3}
+  bulletParent: {fileID: 0}
 --- !u!114 &-5396978898668453108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,6 +653,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   resourceName: Hull Health
+  currentValue: 0
   resetValue: 1
   maximumValue:
     UseConstant: 0
@@ -677,6 +680,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!70 &-7412086060185334905
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3820843256020973064}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.014713764, y: 1.0841817}
+  m_Size: {x: 0.6765648, y: 1.6675618}
+  m_Direction: 0
 --- !u!1 &4320036507119805277
 GameObject:
   m_ObjectHideFlags: 0

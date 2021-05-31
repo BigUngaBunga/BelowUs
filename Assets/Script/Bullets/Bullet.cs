@@ -19,7 +19,8 @@ namespace BelowUs
 
         public float Damage => cannonDamage == null ? damage : cannonDamage.Value;
 
-        private readonly bool debug = false;
+        private readonly bool debugProjectile = false;
+        private readonly bool debugCollision = true;
 
         private void Start()
         {
@@ -29,12 +30,12 @@ namespace BelowUs
 
                 Vector2 yVelocity = invertDirectionInt * velocity * transform.up;
 
-                if (debug)
+                if (debugProjectile)
                     Debug.Log("Initial Velocity " + rb.velocity);
 
                 rb.velocity = yVelocity;
 
-                if (debug)
+                if (debugProjectile)
                     Debug.Log("Velocity after " + nameof(yVelocity) + " " + rb.velocity);
 
                 npc = CompareTag("EnemyBullet");
@@ -57,7 +58,7 @@ namespace BelowUs
             {
                 bool alliedShip = (npc && collision.CompareTag(ReferenceManager.Singleton.EnemyTag)) || (!npc && collision.CompareTag(ReferenceManager.Singleton.SubmarineTag));
 
-                if (debug)
+                if (debugCollision)
                 {
                     string info = transform.name + " was hit by a ";
                     if (alliedShip)
@@ -68,18 +69,22 @@ namespace BelowUs
 
                 if (!alliedShip)
                 {
+                    //TODO fix Bubba's health so that it's not null
                     //Todo change this if collider position is standardized
-                    ShipResource hullHealth = npc ? collision.gameObject.GetComponentInParent<ShipResource>() : collision.gameObject.GetComponent<ShipResource>();
+                    ShipResource health = npc ? collision.gameObject.GetComponentInParent<ShipResource>() : collision.gameObject.GetComponent<ShipResource>();
 
-                    if (debug)
-                        Debug.Log("Damage is: " + damage + "\nHealth before: " + hullHealth.CurrentValue);
+                    if (debugCollision && health == null)
+                        Debug.Log("Health is null");
 
-                    hullHealth.ApplyChange(-Damage);
+                    if (debugCollision)
+                        Debug.Log("Damage is: " + damage + "\nHealth before: " + health.CurrentValue);
 
-                    if (debug)
-                        Debug.Log("Health after: " + hullHealth.CurrentValue);
+                    health.ApplyChange(-Damage);
 
-                    if (npc && hullHealth.CurrentValue == 0)
+                    if (debugCollision)
+                        Debug.Log("Health after: " + health.CurrentValue);
+
+                    if (npc && health.CurrentValue == 0)
                         NetworkServer.Destroy(collision.gameObject);
                 }
             }

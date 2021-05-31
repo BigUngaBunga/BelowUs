@@ -14,11 +14,7 @@ namespace BelowUs
         private void Awake()
         {
             transform.Find("Test");
-
-            firePoint = transform.Find("FirePoint & Light");
-
-            if (firePoint == null)
-                firePoint = transform.Find("FirePoint");
+            firePoint = transform.Find("FirePoint");
 
             if (bulletParent == null)
                 bulletParent = transform; //Todo refer to the real bullet parent instead
