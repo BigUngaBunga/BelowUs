@@ -111,7 +111,7 @@ namespace BelowUs
                     EnemyType.Popper => popperPrefab,
                     _ => bobbaPrefab,
                 };
-                objectToInstantiate = Instantiate(objectToInstantiate, position, Quaternion.identity);
+                objectToInstantiate = Instantiate(objectToInstantiate, position, Quaternion.identity, parentMap);
                 NetworkServer.Spawn(objectToInstantiate);
             
         }

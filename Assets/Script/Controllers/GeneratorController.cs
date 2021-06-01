@@ -21,7 +21,7 @@ namespace BelowUs
         
         public void Enter(NetworkIdentity player)
         {
-            Debug.Log("Activate UI");
+            //Debug.Log("Activate UI");
             SetUIActive(true);
 
             if (isServer)
@@ -32,7 +32,7 @@ namespace BelowUs
 
         public void Leave()
         {
-            Debug.Log("Deactivate UI");
+            //Debug.Log("Deactivate UI");
             SetUIActive(false);
 
             if (isServer)

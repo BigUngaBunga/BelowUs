@@ -96,7 +96,9 @@ namespace BelowUs
                 return;
 
             leaveButton.gameObject.SetActive(false);
-            HadleControlsButton(false);
+
+            if (currentStationController is StationController)
+                HadleControlsButton(false);
 
 
             playerAction.LeaveStation.performed -= LeftStationControllerBtn;

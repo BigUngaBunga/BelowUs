@@ -25,6 +25,9 @@ namespace BelowUs
         [SerializeField] private float reloadTimer = 3;
         private bool reloading;
 
+        private float reloadSize;
+        private float fireRateTimer;
+
         [SerializeField] private StationController cannonController;
 
         private SpriteRenderer spriteRenderer;
@@ -50,6 +53,10 @@ namespace BelowUs
 
         private void Start()
         {
+            ammunition = reloadSize = 20;
+            fireRate = fireRateTimer = 0.2f;
+
+
             spriteRenderer = GetComponent<SpriteRenderer>();
             submarine = GetComponentInParent<SubmarineMovement>();
             spotlight = GetComponentInChildren<Light>();
@@ -117,8 +124,8 @@ namespace BelowUs
                 else
                     weapon.CmdShoot();
 
-                fireRate = 0.2f;
-                ammunition -= 1;
+                fireRate = fireRateTimer;
+                ammunition--;
             }               
         }
         
@@ -133,7 +140,7 @@ namespace BelowUs
                 reloadTimer -= Time.deltaTime;
                 if (reloadTimer <= 0 && IsCannonActive())
                 {
-                    ammunition = 20;
+                    ammunition = reloadSize;
                     reloadTimer = 3;
                     reloading = false;
                 }

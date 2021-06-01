@@ -17,6 +17,7 @@ namespace BelowUs
         private int squareSize;
         private Random random;
         private List<MapGenerator> mapGenerators;
+        private Transform parentMap;
         [SyncVar] private string seed;
         [SerializeField] private int mapsBeforeBossMap;
         [SerializeField] private Vector2 startPosition;
@@ -41,6 +42,7 @@ namespace BelowUs
             if (seed == null)
                 seed = GetSeed();
 
+            parentMap = GameObject.Find("Maps").transform;
             random = GetRandom();
             mapGenerators = new List<MapGenerator>();
             squareSize = 2;
@@ -67,7 +69,7 @@ namespace BelowUs
 
         private IEnumerator GenerateMap(GameObject prefab, MapType mapType)
         {
-            GameObject map = Instantiate(prefab, CalculateNextPosition(), Quaternion.identity);
+            GameObject map = Instantiate(prefab, CalculateNextPosition(), Quaternion.identity, parentMap);
             MapGenerator mapGenerator;
 
             if (!isServer)

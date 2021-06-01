@@ -19,23 +19,23 @@ namespace BelowUs
             firePoint = transform.Find("FirePoint");
 
             if (bulletParent == null)
-                bulletParent = transform; //Todo refer to the real bullet parent instead
+                bulletParent = GameObject.Find("Bullets").transform;
 
             AdjustFirepoint();
         }
 
         [Server]
         public void Shoot() {
-            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, bulletParent);
             NetworkServer.Spawn(bulletClone);
         }
 
         [Command]
-        public void CmdShoot()
-        {
-            GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            NetworkServer.Spawn(bulletClone);
-        }
+        public void CmdShoot() => Shoot();
+        //{
+        //    GameObject bulletClone = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation, bulletParent);
+        //    NetworkServer.Spawn(bulletClone);
+        //}
 
         /**
          * Dynamically adjusts firePoint based on bullet size
