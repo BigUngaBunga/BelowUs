@@ -15,6 +15,6 @@ MonoBehaviour:
   DeveloperDescription: "Decreases the distance that the submarine \nglides when
     moved"
   Value: {fileID: 11400000, guid: f791420ce3f95bd499e1cf742eedd2cd, type: 2}
-  price: 0
-  upgradeIncrease: 0
-  priceIncrease: 0
+  price: 40
+  upgradeIncrease: 0.01
+  priceIncrease: 3

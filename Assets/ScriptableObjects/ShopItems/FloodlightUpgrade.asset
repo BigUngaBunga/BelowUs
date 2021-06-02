@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeveloperDescription: Increases the floodlights spot angle
   Value: {fileID: 11400000, guid: e32eece3d2d388247a5508f0f7ccd3f0, type: 2}
-  price: 0
-  upgradeIncrease: 0
-  priceIncrease: 0
+  price: 20
+  upgradeIncrease: 10
+  priceIncrease: 2

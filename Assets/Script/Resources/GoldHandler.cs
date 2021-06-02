@@ -10,11 +10,15 @@ namespace BelowUs
         [SerializeField] private int minimumGoldValue;
         [SerializeField] private int maximumGoldValue;
         [SerializeField] private int value;
-        [SerializeField] FloatVariable goldMultiplier;
+        [SerializeField] private FloatVariable goldMultiplier;
         private ShipResource gold;
+        private int minimumGoldValueDepthIncrease, maximumGoldValueDepthIncrease;
 
         private void Start()
         {
+            minimumGoldValueDepthIncrease = 100;
+            maximumGoldValueDepthIncrease = 40;
+
             if (isServer) //TODO consider if this script should be server only or if it should be handled this way (if server only click it in networkidentity)
                 ServerStartupStuff();
         }
@@ -23,10 +27,10 @@ namespace BelowUs
         private void ServerStartupStuff()
         {
             gold = GameObject.Find("CurrentGold").GetComponent<ShipResource>();
-            minimumGoldValue += (int)(-transform.position.y * goldMultiplier.Value / 100);
-            maximumGoldValue = (int)(-transform.position.y * goldMultiplier.Value / 40) + minimumGoldValue;
+            minimumGoldValue += (int)(-transform.position.y  / minimumGoldValueDepthIncrease);
+            maximumGoldValue = (int)(-transform.position.y / maximumGoldValueDepthIncrease) + minimumGoldValue;
             Random random = new Random(transform.position.y.ToString().GetHashCode() + Environment.TickCount.ToString().GetHashCode());
-            value = random.Next(minimumGoldValue, maximumGoldValue);
+            value = (int)(random.Next(minimumGoldValue, maximumGoldValue) * goldMultiplier.Value);
             UpdatePosition(transform.position);
         }
 

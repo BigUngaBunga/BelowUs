@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeveloperDescription: Increases the starting oxygen levels
   Value: {fileID: 11400000, guid: 93138558f1d48ec418586ff6bb5b16c1, type: 2}
-  price: 0
-  upgradeIncrease: 0
-  priceIncrease: 0
+  price: 35
+  upgradeIncrease: 15
+  priceIncrease: 2

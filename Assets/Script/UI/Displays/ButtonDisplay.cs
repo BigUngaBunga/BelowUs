@@ -8,7 +8,7 @@ namespace BelowUs
     {
         private GameObject buttonUI;
         //private StationController stationCollider;
-        void Start()
+        private void Start()
         {
             buttonUI = GetComponent<GameObject>();
             buttonUI.SetActive(false);

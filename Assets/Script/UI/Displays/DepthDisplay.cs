@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace BelowUs
@@ -13,7 +10,8 @@ namespace BelowUs
         protected override void Start()
         {
             base.Start();
-            initialDepth = submarinePosition.position.y;
+            initialDepth = 200;
+            //initialDepth = submarinePosition.position.y;
         }
         protected override void UpdateDisplay() => textDisplay.text = ((int)(-submarinePosition.position.y + initialDepth)).ToString() + " m";
     }

@@ -10029,6 +10029,7 @@ GameObject:
   - component: {fileID: 1757064310}
   - component: {fileID: 1757064312}
   - component: {fileID: 1757064313}
+  - component: {fileID: 1757064314}
   m_Layer: 5
   m_Name: GoldValue
   m_TagString: Untagged
@@ -10164,6 +10165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5d3a380844e4b439839e4b73511cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   gold: {fileID: 1812078634}
   goldTotal: {fileID: 11400000, guid: 81c1e532d498fbd4c9101c13c949d9a0, type: 2}
   displayShipResource: 1
@@ -10179,6 +10182,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393b73f22a305dd45b7362fb32a3d629, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1757064314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757064308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 2604849632
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &1768959564
 GameObject:
   m_ObjectHideFlags: 0
@@ -12883,7 +12903,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.8
+  m_fontSize: 28.05
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -13223,6 +13243,7 @@ GameObject:
   - component: {fileID: 3507648813807804909}
   - component: {fileID: 3507648813807804908}
   - component: {fileID: 3507648813807804900}
+  - component: {fileID: 3507648813807804901}
   m_Layer: 5
   m_Name: Depth
   m_TagString: Untagged
@@ -13261,7 +13282,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481ea0435d6d78f44b8dd70764a6336a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   submarinePosition: {fileID: 473132174}
+--- !u!114 &3507648813807804901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507648813807804898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 3344814113
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!114 &3507648813807804908
 MonoBehaviour:
   m_ObjectHideFlags: 0

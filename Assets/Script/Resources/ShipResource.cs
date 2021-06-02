@@ -28,7 +28,7 @@ namespace BelowUs
 
         #region Server
         [Server]
-        public void ApplyChange(float value)
+        public virtual void ApplyChange(float value)
         {
             if (debug)
                 Debug.Log(gameObject.name + " " + nameof(currentValue) + " is " + currentValue + " before " + value + " change");
@@ -47,7 +47,7 @@ namespace BelowUs
         }
 
         [Server]
-        public void SetValue(float value)
+        public virtual void SetValue(float value)
         {
             currentValue = value;
 

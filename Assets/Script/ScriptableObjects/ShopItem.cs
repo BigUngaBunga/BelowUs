@@ -13,13 +13,11 @@ namespace BelowUs
         [SerializeField] public FloatVariable Value;
         [SerializeField] public float price, upgradeIncrease, priceIncrease;
 
+        public float GetValue() => Value.Value;
+
         public void SetValue(float value) => Value.SetValue(value);
 
-        public void SetValue(FloatVariable value) => Value.SetValue(value.Value);
-
         public void ApplyChange(float amount) => Value.ApplyChange(amount);
-
-        public void ApplyChange(FloatVariable amount) => Value.ApplyChange(amount.Value);
 
         public void ApplyUpgrade()
         {

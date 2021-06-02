@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeveloperDescription: "Increases the range of the passive light \naround the submarine"
   Value: {fileID: 11400000, guid: fb8c3dacd8d12e84bad5968ad00bc71f, type: 2}
-  price: 0
-  upgradeIncrease: 0
-  priceIncrease: 0
+  price: 10
+  upgradeIncrease: 2
+  priceIncrease: 2

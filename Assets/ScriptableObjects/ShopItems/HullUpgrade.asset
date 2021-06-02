@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeveloperDescription: Increases the starting hull strength
   Value: {fileID: 11400000, guid: 8a5aa9e0599cafd4eb30941f03fa9c98, type: 2}
-  price: 0
-  upgradeIncrease: 0
-  priceIncrease: 0
+  price: 50
+  upgradeIncrease: 25
+  priceIncrease: 3
