@@ -4490,7 +4490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
   mapsBeforeBossMap: 3
   startPosition: {x: 0, y: 0}
   mapSize: {x: 80, y: 60}
@@ -10165,8 +10165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5d3a380844e4b439839e4b73511cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   gold: {fileID: 1812078634}
   goldTotal: {fileID: 11400000, guid: 81c1e532d498fbd4c9101c13c949d9a0, type: 2}
   displayShipResource: 1
@@ -13282,8 +13280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481ea0435d6d78f44b8dd70764a6336a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   submarinePosition: {fileID: 473132174}
 --- !u!114 &3507648813807804901
 MonoBehaviour:

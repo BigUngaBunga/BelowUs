@@ -12,7 +12,7 @@ namespace BelowUs
         {
             if (collision.gameObject.CompareTag(ReferenceManager.Singleton.SubmarineTag) && !hasEnteredRoom)
             {
-                StartCoroutine(mapHandler.GenerateNextMap());
+                mapHandler.GenerateMapOnServer();
                 hasEnteredRoom = true;
                 Destroy(exitDetector);
                 Destroy(this);

@@ -7,7 +7,7 @@ namespace BelowUs
     {
 #if UNITY_EDITOR
         [Multiline]
-        [SerializeField] private string DeveloperDescription = "";
+        [SerializeField] private string developerDescription = "";
 #endif
 
         [SerializeField] public FloatVariable Value;
