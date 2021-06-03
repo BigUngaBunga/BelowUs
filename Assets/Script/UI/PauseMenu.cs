@@ -99,7 +99,8 @@ namespace BelowUs
             if (manager == null)
                 manager = NetworkManager.singleton;
 
-            Time.timeScale = manager.numPlayers == 1 && pauseMenu.activeSelf ? 0 : 1;
+            if (manager != null && pauseMenu != null)
+                Time.timeScale = manager.numPlayers == 1 && pauseMenu.activeSelf ? 0 : 1;
         }
 
         public void QuitGame() => Application.Quit();
