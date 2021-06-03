@@ -34,8 +34,6 @@ namespace BelowUs
                 resolutions.Add(Screen.resolutions[i].width + " x " + Screen.resolutions[i].height + "@" + Screen.resolutions[i].refreshRate);
 
             resolutionsDropdown.AddOptions(resolutions);
-
-            IsEnabled = true;
         }
 
         private void OnEnable() => action?.Enable();

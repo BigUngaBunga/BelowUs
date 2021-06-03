@@ -42,6 +42,8 @@ namespace BelowUs
             playerAction.EnterStation.performed += OnStationClick;
 
             playerAction.Enable();
+
+            PauseMenu.IsEnabled = true;
         }
 
         public void OnStationClick(InputAction.CallbackContext value)
