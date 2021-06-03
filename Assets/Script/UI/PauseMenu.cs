@@ -31,11 +31,11 @@ namespace BelowUs
             resolutionsDropdown.ClearOptions();
             resolutions = new List<string>();
             for (int i = 0; i < Screen.resolutions.Length; i+=3)
-            {
-                string option = Screen.resolutions[i].width + " x " + Screen.resolutions[i].height + "@" + Screen.resolutions[i].refreshRate;
-                resolutions.Add(option);
-            }
+                resolutions.Add(Screen.resolutions[i].width + " x " + Screen.resolutions[i].height + "@" + Screen.resolutions[i].refreshRate);
+
             resolutionsDropdown.AddOptions(resolutions);
+
+            IsEnabled = true;
         }
 
         private void OnEnable() => action?.Enable();
