@@ -13,7 +13,7 @@ namespace BelowUs
 
         [SerializeField] private bool giveAuthority;
 
-        [SerializeField] [ConditionalField(nameof(giveAuthority))] [MustBeAssigned] private GameObject controlObject;
+        [SerializeField] [ConditionalField(nameof(giveAuthority))] [MustBeAssigned] protected GameObject controlObject;
         
         [SerializeField] private NetworkIdentity controlObjNetworkIdentity;
 

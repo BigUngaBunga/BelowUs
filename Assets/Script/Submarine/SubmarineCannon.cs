@@ -20,15 +20,22 @@ namespace BelowUs
         [SerializeField] private float intensity;
         [SerializeField] private FloatVariable spotAngle;
 
-        [SerializeField] private float fireRate;
-        [SerializeField] private float ammunition;
-        [SerializeField] private float reloadTimer = 3;
-        private bool reloading;
+        [SerializeField] private float reloadTime;
+        [SerializeField] private float reloadSize;
+        [SerializeField] private float fireRateTimer;
 
-        private float reloadSize;
-        private float fireRateTimer;
+        [SyncVar]  private float ammunition;
+        [SyncVar] private bool reloading;
+        [SyncVar] private float reloadTimer;
+        private float fireRate;
+
+
+
 
         [SerializeField] private StationController cannonController;
+        
+        private AmmoDisplay ammoUI;
+
 
         private SpriteRenderer spriteRenderer;
         private SubmarineMovement submarine;
@@ -53,9 +60,16 @@ namespace BelowUs
 
         private void Start()
         {
-            ammunition = reloadSize = 20;
-            fireRate = fireRateTimer = 0.2f;
+            ammunition = reloadSize;
+            fireRate = fireRateTimer;
+            reloadTimer = reloadTime;
 
+            ammoUI = GameObject.Find("Game/UI/Ammo").GetComponent<AmmoDisplay>();
+            if (ammoUI != null)
+            {
+                Debug.Log("Found a Text field");
+            }
+            UpdateAmmoUI();
 
             spriteRenderer = GetComponent<SpriteRenderer>();
             submarine = GetComponentInParent<SubmarineMovement>();
@@ -73,6 +87,7 @@ namespace BelowUs
             Targeting();
             Fire();
             Reload();
+            RepeatUpdateUI();
         }
 
         //TODO lyssna efter något event som aktiverar och avaktiverar denna metoden istället för att alltid köra den och kolla IsCannonActive varje gång
@@ -120,12 +135,11 @@ namespace BelowUs
                 NetworkBehaviour LocalPlayerNetworkBehaviour = GameObject.FindGameObjectWithTag(ReferenceManager.Singleton.LocalPlayerTag).GetComponent<NetworkBehaviour>();
 
                 if (LocalPlayerNetworkBehaviour == isServer)
-                    weapon.Shoot();
+                    Shoot();
                 else
-                    weapon.CmdShoot();
-
-                fireRate = fireRateTimer;
-                ammunition--;
+                    CommandShoot();
+                
+                UpdateAmmoUI();
             }               
         }
         
@@ -141,7 +155,7 @@ namespace BelowUs
                 if (reloadTimer <= 0 && IsCannonActive())
                 {
                     ammunition = reloadSize;
-                    reloadTimer = 3;
+                    reloadTimer = reloadTime;
                     reloading = false;
                 }
             }
@@ -159,5 +173,29 @@ namespace BelowUs
                 restrictionRight = -previousLeftRestrict;
             }
         }
+
+        public void RepeatUpdateUI()
+        {
+            if (IsCannonActive() && !IsInvoking(nameof(UpdateAmmoUI)))
+            {
+                float repeatTime = 0.2f;
+                InvokeRepeating(nameof(UpdateAmmoUI), 0, repeatTime);
+            }
+            else if (!IsCannonActive() && IsInvoking(nameof(UpdateAmmoUI)))
+                CancelInvoke(nameof(UpdateAmmoUI));
+        }
+
+        private void UpdateAmmoUI() => ammoUI.UpdateUI((int)ammunition, (int)reloadSize, reloading);
+
+        [Server]
+        private void Shoot()
+        {
+            weapon.Shoot();
+            fireRate = fireRateTimer;
+            ammunition--;
+        }
+
+        [Command]
+        private void CommandShoot() => Shoot();
     }
 }

@@ -50,6 +50,7 @@ namespace BelowUs
             enemyTypes.Add(EnemyType.Popper, spawnRatePopper);
             enemyTypes.Add(EnemyType.Spook, spawnRateSpook);
 
+
             RandomizeEnemyPlacements();
             yield return CorutineUtilities.Wait(0.01f, "Randomized enemy positions");
 
@@ -69,9 +70,10 @@ namespace BelowUs
                 for (int y = 0; y < Map.GetLength(1); y++)
                     if (Map[x, y] == OpenTile && SurroundedByOpenTiles(x, y))
                     {
+
                         Vector2 position;
-                        position.x = (x - halfMapWidth) * SquareSize + transform.position.x;
-                        position.y = (y - halfMapHeight) * SquareSize + transform.position.y;
+                        position.x = ((x - halfMapWidth) * SquareSize) + transform.position.x;
+                        position.y = ((y - halfMapHeight) * SquareSize) + transform.position.y;
                         openPositions.Add(position);
                     }
 

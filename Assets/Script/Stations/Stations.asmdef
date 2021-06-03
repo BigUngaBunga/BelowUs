@@ -2,11 +2,12 @@
     "name": "Stations",
     "rootNamespace": "",
     "references": [
-        "GUID:13734da6be915c54bb7f452a2fe717e8",
         "GUID:30817c1a0e6d646d99c048fc403f5979",
         "GUID:25a9a66553417024b84a7f7e8629c16e",
         "GUID:8c31acbd60ad07a4c8e5d13eabd95606",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:13734da6be915c54bb7f452a2fe717e8",
+        "GUID:84812ad24dc84934c9771e6340274da2"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

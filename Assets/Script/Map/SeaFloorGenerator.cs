@@ -47,12 +47,14 @@ namespace BelowUs
             BoxCollider2D roof = gameObject.AddComponent<BoxCollider2D>();
             int width = mapWidth * squareSize;
             int height = mapHeight * squareSize;
+            int widthOffset = (width / 2) - 30;
+            int heightOffset = height - squareSize;
 
             rightWall.size = leftWall.size = new Vector2(2, height);
             roof.size = new Vector2(width, 2);
 
-            rightWall.offset = new Vector2(width / 2, height - squareSize);
-            leftWall.offset = new Vector2(-width / 2, height - squareSize);
+            rightWall.offset = new Vector2(widthOffset, heightOffset);
+            leftWall.offset = new Vector2(-widthOffset, heightOffset);
             roof.offset = new Vector2(0, (height - squareSize) * 3 / 2f);
         }
     }

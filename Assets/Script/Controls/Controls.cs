@@ -80,6 +80,9 @@ namespace BelowUs
                         stationController.SetStationPlayerController(identity);
                     else if (isClient)
                         stationController.SetStationPlayerControllerCMD(identity);
+
+                    if (stationController is CannonController cannonController)
+                        cannonController.ActivateUI(true);
                 }
                 else if (controller.GetType() == typeof(GeneratorController))
                     ((GeneratorController)controller).Enter(identity);
@@ -110,6 +113,10 @@ namespace BelowUs
                     station.SetStationPlayerControllerCMD(null);
                 else
                     station.SetStationPlayerController(null);
+
+                if (station is CannonController cannonController)
+                    cannonController.ActivateUI(false);
+
                 cameraController.SwitchTarget();
             }
 

@@ -125,7 +125,6 @@ namespace BelowUs
                     StartCoroutine(SynchronizePosition());
             }
         }
-
         private IEnumerator SynchronizeRotation()
         {
             isSynchronizingRotation = true;
@@ -137,7 +136,6 @@ namespace BelowUs
             }
             isSynchronizingRotation = false;
         }
-
         private IEnumerator SynchronizePosition()
         {
             isSynchronizingPosition = true;

@@ -232,7 +232,7 @@ namespace BelowUs
 
         private IEnumerator Generate2DCollider()
         {
-            EdgeCollider2D[] currentColliders = gameObject.GetComponents<EdgeCollider2D>();
+            PolygonCollider2D[] currentColliders = gameObject.GetComponents<PolygonCollider2D>();
             for (int i = 0; i < currentColliders.Length; i++)
                 Destroy(currentColliders[i]);
 
@@ -240,13 +240,13 @@ namespace BelowUs
 
             foreach (List<int> outline in outlines)
             {
-                EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
+                PolygonCollider2D polygonCollider = gameObject.AddComponent<PolygonCollider2D>();
                 Vector2[] edgePoints = new Vector2[outline.Count];
 
                 for (int i = 0; i < outline.Count; i++)
                     edgePoints[i] = vertices[outline[i]];
 
-                edgeCollider.points = edgePoints;
+                polygonCollider.points = edgePoints;
             }
         }
 

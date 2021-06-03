@@ -14,10 +14,10 @@ namespace BelowUs
             Reef, SeaFloor, BossRoom
         }
 
-        private int squareSize;
+        private readonly int squareSize = 2;
         private List<MapGenerator> mapGenerators;
         private Transform parentMap;
-        [SyncVar] private string seed;
+        private string seed;
         [SerializeField] private int mapsBeforeBossMap;
         [SerializeField] private Vector2 startPosition;
         [SerializeField] private Vector2 mapSize;
@@ -31,15 +31,11 @@ namespace BelowUs
         [Server]
         private void Start()
         {
-            if (useRandomSeed)
-                seed = GetSeed();
-
-            if (seed == null)
+            if (useRandomSeed || seed == null)
                 seed = GetSeed();
 
             parentMap = GameObject.Find("Maps").transform;
             mapGenerators = new List<MapGenerator>();
-            squareSize = 2;
             StartCoroutine(CreateNewMap());
         }
 
@@ -67,37 +63,30 @@ namespace BelowUs
         private IEnumerator GenerateMap(GameObject prefab, MapType mapType)
         {
             GameObject map = Instantiate(prefab, CalculateNextPosition(), Quaternion.identity, parentMap);
-            MapGenerator mapGenerator;
             NetworkServer.Spawn(map);
-
-            if (!isServer)
-                Debug.Log("Before creating");
-
-            for (int i = 0; i < 10; i++)
-            {
-                Debug.Log(GetRandom().Next());
-            }
+            MapGenerator mapGenerator;
+            int hashSeed = GetSeedHash();
 
             switch (mapType)
             {
                 case MapType.SeaFloor:
-                    Vector2 seaFloorSize = new Vector2(mapSize.x * 2, mapSize.y / 2);
+                    Vector2 seaFloorSize = new Vector2(mapSize.x * 2f, mapSize.y / 2);
                     SeaFloorGenerator seaFloorGenerator = map.GetComponent<SeaFloorGenerator>();
                     mapGenerator = seaFloorGenerator;
-                    GenerateMapOnClientSide(this, mapGenerator, squareSize, seaFloorSize, GetSeedHash());
+                    GenerateMapOnClientSide(this, mapGenerator, seaFloorSize, hashSeed);
                     yield return StartCoroutine(seaFloorGenerator.GenerateSeaFloor(seaFloorSize, squareSize));
                     break;
                 case MapType.BossRoom:
                     BossRoomGenerator bossRoomGenerator = map.GetComponent<BossRoomGenerator>();
                     mapGenerator = bossRoomGenerator;
-                    GenerateMapOnClientSide(this, mapGenerator, squareSize, mapSize, GetSeedHash());
-                    yield return StartCoroutine(bossRoomGenerator.GenerateBossRoom(mapSize, squareSize, GetRandom()));
+                    GenerateMapOnClientSide(this, mapGenerator, mapSize, hashSeed);
+                    yield return StartCoroutine(bossRoomGenerator.GenerateBossRoom(mapSize, squareSize, GetRandom(hashSeed)));
                     break;
                 default: //Reef
                     ReefGenerator reefGenerator = map.GetComponent<ReefGenerator>();
                     mapGenerator = reefGenerator;
-                    GenerateMapOnClientSide(this, mapGenerator, squareSize, mapSize, GetSeedHash());
-                    yield return StartCoroutine(reefGenerator.GenerateReef(this, mapSize, squareSize, GetRandom()));
+                    GenerateMapOnClientSide(this, mapGenerator, mapSize, hashSeed);
+                    yield return StartCoroutine(reefGenerator.GenerateReef(this, mapSize, squareSize, GetRandom(hashSeed)));
                     break;
             }
 
@@ -105,10 +94,13 @@ namespace BelowUs
         }
 
         [ClientRpc]
-        private void GenerateMapOnClientSide(MapHandler mapHandler, MapGenerator mapGenerator, int squareSize, Vector2 mapSize, int seed)
+        private void GenerateMapOnClientSide(MapHandler mapHandler, MapGenerator mapGenerator,  Vector2 mapSize, int seed)//int squareSize,
         {
-            Random localRandom = new Random(seed);
+            if (isServer)
+                return;
+
             Debug.Log(seed);
+            Random localRandom = new Random(seed);
 
             if (mapGenerator is SeaFloorGenerator seaFloorGenerator)
                 StartCoroutine(seaFloorGenerator.GenerateSeaFloor(mapSize, squareSize));
@@ -122,7 +114,7 @@ namespace BelowUs
 
         private int GetSeedHash() => seed.GetHashCode() + mapGenerators.Count;
 
-        private Random GetRandom() => new Random(GetSeedHash());
+        private Random GetRandom(int seed) => new Random(seed);
 
         private Vector3 CalculateNextPosition()
         {
