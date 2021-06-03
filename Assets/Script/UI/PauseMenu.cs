@@ -30,7 +30,7 @@ namespace BelowUs
 
             resolutionsDropdown.ClearOptions();
             resolutions = new List<string>();
-            for (int i = 0; i < Screen.resolutions.Length; i+=2)
+            for (int i = 0; i < Screen.resolutions.Length; i+=3)
             {
                 string option = Screen.resolutions[i].width + " x " + Screen.resolutions[i].height + "@" + Screen.resolutions[i].refreshRate;
                 resolutions.Add(option);
@@ -109,7 +109,7 @@ namespace BelowUs
 
         public void SetResolution(int resolutionIndex)
         {
-            Resolution resolution = Screen.resolutions[resolutionIndex];
+            Resolution resolution = Screen.resolutions[resolutionIndex * 3];
             Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         }
     }
