@@ -18,8 +18,7 @@ namespace BelowUs
         private MenuAction action;
         private NetworkManager manager = null;
 
-
-        private List<string> resolutions;
+        private readonly bool debug = true;
 
         private void Awake()
         {
@@ -27,9 +26,11 @@ namespace BelowUs
             action.Menu.MenuButton.performed += _ => ShowOrHideMenu();
 
             //Resolutions
+            List<string> resolutions;
+
             resolutionsDropdown.ClearOptions();
             resolutions = new List<string>();
-            for (int i = 0; i < Screen.resolutions.Length; i++)
+            for (int i = 0; i < Screen.resolutions.Length; i+=2)
             {
                 string option = Screen.resolutions[i].width + " x " + Screen.resolutions[i].height + "@" + Screen.resolutions[i].refreshRate;
                 resolutions.Add(option);
@@ -46,7 +47,12 @@ namespace BelowUs
             //TODO disable if options menu (and more) is open
             //so that pause menu is not opened when esc is pressed with the purpose of closing options
             if (!IsEnabled)
+            {
+                if (debug)
+                    Debug.Log("Menu " + nameof(IsEnabled) + " is " + IsEnabled);
                 return;
+            }
+                
 
             if (pauseMenu.activeSelf)
                 HideMenu();
@@ -56,6 +62,9 @@ namespace BelowUs
 
         private void ShowMenu()
         {
+            if (debug)
+                Debug.Log(nameof(transform) + " is being shown!");
+
             pauseMenu.SetActive(true);
             optionsPnl.SetActive(false);
             IsOpen = true;
@@ -64,6 +73,9 @@ namespace BelowUs
 
         private void HideMenu()
         {
+            if (debug)
+                Debug.Log(nameof(transform) + " is being hidden!");
+
             pauseMenu.SetActive(false);
             IsOpen = false;
             CheckIfPause();
@@ -71,7 +83,6 @@ namespace BelowUs
 
         public void OpenOptions()
         {
-            //TODO Open options
             pausePnl.SetActive(false);
             optionsPnl.SetActive(true);
         }

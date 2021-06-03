@@ -109,7 +109,7 @@ namespace BelowUs
                 {
                     if (isServer)
                         RotateCannon(angleDeg);
-                    else
+                    else if (NetworkClient.ready)
                         CallRotateCannon(angleDeg);
                 }
             }
