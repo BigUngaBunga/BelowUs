@@ -104,11 +104,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  numberOfResourcesToGenerate: 5
+  numberOfResourcesToGenerate: 7
   goldPrefab: {fileID: 1966099942334214616, guid: b95dbacb7124b5541b92e3dd2a70ba2d, type: 3}
   scrapPrefab: {fileID: 3292386035804436195, guid: 0c9feee6bd8327849bf708cb81f2913b, type: 3}
   goldParent: {fileID: 0}
   scrapParent: {fileID: 0}
+  goldWeight: 5
+  scrapWeight: 2
 --- !u!114 &-1031548025592324451
 MonoBehaviour:
   m_ObjectHideFlags: 0

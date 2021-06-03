@@ -6,7 +6,7 @@ namespace BelowUs
     public class Bullet : NetworkBehaviour
     {
         [SerializeField] private Rigidbody2D rb;
-        [SerializeField] private CircleCollider2D cd;
+        [SerializeField] private CapsuleCollider2D capsuleCollider;
 
         [SerializeField] private float velocity = 20;
         [SerializeField] private FloatVariable cannonDamage;
@@ -48,7 +48,7 @@ namespace BelowUs
         /**
          * Activates bullet collision.
          */
-        private void EnableCollision() => cd.enabled = true;
+        private void EnableCollision() => capsuleCollider.enabled = true;
 
         [Server] private void Expire() => NetworkServer.Destroy(gameObject);
 

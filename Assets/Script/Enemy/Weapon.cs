@@ -42,23 +42,22 @@ namespace BelowUs
          */
         private void AdjustFirepoint()
         {
-            var increase = bulletPrefab.GetComponent<CircleCollider2D>().radius / 2;
-            var posX = firePoint.localPosition.x;
-            var posY = firePoint.localPosition.y;
-
-            var changeX = 0f;
-            var changeY = 0f;
-
+            float posX = firePoint.localPosition.x;
+            float posY = firePoint.localPosition.y;
+            float changeX = 0f;
+            float changeY = 0f;
+            
+            Vector2 increase = bulletPrefab.GetComponent<CapsuleCollider2D>().size / 2;
+            
             if (posX > 0)
-                changeX = increase;
+                changeX = increase.x;
             else if (posX < 0)
-                changeX = -increase;
+                changeX = -increase.x;
 
             if (posY > 0)
-                changeY = increase;
+                changeY = increase.y;
             else if (posY < 0)
-                changeY = -increase;
-
+                changeY = -increase.y;
             firePoint.localPosition = new Vector3(posX + changeX, posY + changeY, -1);
         }
     }

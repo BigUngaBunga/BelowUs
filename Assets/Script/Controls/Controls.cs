@@ -34,7 +34,7 @@ namespace BelowUs
             leaveButton = GameObject.Find("UI").transform.Find("LeaveButton").GetComponent<Button>();
             leaveButton.onClick.AddListener(LeftController);
 
-            controlsButton = GameObject.Find("Game/UI/SubmarineControlsButton");
+            controlsButton = GameObject.Find("Game/UI/SubmarineControls");
 
             PlayerAction action = new PlayerAction();
             playerAction = action.Player;

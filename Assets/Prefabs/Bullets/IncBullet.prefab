@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 858580647019539761}
   - component: {fileID: 8323633759473198257}
   - component: {fileID: 1783117779421591663}
-  - component: {fileID: 2564237955503752442}
   - component: {fileID: -342852256766014549}
   - component: {fileID: 6304017847543114653}
   - component: {fileID: -3180386146144273141}
+  - component: {fileID: 2261588940534277752}
   m_Layer: 0
   m_Name: IncBullet
   m_TagString: EnemyBullet
@@ -109,22 +109,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &2564237955503752442
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3134091550239981154}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.01, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.35
 --- !u!114 &-342852256766014549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,8 +124,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   rb: {fileID: 1783117779421591663}
-  cd: {fileID: 2564237955503752442}
+  capsuleCollider: {fileID: 2261588940534277752}
   velocity: 5
+  cannonDamage: {fileID: 0}
   damage: 1
   expirationTime: 6
   invertDirection: 0
@@ -185,3 +170,19 @@ MonoBehaviour:
   compressRotation: 0
   interpolateScale: 1
   syncScale: 1
+--- !u!70 &2261588940534277752
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134091550239981154}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.016385317, y: 0.0032851696}
+  m_Size: {x: 0.6886791, y: 0.6903014}
+  m_Direction: 0

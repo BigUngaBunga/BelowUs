@@ -64,11 +64,7 @@ namespace BelowUs
             fireRate = fireRateTimer;
             reloadTimer = reloadTime;
 
-            ammoUI = GameObject.Find("Game/UI/Ammo").GetComponent<AmmoDisplay>();
-            if (ammoUI != null)
-            {
-                Debug.Log("Found a Text field");
-            }
+            ammoUI = GameObject.Find("Game/UI/AmmoDisplay").GetComponent<AmmoDisplay>();
             UpdateAmmoUI();
 
             spriteRenderer = GetComponent<SpriteRenderer>();
