@@ -20,7 +20,7 @@ namespace BelowUs
         public float Damage => cannonDamage == null ? damage : cannonDamage.Value;
 
         private readonly bool debugProjectile = false;
-        private readonly bool debugCollision = true;
+        private readonly bool debugCollision = false;
 
         private void Start()
         {
