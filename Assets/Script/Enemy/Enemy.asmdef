@@ -2,13 +2,13 @@
     "name": "NewAssembly",
     "rootNamespace": "",
     "references": [
-        "GUID:3b43d212987018b49ab32aaca7771b2c",
         "GUID:30817c1a0e6d646d99c048fc403f5979",
         "GUID:ed4bdf1cf443e71469a84fa3b995368b",
         "GUID:ceeb95c9e8491ed4b81331c55b2cc3e2",
         "GUID:a37891b8f7c139a42a19f35963ebab35",
         "GUID:8c31acbd60ad07a4c8e5d13eabd95606",
-        "GUID:48c9f6afdac61634db0e0f241c7d4d51"
+        "GUID:48c9f6afdac61634db0e0f241c7d4d51",
+        "GUID:8e46dd16490d0c84cb2664e64341ae8b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Mirror;
+﻿using Mirror;
 using UnityEngine;
 
 namespace BelowUs
@@ -20,9 +18,7 @@ namespace BelowUs
         public float CollisionDamage => collisionDamage;
         [SerializeField] [Min(10)] protected float moveSpeedChasing;
 
-
         protected GameObject targetGameObject;
-        
 
         protected EnemyState currentState;
         protected Rigidbody2D rb;
@@ -32,7 +28,10 @@ namespace BelowUs
         {
             rb = GetComponent<Rigidbody2D>();
             hullHP = GetComponent<ShipResource>();
-            hullHP.EventResourceEmpty += Die;
+
+            if (isServer)
+                hullHP.EventResourceEmpty += Die;
+
             SetTarget();
         }
 
@@ -73,7 +72,7 @@ namespace BelowUs
             else currentState = EnemyState.Idle;
         }
 
-        private void Die() => Destroy(gameObject);
+        [Server] protected virtual void Die() => NetworkServer.Destroy(gameObject);
 
         protected void UpdateBasicRotation(Vector3 targetPosition)
         {

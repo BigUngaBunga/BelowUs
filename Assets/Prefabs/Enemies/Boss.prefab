@@ -40,7 +40,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6236544566483606302}
   - component: {fileID: 693379008604453655}
-  - component: {fileID: 6113606763852094531}
   m_Layer: 0
   m_Name: Tail
   m_TagString: Untagged
@@ -111,31 +110,9 @@ SpriteRenderer:
   m_Size: {x: 0.97, y: 1.51}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6113606763852094531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687518284249910074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57c008f954fe54a8bb972de1018a2cb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RootBone: {fileID: 4260285834226191053}
-  m_BoneTransforms:
-  - {fileID: 4456275223384220523}
-  - {fileID: 4260285834226191053}
-  m_Bounds:
-    m_Center: {x: 0.0012861192, y: -0.32000017, z: 0}
-    m_Extent: {x: 0.48370993, y: 0.43499994, z: 0}
-  m_UseBatching: 1
-  m_AlwaysUpdate: 1
-  m_AutoRebind: 0
 --- !u!1 &951048034884067133
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +262,6 @@ GameObject:
   m_Component:
   - component: {fileID: 441114714024612834}
   - component: {fileID: 5284703071583715411}
-  - component: {fileID: 5655406117608914619}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -356,35 +332,9 @@ SpriteRenderer:
   m_Size: {x: 0.96, y: 2.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5655406117608914619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1685391922502923917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57c008f954fe54a8bb972de1018a2cb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RootBone: {fileID: 8403604690883206378}
-  m_BoneTransforms:
-  - {fileID: 4260285834226191053}
-  - {fileID: 23932129282780089}
-  - {fileID: 1980408091631570462}
-  - {fileID: 8403604690883206378}
-  - {fileID: 3561798181081403789}
-  - {fileID: 8679061920092691741}
-  m_Bounds:
-    m_Center: {x: -0.00026777387, y: 0.0029900074, z: 0}
-    m_Extent: {x: 0.47973606, y: 1.0180502, z: 0}
-  m_UseBatching: 1
-  m_AlwaysUpdate: 1
-  m_AutoRebind: 0
 --- !u!1 &2055058675779256731
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,6 +480,7 @@ MonoBehaviour:
   debug: 0
   currentChargingState: 0
   distanceFromCenterPointCharging: 50
+  bossDied: {fileID: 11400000, guid: 7113a7e64be99e44dbbcbd538689fd1f, type: 2}
 --- !u!114 &5110578202295228364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -686,7 +637,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1570995559916453027}
   - component: {fileID: 3941936729217567848}
-  - component: {fileID: 6238079052568454768}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -757,31 +707,9 @@ SpriteRenderer:
   m_Size: {x: 0.76, y: 1.06}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6238079052568454768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4195432210396805174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57c008f954fe54a8bb972de1018a2cb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RootBone: {fileID: 8403604690883206378}
-  m_BoneTransforms:
-  - {fileID: 8403604690883206378}
-  - {fileID: 885589386879318}
-  m_Bounds:
-    m_Center: {x: -0.0000003874302, y: -0.0012798309, z: 0}
-    m_Extent: {x: 0.38000038, y: 0.5279802, z: 0}
-  m_UseBatching: 1
-  m_AlwaysUpdate: 1
-  m_AutoRebind: 0
 --- !u!1 &4383754203041094449
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,7 +720,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6486278485409181058}
   - component: {fileID: 8989135690928381200}
-  - component: {fileID: 1011261318441472891}
   m_Layer: 0
   m_Name: Top Fin
   m_TagString: Untagged
@@ -863,31 +790,9 @@ SpriteRenderer:
   m_Size: {x: 0.53, y: 0.45}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1011261318441472891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4383754203041094449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57c008f954fe54a8bb972de1018a2cb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RootBone: {fileID: 1980408091631570462}
-  m_BoneTransforms:
-  - {fileID: 1980408091631570462}
-  - {fileID: 633729944911486318}
-  m_Bounds:
-    m_Center: {x: 0.003644973, y: -0.0016749501, z: 0}
-    m_Extent: {x: 0.26135498, y: 0.22332504, z: 0}
-  m_UseBatching: 1
-  m_AlwaysUpdate: 1
-  m_AutoRebind: 0
 --- !u!1 &4557240334791071766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1066,7 +971,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2147636577351872428}
   - component: {fileID: 5939044110566907126}
-  - component: {fileID: 8413938990939419126}
   m_Layer: 0
   m_Name: Close Fin
   m_TagString: Untagged
@@ -1137,32 +1041,9 @@ SpriteRenderer:
   m_Size: {x: 0.86, y: 1.21}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8413938990939419126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6314653320189392525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57c008f954fe54a8bb972de1018a2cb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RootBone: {fileID: 8679061920092691741}
-  m_BoneTransforms:
-  - {fileID: 1120168727280258031}
-  - {fileID: 1379060609585106382}
-  - {fileID: 8679061920092691741}
-  m_Bounds:
-    m_Center: {x: 0.0012132227, y: -0.0037398338, z: 0}
-    m_Extent: {x: 0.42878306, y: 0.6012601, z: 0}
-  m_UseBatching: 1
-  m_AlwaysUpdate: 1
-  m_AutoRebind: 0
 --- !u!1 &7058362157941625627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,7 +1084,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7843455704912911929}
   - component: {fileID: 6158391653319299270}
-  - component: {fileID: 7461000802793553369}
   m_Layer: 0
   m_Name: Back Fin
   m_TagString: Untagged
@@ -1274,31 +1154,9 @@ SpriteRenderer:
   m_Size: {x: 0.37, y: 0.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7461000802793553369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7533943410625616294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57c008f954fe54a8bb972de1018a2cb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RootBone: {fileID: 3561798181081403789}
-  m_BoneTransforms:
-  - {fileID: 3561798181081403789}
-  - {fileID: 3122555989268747177}
-  m_Bounds:
-    m_Center: {x: 0.000001937151, y: 0.00089006126, z: 0}
-    m_Extent: {x: 0.18500188, y: 0.19149002, z: 0}
-  m_UseBatching: 1
-  m_AlwaysUpdate: 1
-  m_AutoRebind: 0
 --- !u!1 &7799919841099558469
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,6 +1298,6 @@ SpriteRenderer:
   m_Size: {x: 0, y: 0}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0

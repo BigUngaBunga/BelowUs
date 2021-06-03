@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
+using RoboRyanTron.Unite2017.Events;
 
 namespace BelowUs
 {
@@ -23,7 +24,7 @@ namespace BelowUs
         }
 
         [Server]
-        private void SwitchToVillageScene()
+        public void SwitchToVillageScene()
         {
             SaveSessionGold();
             NetworkManager.singleton.ServerChangeScene("Village");

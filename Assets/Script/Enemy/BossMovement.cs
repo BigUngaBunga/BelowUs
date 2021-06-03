@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using RoboRyanTron.Unite2017.Events;
 
 namespace BelowUs
 {
@@ -47,7 +46,9 @@ namespace BelowUs
         private Vector2 normalizedDirection;
 
         //Behöver lägga till flera patterns och ett sätt att bestämma dom, Nedan ska ej hardcodas
-        private AttackPattern currentAttactPattern = AttackPattern.BasicChasing;       
+        private AttackPattern currentAttactPattern = AttackPattern.BasicChasing;
+
+        [SerializeField] private GameEvent bossDied;
 
         protected override void Start()
         {
@@ -114,7 +115,7 @@ namespace BelowUs
 
         protected void UpdateMovementCharging()
         {
-            Vector2 movement = normalizedDirection * moveSpeedChasing * Time.deltaTime;
+            Vector2 movement = moveSpeedChasing * Time.deltaTime * normalizedDirection;
             rb.AddForce(movement);
         }
         
@@ -175,5 +176,6 @@ namespace BelowUs
         public void SetTargetingOffsetRange(float widthOfRoom) => chasingRange = widthOfRoom - offsetDistanceChasingRange;
         //targeting wont be longer than the size of the room - offsetDistanceChasingRange
 
+        [Server] protected override void Die() => bossDied.Raise();
     }
 }
