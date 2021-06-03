@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 7167857728180147062}
   - component: {fileID: 8520887821049413316}
   - component: {fileID: -6539020469161520198}
-  - component: {fileID: 8731852600570453640}
   - component: {fileID: 1532475164888109138}
   - component: {fileID: -9149794827915211870}
   - component: {fileID: -7598566241160677932}
+  - component: {fileID: 821204999518500950}
   m_Layer: 0
   m_Name: SubBullet
   m_TagString: AllyBullet
@@ -29,9 +29,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3884182950494802533}
-  m_LocalRotation: {x: -0, y: -0, z: 0.40472263, w: -0.9144395}
-  m_LocalPosition: {x: -38.386845, y: 30.626057, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -38.386845, y: 30.631, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -77,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1c2db32a6597b1d4a899f783b88cd0af, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 341b81612a7d55f4aa691add82eada70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -109,22 +109,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &8731852600570453640
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3884182950494802533}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.35586715
 --- !u!114 &1532475164888109138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,7 +124,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   rb: {fileID: -6539020469161520198}
-  cd: {fileID: 8731852600570453640}
+  capsuleCollider: {fileID: 821204999518500950}
   velocity: 20
   cannonDamage: {fileID: 11400000, guid: 7727848ad3f5d434c9ff556a97608e55, type: 2}
   damage: 10
@@ -186,3 +170,19 @@ MonoBehaviour:
   compressRotation: 0
   interpolateScale: 1
   syncScale: 1
+--- !u!70 &821204999518500950
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3884182950494802533}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.0019760132, y: 0.042895317}
+  m_Size: {x: 1.0270233, y: 2.685915}
+  m_Direction: 0
