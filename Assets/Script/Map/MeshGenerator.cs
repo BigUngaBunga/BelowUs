@@ -19,6 +19,7 @@ namespace BelowUs
         private readonly List<int> triangles = new List<int>();
         private readonly List<List<int>> outlines = new List<List<int>>();
         private readonly HashSet<int> checkedVertices = new HashSet<int>();
+        private float squareSize;
         [SerializeField] private float timeToWait = 0.01f;
 
         private readonly Dictionary<int, List<Triangle>> triangleDictionary = new Dictionary<int, List<Triangle>>();
@@ -27,6 +28,7 @@ namespace BelowUs
         public IEnumerator GenerateMesh(int[,] map, float squareSize, int wallTile)
         #pragma warning restore S2368 // Public methods should not have multidimensional array parameters
         {
+            this.squareSize = squareSize;
             mapSize = new Vector2(map.GetLength(0), map.GetLength(1));
 
             squareGrid = new SquareGrid(map, squareSize, wallTile);
@@ -40,10 +42,11 @@ namespace BelowUs
             mesh.vertices = vertices.ToArray();
             mesh.triangles = triangles.ToArray();
             mesh.RecalculateNormals();
-            mesh.uv = CreateUV(squareSize);
+            mesh.uv = CreateUV();
             yield return Wait("Created mesh");
 
             yield return StartCoroutine(Generate2DCollider());
+            GenerateBackground();
         }
 
         private void TriangulateSquare(Square square)
@@ -147,7 +150,7 @@ namespace BelowUs
             }
         }
 
-        private Vector2[] CreateUV(float squareSize)
+        private Vector2[] CreateUV()
         {
             Vector2[] uvs = new Vector2[vertices.Count];
             int divideMapSize = 2;
@@ -159,6 +162,12 @@ namespace BelowUs
             }
 
             return uvs;
+        }
+
+        private void GenerateBackground()
+        {
+            SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+            renderer.size = (mapSize - Vector2.one) * squareSize;
         }
 
         private IEnumerator CalculateMeshOutlines()

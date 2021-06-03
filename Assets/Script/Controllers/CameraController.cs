@@ -15,8 +15,8 @@ namespace BelowUs
         [Range(2, 16)]
         [SerializeField] private float smoothFactor;
 
-        [SerializeField] float submarineCameraSize = 14;
-        protected float playerCameraSize;
+        [SerializeField] private float submarineCameraSize = 14;
+        [SerializeField] protected float playerCameraSize;
 
         private void Start()
         {
