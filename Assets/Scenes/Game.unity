@@ -3607,6 +3607,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8704669364975941422, guid: e60ab7d62a2877147b7e6dd07613d66c, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 519420031}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e60ab7d62a2877147b7e6dd07613d66c, type: 3}
 --- !u!1 &713738138
@@ -10087,7 +10091,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.5
+  m_fontSize: 31.05
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
