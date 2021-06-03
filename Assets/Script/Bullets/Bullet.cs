@@ -71,7 +71,10 @@ namespace BelowUs
                 {
                     //TODO fix Bubba's health so that it's not null
                     //Todo change this if collider position is standardized
-                    ShipResource health = npc ? collision.gameObject.GetComponentInParent<ShipResource>() : collision.gameObject.GetComponent<ShipResource>();
+                    ShipResource health = collision.gameObject.GetComponent<ShipResource>();
+
+                    if (health == null)
+                        health = collision.gameObject.GetComponentInParent<ShipResource>();
 
                     if (debugCollision && health == null)
                         Debug.Log("Health is null");
