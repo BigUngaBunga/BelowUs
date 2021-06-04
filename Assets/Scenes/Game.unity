@@ -3820,7 +3820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
-  mapsBeforeBossMap: 3
+  mapsBeforeBossMap: 10
   startPosition: {x: 0, y: 0}
   mapSize: {x: 80, y: 60}
   useRandomSeed: 1
