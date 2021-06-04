@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 1453405639}
-  tileAmount: 30
+  tileAmount: 14
   timeToWait: 0.01
 --- !u!114 &1536413451833416543
 MonoBehaviour:

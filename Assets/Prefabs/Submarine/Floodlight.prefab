@@ -212,7 +212,7 @@ MonoBehaviour:
   syncInterval: 0.1
   floodlightController: {fileID: 0}
   spotAngle: {fileID: 11400000, guid: e32eece3d2d388247a5508f0f7ccd3f0, type: 2}
-  intensity: 2
+  intensity: 4
 --- !u!114 &2497593014685172933
 MonoBehaviour:
   m_ObjectHideFlags: 0
