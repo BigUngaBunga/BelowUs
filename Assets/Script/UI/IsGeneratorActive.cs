@@ -10,6 +10,8 @@ namespace BelowUs
         [SerializeReference] private string activeLabel;
         [SerializeReference] private string inactiveLabel;
         [SerializeReference] private ShipResource shipResource;
+
+
         private TMP_Text label;
 
         private void Start()

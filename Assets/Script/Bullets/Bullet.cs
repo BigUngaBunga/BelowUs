@@ -16,6 +16,7 @@ namespace BelowUs
 
         [SerializeField] private float collisionDelay = 0.05f;
         [SerializeField] private bool npc;
+        private AudioSource audioSource;
 
         public float Damage => cannonDamage == null ? damage : cannonDamage.Value;
 
@@ -24,6 +25,7 @@ namespace BelowUs
 
         private void Start()
         {
+            audioSource = GetComponent<AudioSource>();
             if (isServer)
             {
                 int invertDirectionInt = invertDirection ? -1 : 1;
@@ -92,8 +94,22 @@ namespace BelowUs
                 }
             }
 
+            if (isServer)
+                ServerPlaySound();
+            else
+                CommandPlaySound();
+
             NetworkServer.Destroy(gameObject);
         }
+
+        [Server]
+        private void ServerPlaySound() => PlaySound();
+
+        [Command(requiresAuthority = false)]
+        private void CommandPlaySound() => ServerPlaySound();
+
+        [ClientRpc]
+        private void PlaySound() => AudioSource.PlayClipAtPoint(audioSource.clip, transform.position);
     }
 }
 

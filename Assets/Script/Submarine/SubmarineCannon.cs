@@ -40,6 +40,7 @@ namespace BelowUs
         private SpriteRenderer spriteRenderer;
         private SubmarineMovement submarine;
         private Light spotlight;
+        private AudioSource audioSource;
 
         private Weapon weapon;
 
@@ -48,6 +49,7 @@ namespace BelowUs
         private void Awake()
         {
             weapon = GetComponent<Weapon>();
+            audioSource = GetComponent<AudioSource>();
 
             logError = gameObject.name + " in " + gameObject.transform.parent + " ";
 
@@ -187,11 +189,15 @@ namespace BelowUs
         private void Shoot()
         {
             weapon.Shoot();
+            PlayAudio();
             fireRate = fireRateTimer;
             ammunition--;
         }
 
         [Command]
         private void CommandShoot() => Shoot();
+
+        [ClientRpc]
+        private void PlayAudio() => audioSource.PlayOneShot(audioSource.clip, 0.2f);
     }
 }

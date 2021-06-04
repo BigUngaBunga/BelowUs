@@ -377,6 +377,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   resourceName: Hull Health
+  currentValue: 0
   resetValue: 1
   maximumValue:
     UseConstant: 0
@@ -455,6 +456,10 @@ PrefabInstance:
       propertyPath: clientAuthority
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1437155481906263190, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 0e61464b1ebf38948a16daac13dfcd43, type: 2}
     - target: {fileID: 1668458542882611589, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_AssetId
       value: 
@@ -545,6 +550,10 @@ PrefabInstance:
       propertyPath: clientAuthority
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1437155481906263190, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 0e61464b1ebf38948a16daac13dfcd43, type: 2}
     - target: {fileID: 1668458542882611589, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_AssetId
       value: 
@@ -623,6 +632,10 @@ PrefabInstance:
       propertyPath: clientAuthority
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1437155481906263190, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 0e61464b1ebf38948a16daac13dfcd43, type: 2}
     - target: {fileID: 1668458542882611589, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_AssetId
       value: 
@@ -721,6 +734,10 @@ PrefabInstance:
       propertyPath: clientAuthority
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1437155481906263190, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 0e61464b1ebf38948a16daac13dfcd43, type: 2}
     - target: {fileID: 1668458542882611589, guid: 64721dd80f4c9d84f933049039551fff, type: 3}
       propertyPath: m_AssetId
       value: 
